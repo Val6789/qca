@@ -1,1 +1,5 @@
-console.log("toto")
+function main() {
+
+}
+
+main()

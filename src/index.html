@@ -1,10 +1,25 @@
 <html>
     <head>
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="./styles/reset.css">
         <link rel="stylesheet" href="./styles/main.css">
+
+
+        <!-- Scripts -->
         <script type="text/javascript" src="../node_modules/tree/tree.js"></script>
+        <script type="text/javascript" src="./scripts/treeViewController.js"></script>
         <script type="text/javascript" src="./scripts/main.js" defer></script>
+
     </head>
-    <body>
-        <canvas id="3d-viewport"></canvas>
+
+    <body class="wrapper">
+
+        <!-- HEADER AND NAVBAR -->
+        <h1 class="title">Quantum cellular automata simulator</h1>
+        
+        <!-- 3D VIEWPORT -->
+        <main id="viewport" class="viewport"></main>
+
     </body>
 </html>
