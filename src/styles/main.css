@@ -1,36 +1,39 @@
 .wrapper {
+    color: #fff;
     position: fixed;
-    height: 100vh;
+    left: 0;
+    top: 0;
     width: 100vw;
+    height: 100vh;
+    z-index: 100;
 
-    box-sizing: border-box;
     display: grid;
-    grid-template:
-    "title      " 5rem
-    "viewport   " calc(100% - 5rem)
-    / 1fr; 
+    grid-template: "activities  title           title        " auto
+                   "activities  .               control-zoom " 1fr
+                   "activities  control-strip   control-strip" auto
+                   /auto        1fr             auto
+}
 
-    padding: 1rem;
-
-    background: #050611;
-    color: #ffffff;
-    font-family: 'Times', serif;
+.viewport{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
 }
 
 .title {
+    position: relative;
     grid-area: title;
-    padding: 1rem;
-    font-size: 1.5rem;
 }
 
-.viewport {
-    grid-area: viewport;
+.camera-controls {
+    position: relative;
+    grid-area: control-zoom;
+}
 
-    background: #000;
-    border: solid 1px #BBB;
-    border-radius: 5px;
-    flex-grow: 1;
-
-    width: 100%;
-    height: 100%;
+.inactive .ifactive,
+.active .ifinactive {
+    display: none;
 }

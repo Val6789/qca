@@ -40,10 +40,10 @@ class ThreeViewController {
   }
 
 
-  // updates renderer parameters if the view changes.
-  updateViewport() {
-    let width = this.renderer.domElement.clientWidth
-    let height = this.renderer.domElement.clientHeight
+    // updates renderer parameters if the view changes.
+    updateViewport() {
+        let width = this.renderer.domElement.parentElement.clientWidth
+        let height = this.renderer.domElement.parentElement.clientHeight
 
     this.camera.aspect = width / height
     this.camera.updateProjectionMatrix()
@@ -71,17 +71,13 @@ class ThreeViewController {
 
     // use the device's pixel ratio (number of actual / physical screen pixels in one 'virtual' pixel: can be more than one on high res screens) 
     this.renderer.setPixelRatio(window.devicePixelRatio)
-
     // inserts the WebGl canvas in the document
     parent.appendChild(this.renderer.domElement)
     this.updateViewport()
-
-    // listen for viewport size changes
     window.addEventListener("resize", () => {
       this.updateViewport()
     })
-
     // create camera orbit controls
-    this.orbitControls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
-  }
+        this.orbitControls = new THREE.OrbitControls(this.camera)
+    }
 }
