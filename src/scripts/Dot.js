@@ -1,5 +1,5 @@
-/* global THREE:true, Dot:true */
-/* exported Qubit */
+/* global THREE:true */
+/* exported Dot */
 class Dot {
     get position() {
         return new THREE.Vector3(

@@ -1,4 +1,4 @@
-/* global THREE:true */
+/* global THREE:true , Grid:true */
 /* exported ThreeViewController */
 
 class ThreeViewController {
@@ -32,8 +32,7 @@ class ThreeViewController {
     }
 
     addSkybox() {
-        // const earthURL = "https://cdn-images-1.medium.com/max/800/1*UlLoXKAJcg7pqhjucMaksQ.png"
-        const path = "images/textures/skybox/"
+        const path = "assets/textures/skybox/"
         const format = ".png"
         const createUrl = (name) => path + name + format
         const urls = [
@@ -67,6 +66,9 @@ class ThreeViewController {
                 mesh.name = "Skybox"
                 this.scene.add(mesh)
 
+                // Fix, cause the skybox takes time to load
+                this.render()
+
             })
             .catch((err) => {
                 console.error(err)
@@ -74,30 +76,50 @@ class ThreeViewController {
 
     }
 
+    addGrid() {
+        const file = "assets/fonts/optimer_regular.typeface.json"
+        if (!this.font)
+            this.waitFont(file).then((font) => {
+                this.font = font
+                this.grid = new Grid(this.font)
+                this.addObject(this.grid.object)
+            })
+
+    }
+
+    waitFont(path) {
+        return new Promise((resolve, reject) => {
+            this.textLoader.load(
+                path,
+                (font) => resolve(font),
+                undefined,
+                (err) => reject(err)
+            )
+        })
+    }
+
     waitTexture(path) {
         return new Promise((resolve, reject) => {
             if (Array.isArray(path))
                 this.cubeLoader.load(
                     path,
-                    (texture) => {
-                        resolve(texture)
-                    },
+                    (texture) => resolve(texture),
                     undefined,
                     (err) => {
                         console.error(err)
                         reject(err)
-                    })
+                    }
+                )
             else
                 this.textureLoader.load(
                     path,
-                    (texture) => {
-                        resolve(texture)
-                    },
+                    (texture) => resolve(texture),
                     undefined,
                     (err) => {
                         console.error(err)
                         reject(err)
-                    })
+                    }
+                )
         })
     }
 
@@ -110,10 +132,18 @@ class ThreeViewController {
             requestAnimationFrame(() => {
                 this.renderLoop()
             })
-        // print image
-        this.renderer.render(this.scene, this.camera)
+
+
+        // Display Loop
+        this.render()
     }
 
+    render() {
+        if (this.grid)
+            this.grid.lookCamera(this.camera.position)
+
+        this.renderer.render(this.scene, this.camera)
+    }
 
     // updates renderer parameters if the view changes.
     updateViewport() {
@@ -154,6 +184,8 @@ class ThreeViewController {
         this.cubeLoader = new THREE.CubeTextureLoader()
             .setCrossOrigin(true)
 
+        this.textLoader = new THREE.FontLoader()
+
         // Add two lights
         var ambiant = new THREE.AmbientLight(0xffffff)
         this.scene.add(ambiant)
@@ -161,7 +193,9 @@ class ThreeViewController {
         var point = new THREE.PointLight(0xffffff, 2)
         this.scene.add(point)
 
+        // Create the skybox
         this.addSkybox()
+
 
         // inserts the WebGl canvas in the document
         parent.appendChild(this.renderer.domElement)
@@ -174,5 +208,11 @@ class ThreeViewController {
 
         // create camera orbit controls
         this.orbitControls = new THREE.OrbitControls(this.camera)
+        this.orbitControls.addEventListener("change", () => {
+            this.render()
+        })
+
+        // Create the grid
+        this.addGrid()
     }
 }

@@ -12,14 +12,11 @@ class Qubit {
     }
 
     constructor() {
-        const QUBIT_SIZE = 3
-        const QUBIT_THICK = 1
-
         const wireframeMaterial = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             wireframe: true
         })
-        const cubeGeometry = new THREE.BoxGeometry(QUBIT_SIZE, QUBIT_THICK, QUBIT_SIZE)
+        const cubeGeometry = new THREE.BoxGeometry(Qubit.QUBIT_SIZE, Qubit.QUBIT_THICK, Qubit.QUBIT_SIZE)
 
         this.object = new THREE.Mesh(cubeGeometry, wireframeMaterial)
 
@@ -38,5 +35,10 @@ class Qubit {
             new Electron(dots[2])
         ]
         this.electrons.forEach(electron => this.object.add(electron.object))
+
+        this.object.scale.set(Qubit.SCALE, Qubit.SCALE, Qubit.SCALE)
     }
 }
+Qubit.QUBIT_SIZE = 3
+Qubit.QUBIT_THICK = 1
+Qubit.SCALE = 0.2
