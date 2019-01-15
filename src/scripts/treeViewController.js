@@ -23,57 +23,6 @@ class ThreeViewController {
     mesh.position.set(x, y, z)
   }
 
-  addDot(dotDescriptor) {
-    console.assert(dotDescriptor.electrons.length == 2, dotDescriptor, "Parameter dotDescriptor is not an array of size 2")
-
-    if (!this.sphereGeometry) {
-      const widthSegments = 32
-      const heightSegments = 32
-      this.sphereGeometry = new THREE.SphereGeometry(1, widthSegments, heightSegments)
-    }
-
-    if (!this.sphereMaterial) {
-      this.sphereMaterial = new THREE.MeshLambertMaterial({
-        color: dotDescriptor.color.getHex()
-      })
-    }
-
-    // Create the sphere
-    const r = dotDescriptor.radius
-    for (let i = 0; i < dotDescriptor.electrons.length; i++) {
-      // creation
-      let mesh = new THREE.Mesh(this.sphereGeometry, this.sphereMaterial)
-      this.dots.add(mesh)
-
-      // position
-      const e = dotDescriptor.electrons[i]
-      const p = e.clone().setLength(dotDescriptor.padding).add(dotDescriptor.position)
-      mesh.position.set(p.x, p.y, p.z)
-
-      // scale
-      mesh.scale.set(r, r, r)
-    }
-
-    // Create a box around
-    const cr = dotDescriptor.radius * 4 + dotDescriptor.padding
-    var geometry = new THREE.BoxGeometry(cr, cr / 2, cr)
-    var material = new THREE.MeshBasicMaterial({
-      color: 0x222222,
-      wireframe: true
-    })
-    var cube = new THREE.Mesh(geometry, material)
-    this.dots.add(cube)
-    cube.position.set(dotDescriptor.position.x, dotDescriptor.position.y, dotDescriptor.position.z)
-
-  }
-
-  resetDots() {
-    // TODO
-    // I don't know if the performance of this function is great
-    this.dots = new THREE.Group()
-    this.dots.name = "Dots"
-  }
-
   addSkybox() {
     // const earthURL = "https://cdn-images-1.medium.com/max/800/1*UlLoXKAJcg7pqhjucMaksQ.png"
     const path = "images/textures/skybox/"
@@ -153,6 +102,10 @@ class ThreeViewController {
         this.renderLoop()
       })
     // print image
+    this.render()
+  }
+
+  render() {
     this.renderer.render(this.scene, this.camera)
   }
 
@@ -214,10 +167,6 @@ class ThreeViewController {
 
     // create camera orbit controls
     this.orbitControls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
-
-    // Group of the dots
-    this.resetDots()
-    this.scene.add(this.dots)
 
   }
 }
