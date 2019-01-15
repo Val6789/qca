@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "three": "^0.100.0",
-    "three-orbit-controls": "^82.1.0"
+    "threejs-orbit-controls": "^1.0.0"
   },
   "devDependencies": {
     "browser-sync": "^2.26.3",
     "eslint": "^5.12.0"
   },
   "author": "",
-  "license": "ISC" ,
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/Val6789/qca.git"

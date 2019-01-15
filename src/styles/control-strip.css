@@ -1,0 +1,29 @@
+.control-strip {
+    position: relative;
+    grid-area: control-strip;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-top: #bbb 1px solid;
+}
+
+.time-button, .tool {
+    font-size: 0;
+}
+
+.time-button-icon {
+    height: 1.5rem;
+}
+
+.tool-icon {
+    height: 2rem;
+}
+
+.hide-activities {
+    font-size: 0;
+}
+
+.hide-activities-icon {
+    height: 24px;
+}

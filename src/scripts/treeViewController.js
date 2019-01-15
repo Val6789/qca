@@ -34,8 +34,8 @@ class ThreeViewController {
 
     // updates renderer parameters if the view changes.
     updateViewport() {
-        let width = this.renderer.domElement.clientWidth
-        let height = this.renderer.domElement.clientHeight
+        let width = this.renderer.domElement.parentElement.clientWidth
+        let height = this.renderer.domElement.parentElement.clientHeight
 
         this.camera.aspect = width/height
         this.camera.updateProjectionMatrix()
@@ -72,6 +72,6 @@ class ThreeViewController {
         window.addEventListener("resize", ev => { this.updateViewport() })
 
         // create camera orbit controls
-        this.orbitControls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
+        this.orbitControls = new THREE.OrbitControls(this.camera)
     }
 }
