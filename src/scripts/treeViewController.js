@@ -20,6 +20,9 @@ class ThreeViewController {
         this.scene.add(mesh)
     }
 
+    addObject(object) {
+        this.scene.add(object)
+    }
 
     /* "Private" methods */
 
@@ -33,7 +36,7 @@ class ThreeViewController {
 
 
     // updates renderer parameters if the view changes.
-    updateViewport() {
+    updateViewport() {
         let width = this.renderer.domElement.parentElement.clientWidth
         let height = this.renderer.domElement.parentElement.clientHeight
 
@@ -69,7 +72,7 @@ class ThreeViewController {
         this.updateViewport()
 
         // listen for viewport size changes
-        window.addEventListener("resize", ev => { this.updateViewport() })
+        window.addEventListener("resize", () => { this.updateViewport() })
 
         // create camera orbit controls
         this.orbitControls = new THREE.OrbitControls(this.camera)

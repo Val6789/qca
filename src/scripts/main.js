@@ -1,6 +1,16 @@
 var threeController = new ThreeViewController("viewport")
 threeController.startRenderLoop()
-threeController.addCube(0,0,1)
+
+var testQubitA = new Qubit()
+var testQubitB = new Qubit()
+var testQubitC = new Qubit()
+
+testQubitB.move(0,3)
+testQubitC.move(-3, -3)
+
+threeController.addObject(testQubitA.object)
+threeController.addObject(testQubitB.object)
+threeController.addObject(testQubitC.object)
 
 
 function toggleActivityPanel() {
