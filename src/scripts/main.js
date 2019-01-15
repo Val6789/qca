@@ -1,11 +1,15 @@
-var threeController = new ThreeViewController("viewport")
-threeController.startRenderLoop()
+/* global ThreeViewController:true, THREE:true, Qubit:true */
+/* exported orbit */
 
-var testQubitA = new Qubit()
-var testQubitB = new Qubit()
-var testQubitC = new Qubit()
+const threeController = new ThreeViewController("viewport")
+//threeController.startRenderLoop()
 
-testQubitB.move(0,3)
+
+let testQubitA = new Qubit()
+let testQubitB = new Qubit()
+let testQubitC = new Qubit()
+
+testQubitB.move(0, 3)
 testQubitC.move(-3, -3)
 
 threeController.addObject(testQubitA.object)
@@ -13,8 +17,16 @@ threeController.addObject(testQubitB.object)
 threeController.addObject(testQubitC.object)
 
 
-function toggleActivityPanel() {
-    var cssList = document.getElementById("activities").classList
+/*
+document.addEventListener("click", () => {
+    threeController.addCube(Math.random() * 4, Math.random() * 4, Math.random())
+})
+*/
+
+function toggleActivityPanel(e) {
+    e.stopPropagation()
+    e.preventDefault()
+    let cssList = document.getElementById("activities").classList
     if (cssList.contains("active")) {
         cssList.remove("active")
         cssList.add("inactive")
@@ -22,6 +34,7 @@ function toggleActivityPanel() {
         cssList.remove("inactive")
         cssList.add("active")
     }
+    return false
 }
 
 var influenceOverlay = new InfluenceOverlay(threeController)

@@ -1,3 +1,5 @@
+/* global THREE:true */
+/* exported Dot */
 class Dot {
     get position() {
         return new THREE.Vector3(
@@ -11,8 +13,7 @@ class Dot {
         const wireframeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true})
         const dotGeometry = new THREE.IcosahedronGeometry(Dot.RADIUS, 0)
         
-
-        this.relativeQubitPosition = new THREE.Vector2(x,y)
+        this.relativeQubitPosition = new THREE.Vector2(x, y)
         this.parentQubit = qubit
 
         this.object = new THREE.Mesh(dotGeometry, wireframeMaterial)

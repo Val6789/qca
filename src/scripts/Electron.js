@@ -1,4 +1,6 @@
-class Electron {    
+/* global THREE:true, Electron:true */
+/* exported Qubit */
+class Electron {
     get position() {
         return this.dot.position
     }
@@ -12,7 +14,7 @@ class Electron {
         this.object = new THREE.Mesh(electronGeometry, electronMaterial)
         this.object.geometry.translate(dot.position.x, dot.position.y, dot.position.z)
 
-        
+
         if (!Electron.instances)
             Electron.instances = []
         Electron.instances.push(this)
