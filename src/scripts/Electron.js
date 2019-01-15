@@ -7,7 +7,7 @@ class Electron {
         this.dot = dot;
         
         const electronMaterial = new THREE.MeshBasicMaterial({color: 0xff0000})
-        const electronGeometry = new THREE.SphereGeometry(Electron.RADIUS, 12, 6)
+        const electronGeometry = new THREE.IcosahedronGeometry(Electron.RADIUS, 1)
 
         this.object = new THREE.Mesh(electronGeometry, electronMaterial)
         this.object.geometry.translate(dot.position.x, dot.position.y, dot.position.z)

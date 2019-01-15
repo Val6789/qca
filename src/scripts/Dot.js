@@ -9,13 +9,14 @@ class Dot {
 
     constructor(x, y, qubit) {
         const wireframeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true})
-        const dotGeometry = new THREE.SphereGeometry(Dot.RADIUS, 12, 6)
-        const self = this;
+        const dotGeometry = new THREE.IcosahedronGeometry(Dot.RADIUS, 1)
+        
 
         this.relativeQubitPosition = new THREE.Vector2(x,y)
         this.parentQubit = qubit
 
         this.object = new THREE.Mesh(dotGeometry, wireframeMaterial)
+        const self = this;
         this.object.geometry.translate(self.position.x, self.position.y, self.position.z)
     }
 }
