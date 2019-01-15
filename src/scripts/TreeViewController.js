@@ -214,5 +214,6 @@ class ThreeViewController {
 
         // Create the grid
         this.addGrid()
+		this.scene.fog = new THREE.FogExp2(0x000000, 0.05);
     }
 }
