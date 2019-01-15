@@ -16,13 +16,6 @@ threeController.addObject(testQubitA.object)
 threeController.addObject(testQubitB.object)
 threeController.addObject(testQubitC.object)
 
-
-/*
-document.addEventListener("click", () => {
-    threeController.addCube(Math.random() * 4, Math.random() * 4, Math.random())
-})
-*/
-
 function toggleActivityPanel(e) {
     e.stopPropagation()
     e.preventDefault()
