@@ -11,10 +11,12 @@ class ThreeViewController {
     }
 
 
-    addCube(x = 0, y = 0, radius = 1) {
-        let geometry = new THREE.BoxBufferGeometry(radius, radius, radius)
-        let material = new THREE.LineBasicMaterial({ color: 0xffffff })
+    addCube(x = 0, y = 0, z = 0, radius = 1) {
+        let geometry = new THREE.BoxGeometry(radius, radius, radius)
+        let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
         let mesh = new THREE.Mesh(geometry, material)
+        mesh.matrix.position = THREE.Vector3(x,y,z)
+        mesh.updateMatrix()
         this.scene.add(mesh)
     }
 
@@ -23,53 +25,53 @@ class ThreeViewController {
 
     // method called on every frame
     renderLoop() {
-        var self = this
         if (this.isRendering)
             requestAnimationFrame(() => { this.renderLoop() })
-
         // print image
-        this.renderer.render(self.scene, self.camera)
+        this.renderer.render(this.scene, this.camera)
     }
 
 
     // updates renderer parameters if the view changes.
-    onViewportResize() {
-        this.camera.aspect = parent.clientWidth / parent.clientHeight
+    updateViewport() {
+        let width = this.renderer.domElement.clientWidth
+        let height = this.renderer.domElement.clientHeight
+
+        this.camera.aspect = width/height
         this.camera.updateProjectionMatrix()
-        this.renderer.setSize(parent.clientWidth, parent.clientHeight)
+        this.renderer.setSize(width, height)
     }
     
 
     constructor(canvasId) {
         // get viewport parent node
-        let parent = document.getElementById(canvasId);
+        let parent = document.getElementById(canvasId)
 
         // boolean state enabling the render loop to be called every frame
-        this.isRendering = false;
+        this.isRendering = false
         
         // initialize perspective camera
-        // params: Field of view, Aspect ratio, near field and far field.
-        this.camera = new THREE.PerspectiveCamera( 70, parent.clientWidth, parent.clientHeight, 1, 1000 )
-        this.camera.position.z = -10
+        // params: Field of view, Aspect ratio (overwritten late), near field and far field.
+        this.camera = new THREE.PerspectiveCamera( 70, 1, 0.1, 1000 )
+        this.camera.position.z = 5
 
         // initialize 3D scene
         this.scene = new THREE.Scene()
 
-
         // initialize renderer
-        this.renderer = new THREE.WebGLRenderer( { antialias: true } )
+        this.renderer = new THREE.WebGLRenderer()
 
         // use the device's pixel ratio (number of actual / physical screen pixels in one 'virtual' pixel: can be more than one on high res screens) 
         this.renderer.setPixelRatio( window.devicePixelRatio )
-
-        // listen for viewport size changes
-        window.addEventListener("resize", ev => { this.onViewportResize() })
-
+        
         // inserts the WebGl canvas in the document
         parent.appendChild(this.renderer.domElement)
+        this.updateViewport()
 
-        // pixels dimentions of the viewport
-        this.renderer.setSize(parent.clientWidth, parent.clientHeight)
+        // listen for viewport size changes
+        window.addEventListener("resize", ev => { this.updateViewport() })
 
+        // create camera orbit controls
+        this.orbitControls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
     }
 }
