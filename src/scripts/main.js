@@ -1,4 +1,4 @@
-/* global ThreeViewController:true */
+/* global ThreeViewController:true, THREE:true, Qubit:true */
 /* exported orbit */
 
 var threeController = new ThreeViewController("viewport")
@@ -8,7 +8,7 @@ var testQubitA = new Qubit()
 var testQubitB = new Qubit()
 var testQubitC = new Qubit()
 
-testQubitB.move(0,3)
+testQubitB.move(0, 3)
 testQubitC.move(-3, -3)
 
 threeController.addObject(testQubitA.object)
@@ -16,7 +16,7 @@ threeController.addObject(testQubitB.object)
 threeController.addObject(testQubitC.object)
 
 document.addEventListener("click", () => {
-  threeController.addCube(Math.random() * 4, Math.random() * 4, Math.random())
+    threeController.addCube(Math.random() * 4, Math.random() * 4, Math.random())
 })
 
 function toggleActivityPanel() {

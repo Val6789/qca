@@ -1,3 +1,5 @@
+/* global THREE:true, Dot:true */
+/* exported Qubit */
 class Dot {
     get position() {
         return new THREE.Vector3(
@@ -8,11 +10,14 @@ class Dot {
     }
 
     constructor(x, y, qubit) {
-        const wireframeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true})
+        const wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            wireframe: true
+        })
         const dotGeometry = new THREE.SphereGeometry(Dot.RADIUS, 12, 6)
-        const self = this;
+        const self = this
 
-        this.relativeQubitPosition = new THREE.Vector2(x,y)
+        this.relativeQubitPosition = new THREE.Vector2(x, y)
         this.parentQubit = qubit
 
         this.object = new THREE.Mesh(dotGeometry, wireframeMaterial)
