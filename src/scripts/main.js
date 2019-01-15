@@ -24,4 +24,6 @@ function toggleActivityPanel() {
     }
 }
 
+var influenceOverlay = new InfluenceOverlay(threeController)
+
 document.getElementById("toggle-activity-tab").addEventListener("click", toggleActivityPanel)

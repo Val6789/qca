@@ -30,10 +30,6 @@ class ThreeViewController {
     renderLoop() {
         if (this.isRendering)
             requestAnimationFrame(() => { this.renderLoop() })
-
-        for (let callback of this.onRenderObservers)
-            callback()
-            
         // print image
         this.renderer.render(this.scene, this.camera)
     }
@@ -80,7 +76,5 @@ class ThreeViewController {
 
         // create camera orbit controls
         this.orbitControls = new THREE.OrbitControls(this.camera)
-
-        this.onRenderObservers = []
     }
 }

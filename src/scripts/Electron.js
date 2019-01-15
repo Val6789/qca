@@ -16,7 +16,9 @@ class Electron {
         if (!Electron.instances)
             Electron.instances = []
         Electron.instances.push(this)
+
+        this.charge = 1.0
     }
 }
 
-Electron.RADIUS = 0.38
+Electron.RADIUS = 0.2

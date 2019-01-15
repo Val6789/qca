@@ -9,7 +9,7 @@ class Dot {
 
     constructor(x, y, qubit) {
         const wireframeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true})
-        const dotGeometry = new THREE.IcosahedronGeometry(Dot.RADIUS, 1)
+        const dotGeometry = new THREE.IcosahedronGeometry(Dot.RADIUS, 0)
         
 
         this.relativeQubitPosition = new THREE.Vector2(x,y)
@@ -21,4 +21,4 @@ class Dot {
     }
 }
 
-Dot.RADIUS = 0.4
+Dot.RADIUS = 0.3
