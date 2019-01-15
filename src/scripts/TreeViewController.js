@@ -52,32 +52,39 @@ class ThreeViewController {
 
 
   constructor(canvasId) {
-    // get viewport parent node
-    let parent = document.getElementById(canvasId)
-
-    // boolean state enabling the render loop to be called every frame
-    this.isRendering = false
-
-    // initialize perspective camera
-    // params: Field of view, Aspect ratio (overwritten late), near field and far field.
-    this.camera = new THREE.PerspectiveCamera(70, 1, 0.1, 1000)
-    this.camera.position.z = 5
-
-    // initialize 3D scene
-    this.scene = new THREE.Scene()
-
-    // initialize renderer
-    this.renderer = new THREE.WebGLRenderer()
-
-    // use the device's pixel ratio (number of actual / physical screen pixels in one 'virtual' pixel: can be more than one on high res screens) 
-    this.renderer.setPixelRatio(window.devicePixelRatio)
-    // inserts the WebGl canvas in the document
-    parent.appendChild(this.renderer.domElement)
-    this.updateViewport()
-    window.addEventListener("resize", () => {
-      this.updateViewport()
-    })
-    // create camera orbit controls
+	    // get viewport parent node
+	    let parent = document.getElementById(canvasId)
+	
+	    // boolean state enabling the render loop to be called every frame
+	    this.isRendering = false
+	
+	    // initialize perspective camera
+	    // params: Field of view, Aspect ratio (overwritten late), near field and far field.
+	    this.camera = new THREE.PerspectiveCamera(70, 1, 0.1, 1000)
+	    this.camera.position.z = 5
+	
+	    // initialize 3D scene
+	    this.scene = new THREE.Scene()
+	
+	    // initialize renderer
+	    this.renderer = new THREE.WebGLRenderer()
+	
+	    // use the device's pixel ratio (number of actual / physical screen pixels in one 'virtual' pixel: can be more than one on high res screens) 
+	    this.renderer.setPixelRatio(window.devicePixelRatio)
+	    // inserts the WebGl canvas in the document
+	    parent.appendChild(this.renderer.domElement)
+	    this.updateViewport()
+	    window.addEventListener("resize", () => {
+	      this.updateViewport()
+	    })
+	    // create camera orbit controls
         this.orbitControls = new THREE.OrbitControls(this.camera)
+        
+        // add grid
+		var grid = new THREE.GridHelper(200, 200, 0xff00ff, 0x00ffff);
+		this.scene.add( grid );
+		
+		// add fog
+		this.scene.fog = new THREE.FogExp2(0x000000, 0.05);
     }
 }
