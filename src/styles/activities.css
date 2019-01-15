@@ -1,0 +1,40 @@
+.activities {
+    position: relative;
+    grid-area: activities;
+}
+
+.activity-tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.hide-activities {
+    display: block;
+    height: 2rem;
+    border-radius: 4px;
+}
+
+.activity-tab-button {
+    display: block;
+    writing-mode: vertical-rl;
+    text-orientation: sideways-right;
+    
+    font-size: 0.8rem;
+    width: 1.2em;
+    padding: 0.5em;
+    margin: 0.3em 0;
+    border: solid 1px #444;
+    background: linear-gradient(to left, #2A2A2A, #222222);
+    color: #BBB;
+    border-radius: 4px;
+
+    min-height: 8em;
+    text-align: center;
+
+    font-family: sans-serif;
+    text-transform: uppercase;
+}
+
+.activity-radio {
+    display: none;
+}
