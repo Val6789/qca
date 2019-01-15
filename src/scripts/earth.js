@@ -64,7 +64,6 @@ async function init() {
   scene.add(earth)
 
   orbit = new THREE.OrbitControls(camera, renderer.domElement)
-
 }
 
 function animate() {
@@ -88,5 +87,4 @@ function waitTexture(path) {
         resolve(null)
       })
   })
-}
 }

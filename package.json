@@ -16,5 +16,9 @@
     "eslint": "^5.12.0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC" ,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Val6789/qca.git"
+  }
 }
