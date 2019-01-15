@@ -1,59 +1,54 @@
-/* global THREE:true */
-/* exported ThreeViewController */
 class ThreeViewController {
 
-  startRenderLoop() {
-    this.isRendering = true
-    requestAnimationFrame(() => {
-      this.renderLoop()
-    })
-  }
+    startRenderLoop() {
+        this.isRendering = true
+        requestAnimationFrame(() => { this.renderLoop() })
+    }
 
 
-  stopRenderLoop() {
-    this.isRendering = false
-  }
+    stopRenderLoop() {
+        this.isRendering = false
+    }
 
 
-  addCube(x = 0, y = 0, z = 0, radius = 1) {
-    let geometry = new THREE.BoxGeometry(radius, radius, radius)
-    let material = new THREE.MeshBasicMaterial({
-      color: 0x00ff00
-    })
-    let mesh = new THREE.Mesh(geometry, material)
-    mesh.matrix.position = THREE.Vector3(x, y, z)
-    mesh.updateMatrix()
-    this.scene.add(mesh)
-  }
+    addCube(x = 0, y = 0, z = 0, radius = 1) {
+        let geometry = new THREE.BoxGeometry(radius, radius, radius)
+        let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+        let mesh = new THREE.Mesh(geometry, material)
+        mesh.matrix.position = THREE.Vector3(x,y,z)
+        mesh.updateMatrix()
+        this.scene.add(mesh)
+    }
 
+    addObject(object) {
+        this.scene.add(object)
+    }
 
-  /* "Private" methods */
+    /* "Private" methods */
 
-  // method called on every frame
-  renderLoop() {
-    if (this.isRendering)
-      requestAnimationFrame(() => {
-        this.renderLoop()
-      })
-    // print image
-    this.renderer.render(this.scene, this.camera)
-  }
+    // method called on every frame
+    renderLoop() {
+        if (this.isRendering)
+            requestAnimationFrame(() => { this.renderLoop() })
+        // print image
+        this.renderer.render(this.scene, this.camera)
+    }
 
 
     // updates renderer parameters if the view changes.
-    updateViewport() {
+    updateViewport() {
         let width = this.renderer.domElement.parentElement.clientWidth
         let height = this.renderer.domElement.parentElement.clientHeight
 
-    this.camera.aspect = width / height
-    this.camera.updateProjectionMatrix()
-    this.renderer.setSize(width, height)
-  }
+        this.camera.aspect = width/height
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(width, height)
+    }
+    
 
-
-  constructor(canvasId) {
-	    // get viewport parent node
-	    let parent = document.getElementById(canvasId)
+    constructor(canvasId) {
+        // get viewport parent node
+        let parent = document.getElementById(canvasId)
 	
 	    // boolean state enabling the render loop to be called every frame
 	    this.isRendering = false
@@ -77,11 +72,12 @@ class ThreeViewController {
 	    window.addEventListener("resize", () => {
 	      this.updateViewport()
 	    })
+	    
 	    // create camera orbit controls
         this.orbitControls = new THREE.OrbitControls(this.camera)
         
         // add grid
-		var grid = new THREE.GridHelper(200, 200, 0xff00ff, 0x00ffff);
+		var grid = new THREE.GridHelper(100, 100, 0xff00ff, 0x00ffff);
 		this.scene.add( grid );
 		
 		// add fog
