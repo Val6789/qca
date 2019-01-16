@@ -3,7 +3,7 @@
 
 console.log(AssetManager.Get())
 AssetManager.Create().then(() => {
-    console.log(AssetManager.Get())
+    console.log("Assets:", AssetManager.Get())
 })
 
 

@@ -1,4 +1,4 @@
-/* global THREE:true */
+/* global THREE:true, AssetManager:true */
 /* exported Dot */
 class Dot {
     get position() {
