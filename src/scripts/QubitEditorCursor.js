@@ -33,11 +33,13 @@ class QubitEditorCursor {
     }
 
 
-    makeGrid(threeViewController) {
-        this.grid = {object: new THREE.Object3D()}
+    makeGrid(threeViewController) {        
         threeViewController.getFont().then((font) => {
             this.grid = new Grid(font)
             threeViewController.addObject(this.grid.object)
+            threeViewController.onRenderObservers.push(() => {
+                this.grid.lookCamera(threeViewController.camera.position)
+            })
         })
     }
 
