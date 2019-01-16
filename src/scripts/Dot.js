@@ -29,7 +29,7 @@ class Dot {
         // load and setup the sprite
         const textureLoader = new THREE.TextureLoader()
             .setCrossOrigin(true)
-        const file = "assets/textures/circle.png"
+        const file = "assets/textures/electron.png"
         const spritePromise = await textureLoader.load(file)
         const material = new THREE.PointsMaterial({
             size: 0.45,
@@ -38,12 +38,8 @@ class Dot {
             transparent: true,
             alphaTest: 0.8
         })
-        material.color.setHSL(0.1, 0.3, 0.7)
-
-        const particles = new THREE.Points(Dot.geometry, material)
-        return particles
     }
-    
+
     static recreate() {
         let index = 0
         Dot.instances.forEach((e) => {
@@ -56,7 +52,7 @@ class Dot {
             positions[index++] = x
             positions[index++] = y
             positions[index++] = z
-            
+
         })
         Dot.geometry.setDrawRange(0, Dot.instances.length)
         Dot.geometry.attributes.position.needsUpdate = true
@@ -64,10 +60,10 @@ class Dot {
         Dot.needsUpdate = false
     }
 
-    constructor(x, y, qubit) {        
+    constructor(x, y, qubit) {
         this.relativeQubitPosition = new THREE.Vector2(x, y)
-        this.parentQubit = qubit  
-        
+        this.parentQubit = qubit
+
         const pos = this.position
         const px = pos.x
         const py = pos.y
