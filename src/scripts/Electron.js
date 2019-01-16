@@ -14,6 +14,8 @@ class Electron {
         this.object = new THREE.Mesh(electronGeometry, electronMaterial)
         this.object.geometry.translate(dot.position.x, dot.position.y, dot.position.z)
 
+        
+
 
         if (!Electron.instances)
             Electron.instances = []

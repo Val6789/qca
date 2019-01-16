@@ -32,5 +32,6 @@ function toggleActivityPanel(e) {
 
 var influenceOverlay = new InfluenceOverlay(threeController)
 var cursorEditor = new QubitEditorCursor(threeController)
+ToolboxController.init(threeController)
 
 document.getElementById("toggle-activity-tab").addEventListener("click", toggleActivityPanel)

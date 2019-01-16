@@ -25,6 +25,20 @@ class QubitEditorCursor {
     }
 
 
+    clickHandler(threeController) {
+        if (QubitEditorCursor.canEdit) {
+            let newQubit = Qubit.instantiateAt(this.cursor.position)
+            console.log(newQubit)
+            if(newQubit) {
+                threeController.addObject(newQubit.object)
+                console.log("new qubit at", this.cursor.position)
+            } else {
+                console.log("there's already a qubit here!")
+            }
+        }
+    }
+
+
     makeCursor(threeViewController) {
         let cursorgeometry = new THREE.BoxGeometry(QubitEditorCursor.SIZE, QubitEditorCursor.HEIGHT, QubitEditorCursor.SIZE)
         let cursormaterial = new THREE.LineBasicMaterial({ color: QubitEditorCursor.COLOR })
@@ -45,6 +59,7 @@ class QubitEditorCursor {
 
     constructor(threeViewController) {
         document.addEventListener("mousemove", ev => this.mousemoveHandler(ev))
+        document.addEventListener("mouseup", () => this.clickHandler(threeController))
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
@@ -60,3 +75,4 @@ class QubitEditorCursor {
 QubitEditorCursor.SIZE = 1
 QubitEditorCursor.HEIGHT = 0.3
 QubitEditorCursor.COLOR = 0x999999
+QubitEditorCursor.canEdit = false
