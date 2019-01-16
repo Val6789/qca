@@ -19,7 +19,10 @@ class InfluenceOverlay {
                 
                 self.shader = new THREE.ShaderMaterial({
                     vertexShader: sourceCode[0],
-                    fragmentShader: sourceCode[1]
+                    fragmentShader: sourceCode[1],
+                    uniforms: {
+                        pointSize: {value: Electron.INFLUENCE_SIZE}
+                    }
                 })
                 self.shader.transparent = true
                 self.shader.opacity = 0.5

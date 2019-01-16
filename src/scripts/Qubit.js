@@ -22,10 +22,10 @@ class Qubit {
 
         var self = this
         this.dots = [
-            new Dot(1, 1, self),
-            new Dot(-1, 1, self),
-            new Dot(1, -1, self),
-            new Dot(-1, -1, self)
+            new Dot(Qubit.DOT_DIST, Qubit.DOT_DIST, self),
+            new Dot(-Qubit.DOT_DIST, Qubit.DOT_DIST, self),
+            new Dot(Qubit.DOT_DIST, -Qubit.DOT_DIST, self),
+            new Dot(-Qubit.DOT_DIST, -Qubit.DOT_DIST, self)
         ]
         this.dots.forEach(dot => this.object.add(dot.object))
 
@@ -37,6 +37,7 @@ class Qubit {
         this.electrons.forEach(electron => this.object.add(electron.object))
     }
 }
-Qubit.QUBIT_SIZE = 3
-Qubit.QUBIT_THICK = 1
-Qubit.SCALE = 0.2
+
+Qubit.DOT_DIST = 0.2
+Qubit.QUBIT_SIZE = 0.8
+Qubit.QUBIT_THICK = 0.3

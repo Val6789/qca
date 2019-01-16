@@ -9,7 +9,7 @@ class Electron {
         this.dot = dot;
         
         const electronMaterial = new THREE.MeshBasicMaterial({color: 0xff0000})
-        const electronGeometry = new THREE.IcosahedronGeometry(Electron.RADIUS, 1)
+        const electronGeometry = new THREE.IcosahedronGeometry(Electron.RADIUS * Qubit.QUBIT_THICK / 2, 1)
 
         this.object = new THREE.Mesh(electronGeometry, electronMaterial)
         this.object.geometry.translate(dot.position.x, dot.position.y, dot.position.z)
@@ -23,4 +23,5 @@ class Electron {
     }
 }
 
-Electron.RADIUS = 0.2
+Electron.RADIUS = 0.8
+Electron.INFLUENCE_SIZE = 1000.0
