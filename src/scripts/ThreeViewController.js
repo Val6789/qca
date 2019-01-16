@@ -26,11 +26,18 @@ class ThreeViewController {
     }
     
     /**
+     * @brief Orbit getter
+     */
+    get orbitControls() {
+        return this._orbit
+    }
+
+    /**
      * @brief adds observer method to the render-observers-collection
      * @param {Function} callback method called on render 
      */
     callbackOnRender(callback) {
-        this.onRenderObservers.push(callback)    
+        this._onRenderObservers.push(callback)    
     }
 
 
@@ -50,15 +57,35 @@ class ThreeViewController {
      * Will request render for the next frame or do nothing if this was already done
      */
     shouldRender() {
-        if (this._willRender == false) return
-        requestAnimationFrame(this._render)
+        if (this._willRender == true) return
+        requestAnimationFrame(() => this._render())
         this._willRender = true
+    }
+
+
+    /**
+     * @brief class initializer, to be called after DOM and Asset loading 
+     */
+    init() {
+        // Members
+        this._camera
+        this._orbit
+        this._scene
+        this._renderer
+        this._willRender = false        
+        this._onRenderObservers = []
+
+        // init members
+        this._setScene()
+        this._setCamera()
+        this._setRenderer()
+        this._setOrbit()
     }
 
 
     // Private method rendering the scenes after calling the observers
     _render() {
-        this.onRenderObservers.forEach(callback => callback());
+        this._onRenderObservers.forEach(callback => callback());
         this._renderer.render(this._scene, this._camera)
         this._willRender = false
     }
@@ -66,7 +93,7 @@ class ThreeViewController {
 
     // Reset viewport parameters when the window is resized
     _resetViewport() {
-        const parent = this._renderer.domElement
+        const parent = this._renderer.domElement.parentElement
         const width = parent.clientWidth
         const height = parent.clientHeight
 
@@ -79,13 +106,7 @@ class ThreeViewController {
     // Initialize Camera and Orbit members
     _setCamera() {
         this._camera = new THREE.PerspectiveCamera(70, 1, 0.1, 1000)
-        this._camera.position.z
-
-        this._orbit = new THREE.OrbitControls(this._camera)
-
-        this._orbit.addEventListener("change", () => {
-            this._render()
-        })
+        this._camera.position.z = 3
 
         window.addEventListener("resize", () => {
             this._resetViewport()
@@ -107,41 +128,27 @@ class ThreeViewController {
         this._renderer.setPixelRatio(window.devicePixelRatio)
 
         // insert in DOM
-        document.addEventListener("load", () => {
-            let parent = document.getElementById(viewportElementId)
-            parent.appendChild(this._renderer.domElement)
-            this._resetViewport()
-        })
+        document.getElementById(viewportElementId).appendChild(this._renderer.domElement)
+        this._resetViewport()
     }
 
-    // Singleton constructor
-    _init() {
-        // Members
-        this._camera
-        this._scene
-        this._renderer
-        this._orbit
-        this._willRender = false        
-        this._onRenderObservers
+    // initialize orbit
+    _setOrbit() {
+        this._orbit = new THREE.OrbitControls(this._camera)
 
-        // init members
-        this._setRenderer()
-        this._setCamera()
-        this._setScene()
+        this._orbit.addEventListener("change", () => {
+            this._render()
+        })
     }
 
 
     constructor() {
         if (!ThreeViewController.instance) {
             ThreeViewController.instance = this
-            this._init()
         }           
 
         return ThreeViewController.instance
     }
 }
 
-
 const ThreeViewControllerInstance = new ThreeViewController()
-Object.freeze(ThreeViewControllerInstance)
-
