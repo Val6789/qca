@@ -233,8 +233,6 @@ class ThreeViewController {
         this.orbitControls.addEventListener("change", () => {
             this.render()
         })
-
-        this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
         
         this.onRenderObservers = []
         
