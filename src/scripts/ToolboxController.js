@@ -1,3 +1,6 @@
+/* global THREE:true, QubitEditorCursor:true */
+/* exported ToolboxController */
+
 class ToolboxController {
 
     static setButton(id, callback) {
@@ -8,7 +11,7 @@ class ToolboxController {
 
     static setCameraButton(threeViewController) {
         const buttonId = "get-camera"
-        ToolboxController.cameraButton = this.setButton(buttonId, ev => {
+        ToolboxController.cameraButton = this.setButton(buttonId, () => {
             threeViewController.orbitControls.enabled = true
             QubitEditorCursor.canEdit = false
             console.log("camera mode.")
@@ -17,7 +20,7 @@ class ToolboxController {
 
     static setQubitButton(threeViewController) {
         const buttonId = "place-qubits"
-        ToolboxController.qubitButton = this.setButton(buttonId, ev => {
+        ToolboxController.qubitButton = this.setButton(buttonId, () => {
             threeViewController.orbitControls.enabled = false
             QubitEditorCursor.canEdit = true
             console.log("edit mode.")

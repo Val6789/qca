@@ -1,4 +1,4 @@
-/* global THREE:true, Qubit:true, Grid:true */
+/* global THREE:true, Qubit:true, Grid:true, AssetManager:true */
 /* exported QubitEditorCursor */
 
 class QubitEditorCursor {
@@ -33,7 +33,6 @@ class QubitEditorCursor {
     clickHandler(threeController) {
         if (QubitEditorCursor.canEdit) {
             let newQubit = new Qubit(this.cursor.position)
-            console.log(newQubit)
             if (newQubit) {
                 threeController.addObject(newQubit.object)
                 console.log("new qubit at", this.cursor.position)
@@ -55,14 +54,12 @@ class QubitEditorCursor {
 
 
     makeGrid(threeViewController) {
-        threeViewController.getFont().then((font) => {
-            this.grid = new Grid(font)
-            threeViewController.addObject(this.grid.object)
-            threeViewController.onRenderObservers.push(() => {
-                this.grid.lookCamera(threeViewController.camera.position)
-            })
-            this.callRender()
+        this.grid = new Grid(AssetManager.Get().fonts.optimer)
+        threeViewController.addObject(this.grid.object)
+        threeViewController.onRenderObservers.push(() => {
+            this.grid.lookCamera(threeViewController.camera.position)
         })
+        threeViewController.render()
     }
 
     constructor(threeViewController) {

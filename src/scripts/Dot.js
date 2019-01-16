@@ -10,46 +10,33 @@ class Dot {
     }
 
     static init() {
-        return new Promise((resolve) => {
+        // init the instances object
+        Dot.instances = []
 
-            // init the instances object
-            Dot.instances = []
+        // create the buffer for the geometry
+        const MAX_POINTS = 1000
 
-            // create the buffer for the geometry
-            const MAX_POINTS = 1000
+        // geometry
+        Dot.geometry = new THREE.BufferGeometry()
+        Dot.geometry.dynamic = true
 
-            // geometry
-            Dot.geometry = new THREE.BufferGeometry()
-            Dot.geometry.dynamic = true
+        // attributes
+        let positions = new Float32Array(MAX_POINTS * 3)
+        let buffer = new THREE.BufferAttribute(positions, 3)
+        Dot.geometry.addAttribute("position", buffer)
 
-            // attributes
-            let positions = new Float32Array(MAX_POINTS * 3)
-            let buffer = new THREE.BufferAttribute(positions, 3)
-            Dot.geometry.addAttribute("position", buffer)
-
-            // load and setup the sprite
-            const textureLoader = new THREE.TextureLoader()
-                .setCrossOrigin(true)
-            const file = "assets/textures/circle.png"            
-            textureLoader.load(
-                file,
-                (sprite) => {
-                    const material = new THREE.PointsMaterial({
-                        size: 0.5,
-                        sizeAttenuation: true,
-                        map: sprite,
-                        transparent: true,
-                        alphaTest: 0.8
-                    })
-                    material.color.setHSL(0.1, 0.3, 0.7)
-
-                    const particles = new THREE.Points(Dot.geometry, material)
-                    resolve(particles)
-                },
-                undefined,
-                (err) => console.error(err)
-            )
+        // load and setup the sprite
+        const circle = AssetManager.Get().textures.circle
+        const material = new THREE.PointsMaterial({
+            size: 0.5,
+            sizeAttenuation: true,
+            map: circle,
+            transparent: true,
+            alphaTest: 0.8
         })
+        material.color.setHSL(0.1, 0.3, 0.7)
+
+        return new THREE.Points(Dot.geometry, material)
     }
 
     static recreate() {
