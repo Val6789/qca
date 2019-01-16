@@ -10,7 +10,7 @@ class Qubit {
 
         // check if place is occupied
         if (Qubit.instances.some(qubit => qubit.position.equals(position)))
-            return false
+            throw "there's already a qubit here!"
 
         const lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff
