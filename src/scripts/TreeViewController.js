@@ -31,10 +31,11 @@ class ThreeViewController {
         this.scene.add(object)
     }
 
-    addSkybox() {
+	// kind = "" (normal) or "_light"
+    addSkybox(kind = "") {
         const path = "assets/textures/skybox/"
         const format = ".png"
-        const createUrl = (name) => path + name + format
+        const createUrl = (name) => path + name + kind + format
         const urls = [
             createUrl("right"),
             createUrl("left"),
@@ -116,6 +117,24 @@ class ThreeViewController {
         })
     }
 
+	// true = light, false = dark
+	setLightmode(mode) {
+		this.lightMode = mode
+		
+		const skybox = this.scene.getObjectByName("Skybox")
+		this.scene.remove(skybox)
+		
+		if(this.lightMode)
+		{
+			this.addSkybox("_light")
+			this.scene.fog = new THREE.FogExp2(0xffffff, 0.005)
+		}
+		else
+		{
+			this.addSkybox()
+			this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
+		}
+	}
 
     /* "Private" methods */
 
@@ -184,8 +203,7 @@ class ThreeViewController {
         this.scene.add(point)
 
         // Create the skybox
-        this.addSkybox()
-
+		this.addSkybox()
 
         // inserts the WebGl canvas in the document
         parent.appendChild(this.renderer.domElement)
@@ -202,7 +220,7 @@ class ThreeViewController {
             this.render()
         })
 
-        this.scene.fog = new THREE.FogExp2(0x000000, 0.005);
+        this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
         
         this.onRenderObservers = []
     }
