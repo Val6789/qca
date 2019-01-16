@@ -29,7 +29,7 @@ class Dot {
         // load and setup the sprite
         const textureLoader = new THREE.TextureLoader()
             .setCrossOrigin(true)
-        const file = "assets/textures/circle.png"
+        const file = "assets/textures/dot.png"
         const spritePromise = await textureLoader.load(file)
         const material = new THREE.PointsMaterial({
             size: 0.45,

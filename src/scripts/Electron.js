@@ -26,7 +26,7 @@ class Electron {
         // load and setup the sprite
         const textureLoader = new THREE.TextureLoader()
             .setCrossOrigin(true)
-        const file = "assets/textures/disc.png"
+        const file = "assets/textures/electron.png"
         const spritePromise = await textureLoader.load(file)
         const material = new THREE.PointsMaterial({
             size: 0.5,
