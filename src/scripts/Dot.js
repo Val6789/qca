@@ -8,42 +8,50 @@ class Dot {
             this.relativeQubitPosition.y + this.parentQubit.position.z
         )
     }
-    
-    static async init() {
 
-        // init the instances object
-        Dot.instances = []
-        
-        // create the buffer for the geometry
-        const MAX_POINTS = 1000
+    static init() {
+        return new Promise((resolve) => {
 
-        // geometry
-        Dot.geometry = new THREE.BufferGeometry()
-        Dot.geometry.dynamic = true
+            // init the instances object
+            Dot.instances = []
 
-        // attributes
-        let positions = new Float32Array(MAX_POINTS * 3)
-        let buffer = new THREE.BufferAttribute(positions, 3)
-        Dot.geometry.addAttribute("position", buffer)
+            // create the buffer for the geometry
+            const MAX_POINTS = 1000
 
-        // load and setup the sprite
-        const textureLoader = new THREE.TextureLoader()
-            .setCrossOrigin(true)
-        const file = "assets/textures/circle.png"
-        const spritePromise = await textureLoader.load(file)
-        const material = new THREE.PointsMaterial({
-            size: 0.45,
-            sizeAttenuation: true,
-            map: spritePromise,
-            transparent: true,
-            alphaTest: 0.8
+            // geometry
+            Dot.geometry = new THREE.BufferGeometry()
+            Dot.geometry.dynamic = true
+
+            // attributes
+            let positions = new Float32Array(MAX_POINTS * 3)
+            let buffer = new THREE.BufferAttribute(positions, 3)
+            Dot.geometry.addAttribute("position", buffer)
+
+            // load and setup the sprite
+            const textureLoader = new THREE.TextureLoader()
+                .setCrossOrigin(true)
+            const file = "assets/textures/circle.png"            
+            textureLoader.load(
+                file,
+                (sprite) => {
+                    const material = new THREE.PointsMaterial({
+                        size: 0.5,
+                        sizeAttenuation: true,
+                        map: sprite,
+                        transparent: true,
+                        alphaTest: 0.8
+                    })
+                    material.color.setHSL(0.1, 0.3, 0.7)
+
+                    const particles = new THREE.Points(Dot.geometry, material)
+                    resolve(particles)
+                },
+                undefined,
+                (err) => console.error(err)
+            )
         })
-        material.color.setHSL(0.1, 0.3, 0.7)
-
-        const particles = new THREE.Points(Dot.geometry, material)
-        return particles
     }
-    
+
     static recreate() {
         let index = 0
         Dot.instances.forEach((e) => {
@@ -56,7 +64,7 @@ class Dot {
             positions[index++] = x
             positions[index++] = y
             positions[index++] = z
-            
+
         })
         Dot.geometry.setDrawRange(0, Dot.instances.length)
         Dot.geometry.attributes.position.needsUpdate = true
@@ -64,10 +72,10 @@ class Dot {
         Dot.needsUpdate = false
     }
 
-    constructor(x, y, qubit) {        
+    constructor(x, y, qubit) {
         this.relativeQubitPosition = new THREE.Vector2(x, y)
-        this.parentQubit = qubit  
-        
+        this.parentQubit = qubit
+
         const pos = this.position
         const px = pos.x
         const py = pos.y
