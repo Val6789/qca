@@ -4,37 +4,45 @@
 class QubitEditorCursor {
 
     mousemoveHandler(event) {
+        if (!this.grid) return
+
+        // get mouse position
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+
+        // cast ray from the camera, through the cursor
         this.raycaster.setFromCamera(this.mouse, this.camera)
 
+        // save previous mouse state
         const wasVisible = this.cursor.visible
         const previousPosition = this.cursor.position.clone
 
-        if (this.grid) {
-            let intersection = this.raycaster.intersectObject(this.grid.hitzone)
+        // collect detected intersections
+        let intersection = this.raycaster.intersectObject(this.grid.hitzone)
 
-            this.cursor.visible = intersection != 0
+        // set the cursor to visible if there is an intersection
+        this.cursor.visible = intersection.length != 0
 
-            if (intersection[0]) {
-                let translation = intersection[0].point.sub(this.cursor.position).round()
-                this.cursor.translateX(translation.x)
-                this.cursor.translateZ(translation.z)
-            }
-
-
-            if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
-                this.callRender()
-            }
+        // for that intersection
+        if (intersection[0]) {
+            // move the cursor there
+            let translation = intersection[0].point.sub(this.cursor.position).round()
+            this.cursor.translateX(translation.x)
+            this.cursor.translateZ(translation.z)
         }
+
+        // if the cursor changed, call for a render
+        if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
+            ThreeViewControllerInstance.shouldRender()
+        } 
     }
 
 
-    clickHandler(threeController) {
+    clickHandler() {
         if (QubitEditorCursor.canEdit) {
             let newQubit = new Qubit(this.cursor.position)
             if (newQubit) {
-                threeController.addObject(newQubit.object)
+                ThreeViewControllerInstance.addObjectToScene(newQubit.object)
                 console.log("new qubit at", this.cursor.position)
             } else {
                 console.log("there's already a qubit here!")
@@ -43,39 +51,39 @@ class QubitEditorCursor {
     }
 
 
-    makeCursor(threeViewController) {
+    makeCursor() {
+        // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(QubitEditorCursor.SIZE, QubitEditorCursor.HEIGHT, QubitEditorCursor.SIZE)
+
+        // makes a flat color material
         let cursormaterial = new THREE.LineBasicMaterial({
             color: QubitEditorCursor.COLOR
         })
+
+        // Creates a contour of the box with the white material: that's our the cursor
         this.cursor = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
-        threeViewController.addObject(this.cursor)
+        ThreeViewControllerInstance.addObjectToScene(this.cursor)
     }
 
 
-    makeGrid(threeViewController) {
+    makeGrid() {
         this.grid = new Grid(AssetManager.Get().fonts.optimer)
-        threeViewController.addObject(this.grid.object)
-        threeViewController.onRenderObservers.push(() => {
-            this.grid.lookCamera(threeViewController.camera.position)
+        ThreeViewControllerInstance.addObjectToScene(this.grid.object)
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            this.grid.lookCamera(ThreeViewControllerInstance.camera.position)
         })
-        threeViewController.render()
     }
 
-    constructor(threeViewController) {
+    constructor() {
         document.addEventListener("mousemove", ev => this.mousemoveHandler(ev))
-        document.addEventListener("mouseup", () => this.clickHandler(threeViewController))
+        document.addEventListener("mouseup", () => this.clickHandler())
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
-        this.camera = threeViewController.camera
+        this.camera = ThreeViewControllerInstance.camera
 
-        this.makeCursor(threeViewController)
-        this.makeGrid(threeViewController)
-
-        this.callRender = function () {
-            threeViewController.render()
-        }
+        this.makeCursor()
+        this.makeGrid()
     }
 }
 

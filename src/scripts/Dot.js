@@ -1,12 +1,11 @@
 /* global THREE:true, AssetManager:true */
 /* exported Dot */
+
 class Dot {
+
+    // computed value
     get position() {
-        return new THREE.Vector3(
-            this.relativeQubitPosition.x + this.parentQubit.position.x,
-            this.parentQubit.position.y,
-            this.relativeQubitPosition.y + this.parentQubit.position.z
-        )
+        return (new THREE.Vector3).addVectors(this.relativeQubitPosition, this.parentQubit.position)
     }
 
     static init() {
@@ -35,42 +34,41 @@ class Dot {
             alphaTest: 0.5
         })
 
-        return new THREE.Points(Dot.geometry, material)
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            if (Dot.needsUpdate) Dot.recreate()
+        })
+
+        Dot.dotContourOverlay = new THREE.Points(Dot.geometry, material)
+        ThreeViewControllerInstance.addObjectToScene(Dot.dotContourOverlay)
     }
 
     static recreate() {
-        let index = 0
-        Dot.instances.forEach((e) => {
-
-            const pos = e.position
-            const x = pos.x
-            const y = pos.y
-            const z = pos.z
-            var positions = Dot.geometry.attributes.position.array
-            positions[index++] = x
-            positions[index++] = y
-            positions[index++] = z
-
+        var positions = Dot.geometry.attributes.position.array
+        Dot.instances.forEach((electron, bufferindex) => {
+            const position = electron.position
+            positions[bufferindex * 3 + 0] = position.x
+            positions[bufferindex * 3 + 1] = position.y
+            positions[bufferindex * 3 + 2] = position.z
         })
+
         Dot.geometry.setDrawRange(0, Dot.instances.length)
         Dot.geometry.attributes.position.needsUpdate = true
         Dot.geometry.computeBoundingSphere()
         Dot.needsUpdate = false
     }
 
-    constructor(x, y, qubit) {
-        this.relativeQubitPosition = new THREE.Vector2(x, y)
+    constructor(offsetX, offsetZ, qubit) {
+        this.relativeQubitPosition = new THREE.Vector3(offsetX, 0, offsetZ)
         this.parentQubit = qubit
-
-        const pos = this.position
-        const px = pos.x
-        const py = pos.y
-        const pz = pos.z
+        
         var positions = Dot.geometry.attributes.position.array
         let i = Dot.instances.length * 3
-        positions[i + 0] = px
-        positions[i + 1] = py
-        positions[i + 2] = pz
+
+        const position = this.position
+        positions[i + 0] = position.x
+        positions[i + 1] = position.y
+        positions[i + 2] = position.z
+
         Dot.geometry.setDrawRange(0, i + 1)
         Dot.geometry.attributes.position.needsUpdate = true
         Dot.geometry.computeBoundingSphere()

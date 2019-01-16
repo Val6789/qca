@@ -11,20 +11,17 @@
 let threeController
 AssetManager.Create().then(() => {
     console.log("Assets:", AssetManager.Get())
-    threeController = new ThreeViewController("viewport")
 
-    let testQubitA = new Qubit()
-    let testQubitB = new Qubit(new THREE.Vector3(0, 0, 3))
-    let testQubitC = new Qubit(new THREE.Vector3(-3, 0, -3))
+    ThreeViewControllerInstance.init()
+    Dot.init()
+    Electron.init()
 
-    threeController.addObject(testQubitA.object)
-    threeController.addObject(testQubitB.object)
-    threeController.addObject(testQubitC.object)
+    ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 0))).object)
+    ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 3))).object)
+    ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(-3, 0, -3))).object)
 
-
-    var influenceOverlay = new InfluenceOverlay(threeController)
-    var cursorEditor = new QubitEditorCursor(threeController)
-    ToolboxController.init(threeController)
+    new QubitEditorCursor()
+    ToolboxController.init()
 
 })
 
