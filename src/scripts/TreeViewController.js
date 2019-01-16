@@ -218,7 +218,6 @@ class ThreeViewController {
         let particlesDot = Dot.init(this.scene)
         particlesDot.then((p) => {
             this.scene.add(p)
-            Dot.recreate()
             this.render()
         })
 
@@ -226,7 +225,6 @@ class ThreeViewController {
         let particlesElectron = Electron.init(this.scene)
         particlesElectron.then((p) => {
             this.scene.add(p)
-            Electron.recreate()
             this.render()
         })
     }
