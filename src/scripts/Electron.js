@@ -23,15 +23,14 @@ class Electron {
         Electron.geometry.addAttribute("position", buffer)
 
         // load and setup the sprite
-        const disc = AssetManager.Get().textures.disc
+        const electronImage = AssetManager.Get().textures.electron
         const material = new THREE.PointsMaterial({
             size: 0.5,
             sizeAttenuation: true,
-            map: disc,
-            transparent: true,
-            alphaTest: 0.8
+            map: electronImage,
+            transparent: false,
+            alphaTest: 0.1
         })
-        material.color.setHSL(0.1, 0.3, 0.7)
 
         return new THREE.Points(Electron.geometry, material)
     }

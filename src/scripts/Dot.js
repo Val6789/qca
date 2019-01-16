@@ -26,15 +26,14 @@ class Dot {
         Dot.geometry.addAttribute("position", buffer)
 
         // load and setup the sprite
-        const circle = AssetManager.Get().textures.circle
+        const dotImage = AssetManager.Get().textures.dot
         const material = new THREE.PointsMaterial({
             size: 0.5,
             sizeAttenuation: true,
-            map: circle,
-            ansparent: true,
-            alphaTest: 0.8
+            map: dotImage,
+            transparent: true,
+            alphaTest: 0.5
         })
-        material.color.setHSL(0.1, 0.3, 0.7)
 
         return new THREE.Points(Dot.geometry, material)
     }
