@@ -1,4 +1,4 @@
-/* global THREE:true , Grid:true */
+/* global THREE:true , Electron:true */
 /* exported ThreeViewController */
 
 class ThreeViewController {
@@ -80,7 +80,7 @@ class ThreeViewController {
         if (this.fontCache) {
             return Promise.resolve(this.fontCache)
         } else {
-            var self = this;
+            var self = this
             return new Promise((resolve, reject) => {
                 const FONT_FILE_PATH = "assets/fonts/optimer_regular.typeface.json"
                 new THREE.FontLoader().load(FONT_FILE_PATH, (font) => {
@@ -202,8 +202,12 @@ class ThreeViewController {
             this.render()
         })
 
-        this.scene.fog = new THREE.FogExp2(0x000000, 0.005);
+        this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
         
         this.onRenderObservers = []
+        
+        // Create the particles of the electrons
+        let particles = Electron.init()
+        this.scene.add(particles)
     }
 }

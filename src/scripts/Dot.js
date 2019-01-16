@@ -1,4 +1,4 @@
-/* global THREE:true */
+/* global THREE:true; Qubit:true */
 /* exported Dot */
 class Dot {
     get position() {
@@ -17,7 +17,7 @@ class Dot {
         this.parentQubit = qubit
 
         this.object = new THREE.Mesh(dotGeometry, wireframeMaterial)
-        const self = this;
+        const self = this
         this.object.geometry.translate(self.position.x, self.position.y, self.position.z)
     }
 }
