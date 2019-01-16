@@ -24,7 +24,8 @@ class Electron {
 
         // load and setup the sprite
         const electronImage = AssetManager.Get().textures.electron
-        const material = new THREE.PointsMaterial({
+
+        const shapeMaterial = new THREE.PointsMaterial({
             size: 0.5,
             sizeAttenuation: true,
             map: electronImage,
@@ -32,25 +33,44 @@ class Electron {
             alphaTest: 0.1
         })
 
-        return new THREE.Points(Electron.geometry, material)
+        const influenceMaterial = new THREE.ShaderMaterial({
+            vertexShader: AssetManager.Get().shaders["influences.vs.glsl"],
+            fragmentShader: AssetManager.Get().shaders["influences.fs.glsl"],
+            uniforms: {
+                pointSize: {
+                    value: Electron.INFLUENCE_SIZE
+                }
+            },
+            transparent : true,
+            opacity : 0.5,
+            blending : THREE.AdditiveBlending,
+            depthWrite : false,
+            depthTest : true,
+            depthFunc : THREE.NeverDepth
+        })
+
+        Electron.overlays = {
+            shapeOverlay: new THREE.Points(Electron.geometry, shapeMaterial),
+            influenceOverlay: new THREE.Points(Electron.geometry, influenceMaterial)
+        }
+        
+        for (name in Electron.overlays) {
+            ThreeViewControllerInstance.addObjectToScene(Electron.overlays[name])
+        }
     }
 
     static recreate() {
-        let index = 0
-        Electron.instances.forEach((e) => {
-
-            const x = e.dot.position.x
-            const y = e.dot.position.y
-            const z = e.dot.position.z
-            var positions = Electron.geometry.attributes.position.array
-            positions[index++] = x
-            positions[index++] = y
-            positions[index++] = z
-
+        Electron.instances.forEach((electron, bufferindex) => {
+            const position = electron.position
+            positions[bufferindex * 3 + 0] = position.x
+            positions[bufferindex * 3 + 1] = position.y
+            positions[bufferindex * 3 + 2] = position.z
         })
+
         Electron.geometry.setDrawRange(0, Electron.instances.length)
         Electron.geometry.attributes.position.needsUpdate = true
         Electron.geometry.computeBoundingSphere()
+
         Electron.needsUpdate = false
     }
 
@@ -76,5 +96,5 @@ class Electron {
 }
 
 Electron.RADIUS = 0.8
-Electron.INFLUENCE_SIZE = 1000.0
+Electron.INFLUENCE_SIZE = 2000.0
 Electron.needsUpdate = false

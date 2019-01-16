@@ -16,7 +16,7 @@ AssetManager.Create().then(() => {
     Dot.init()
     Electron.init()
 
-    ThreeViewControllerInstance.addObjectToScene((new Qubit()).object)
+    ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 0))).object)
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 3))).object)
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(-3, 0, -3))).object)
 

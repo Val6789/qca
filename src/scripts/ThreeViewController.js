@@ -105,8 +105,14 @@ class ThreeViewController {
 
     // Initialize Camera and Orbit members
     _setCamera() {
-        this._camera = new THREE.PerspectiveCamera(70, 1, 0.1, 1000)
-        this._camera.position.z = 3
+        const fieldOfView = 70
+        const nearField = 0.1
+        const farField = 1000
+
+        this._camera = new THREE.PerspectiveCamera(fieldOfView, 1, nearField, farField)
+        
+        this._camera.position.x = 5
+        this._camera.position.y = 8
 
         window.addEventListener("resize", () => {
             this._resetViewport()
