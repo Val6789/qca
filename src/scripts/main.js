@@ -20,6 +20,7 @@ AssetManager.Create().then(() => {
     threeController.addObject(testQubitA.object)
     threeController.addObject(testQubitB.object)
     threeController.addObject(testQubitC.object)
+    threeController.addObject(testQubitA.valueText)
 
 
     var influenceOverlay = new InfluenceOverlay(threeController)

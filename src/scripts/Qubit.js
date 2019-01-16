@@ -38,9 +38,27 @@ class Qubit {
             new Electron(dots[1]),
             new Electron(dots[2])
         ]
+        
+        // create value label
+        this.valueText = new THREE.Mesh(new THREE.TextGeometry("X", {
+	            font: AssetManager.Get().fonts.optimer,
+	            size: 0.5,
+	            height: 0,
+	            curveSegments: 4,
+	            bevelEnabled: false
+	        }), lineMaterial)
 
         Qubit.instances.push(this)
     }
+    
+    lookCamera(cameraPosition) {
+		// rotation
+		this.valueText.lookAt(cameraPosition)
+		
+		// scale
+		//~ const scale = cameraPosition.distanceTo(this.valueText.position) * this.size / 3
+        //~ this.valueText.scale.set(scale, scale, scale)
+	}
 }
 
 Qubit.DOT_DIST = 0.2
