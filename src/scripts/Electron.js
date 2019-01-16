@@ -39,6 +39,12 @@ class Electron {
             uniforms: {
                 pointSize: {
                     value: Electron.INFLUENCE_SIZE
+                },
+                color: {
+                    value: new THREE.Color(0xff0000)
+                },
+                opacity: {
+                    value: 0.5
                 }
             },
             transparent : true,

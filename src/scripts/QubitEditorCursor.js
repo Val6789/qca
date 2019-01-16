@@ -40,13 +40,12 @@ class QubitEditorCursor {
 
     clickHandler() {
         if (QubitEditorCursor.canEdit) {
-            let newQubit = new Qubit(this.cursor.position)
-            if (newQubit) {
+            try{
+                let newQubit = new Qubit(this.cursor.position)
                 ThreeViewControllerInstance.addObjectToScene(newQubit.object)
-                console.log("new qubit at", this.cursor.position)
-            } else {
-                console.log("there's already a qubit here!")
-            }
+            } catch(exception) {
+                console.info(exception)
+            } 
         }
     }
 
