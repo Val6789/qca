@@ -85,9 +85,29 @@
       <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
       X
     </button>
-    <label class="activity-tab-button demos-tab"><input class="activity-radio" type="radio">Demos</label>
-    <label class="activity-tab-button tutorial-tab"><input class="activity-radio" type="radio">Tutorial</label>
-    <label class="activity-tab-button missions-tab"><input class="activity-radio" type="radio">Mission</label>
+    <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
+    <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
+    <label class="activity-tab-button missions-tab" for="mission-check">Mission</label>
+    
+    <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />
+    <input class="activity-check" type="radio" id="demos-check" name="tab" />
+    <div id="drawer-demos" class="drawer">
+		<label for="no-drawer-check" class="drawer-close">[x]</label>
+		<h2>Demos</h2>
+		Blabla
+	</div>
+    <input class="activity-check" type="radio" id="tutorial-check" name="tab" />
+    <div id="drawer-tutorial" class="drawer">
+		<label for="no-drawer-check" class="drawer-close">[x]</label>
+		<h2>Tutorials</h2>
+		tutos
+=	</div>
+    <input class="activity-check" type="radio" id="mission-check" name="tab" />
+    <div id="drawer-mission" class="drawer">
+		<label for="no-drawer-check" class="drawer-close">[x]</label>
+		<h2>Missions</h2>
+		mission
+	</div>
   </nav>
 
   <section class="activity-tab demos">
