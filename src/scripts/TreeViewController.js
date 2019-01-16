@@ -220,6 +220,8 @@ class ThreeViewController {
 
         // create camera orbit controls
         this.orbitControls = new THREE.OrbitControls(this.camera)
+        this.orbitControls.minDistance = 0.5;
+        this.orbitControls.maxDistance = 25;
         this.orbitControls.addEventListener("change", () => {
             this.render()
         })
