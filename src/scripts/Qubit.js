@@ -12,13 +12,11 @@ class Qubit {
     }
 
     constructor() {
-        const wireframeMaterial = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            wireframe: true
-        })
+        const lineMaterial = new THREE.MeshBasicMaterial({color: 0xffffff})
         const cubeGeometry = new THREE.BoxGeometry(Qubit.QUBIT_SIZE, Qubit.QUBIT_THICK, Qubit.QUBIT_SIZE)
+        const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
-        this.object = new THREE.Mesh(cubeGeometry, wireframeMaterial)
+        this.object = new THREE.LineSegments(edgesGeometry, lineMaterial)
 
         var self = this
         this.dots = [
