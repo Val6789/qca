@@ -11,26 +11,28 @@ class QubitEditorCursor {
         const wasVisible = this.cursor.visible
         const previousPosition = this.cursor.position.clone
 
-        let intersection = this.raycaster.intersectObject(this.grid.hitzone)
+        if (this.grid) {
+            let intersection = this.raycaster.intersectObject(this.grid.hitzone)
 
-        this.cursor.visible = intersection != 0
+            this.cursor.visible = intersection != 0
 
-        if (intersection[0]) {
-            let translation = intersection[0].point.sub(this.cursor.position).round()
-            this.cursor.translateX(translation.x)
-            this.cursor.translateZ(translation.z)
-        }
+            if (intersection[0]) {
+                let translation = intersection[0].point.sub(this.cursor.position).round()
+                this.cursor.translateX(translation.x)
+                this.cursor.translateZ(translation.z)
+            }
 
 
-        if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
-            this.callRender()
+            if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
+                this.callRender()
+            }
         }
     }
 
 
     clickHandler(threeController) {
         if (QubitEditorCursor.canEdit) {
-            let newQubit = Qubit.instantiateAt(this.cursor.position)
+            let newQubit = new Qubit(this.cursor.position)
             console.log(newQubit)
             if (newQubit) {
                 threeController.addObject(newQubit.object)
@@ -59,6 +61,7 @@ class QubitEditorCursor {
             threeViewController.onRenderObservers.push(() => {
                 this.grid.lookCamera(threeViewController.camera.position)
             })
+            this.callRender()
         })
     }
 

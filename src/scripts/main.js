@@ -6,11 +6,8 @@ const threeController = new ThreeViewController("viewport")
 
 
 let testQubitA = new Qubit()
-let testQubitB = new Qubit()
-let testQubitC = new Qubit()
-
-testQubitB.move(0, 3)
-testQubitC.move(-3, -3)
+let testQubitB = new Qubit(new THREE.Vector3(0, 0, 3))
+let testQubitC = new Qubit(new THREE.Vector3(-3, 0, -3))
 
 threeController.addObject(testQubitA.object)
 threeController.addObject(testQubitB.object)
@@ -30,7 +27,7 @@ function toggleActivityPanel(e) {
     return false
 }
 
-//var influenceOverlay = new InfluenceOverlay(threeController)
+var influenceOverlay = new InfluenceOverlay(threeController)
 var cursorEditor = new QubitEditorCursor(threeController)
 ToolboxController.init(threeController)
 
