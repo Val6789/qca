@@ -6,6 +6,11 @@ class Grid {
         this.object = new THREE.GridHelper(size, divisions)
         this.object.position.set(-0.5, 0, -0.5)
 
+        this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size,size));
+        this.hitzone.lookAt(0,1,0)
+        this.hitzone.material.visible = false;
+        this.object.add(this.hitzone);
+
         const material = new THREE.MeshBasicMaterial({
             color: 0xffffff
         })
