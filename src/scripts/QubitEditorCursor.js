@@ -26,9 +26,9 @@ class QubitEditorCursor {
 
 
     makeCursor(threeViewController) {
-        let cursorgeometry = new THREE.BoxGeometry(1.0, 0.3, 1.0)
-        let cursormaterial = new THREE.MeshBasicMaterial({ color: 0x999999, wireframe: true })
-        this.cursor = new THREE.Mesh(cursorgeometry, cursormaterial)
+        let cursorgeometry = new THREE.BoxGeometry(QubitEditorCursor.SIZE, QubitEditorCursor.HEIGHT, QubitEditorCursor.SIZE)
+        let cursormaterial = new THREE.LineBasicMaterial({ color: QubitEditorCursor.COLOR })
+        this.cursor = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
         threeViewController.addObject(this.cursor)
     }
 
@@ -54,3 +54,7 @@ class QubitEditorCursor {
         this.callRender = function() { threeController.render() }
     }    
 }
+
+QubitEditorCursor.SIZE = 1
+QubitEditorCursor.HEIGHT = 0.3
+QubitEditorCursor.COLOR = 0x999999

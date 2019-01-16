@@ -12,7 +12,7 @@ class Qubit {
     }
 
     constructor() {
-        const lineMaterial = new THREE.MeshBasicMaterial({color: 0xffffff})
+        const lineMaterial = new THREE.LineBasicMaterial({color: 0xffffff})
         const cubeGeometry = new THREE.BoxGeometry(Qubit.QUBIT_SIZE, Qubit.QUBIT_THICK, Qubit.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
