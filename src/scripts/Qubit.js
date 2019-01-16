@@ -12,20 +12,18 @@ class Qubit {
     }
 
     constructor() {
-        const wireframeMaterial = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            wireframe: true
-        })
+        const lineMaterial = new THREE.LineBasicMaterial({color: 0xffffff})
         const cubeGeometry = new THREE.BoxGeometry(Qubit.QUBIT_SIZE, Qubit.QUBIT_THICK, Qubit.QUBIT_SIZE)
+        const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
-        this.object = new THREE.Mesh(cubeGeometry, wireframeMaterial)
+        this.object = new THREE.LineSegments(edgesGeometry, lineMaterial)
 
         var self = this
         this.dots = [
-            new Dot(1, 1, self),
-            new Dot(-1, 1, self),
-            new Dot(1, -1, self),
-            new Dot(-1, -1, self)
+            new Dot(Qubit.DOT_DIST, Qubit.DOT_DIST, self),
+            new Dot(-Qubit.DOT_DIST, Qubit.DOT_DIST, self),
+            new Dot(Qubit.DOT_DIST, -Qubit.DOT_DIST, self),
+            new Dot(-Qubit.DOT_DIST, -Qubit.DOT_DIST, self)
         ]
         this.dots.forEach(dot => this.object.add(dot.object))
 
@@ -35,10 +33,9 @@ class Qubit {
             new Electron(dots[2])
         ]
         this.electrons.forEach(electron => this.object.add(electron.object))
-
-        this.object.scale.set(Qubit.SCALE, Qubit.SCALE, Qubit.SCALE)
     }
 }
-Qubit.QUBIT_SIZE = 3
-Qubit.QUBIT_THICK = 1
-Qubit.SCALE = 0.2
+
+Qubit.DOT_DIST = 0.2
+Qubit.QUBIT_SIZE = 0.8
+Qubit.QUBIT_THICK = 0.3

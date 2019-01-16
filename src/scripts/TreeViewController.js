@@ -76,26 +76,19 @@ class ThreeViewController {
 
     }
 
-    addGrid() {
-        const file = "assets/fonts/optimer_regular.typeface.json"
-        if (!this.font)
-            this.waitFont(file).then((font) => {
-                this.font = font
-                this.grid = new Grid(this.font)
-                this.addObject(this.grid.object)
+    getFont() {
+        if (this.fontCache) {
+            return Promise.resolve(this.fontCache)
+        } else {
+            var self = this;
+            return new Promise((resolve, reject) => {
+                const FONT_FILE_PATH = "assets/fonts/optimer_regular.typeface.json"
+                new THREE.FontLoader().load(FONT_FILE_PATH, (font) => {
+                    self.fontCache = font
+                    resolve(self.fontCache)
+                }, undefined, reject)
             })
-
-    }
-
-    waitFont(path) {
-        return new Promise((resolve, reject) => {
-            this.textLoader.load(
-                path,
-                (font) => resolve(font),
-                undefined,
-                (err) => reject(err)
-            )
-        })
+        }
     }
 
     waitTexture(path) {
@@ -129,11 +122,7 @@ class ThreeViewController {
     // method called on every frame
     renderLoop() {
         if (this.isRendering)
-            requestAnimationFrame(() => {
-                this.renderLoop()
-            })
-
-
+            requestAnimationFrame(() => { this.renderLoop() })
         // Display Loop
         this.render()
     }
@@ -141,6 +130,9 @@ class ThreeViewController {
     render() {
         if (this.grid)
             this.grid.lookCamera(this.camera.position)
+        
+        for (let callback of this.onRenderObservers)
+            callback()
 
         this.renderer.render(this.scene, this.camera)
     }
@@ -184,8 +176,6 @@ class ThreeViewController {
         this.cubeLoader = new THREE.CubeTextureLoader()
             .setCrossOrigin(true)
 
-        this.textLoader = new THREE.FontLoader()
-
         // Add two lights
         var ambiant = new THREE.AmbientLight(0xffffff)
         this.scene.add(ambiant)
@@ -212,8 +202,8 @@ class ThreeViewController {
             this.render()
         })
 
-        // Create the grid
-        this.addGrid()
-		this.scene.fog = new THREE.FogExp2(0x000000, 0.05);
+        this.scene.fog = new THREE.FogExp2(0x000000, 0.005);
+        
+        this.onRenderObservers = []
     }
 }

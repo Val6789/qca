@@ -6,6 +6,11 @@ class Grid {
         this.object = new THREE.GridHelper(size, divisions)
         this.object.position.set(-0.5, 0, -0.5)
 
+        this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size,size));
+        this.hitzone.lookAt(0,1,0)
+        this.hitzone.material.visible = false;
+        this.object.add(this.hitzone);
+
         const material = new THREE.MeshBasicMaterial({
             color: 0xffffff
         })
@@ -60,18 +65,18 @@ class Grid {
         this.t_yn.position.set(0, 0, -distance)
     }
 
-    lookCamera(camera) {
+    lookCamera(cameraPosition) {
         // rotation
-        this.t_xp.lookAt(camera)
-        this.t_xn.lookAt(camera)
-        this.t_yp.lookAt(camera)
-        this.t_yn.lookAt(camera)
+        this.t_xp.lookAt(cameraPosition)
+        this.t_xn.lookAt(cameraPosition)
+        this.t_yp.lookAt(cameraPosition)
+        this.t_yn.lookAt(cameraPosition)
 
         // scale
-        const scaleXP = camera.distanceTo(this.t_xp.position) * this.size / 3
-        const scaleXN = camera.distanceTo(this.t_xn.position) * this.size / 3
-        const scaleYP = camera.distanceTo(this.t_yp.position) * this.size / 3
-        const scaleYN = camera.distanceTo(this.t_yn.position) * this.size / 3
+        const scaleXP = cameraPosition.distanceTo(this.t_xp.position) * this.size / 3
+        const scaleXN = cameraPosition.distanceTo(this.t_xn.position) * this.size / 3
+        const scaleYP = cameraPosition.distanceTo(this.t_yp.position) * this.size / 3
+        const scaleYN = cameraPosition.distanceTo(this.t_yn.position) * this.size / 3
 
         this.t_xp.scale.set(scaleXP, scaleXP, scaleXP)
         this.t_xn.scale.set(scaleXN, scaleXN, scaleXN)
