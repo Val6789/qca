@@ -1,13 +1,39 @@
-/* global ThreeViewController:true, THREE:true, Qubit:true */
+/* 
+    global 
+    ThreeViewController:true,
+    THREE:true,
+    Qubit:true,
+    AssetManager:true,
+    ToolboxController:true
+*/
 /* exported orbit */
 
-Dot.init(ThreeViewControllerInstance.scene).then(particules => {
-    ThreeViewControllerInstance.addObjectToScene(particules)
+let threeController
+AssetManager.Create().then(() => {
+    console.log("Assets:", AssetManager.Get())
+    threeController = new ThreeViewController("viewport")
+
+    let testQubitA = new Qubit()
+    let testQubitB = new Qubit(new THREE.Vector3(0, 0, 3))
+    let testQubitC = new Qubit(new THREE.Vector3(-3, 0, -3))
+
+    threeController.addObject(testQubitA.object)
+    threeController.addObject(testQubitB.object)
+    threeController.addObject(testQubitC.object)
+
+
+    var influenceOverlay = new InfluenceOverlay(threeController)
+    var cursorEditor = new QubitEditorCursor(threeController)
+    ToolboxController.init(threeController)
+
 })
 
-Electron.init(ThreeViewControllerInstance.scene).then(particules => {
-    ThreeViewControllerInstance.addObjectToScene(particules)
-})
+
+//threeController.startRenderLoop()
+
+
+
+document.getElementById("toggle-activity-tab").addEventListener("click", toggleActivityPanel)
 
 function toggleActivityPanel(e) {
     e.stopPropagation()
@@ -22,9 +48,3 @@ function toggleActivityPanel(e) {
     }
     return false
 }
-
-
-var cursorEditor = new QubitEditorCursor(ThreeViewControllerInstance)
-ToolboxController.init(ThreeViewControllerInstance)
-
-document.getElementById("toggle-activity-tab").addEventListener("click", toggleActivityPanel)

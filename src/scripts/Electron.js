@@ -1,4 +1,4 @@
-/* global THREE:true */
+/* global THREE:true, AssetManager:true */
 /* exported Electron */
 
 class Electron {
@@ -7,46 +7,32 @@ class Electron {
     }
 
     static init() {
-        return new Promise((resolve) => {
+        // init the instances object
+        Electron.instances = []
 
-            // init the instances object
-            Electron.instances = []
+        // create the buffer for the geometry
+        const MAX_POINTS = 1000
 
-            // create the buffer for the geometry
-            const MAX_POINTS = 1000
+        // geometry
+        Electron.geometry = new THREE.BufferGeometry()
+        Electron.geometry.dynamic = true
 
-            // geometry
-            Electron.geometry = new THREE.BufferGeometry()
-            Electron.geometry.dynamic = true
+        // attributes
+        let positions = new Float32Array(MAX_POINTS * 3)
+        let buffer = new THREE.BufferAttribute(positions, 3)
+        Electron.geometry.addAttribute("position", buffer)
 
-            // attributes
-            let positions = new Float32Array(MAX_POINTS * 3)
-            let buffer = new THREE.BufferAttribute(positions, 3)
-            Electron.geometry.addAttribute("position", buffer)
-
-            // load and setup the sprite
-            const textureLoader = new THREE.TextureLoader()
-                .setCrossOrigin(true)
-            const file = "assets/textures/dot.png"
-            textureLoader.load(
-                file,
-                (sprite) => {
-                    const material = new THREE.PointsMaterial({
-                        size: 0.5,
-                        sizeAttenuation: true,
-                        map: sprite,
-                        transparent: true,
-                        alphaTest: 0.8
-                    })
-                    material.color.setHSL(0.1, 0.3, 0.7)
-
-                    const particles = new THREE.Points(Electron.geometry, material)
-                    resolve(particles)
-                },
-                undefined,
-                (err) => console.error(err)
-            )
+        // load and setup the sprite
+        const electronImage = AssetManager.Get().textures.electron
+        const material = new THREE.PointsMaterial({
+            size: 0.5,
+            sizeAttenuation: true,
+            map: electronImage,
+            transparent: false,
+            alphaTest: 0.1
         })
+
+        return new THREE.Points(Electron.geometry, material)
     }
 
     static recreate() {

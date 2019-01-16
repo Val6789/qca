@@ -1,4 +1,4 @@
-/* global THREE:true */
+/* global THREE:true, AssetManager:true */
 /* exported Dot */
 
 class Dot {
@@ -11,12 +11,11 @@ class Dot {
             this.relativeQubitPosition.y + this.parentQubit.position.z
         )
     }
-    
-    static async init() {
 
+    static init() {
         // init the instances object
         Dot.instances = []
-        
+
         // create the buffer for the geometry
         const MAX_POINTS = 1000
 
@@ -30,17 +29,16 @@ class Dot {
         Dot.geometry.addAttribute("position", buffer)
 
         // load and setup the sprite
-        const textureLoader = new THREE.TextureLoader()
-            .setCrossOrigin(true)
-        const file = "assets/textures/electron.png"
-        const spritePromise = await textureLoader.load(file)
+        const dotImage = AssetManager.Get().textures.dot
         const material = new THREE.PointsMaterial({
-            size: 0.45,
+            size: 0.5,
             sizeAttenuation: true,
-            map: spritePromise,
+            map: dotImage,
             transparent: true,
-            alphaTest: 0.8
+            alphaTest: 0.5
         })
+
+        return new THREE.Points(Dot.geometry, material)
     }
 
     static recreate() {

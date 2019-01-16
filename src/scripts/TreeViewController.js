@@ -1,5 +1,14 @@
-/* global THREE:true , Electron:true, Qubit:true, Dot */
-/* exported ThreeViewController */
+/* 
+    global
+    THREE:true,
+    Electron:true,
+    Dot:true,
+    AssetManager:true
+*/
+/*
+    exported
+    ThreeViewController
+*/
 
 class ThreeViewController {
 
@@ -30,90 +39,28 @@ class ThreeViewController {
     }
 
     addSkybox() {
-        const path = "assets/textures/skybox/"
-        const format = ".png"
-        const createUrl = (name) => path + name + format
-        const urls = [
-            createUrl("right"),
-            createUrl("left"),
-            createUrl("top"),
-            createUrl("bottom"),
-            createUrl("back"),
-            createUrl("front")
-        ]
+        const reflectionCubeTexture = AssetManager.Get().textures.skybox
+        reflectionCubeTexture.format = THREE.RGBFormat
 
-        let reflectionCubeTexture
-        this.waitTexture(urls)
-            .then((texture) => {
-                reflectionCubeTexture = texture
-                reflectionCubeTexture.format = THREE.RGBFormat
+        let shader = THREE.ShaderLib["cube"]
+        shader.uniforms["tCube"].value = reflectionCubeTexture
 
-                let shader = THREE.ShaderLib["cube"]
-                shader.uniforms["tCube"].value = reflectionCubeTexture
-
-                let material = new THREE.ShaderMaterial({
-                    fragmentShader: shader.fragmentShader,
-                    vertexShader: shader.vertexShader,
-                    uniforms: shader.uniforms,
-                    depthWrite: false,
-                    side: THREE.BackSide
-                })
-
-                const s = 500
-                let mesh = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), material)
-                mesh.name = "Skybox"
-                this.scene.add(mesh)
-
-                // Fix, cause the skybox takes time to load
-                this.render()
-
-            })
-            .catch((err) => {
-                console.error(err)
-            })
-
-    }
-
-    getFont() {
-        if (this.fontCache) {
-            return Promise.resolve(this.fontCache)
-        } else {
-            var self = this
-            return new Promise((resolve, reject) => {
-                const FONT_FILE_PATH = "assets/fonts/optimer_regular.typeface.json"
-                new THREE.FontLoader().load(FONT_FILE_PATH, (font) => {
-                    self.fontCache = font
-                    resolve(self.fontCache)
-                }, undefined, reject)
-            })
-        }
-    }
-
-    waitTexture(path) {
-        return new Promise((resolve, reject) => {
-            if (Array.isArray(path))
-                this.cubeLoader.load(
-                    path,
-                    (texture) => resolve(texture),
-                    undefined,
-                    (err) => {
-                        console.error(err)
-                        reject(err)
-                    }
-                )
-            else
-                this.textureLoader.load(
-                    path,
-                    (texture) => resolve(texture),
-                    undefined,
-                    (err) => {
-                        console.error(err)
-                        reject(err)
-                    }
-                )
+        let material = new THREE.ShaderMaterial({
+            fragmentShader: shader.fragmentShader,
+            vertexShader: shader.vertexShader,
+            uniforms: shader.uniforms,
+            depthWrite: false,
+            side: THREE.BackSide
         })
-    }
 
+        const s = 500
+        let mesh = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), material)
+        mesh.name = "Skybox"
+        this.scene.add(mesh)
+
+        // Fix, cause the skybox takes time to load
+        this.render()
+    }
 
     /* "Private" methods */
 
@@ -133,14 +80,14 @@ class ThreeViewController {
 
         for (let callback of this.onRenderObservers)
             callback()
-        
-        if ( Electron.needsUpdate )
-            Electron.recreate()     
-        
-        if ( Dot.needsUpdate )
-            Dot.recreate()       
+
+        if (Electron.needsUpdate)
+            Electron.recreate()
+
+        if (Dot.needsUpdate)
+            Dot.recreate()
     }
-    
+
     render() {
         this.update()
         this.renderer.render(this.scene, this.camera)
@@ -157,6 +104,8 @@ class ThreeViewController {
     }
 
     constructor(canvasId) {
+        this.onRenderObservers = []
+        
         // get viewport parent node
         let parent = document.getElementById(canvasId)
 
@@ -177,13 +126,6 @@ class ThreeViewController {
         // use the device's pixel ratio (number of actual / physical screen pixels in one 'virtual' pixel: can be more than one on high res screens) 
         this.renderer.setPixelRatio(window.devicePixelRatio)
 
-        // initialize texture Loader
-        this.textureLoader = new THREE.TextureLoader()
-            .setCrossOrigin(true)
-
-        this.cubeLoader = new THREE.CubeTextureLoader()
-            .setCrossOrigin(true)
-
         // Add two lights
         var ambiant = new THREE.AmbientLight(0xffffff)
         this.scene.add(ambiant)
@@ -193,7 +135,6 @@ class ThreeViewController {
 
         // Create the skybox
         this.addSkybox()
-
 
         // inserts the WebGl canvas in the document
         parent.appendChild(this.renderer.domElement)
@@ -212,20 +153,14 @@ class ThreeViewController {
 
         this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
 
-        this.onRenderObservers = []
-        
         // Create the particles of the Qubit
-        let particlesDot = Dot.init(this.scene)
-        particlesDot.then((p) => {
-            this.scene.add(p)
-            this.render()
-        })
+        let particlesDot = Dot.init()
+        this.scene.add(particlesDot)
 
         // Create the particles of the electrons
-        let particlesElectron = Electron.init(this.scene)
-        particlesElectron.then((p) => {
-            this.scene.add(p)
-            this.render()
-        })
+        let particlesElectron = Electron.init()
+        this.scene.add(particlesElectron)
+
+        this.render()
     }
 }
