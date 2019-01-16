@@ -31,7 +31,7 @@ class Dot {
             size: 0.5,
             sizeAttenuation: true,
             map: circle,
-            transparent: true,
+            ansparent: true,
             alphaTest: 0.8
         })
         material.color.setHSL(0.1, 0.3, 0.7)
