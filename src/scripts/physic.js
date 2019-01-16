@@ -12,15 +12,19 @@ class Qbit {
 
 		this.visited = false;
 	}
-	/*process(neighbour) { // QCADesigner method
+	/*process(s) { // QCADesigner method
+		if(this.visited) return this.nextValue;
+		this.visited = true;
 		if(!this.fixed) {
 			var Ekij = this.load;
-			var gamma =1;
+			var gamma =0.1;
 			var SigmaPj = 0;
-			for(var n of neighbour) SigmaPj += (n.value*n.load * ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-1:1));
+			var neighbour = s.getNeighbour(this.x,this.y);
+			for(var n of neighbour) SigmaPj += (n.process(s)*n.load * ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1));
 			var numerator = ((Ekij/(2*gamma)) * SigmaPj);
 			this.nextValue = numerator / Math.sqrt(1+Math.pow(numerator,2));
 		}
+		return this.value;
 	}*/
 	process(s) { // Simple weighted Average
 		if(this.visited) return this.nextValue;
@@ -28,10 +32,9 @@ class Qbit {
 		if(!this.fixed) {
 			var avg = 0;
 			var neighbour = s.getNeighbour(this.x,this.y);
-			for(var n of neighbour) {
-				avg += (n.process(s)*n.load * ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1));
-			}
-			this.nextValue = avg/neighbour.length;
+			for(var n of neighbour)	avg += (n.process(s)*n.load * ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1));
+			if(neighbour.length == 0) this.nextValue = 0;
+			else this.nextValue = avg/neighbour.length;
 			return this.nextValue;
 		}
 		return this.value
@@ -60,6 +63,14 @@ class Ask extends Qbit {
 	constructor(x,y) {
 		super(x,y,0,0,false)
 		this.askQbit = true;
+		this.value = 0
+		this.nextValue = 0;
+		this.trueValue = 0;
+	}
+	getValue() {
+		if(this.value > 0) return "1"
+		if(this.value < 0) return "0"
+		return "?"
 	}
 }
 
@@ -83,6 +94,19 @@ class Family {
 		for(var q of this.qbits)
 			q.apply();
 	}
+	getQbitIndex(x,y) {
+		var i = 0;
+		while(i < this.qbits.length) {
+			if(this.qbits[i].x == x && this.qbits[i].y == y) return this.qbits[i]
+			i++;
+		}
+		return false;
+	}
+	remove(x,y) {
+		this.scene.removeQbit(x,y);
+		var i = this.getQbitIndex(x,y);
+		if(i) this.qbits.slice(i,1);
+	}
 }
 
 class Scene {
@@ -98,8 +122,11 @@ class Scene {
 	}
 	process(){
 		this.ask.visited = false;
-		if(this.ask) this.ask.process(this);
-		for(var f of this.families) f.apply()
+		if(this.ask) {
+			this.ask.process(this);
+			this.ask.apply();
+			for(var f of this.families) f.apply()
+		}
 	}
 	getQbit(x,y) {
 		var q = this.mapQb['x'+x+'y'+y];
@@ -107,11 +134,15 @@ class Scene {
 		return q
 	}
 	addQbit(q) {
-		if(!this.getQbit(q.x,q.y)){
+		if(!this.getQbit(q.x,q.y) && (this.ask.x != q.x || this.ask.y != q.y)){
 			this.mapQb[q.id()] = q;
 			return true;
 		}
 		return false;
+	}
+	removeQbit(x,y) {
+		var q = this.getQbit(x,y);
+		if(q) delete this.mapQb[q.id()];
 	}
 	getNeighbour(x,y) {
 		var neigh = [],n;
@@ -122,10 +153,13 @@ class Scene {
 		return neigh;
 	}
 	setAsk(x,y) {
-		if(this.ask) {
-			this.ask.x = x;
-			this.ask.y = y;
+		if(!this.getQbit(x,y))
+		{
+			if(this.ask) {
+				this.ask.x = x;
+				this.ask.y = y;
+			}
+			else this.ask = new Ask(x,y);
 		}
-		else this.ask = new Ask(x,y);
 	}
 }
