@@ -6,9 +6,14 @@ class Qubit {
         return this.object.position
     }
 
-    move(x, z) {
-        this.object.translateX(x)
-        this.object.translateZ(z)
+    move(argA, argB = undefined) {
+        if (typeof argA == "object") {
+            this.object.translateX(argA.x)
+            this.object.translateZ(argA.z)
+        } else {
+            this.object.translateX(argA)
+            this.object.translateZ(argB)
+        }
     }
 
     constructor() {
@@ -34,8 +39,21 @@ class Qubit {
         ]
         this.electrons.forEach(electron => this.object.add(electron.object))
     }
+
+    static instantiateAt(position) {
+        // check if place is occupied
+        if (Qubit.instances.some( qubit => qubit.position.equals(position)))
+            return false
+
+        let newqubit = new Qubit()
+        newqubit.move(position)
+        Qubit.instances.push(newqubit)
+        return newqubit
+    }
 }
 
 Qubit.DOT_DIST = 0.2
 Qubit.QUBIT_SIZE = 0.8
 Qubit.QUBIT_THICK = 0.3
+
+Qubit.instances = []
