@@ -128,11 +128,15 @@ class ThreeViewController {
 		{
 			this.addSkybox("_light")
 			this.scene.fog = new THREE.FogExp2(0xffffff, 0.005)
+			document.body.classList.remove("mode-dark")
+			document.body.classList.add("mode-light")
 		}
 		else
 		{
 			this.addSkybox()
 			this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
+			document.body.classList.remove("mode-light")
+			document.body.classList.add("mode-dark")
 		}
 	}
 
@@ -202,8 +206,8 @@ class ThreeViewController {
         var point = new THREE.PointLight(0xffffff, 2)
         this.scene.add(point)
 
-        // Create the skybox
-		this.addSkybox()
+        // Set light mode and create the skybox
+		this.setLightmode(false)
 
         // inserts the WebGl canvas in the document
         parent.appendChild(this.renderer.domElement)
