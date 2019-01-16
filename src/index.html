@@ -1,129 +1,133 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>QCA | Quantum Cellular Automata</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Styles -->
+        <link rel="stylesheet" href="./styles/reset.css">
+        <link rel="stylesheet" href="./styles/main.css">
+        <link rel="stylesheet" href="./styles/activities.css">
+        <link rel="stylesheet" href="./styles/control-strip.css">
 
-<title>QCA | Quantum Cellular Automata</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Styles -->
-<link rel="stylesheet" href="./styles/reset.css">
-<link rel="stylesheet" href="./styles/main.css">
-<link rel="stylesheet" href="./styles/activities.css">
-<link rel="stylesheet" href="./styles/control-strip.css">
+        <!-- Librairies -->
+        <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
+        <script type="text/javascript" src="./scripts/lib/OrbitControls.js"></script>
 
-<!-- Librairies -->
-<script type="text/javascript" src="../node_modules/three/build/three.js"></script>
-<script type="text/javascript" src="./scripts/lib/OrbitControls.js"></script>
+        <!-- Scripts -->
+        <script src="./scripts/TreeViewController.js"></script>
+        <script src="./scripts/QubitEditorCursor.js"></script>
+        <script src="./scripts/ToolboxController.js"></script>
+        <script src="./scripts/Grid.js"></script>
+        <script src="./scripts/Dot.js"></script>
+        <script src="./scripts/Electron.js"></script>
+        <script src="./scripts/Qubit.js"></script>
+        <script src="./scripts/InfluenceOverlay.js"></script>
+        <script src="./scripts/main.js" defer></script>
+    </head>
 
-<!-- Scripts -->
-<script src="./scripts/TreeViewController.js"></script>
-<script src="./scripts/QubitEditorCursor.js"></script>
-<script src="./scripts/Grid.js"></script>
-<script src="./scripts/Dot.js"></script>
-<script src="./scripts/Electron.js"></script>
-<script src="./scripts/Qubit.js"></script>
-<script src="./scripts/InfluenceOverlay.js"></script>
-<script src="./scripts/main.js" defer></script>
+    <body class="wrapper">
+        <!-- HEADER AND NAVBAR -->
+        <h1 class="title">Quantum cellular automata simulator</h1>
 
-</head>
+        <header class="control-strip">
+            <nav class="time-buttons">
+                <button class="time-button" alt="Slower">
+                    <img src="assets/buttons/slow.png" class="time-button-icon slow-button-icon">
+                    Slower
+                </button>
+                <button class="time-button" alt="Play/Pause simulation">
+                    <img src="assets/buttons/pause.png" class="time-button-icon play-button-icon">
+                    Play
+                </button>
+                <button class="time-button" alt="Faster">
+                    <img src="assets/buttons/fast.png" class="time-button-icon fast-button-icon">
+                    Faster
+                </button>
+            </nav>
 
-<!-- HEADER AND NAVBAR -->
-<h1 class="title">Quantum cellular automata simulator</h1>
+            <nav class="toolbox">
+                <button class="tool" alt="Control Camera" id="get-camera"> 
+                    <img src="assets/buttons/positron.png" class="tool-icon camera-icon">
+                    Q
+                </button>
+                <button class="tool" alt="Positively charged influencer">
+                    <img src="assets/buttons/positron.png" class="tool-icon positron-icon">
+                    +
+                </button>
+                <button class="tool" alt="Negatively charged influencer">
+                    <img src="assets/buttons/electron.png" class="tool-icon electron-icon">
+                    -
+                </button>
+                <button class="tool" alt="Qubit" id="place-qubits">
+                    <img src="assets/buttons/qubit.png" class="tool-icon qubit-icon">
+                    Q
+                </button>
+                <button class="tool" alt="Eraser">
+                    <img src="assets/buttons/delete.png" class="tool-icon delete-icon">
+                    E
+                </button>
+            </nav>
 
-<header class="control-strip">
-  <nav class="time-buttons">
-    <button class="time-button" alt="Slower">
-      <img src="assets/buttons/slow.png" class="time-button-icon slow-button-icon">
-      Slower
-    </button>
-    <button class="time-button" alt="Play/Pause simulation">
-      <img src="assets/buttons/pause.png" class="time-button-icon play-button-icon">
-      Play
-    </button>
-    <button class="time-button" alt="Faster">
-      <img src="assets/buttons/fast.png" class="time-button-icon fast-button-icon">
-      Faster
-    </button>
-  </nav>
+            <nav class="layers">
+                <label class="layer-checkbox"><input type="checkbox">Qubit values</label>
+                <label class="layer-checkbox"><input type="checkbox">Outlines</label>
+                <label class="layer-checkbox"><input type="checkbox">Charge Fields</label>
+            </nav>
+        </header>
 
-  <nav class="toolbox">
-    <button class="tool" alt="Positively charged influencer">
-      <img src="assets/buttons/positron.png" class="tool-icon positron-icon">
-      +
-    </button>
-    <button class="tool" alt="Negatively charged influencer">
-      <img src="assets/buttons/electron.png" class="tool-icon electron-icon">
-      -
-    </button>
-    <button class="tool" alt="Qubit">
-      <img src="assets/buttons/qubit.png" class="tool-icon qubit-icon">
-      Q
-    </button>
-    <button class="tool" alt="Eraser">
-      <img src="assets/buttons/delete.png" class="tool-icon delete-icon">
-      E
-    </button>
-  </nav>
+        <!-- 3D VIEWPORT -->
+        <main id="viewport" class="viewport"></main>
 
-  <nav class="layers">
-    <label class="layer-checkbox"><input type="checkbox">Qubit values</label>
-    <label class="layer-checkbox"><input type="checkbox">Outlines</label>
-    <label class="layer-checkbox"><input type="checkbox">Charge Fields</label>
-  </nav>
-</header>
+        <nav class="camera-controls">
+            <!-- camera controls -->
+        </nav>
 
-<!-- 3D VIEWPORT -->
-<main id="viewport" class="viewport"></main>
+        <aside class="activities active" id="activities">
+            <nav class="activity-tabs">
+                <button class="hide-activities" id="toggle-activity-tab">
+                    <img class="hide-activities-icon ifinactive" src="assets/buttons/inactive_sidebar.png" alt="show activities tab">
+                    <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
+                    X
+                </button>
+                <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
+                <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
+                <label class="activity-tab-button missions-tab" for="mission-check">Mission</label>
 
-<nav class="camera-controls">
-  <!-- camera controls -->
-</nav>
+                <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />
+                <input class="activity-check" type="radio" id="demos-check" name="tab" />
+                <div id="drawer-demos" class="drawer">
+                    <label for="no-drawer-check" class="drawer-close">[x]</label>
+                    <h2>Demos</h2>
+buttons for testing :
+<button onclick="threeController.setLightmode(true)">light mode</button>
+<button onclick="threeController.setLightmode(false)">dark mode</button>
+                </div>
+                <input class="activity-check" type="radio" id="tutorial-check" name="tab" />
+                <div id="drawer-tutorial" class="drawer">
+                    <label for="no-drawer-check" class="drawer-close">[x]</label>
+                    <h2>Tutorials</h2>
+                    tutos
+                    =
+                </div>
+                <input class="activity-check" type="radio" id="mission-check" name="tab" />
+                <div id="drawer-mission" class="drawer">
+                    <label for="no-drawer-check" class="drawer-close">[x]</label>
+                    <h2>Missions</h2>
+                    mission
+                </div>
+            </nav>
 
-<aside class="activities active" id="activities">
-  <nav class="activity-tabs">
-    <button class="hide-activities" id="toggle-activity-tab">
-      <img class="hide-activities-icon ifinactive" src="assets/buttons/inactive_sidebar.png" alt="show activities tab">
-      <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
-      X
-    </button>
-    <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
-    <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
-    <label class="activity-tab-button missions-tab" for="mission-check">Mission</label>
-    
-    <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />
-    <input class="activity-check" type="radio" id="demos-check" name="tab" />
-    <div id="drawer-demos" class="drawer">
-		<label for="no-drawer-check" class="drawer-close">[x]</label>
-		<h2>Demos</h2>
-		buttons for testing :
-		<button onclick="threeController.setLightmode(true)">light mode</button>
-		<button onclick="threeController.setLightmode(false)">dark mode</button>
-	</div>
-    <input class="activity-check" type="radio" id="tutorial-check" name="tab" />
-    <div id="drawer-tutorial" class="drawer">
-		<label for="no-drawer-check" class="drawer-close">[x]</label>
-		<h2>Tutorials</h2>
-		tutos
-=	</div>
-    <input class="activity-check" type="radio" id="mission-check" name="tab" />
-    <div id="drawer-mission" class="drawer">
-		<label for="no-drawer-check" class="drawer-close">[x]</label>
-		<h2>Missions</h2>
-		mission
-	</div>
-  </nav>
+            <section class="activity-tab demos">
+            </section>
 
-  <section class="activity-tab demos">
-  </section>
+            <section class="activity-tab tutorial">
+            </section>
 
-  <section class="activity-tab tutorial">
-  </section>
-
-  <section class="activity-tab missions">
-  </section>
-</aside>
-
-</body>
-
+            <section class="activity-tab missions">
+            </section>
+        </aside>
+    </body>
 </html>
