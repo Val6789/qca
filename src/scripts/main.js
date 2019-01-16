@@ -1,5 +1,11 @@
-/* global ThreeViewController:true, THREE:true, Qubit:true */
+/* global ThreeViewController:true, THREE:true, Qubit:true, AssetManager:true */
 /* exported orbit */
+
+console.log(AssetManager.Get())
+AssetManager.Create().then(() => {
+    console.log(AssetManager.Get())
+})
+
 
 const threeController = new ThreeViewController("viewport")
 //threeController.startRenderLoop()
