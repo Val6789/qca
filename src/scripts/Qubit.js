@@ -37,7 +37,6 @@ class Qubit {
             new Electron(dots[1]),
             new Electron(dots[2])
         ]
-        this.electrons.forEach(electron => this.object.add(electron.object))
     }
 
     static instantiateAt(position) {

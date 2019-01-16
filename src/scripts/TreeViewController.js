@@ -207,7 +207,9 @@ class ThreeViewController {
         this.onRenderObservers = []
         
         // Create the particles of the electrons
-        let particles = Electron.init()
-        this.scene.add(particles)
+        let particles = Electron.init(this.scene)
+        particles.then((p) => {
+            this.scene.add(p)
+        })
     }
 }

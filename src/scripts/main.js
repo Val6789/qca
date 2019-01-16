@@ -30,7 +30,7 @@ function toggleActivityPanel(e) {
     return false
 }
 
-var influenceOverlay = new InfluenceOverlay(threeController)
+//var influenceOverlay = new InfluenceOverlay(threeController)
 var cursorEditor = new QubitEditorCursor(threeController)
 ToolboxController.init(threeController)
 

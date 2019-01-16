@@ -7,27 +7,42 @@ class Electron {
     }
 
     static async init() {
+        
         // init the instances object
         Electron.instances = []
 
         // create the buffer for the geometry
-        let geometry = new THREE.BufferGeometry()
-        Electron.buffer = new THREE.Float32BufferAttribute([], 3)
-        geometry.addAttribute("position", Electron.buffer)
+        const MAX_POINTS = 1000
+        
+        // geometry
+        Electron.geometry = new THREE.BufferGeometry()
+        Electron.geometry.dynamic = true
+        
+        // attributes
+        let positions = new Float32Array( MAX_POINTS * 3)
+        let buffer = new THREE.BufferAttribute(positions, 3)
+        Electron.geometry.addAttribute("position", buffer)
 
         // load and setup the sprite
-        this.textureLoader = new THREE.TextureLoader()
+        const textureLoader = new THREE.TextureLoader()
             .setCrossOrigin(true)
         const file = "assets/textures/disc.png"
-        const sprite = await this.waitTexture(file)
-        const material = new THREE.PointsMaterial({
-            size: 500,
-            sizeAttenuation: true,
-            map: sprite
-        })
-        material.color.setHSL(1.0, 0.3, 0.7)
+        const spritePromise = await textureLoader.load(file)
+        console.log(spritePromise)
 
-        const particles = new THREE.Points(geometry, material)
+        const material = new THREE.PointsMaterial({
+            size: 0.1,
+            sizeAttenuation: true,
+            map: spritePromise,
+            transparent: true,
+            alphaTest: 0.5
+        })
+        material.color.setHSL(0.1, 0.3, 0.7)
+        
+
+        //var material = new THREE.PointsMaterial( { color: 0x2222ff } )
+        
+        const particles = new THREE.Points(Electron.geometry, material)
         return particles
     }
 
@@ -47,37 +62,19 @@ class Electron {
         const x = this.position.x
         const y = this.position.y
         const z = this.position.z
-        Electron.buffer.setXYZ(Electron.instances.length, x, y, z)
+        var positions = Electron.geometry.attributes.position.array
+        let i = Electron.instances.length
+        positions[i + 0] = x
+        positions[i + 1] = y
+        positions[i + 2] = z
+        console.log(positions)
+        Electron.geometry.setDrawRange(0, i+1)
+        Electron.geometry.attributes.position.needsUpdate = true
+        Electron.geometry.computeBoundingSphere()
 
         Electron.instances.push(this)
-    }
-
-    waitTexture(path) {
-        return new Promise((resolve, reject) => {
-            if (Array.isArray(path))
-                this.cubeLoader.load(
-                    path,
-                    (texture) => resolve(texture),
-                    undefined,
-                    (err) => {
-                        console.error(err)
-                        reject(err)
-                    }
-                )
-            else
-                this.textureLoader.load(
-                    path,
-                    (texture) => resolve(texture),
-                    undefined,
-                    (err) => {
-                        console.error(err)
-                        reject(err)
-                    }
-                )
-        })
     }
 }
 
 Electron.RADIUS = 0.8
 Electron.INFLUENCE_SIZE = 1000.0
-Electron.init()
