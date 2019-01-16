@@ -1,6 +1,9 @@
 /* global THREE:true */
 /* exported Dot */
+
 class Dot {
+
+    // computed value
     get position() {
         return new THREE.Vector3(
             this.relativeQubitPosition.x + this.parentQubit.position.x,

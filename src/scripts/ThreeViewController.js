@@ -10,6 +10,20 @@
  * @warning never call _render directly, use shouldRender
  */
 class ThreeViewController {
+
+    /**
+     * @brief Scene getter
+     */
+    get scene() {
+        return this._scene
+    }
+
+    /**
+     * @brief Camera getter
+     */
+    get camera() {
+        return this._camera
+    }
     
     /**
      * @brief adds observer method to the render-observers-collection
@@ -26,6 +40,7 @@ class ThreeViewController {
      */
     addObjectToScene(object) {
         this._scene.add(object)
+        this.shouldRender()
     }
 
 
@@ -35,8 +50,8 @@ class ThreeViewController {
      * Will request render for the next frame or do nothing if this was already done
      */
     shouldRender() {
-        if (this._willRender) return
-        requestAnimationFrame(_render)
+        if (this._willRender == false) return
+        requestAnimationFrame(this._render)
         this._willRender = true
     }
 
