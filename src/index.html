@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./styles/reset.css">
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/activities.css">
+    <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
 
     <!-- Librairies -->
@@ -176,13 +177,14 @@
                         <label for="no-drawer-check" class="btn drawer-close">x</label>
                     </div>
                     <div class="drawer-main">
-                        <p>This is the main</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
-                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
-                            beatae quae iste nesciunt minus facere.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
-                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
-                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Try to complete all thoses achievements !</p>
+                        <div id="achievements-holder">
+                            <div id="template-achievement" class="achievement">
+                                <img src="assets/textures/achievements/default.png" alt="default">
+                                <h4>$fullname</h4>
+                                <p>$Description</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="btn">close</label>
