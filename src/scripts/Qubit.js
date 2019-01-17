@@ -6,6 +6,42 @@ class Qubit {
         return this.object.position
     }
 
+    setText(text = "") {
+		// because we can't update an existing TextGeometry's text, we need to delete and create it again
+		this.object.remove(this.object.getObjectByName("ValueText"))
+		
+		const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff
+        })
+		
+		this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
+	            font: AssetManager.Get().fonts.optimer,
+	            size: 0.25,
+	            height: 0,
+	            curveSegments: 4,
+	            bevelEnabled: false
+	        }), lineMaterial)
+	    this.valueText.name = "ValueText"
+	    this.valueText.geometry.translate(-0.1, -0.1, Qubit.QUBIT_THICK/2) // center text on box (values adjusted for optimer font)
+	    this.valueText.geometry.rotateX(-Math.PI/2)
+		this.object.add(this.valueText)
+	}
+	
+	update() {
+		// update text according to value
+		if(this.electrons[0].dot.position.equals(this.dots[0].position)
+			&& this.electrons[1].dot.position.equals(this.dots[3].position)) {
+			this.setText("1")
+		}
+		else if(this.electrons[0].dot.position.equals(this.dots[1].position)
+			&& this.electrons[1].dot.position.equals(this.dots[2].position)) {
+			this.setText("0")
+		}
+		else {
+			this.setText("?")
+		}
+	}
+
     constructor(position = new THREE.Vector3()) {
 
         // check if place is occupied
@@ -38,6 +74,9 @@ class Qubit {
             new Electron(dots[1]),
             new Electron(dots[2])
         ]
+        
+        // create value label
+        this.update()
 
         Qubit.instances.push(this)
     }
