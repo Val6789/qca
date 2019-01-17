@@ -6,12 +6,16 @@
     Dot,
     Electron,
     AssetManager,
-    ToolboxController,
-    QubitEditorCursor
+    ToolboxControllerInstance,
+    InputBlock,
+    QubitEditorCursor,
+    AchievementManager
 */
-
 AssetManager.Create().then(() => {
     console.log("Assets:", AssetManager.Get())
+
+    // Achivement
+    console.log("Achievements:", AchievementManager.Get())
 
     ThreeViewControllerInstance.init()
     Dot.init()
@@ -23,14 +27,16 @@ AssetManager.Create().then(() => {
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(-3, 0, -3))).object)
 
     new QubitEditorCursor()
-})
 
-ToolboxControllerInstance.init()
+    AchievementManager.Get().obtained("missionOne")
+
+    ToolboxControllerInstance.init()
+
+
+})
 
 
 //threeController.startRenderLoop()
-
-
 
 document.getElementById("toggle-activity-tab").addEventListener("click", toggleActivityPanel)
 

@@ -5,6 +5,7 @@
     Grid
     AssetManager
     ThreeViewControllerInstance
+    InputBlock
 */
 /* 
     exported 
@@ -48,7 +49,7 @@ class QubitEditorCursor {
     }
 
 
-    _checkForSpace() {
+    _checkForSpace() {
         var occupied = false
         // check if place is occupied
         occupied |= Qubit.instances.some(qubit => qubit.position.equals(this.cursor.position))
@@ -65,31 +66,43 @@ class QubitEditorCursor {
 
 
     _clickHandler() {
-        try{
+        try {
             switch (QubitEditorCursor.canEdit) {
-                case QubitEditorCursor.canEditEnumeration.QUBIT:   
-                    if (this._checkForSpace()) return;
-                    return new Qubit(this.cursor.position)
-                    
-                
+                case QubitEditorCursor.canEditEnumeration.QUBIT:
+                    if (this._checkForSpace())
+                        return
+                    else {
+                        // Achievement
+                        AchievementManager.Get().obtained("firstStep")
+                        return new Qubit(this.cursor.position)
+                    }
+
+
+
                 case QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT:
-                    if (this._checkForSpace()) return;
-                    return new InputBlock(this.cursor.position, -1)
-                    
+                    if (this._checkForSpace())
+                        return
+                    else
+                        return new InputBlock(this.cursor.position, -1)
 
                 case QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT:
-                    if (this._checkForSpace()) return;
-                    return new InputBlock(this.cursor.position, 1)
-                    
+                    if (this._checkForSpace())
+                        return
+                    else
+                        return new InputBlock(this.cursor.position, 1)
+
 
                 case QubitEditorCursor.canEditEnumeration.REMOVE:
-                    if (!this._checkForSpace()) return;
-                    return this._getBlockOnCursor().remove()
-                    
+                    if (!this._checkForSpace())
+                        return
+                    else
+                        return this._getBlockOnCursor().remove()
+
+
             }
-        } catch(exception) {
+        } catch (exception) {
             console.info(exception)
-        }    
+        }
     }
 
 
@@ -136,7 +149,7 @@ QubitEditorCursor.COLOR = 0x999999
 QubitEditorCursor.canEditEnumeration = {
     NOTHING: 0,
     QUBIT: 1,
-    POSITIVE_INPUT: 2, 
+    POSITIVE_INPUT: 2,
     NEGATIVE_INPUT: 3,
     OUTPUT: 4,
     REMOVE: 5
