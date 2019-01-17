@@ -1,14 +1,15 @@
 /* 
     global 
-    ThreeViewController:true,
-    THREE:true,
-    Qubit:true,
-    AssetManager:true,
-    ToolboxController:true
+    ThreeViewControllerInstance,
+    THREE,
+    Qubit,
+    Dot,
+    Electron,
+    AssetManager,
+    ToolboxController,
+    QubitEditorCursor
 */
-/* exported orbit */
 
-let threeController
 AssetManager.Create().then(() => {
     console.log("Assets:", AssetManager.Get())
 

@@ -1,5 +1,15 @@
-/* global THREE:true, Qubit:true, Grid:true, AssetManager:true */
-/* exported QubitEditorCursor */
+/* 
+    global
+    THREE
+    Qubit
+    Grid
+    AssetManager
+    ThreeViewControllerInstance
+*/
+/* 
+    exported 
+    QubitEditorCursor
+*/
 
 class QubitEditorCursor {
 
@@ -34,7 +44,7 @@ class QubitEditorCursor {
         // if the cursor changed, call for a render
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
             ThreeViewControllerInstance.shouldRender()
-        } 
+        }
     }
 
 

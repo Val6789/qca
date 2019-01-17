@@ -70,7 +70,7 @@ const AssetManager = (function () {
                 return Promise.reject(Error("error"))
             }
         })
-        .catch(err => Promise.reject(Error(err.message))))   
+        .catch(err => Promise.reject(Error(err.message))))
     const fs = baseDir + "/shaders/influences.fs.glsl"
     promises.push(fetch(fs, options)
         .then(response => {
