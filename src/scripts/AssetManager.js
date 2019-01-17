@@ -7,7 +7,9 @@ const AssetManager = (function () {
     let instance = {
         shaders: {},
         fonts: {},
-        textures: {}
+        textures: {},
+        json: {},
+        achievements: {}
     }
     const baseDir = "assets/"
 
@@ -85,8 +87,28 @@ const AssetManager = (function () {
         })
         .catch(err => Promise.reject(Error(err.message))))
 
+
+    // JSON achievement
+    promises.push(new Promise((resolve, reject) => {
+        readJSON("achievements")
+            .then(() => {
+                // Load all the images
+                for (let key in instance.json.achievements) {
+                    let achievement = instance.json.achievements[key]
+                    if (achievement.image && achievement.imageExtension)
+                        promises.push(waitTexture(achievement.image, achievement.imageExtension, "textures", "achievements"))
+                }
+                resolve()
+            })
+            .catch(reject)
+    }))
+    promises.push(waitTexture("default", ".png", "textures", "achievements"))
+
     // Return value
-    Promise.all(promises).then(() => ready = true)
+    Promise.all(promises)
+        .then(() => ready = true)
+        .catch(err => console.error(err))
+
     return {
         Get: () => {
             if (ready)
@@ -97,15 +119,21 @@ const AssetManager = (function () {
     }
 
     // Utils
-    function waitTexture(filename) {
-        const path = baseDir + "textures/" + filename + ".png"
+    function waitTexture(filename, ext = ".png", folder = "textures", subfolder = "") {
+        let path = baseDir + folder + "/"
+        if (subfolder)
+            path += subfolder + "/"
+        path += filename + ext
         return new Promise((resolve, reject) => {
             new THREE.TextureLoader()
                 .setCrossOrigin(true)
                 .load(
                     path,
                     (texture) => {
-                        instance.textures[filename] = texture
+                        if (subfolder)
+                            instance[subfolder][filename] = texture
+                        else
+                            instance[folder][filename] = texture
                         resolve(texture)
                     },
                     undefined,
@@ -114,6 +142,30 @@ const AssetManager = (function () {
                         reject(err)
                     }
                 )
+        })
+    }
+
+    function readJSON(filename) {
+        const path = baseDir + "data/" + filename + ".json"
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest()
+            xhr.open("GET", path, true)
+            xhr.responseType = "blob"
+            xhr.onload = function () {
+                if (this.status == 200) {
+                    let file = new File([this.response], "temp")
+                    let fileReader = new FileReader()
+                    fileReader.addEventListener("load", (r) => {
+                        let json = JSON.parse(r.target.result)
+                        instance.json[filename] = json
+                        resolve(json)
+                    })
+                    fileReader.readAsText(file)
+                } else {
+                    reject(this)
+                }
+            }
+            xhr.send()
         })
     }
 })()

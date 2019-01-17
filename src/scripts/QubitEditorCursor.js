@@ -53,6 +53,9 @@ class QubitEditorCursor {
             try {
                 let newQubit = new Qubit(this.cursor.position)
                 ThreeViewControllerInstance.addObjectToScene(newQubit.object)
+
+                // Achievement
+                AchievementManager.Get().obtained("firstStep")
             } catch (exception) {
                 console.info(exception)
             }

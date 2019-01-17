@@ -24,7 +24,13 @@
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "no-unreachable": "off"
     },
-    "globals": {"THREE": true}
+    "globals": {
+        "THREE": true,
+        "AssetManager": true,
+        "AchievementManager": true,
+        "iziToast": true
+    }
 }
