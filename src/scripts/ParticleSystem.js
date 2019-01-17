@@ -37,6 +37,8 @@ class ParticleSystem {
         this._geometryBuffer = new THREE.BufferGeometry()
         this._geometryBuffer.dynamic = true
         this._geometryBuffer.addAttribute("position", this._positionAttributeBuffer)
+        this._geometryBuffer.setDrawRange(0, 0)
+        this._geometryBuffer.computeBoundingSphere()
 
         this._particlesGroup = new THREE.Group()
 
