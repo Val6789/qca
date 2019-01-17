@@ -78,51 +78,24 @@ class ThreeViewController {
         this._willRender = true
     }
 
-	/**
-	 * @brief creates the skybox
-	 * @param kind "" or "_light"
-	 */
-	addSkybox(kind = "") {
-		let reflectionCubeTexture = AssetManager.Get().textures.skybox
-		reflectionCubeTexture.format = THREE.RGBFormat
-
-		let shader = THREE.ShaderLib["cube"]
-		shader.uniforms["tCube"].value = reflectionCubeTexture
-
-		let material = new THREE.ShaderMaterial({
-			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader,
-			uniforms: shader.uniforms,
-			depthWrite: false,
-			side: THREE.BackSide
-		})
-
-		const s = 500
-		let mesh = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), material)
-		mesh.name = "Skybox"
-		this.scene.add(mesh)
-	}
 
 	/**
 	 * @brief set light/dark mode
 	 * @param mode true = light, false = dark
 	 */
 	setLightmode(mode) {
-		this.lightMode = mode
+        this.lightMode = mode
+
+        if (!this.skybox) 
+            this.skybox = new Skybox()
 		
-		const skybox = this._scene.getObjectByName("Skybox")
-		this._scene.remove(skybox)
-		
-		if(this.lightMode)
-		{
-			this.addSkybox("_light")
+		if(this.lightMode) {
+			this.skybox.style = Skybox.styles.LIGHT
 			this._scene.fog = new THREE.FogExp2(0xffffff, 0.005)
 			document.body.classList.remove("mode-dark")
 			document.body.classList.add("mode-light")
-		}
-		else
-		{
-			this.addSkybox()
+		} else {
+            this.skybox.style = Skybox.styles.DEFAULT
 			this._scene.fog = new THREE.FogExp2(0x000000, 0.005)
 			document.body.classList.remove("mode-light")
 			document.body.classList.add("mode-dark")
@@ -140,6 +113,7 @@ class ThreeViewController {
         this._renderer
         this._willRender = false
         this._onRenderObservers = []
+        this._skybox
 
         // init members
         this._setScene()

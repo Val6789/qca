@@ -8,15 +8,10 @@
     AssetManager,
     ToolboxControllerInstance,
     InputBlock,
-    QubitEditorCursor,
+    QubitEditor,
     AchievementManager
 */
 AssetManager.Create().then(() => {
-    console.log("Assets:", AssetManager.Get())
-
-    // Achivement
-    console.log("Achievements:", AchievementManager.Get())
-
     ThreeViewControllerInstance.init()
     Dot.init()
     Electron.init()
@@ -31,13 +26,12 @@ AssetManager.Create().then(() => {
 
     setInterval(() => { test.polarity = !test.polarity }, 1000)
 
-    new QubitEditorCursor()
+    new QubitEditor()
 
     AchievementManager.Get().obtained("missionOne")
 
     ToolboxControllerInstance.init()
-
-
+    QubitEditorInstance.init()
 })
 
 
