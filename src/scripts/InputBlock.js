@@ -29,18 +29,18 @@ class InputBlock {
     }
 
     static init() {
-        InputBlock.positiveParticles = new ParticleSystem(this._getSolidMaterial())
-        InputBlock.negativeParticles = new ParticleSystem(this._getSolidMaterial())
+        InputBlock.positiveParticles = new ParticleSystem(this._getSolidMaterial("positive_input"))
+        InputBlock.negativeParticles = new ParticleSystem(this._getSolidMaterial("negative_input"))
 
         InputBlock.positiveInstances = []
         InputBlock.negativeInstances = []
     }
 
-    static _getSolidMaterial() {
+    static _getSolidMaterial(textureName) {
         return new THREE.PointsMaterial({
-            size: 1,
+            size: 0.7,
             sizeAttenuation: true,
-            map: AssetManager.Get().textures.electron,
+            map: AssetManager.Get().textures[textureName],
             transparent: false,
             alphaTest: 0.1
         })

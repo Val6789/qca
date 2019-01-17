@@ -3,7 +3,7 @@
 
 class QubitEditorCursor {
 
-    mousemoveHandler(event) {
+    _mousemoveHandler(event) {
         if (!this.grid) return
 
         // get mouse position
@@ -38,7 +38,19 @@ class QubitEditorCursor {
     }
 
 
-    clickHandler() {
+    _checkForSpace() {
+        var occupied = false
+        // check if place is occupied
+        occupied |= Qubit.instances.some(qubit => qubit.position.equals(this.cursor.position))
+        occupied |= InputBlock.positiveInstances.some(positiveInput => positiveInput.position.equals(this.cursor.position))
+        occupied |= InputBlock.negativeInstances.some(negativeInput => negativeInput.position.equals(this.cursor.position))
+
+        return occupied
+    }
+
+
+    _clickHandler() {
+        if (this._checkForSpace()) return;
         try{
             switch (QubitEditorCursor.canEdit) {
                 case QubitEditorCursor.canEditEnumeration.QUBIT:   
@@ -59,7 +71,7 @@ class QubitEditorCursor {
     }
 
 
-    makeCursor() {
+    _makeCursor() {
         // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(QubitEditorCursor.SIZE, QubitEditorCursor.HEIGHT, QubitEditorCursor.SIZE)
 
@@ -74,7 +86,7 @@ class QubitEditorCursor {
     }
 
 
-    makeGrid() {
+    _makeGrid() {
         this.grid = new Grid(AssetManager.Get().fonts.optimer)
         ThreeViewControllerInstance.addObjectToScene(this.grid.object)
         ThreeViewControllerInstance.callbackOnRender(() => {
@@ -82,16 +94,17 @@ class QubitEditorCursor {
         })
     }
 
+
     constructor() {
-        document.addEventListener("mousemove", ev => this.mousemoveHandler(ev))
-        document.addEventListener("mouseup", () => this.clickHandler())
+        document.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
+        document.addEventListener("mouseup", () => this._clickHandler())
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
         this.camera = ThreeViewControllerInstance.camera
 
-        this.makeCursor()
-        this.makeGrid()
+        this._makeCursor()
+        this._makeGrid()
     }
 }
 
