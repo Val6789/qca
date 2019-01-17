@@ -62,6 +62,44 @@ class ToolboxController {
             console.log("erase mode.")
         })
     }
+    
+    _setValuesCheckbox() {
+		const checkbox = document.getElementById("check-values")
+		checkbox.onclick = function() {
+			if(checkbox.checked) {
+				// on every qbit, write label
+			}
+			else {
+				// on every qbit
+				// this.object.remove(this.object.getObjectByName("ValueText"))
+			}
+		}
+	}
+    
+    _setOutlinesCheckbox() {
+		const checkbox = document.getElementById("check-outlines")
+		checkbox.onclick = function() {
+			if(checkbox.checked) {
+				// on every qbit, add outline
+			}
+			else {
+				// on every qbit
+				// this.object.remove(this.object.getObjectByName("Outline"))
+			}
+		}
+	}
+    
+    _setFieldsCheckbox() {
+		const checkbox = document.getElementById("check-fields")
+		checkbox.onclick = function() {
+			if(checkbox.checked) {
+				// on every qbit, rm field
+			}
+			else {
+				//
+			}
+		}
+	}
 
     init() {
         this._setCameraButton()
@@ -69,6 +107,10 @@ class ToolboxController {
         this._setNegativeInputButton()
         this._setPositiveInputButton()
         this._setEraserButton()
+        
+        this._setValuesCheckbox()
+        this._setOutlinesCheckbox()
+        this._setFieldsCheckbox()
     }
 
     constructor() {
