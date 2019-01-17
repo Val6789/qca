@@ -10,7 +10,7 @@
     "missionOne": {
         "fullname": "Mission one",
         "fullfilled": false,
-        "description": "Complete the first mission",
+        "description": "Complete the first mission !",
         "message": "You got it ! First mission done ! Keep going"
     }
 }

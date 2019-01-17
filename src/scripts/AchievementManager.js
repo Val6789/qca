@@ -17,6 +17,7 @@ const AchievementManager = (function () {
 
     const DEBUG = false
     let instance
+    let observers = []
 
     /* ================== PUBLIC ================== */
     const load = () => {
@@ -72,6 +73,9 @@ const AchievementManager = (function () {
             if (!instance)
                 return create()
             else return instance
+        },
+        OnReady: (callback) => {
+            observers.push(callback)
         }
     }
 
@@ -90,6 +94,10 @@ const AchievementManager = (function () {
             console.info("%cDebug messages are displayed for the AchievementManager, change the 'const DEBUG' to false to disable them.", "font-weight: bold;")
             console.info("In order, to load new achievements from the 'achievement.json file, you need to manually call AchivementManager.Get().wipe() then AchivementManager.Get().load() or reload the page.\nIf you don't wipe, data are loaded from the localStorage and ignore the json file")
         }
+
+        observers.forEach((callback) => {
+            callback()
+        })
 
 
         return instance
