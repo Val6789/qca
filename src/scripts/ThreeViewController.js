@@ -79,6 +79,32 @@ class ThreeViewController {
     }
 
 
+	/**
+	 * @brief set light/dark mode
+	 * @param mode true = light, false = dark
+	 */
+	setLightmode(mode) {
+		this.lightMode = mode
+		
+		//~ const skybox = this.scene.getObjectByName("Skybox")
+		//~ this.scene.remove(skybox)
+		
+		if(this.lightMode)
+		{
+			//~ this.addSkybox("_light")
+			this.scene.fog = new THREE.FogExp2(0xffffff, 0.005)
+			document.body.classList.remove("mode-dark")
+			document.body.classList.add("mode-light")
+		}
+		else
+		{
+			//~ this.addSkybox()
+			this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
+			document.body.classList.remove("mode-light")
+			document.body.classList.add("mode-dark")
+		}
+	}
+
     /**
      * @brief class initializer, to be called after DOM and Asset loading 
      */
