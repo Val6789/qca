@@ -1,5 +1,5 @@
 // Classes
-		
+
 class Qbit {
 	constructor(x,y, value = 0,load=1,fixed = false) {
 		this.x = x;
@@ -20,20 +20,20 @@ class Qbit {
 	approximateProcess(s) { // QCADesigner approximation method
 		if(this.visited) return this.nextValue;
 		this.visited = true;
+		this.ekij = Qbit.i++;
 		if(!this.fixed) {
 			var Ekij = this.load; 		// Kink energy between cells 
 			var gamma =1;		// Tunneling potential
 			var SigmaPj = 0;	// Sum of polarisation of the neighbourgs
 			var neighbour = s.getNeighbour(this.x,this.y);
 			for(var n of neighbour) {
-				Ekij += ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1)
+				//Ekij += ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1)
 				SigmaPj += (n.process(s)*n.load)*((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1);
 			}
-			this.ekij = Ekij;
 			var numerator = ((Ekij/(2*gamma)) * SigmaPj);
 			this.nextValue = numerator / Math.sqrt(1+Math.pow(numerator,2));
 		}
-		return this.value*10;
+		return this.nextValue;
 	}
 	AVGprocess(s) { // Simple weighted Average
 		if(this.visited) return this.nextValue;
@@ -61,14 +61,14 @@ class Qbit {
 		return 'x'+this.x+'y'+this.y;
 	}
 	inverseValue() {
-		if(this.fixed) this.value = this.trueValue = (this.trueValue<0?1:-1);
+		if(this.fixed) this.value = this.nextValue = this.trueValue = (this.trueValue<0?1:-1);
 	}
 	getValue() {
 		if(this.value == 1) return 1
 		return 0
 	}
 }
-
+Qbit.i = 0;
 class Ask extends Qbit {
 	constructor(x,y) {
 		super(x,y,0,0,false)
@@ -131,6 +131,7 @@ class Scene {
 		return f;
 	}
 	process(){
+		Qbit.i = 0;
 		this.ask.visited = false;
 		if(this.ask) {
 			this.ask.process(this);
