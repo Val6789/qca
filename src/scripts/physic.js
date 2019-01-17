@@ -9,28 +9,37 @@ class Qbit {
 		this.nextValue = value;
 		this.fixed = fixed;
 		this.load = load;
+		this.ekij = 0;
 
 		this.visited = false;
 	}
-	/*process(s) { // QCADesigner method
+	process(s) {
+		return this.approximateProcess(s)
+		//return this.AVGprocess(s)
+	}
+	approximateProcess(s) { // QCADesigner approximation method
 		if(this.visited) return this.nextValue;
 		this.visited = true;
 		if(!this.fixed) {
-			var Ekij = this.load;
-			var gamma =0.1;
-			var SigmaPj = 0;
+			var Ekij = this.load; 		// Kink energy between cells 
+			var gamma =1;		// Tunneling potential
+			var SigmaPj = 0;	// Sum of polarisation of the neighbourgs
 			var neighbour = s.getNeighbour(this.x,this.y);
-			for(var n of neighbour) SigmaPj += (n.process(s)*n.load * ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1));
+			for(var n of neighbour) {
+				Ekij += ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1)
+				SigmaPj += (n.process(s)*n.load)*((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1);
+			}
+			this.ekij = Ekij;
 			var numerator = ((Ekij/(2*gamma)) * SigmaPj);
 			this.nextValue = numerator / Math.sqrt(1+Math.pow(numerator,2));
 		}
-		return this.value;
-	}*/
-	process(s) { // Simple weighted Average
+		return this.value*10;
+	}
+	AVGprocess(s) { // Simple weighted Average
 		if(this.visited) return this.nextValue;
 		this.visited = true;
 		if(!this.fixed) {
-			var avg = 0;
+			var avg = 0, curNeighVal = 0;
 			var neighbour = s.getNeighbour(this.x,this.y);
 			for(var n of neighbour)	avg += (n.process(s)*n.load * ((Math.abs(this.x - n.x) + Math.abs(this.y - n.y))>1?-0.2:1));
 			if(neighbour.length == 0) this.nextValue = 0;
@@ -44,7 +53,8 @@ class Qbit {
 		if(!this.fixed)
 		{
 			this.trueValue = this.nextValue;
-			this.value = (this.trueValue<0?-1:1)
+			if(this.trueValue == 0) this.value = 0
+			else this.value = (this.trueValue<0?-1:1)
 		}
 	}
 	id() {
