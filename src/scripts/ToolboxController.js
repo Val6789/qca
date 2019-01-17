@@ -9,26 +9,26 @@ class ToolboxController {
         return button
     }
 
-    static setCameraButton(threeViewController) {
+    static setCameraButton() {
         const buttonId = "get-camera"
         ToolboxController.cameraButton = this.setButton(buttonId, () => {
-            threeViewController.orbitControls.enabled = true
+            ThreeViewControllerInstance.orbitControls.enabled = true
             QubitEditorCursor.canEdit = false
             console.log("camera mode.")
         })
     }
 
-    static setQubitButton(threeViewController) {
+    static setQubitButton() {
         const buttonId = "place-qubits"
         ToolboxController.qubitButton = this.setButton(buttonId, () => {
-            threeViewController.orbitControls.enabled = false
+            ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorCursor.canEdit = true
             console.log("edit mode.")
         })
     }
 
-    static init(threeViewController) {
-        ToolboxController.setCameraButton(threeViewController)
-        ToolboxController.setQubitButton(threeViewController)
+    static init() {
+        ToolboxController.setCameraButton()
+        ToolboxController.setQubitButton()
     }
 }
