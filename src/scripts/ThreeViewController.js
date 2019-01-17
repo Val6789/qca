@@ -81,7 +81,8 @@ class ThreeViewController {
 
 	/**
 	 * @brief set light/dark mode
-	 * @param mode true = light, false = dark
+     * @todo move this out of there. Light mode has nothing to do whith tree and thus should not be in threecontroller
+	 * @param {Boolean} mode true = light, false = dark
 	 */
 	setLightmode(mode) {
         this.lightMode = mode
