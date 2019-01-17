@@ -18,9 +18,14 @@ AssetManager.Create().then(() => {
     Electron.init()
     InputBlock.init()
 
-    ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 0))).object)
+    Qubit.startDeterminationUpdateLoop()
+
+    var test = new Qubit(new THREE.Vector3(0, 0, 0))
+    ThreeViewControllerInstance.addObjectToScene(test.object)
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 3))).object)
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(-3, 0, -3))).object)
+
+    setInterval(() => { test.polarity = !test.polarity }, 1000)
 
     new QubitEditorCursor()
 })
