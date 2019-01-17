@@ -12,7 +12,7 @@ class InputBlock {
             InputBlock.negativeInstances.splice(InputBlock.negativeInstances.indexOf(this), 1)
             InputBlock.negativeParticles.positions = InputBlock.negativeInstances.map(block => block.position)
         }
-        ThreeViewControllerInstance.shouldRender()
+        ThreeViewControllerInstance.removeObjectFromScene(removed.object) // will call render
     }
 
     constructor(position, polarity) {

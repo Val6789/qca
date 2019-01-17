@@ -57,6 +57,15 @@ class ThreeViewController {
         this.shouldRender()
     }
 
+    /**
+     * @brief Removes object from scene
+     * @param {THREE.Object3D} object 
+     */
+    removeObjectFromScene(object) {
+        this._scene.remove(object)
+        this.shouldRender()
+    }
+
 
     /**
      * @brief suggests controller to render the scene soon

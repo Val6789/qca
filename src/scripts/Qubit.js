@@ -53,7 +53,7 @@ class Qubit {
         const removed = Qubit.instances.splice(Qubit.instances.indexOf(this), 1)[0]
         removed.dots.forEach(dot => dot.remove())
         removed.electrons.forEach(electron => electron.remove())
-        ThreeViewControllerInstance.shouldRender()
+        ThreeViewControllerInstance.removeObjectFromScene(removed.object) // will call render
     }
 
     constructor(position = new THREE.Vector3()) {
