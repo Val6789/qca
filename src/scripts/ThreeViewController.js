@@ -25,6 +25,7 @@ class ThreeViewController {
         return this._scene
     }
 
+
     /**
      * @brief Camera getter
      */
@@ -32,12 +33,14 @@ class ThreeViewController {
         return this._camera
     }
 
+
     /**
      * @brief Orbit getter
      */
     get orbitControls() {
         return this._orbit
     }
+
 
     /**
      * @brief adds observer method to the render-observers-collection
@@ -56,6 +59,7 @@ class ThreeViewController {
         this._scene.add(object)
         this.shouldRender()
     }
+
 
     /**
      * @brief Removes object from scene
@@ -85,23 +89,26 @@ class ThreeViewController {
 	 * @param {Boolean} mode true = light, false = dark
 	 */
 	setLightmode(mode) {
-        this.lightMode = mode
-
+        // creates skybox if undefined
         if (!this.skybox) 
             this.skybox = new Skybox()
-		
-		if(this.lightMode) {
+        
+        
+		if(mode) {
+            // Light mode
 			this.skybox.style = Skybox.styles.LIGHT
 			this._scene.fog = new THREE.FogExp2(0xffffff, 0.005)
 			document.body.classList.remove("mode-dark")
 			document.body.classList.add("mode-light")
 		} else {
+            // Dark mode
             this.skybox.style = Skybox.styles.DEFAULT
 			this._scene.fog = new THREE.FogExp2(0x000000, 0.005)
 			document.body.classList.remove("mode-light")
 			document.body.classList.add("mode-dark")
 		}
-	}
+    }
+    
 
     /**
      * @brief class initializer, to be called after DOM and Asset loading 
@@ -125,7 +132,9 @@ class ThreeViewController {
     }
 
 
-    // Private method rendering the scenes after calling the observers
+    /** 
+     * @brief Private method rendering the scenes after calling the observers 
+     */
     _render() {
         this._onRenderObservers.forEach(callback => callback())
         this._renderer.render(this._scene, this._camera)
@@ -133,7 +142,9 @@ class ThreeViewController {
     }
 
 
-    // Reset viewport parameters when the window is resized
+    /**
+     *  @brief Private method. Informs the renderer of aspect ratio changes
+     */
     _resetViewport() {
         const parent = this._renderer.domElement.parentElement
         const width = parent.clientWidth
@@ -145,8 +156,11 @@ class ThreeViewController {
     }
 
 
-    // Initialize Camera and Orbit members
+    /**
+     * @brief Camera initializer
+     */
     _setCamera() {
+        // constants
         const fieldOfView = 70
         const nearField = 0.1
         const farField = 1000
@@ -156,18 +170,24 @@ class ThreeViewController {
         this._camera.position.x = 5
         this._camera.position.y = 8
 
+        // update camera and render when user resizes the window
         window.addEventListener("resize", () => {
             this._resetViewport()
         })
     }
 
 
-    // initialize scene member
+    /**
+     * @brief Scene initialize
+     */
     _setScene() {
+        // doesn't do much really
         this._scene = new THREE.Scene()
     }
 
-    // initialize renderer member
+    /**
+     * @brief Renderer initializer
+     */
     _setRenderer() {
         const viewportElementId = "viewport"
 
@@ -180,19 +200,26 @@ class ThreeViewController {
         this._resetViewport()
     }
 
-    // initialize orbit
+
+    /**
+     * @brief Orbital camera control initializer
+     */
     _setOrbit() {
         this._orbit = new THREE.OrbitControls(this._camera)
-        this._orbit = new THREE.OrbitControls(this.camera)
+
         this._orbit.minDistance = 0.75;
         this._orbit.maxDistance = 25;
 
+        // render on camera movements
         this._orbit.addEventListener("change", () => {
             this._render()
         })
     }
 
 
+    /**
+     * @brief Singleton constructor
+     */
     constructor() {
         if (!ThreeViewController.instance) {
             ThreeViewController.instance = this
