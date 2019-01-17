@@ -1,5 +1,13 @@
-/* global THREE:true, AssetManager:true */
-/* exported Electron */
+/* 
+    global
+    THREE, 
+    AssetManager,
+    ThreeViewControllerInstance
+*/
+/* 
+    exported 
+    Electron
+*/
 
 class Electron {
     get position() {
@@ -27,7 +35,7 @@ class Electron {
     static _reloadParticuleGeometryBuffer() {
         // makes array of all the values of each position vector
         let positionArray = Electron.instances.reduce((buffer, electron) => buffer.concat(electron.position.toArray()), [])
-        
+
         // overwrite the geometry buffer with new values
         let attributeBuffer = Electron._particuleGeometryBuffer.getAttribute("position")
         attributeBuffer.set(positionArray, 0)
@@ -36,7 +44,7 @@ class Electron {
         // update buffer size
         Electron._particuleGeometryBuffer.setDrawRange(0, Electron.instances.length)
         Electron._particuleGeometryBuffer.computeBoundingSphere()
-        
+
         // turn off the calling flag
         Electron.bufferNeedsUpdate = false
     }
@@ -62,9 +70,9 @@ class Electron {
             shapeOverlay: new THREE.Points(Electron._particuleGeometryBuffer, Electron._getSolidMaterial()),
             influenceOverlay: new THREE.Points(Electron._particuleGeometryBuffer, Electron._getInfluenceMaterial())
         }
-        
+
         // add particle systems to the scene
-        for (name in Electron.overlays) {
+        for (let name in Electron.overlays) {
             ThreeViewControllerInstance.addObjectToScene(Electron.overlays[name])
         }
 
@@ -90,12 +98,12 @@ class Electron {
                     value: 0.5
                 }
             },
-            transparent : true,
-            opacity : 0.5,
-            blending : THREE.AdditiveBlending,
-            depthWrite : false,
-            depthTest : true,
-            depthFunc : THREE.NeverDepth
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            depthTest: true,
+            depthFunc: THREE.NeverDepth
         })
     }
 

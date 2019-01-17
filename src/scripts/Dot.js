@@ -1,5 +1,13 @@
-/* global THREE:true, AssetManager:true */
-/* exported Dot */
+/* 
+    global 
+    THREE,
+    AssetManager,
+    ThreeViewControllerInstance
+*/
+/* 
+    exported 
+    Dot 
+*/
 
 class Dot {
 
@@ -12,7 +20,7 @@ class Dot {
         // properties
         this.relativeQubitPosition = new THREE.Vector3(offsetX, 0, offsetZ)
         this.parentQubit = qubit
-        
+
         // insert new particle in the geometry attribute buffer
         let attributesBuffer = Dot._particuleGeometryBuffer.getAttribute("position")
         attributesBuffer.set(this.position.toArray(), Dot.instances.length * 3)
@@ -28,7 +36,7 @@ class Dot {
     static _reloadParticuleGeometryBuffer() {
         // makes array of all the values of each position vector
         let positionArray = Dot.instances.reduce((buffer, dot) => buffer.concat(dot.position.toArray()), [])
-                
+
         // overwrite the geometry buffer with new values
         let attributeBuffer = Dot._particuleGeometryBuffer.getAttribute("position")
         attributeBuffer.set(positionArray, 0)
@@ -37,7 +45,7 @@ class Dot {
         // update buffer size
         Dot._particuleGeometryBuffer.setDrawRange(0, Dot.instances.length)
         Dot._particuleGeometryBuffer.computeBoundingSphere()
-        
+
         // turn off the calling flag
         Dot._bufferNeedsUpdate = false
     }
@@ -52,7 +60,7 @@ class Dot {
         // attributes
         let positions = new Float32Array(MAX_POINTS * 3)
         let buffer = new THREE.BufferAttribute(positions, 3)
-        
+
         // geometry
         Dot._particuleGeometryBuffer = new THREE.BufferGeometry()
         Dot._particuleGeometryBuffer.dynamic = true
