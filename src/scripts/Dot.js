@@ -16,6 +16,12 @@ class Dot {
         return (new THREE.Vector3).addVectors(this.relativeQubitPosition, this.parentQubit.position)
     }
 
+    remove() {
+        Dot.instances.splice(Dot.instances.indexOf(this), 1)
+        Dot.particles.positions = Dot.instances.map(dot => dot.position)
+        ThreeViewControllerInstance.shouldRender()
+    }
+
     constructor(offsetX, offsetZ, qubit) {
         // properties
         this.relativeQubitPosition = new THREE.Vector3(offsetX, 0, offsetZ)
@@ -34,11 +40,6 @@ class Dot {
 
         // create particle system
         Dot.particles = new ParticleSystem(Dot._getSolidMaterial())
-
-        // add callback on render to check for updates
-        ThreeViewControllerInstance.callbackOnRender(() => {
-            if (Dot.needsUpdate) Dot.particles.reloadPositions(Dot.instances.map(dot => dot.position))
-        })
     }
 
     static _getSolidMaterial() {

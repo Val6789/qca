@@ -14,6 +14,13 @@ class Electron {
         return this.dot.position
     }
 
+    
+    remove() {
+        Electron.instances.splice(Electron.instances.indexOf(this), 1)
+        Electron.particles.positions = Electron.instances.map(electron => electron.position)
+        ThreeViewControllerInstance.shouldRender()
+    }
+
     constructor(dot) {
         //properties 
         this.dot = dot
@@ -27,12 +34,6 @@ class Electron {
         // init the instances object
         Electron.instances = []
         Electron.particles = new ParticleSystem([this._getSolidMaterial(), this._getInfluenceMaterial()])
-
-        // add callback on render to check for updates
-        ThreeViewControllerInstance.callbackOnRender(() => {
-            if (Electron.bufferNeedsUpdate)
-                Electron.particles.reloadParticules(Electron.instances.map(electron => electron.position))
-        })
     }
 
     static _getInfluenceMaterial() {

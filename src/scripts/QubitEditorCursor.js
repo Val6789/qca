@@ -58,22 +58,34 @@ class QubitEditorCursor {
         return occupied
     }
 
+    _getBlockOnCursor() {
+        const allBlocks = [].concat(Qubit.instances, InputBlock.negativeInstances, InputBlock.positiveInstances)
+        return allBlocks.find(block => block.position.equals(this.cursor.position))
+    }
+
 
     _clickHandler() {
-        if (this._checkForSpace()) return;
         try{
             switch (QubitEditorCursor.canEdit) {
                 case QubitEditorCursor.canEditEnumeration.QUBIT:   
-                    new Qubit(this.cursor.position)
-                    break;
+                    if (this._checkForSpace()) return;
+                    return new Qubit(this.cursor.position)
+                    
                 
                 case QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT:
-                    new InputBlock(this.cursor.position, -1)
-                    break;
+                    if (this._checkForSpace()) return;
+                    return new InputBlock(this.cursor.position, -1)
+                    
 
                 case QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT:
-                    new InputBlock(this.cursor.position, 1)
-                    break;
+                    if (this._checkForSpace()) return;
+                    return new InputBlock(this.cursor.position, 1)
+                    
+
+                case QubitEditorCursor.canEditEnumeration.REMOVE:
+                    if (!this._checkForSpace()) return;
+                    return this._getBlockOnCursor().remove()
+                    
             }
         } catch(exception) {
             console.info(exception)
@@ -126,6 +138,7 @@ QubitEditorCursor.canEditEnumeration = {
     QUBIT: 1,
     POSITIVE_INPUT: 2, 
     NEGATIVE_INPUT: 3,
-    OUTPUT: 4
+    OUTPUT: 4,
+    REMOVE: 5
 }
 QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NOTHING
