@@ -16,19 +16,50 @@ class Qubit extends Block {
     }
 
     get polarity() {
+        if (!this.isDetermined) return NaN
         // return value of qubit depending on electron position        
         if (this.electrons[0].dot === this.dots[0] && this.electrons[1].dot === this.dots[3])
             return 1
         if (this.electrons[0].dot === this.dots[1] && this.electrons[1].dot === this.dots[2])
             return 0
-        return NaN
+
+        throw console.error("marked as determined but with no polarisation.")
     }
 
-    update() {
-        let textValue = this.polarity != NaN ? this.polarity.toString() : "?"
-        this.setLabel(textValue)
+    set polarity(newValue) {
+        if (newValue == this.polarity) return
+
+        var label
+        switch (newValue) {
+            case 1: case true:
+                this.electrons[0].dot = this.dots[0]
+                this.electrons[1].dot = this.dots[3]
+                this.isDetermined = true
+                label = "1"
+                break;
+
+            case 0: case false:
+                this.electrons[0].dot = this.dots[1]
+                this.electrons[1].dot = this.dots[2]
+                this.isDetermined = true
+                label = "0"
+                break;
+            
+            default:
+                this.isDetermined = false
+                label = "?"
+        }
+
+        this.setLabel(label)
     }
 
+    _showUndetermination() {
+        if (this.isDetermined) return
+        this.electrons.forEach( electron => {
+            const randomIndex = Math.floor(Math.random() * this.dots.length)
+            electron.dot = this.dots[randomIndex]
+        })
+    }
 
     remove() {
         super.remove()
@@ -37,7 +68,7 @@ class Qubit extends Block {
         removed.electrons.forEach(electron => electron.remove())
     }
 
-    constructor(position = new THREE.Vector3()) {
+    constructor(position = new THREE.Vector3(), polarity = NaN) {
         super(position) // haha
 
         // create dots
@@ -56,13 +87,21 @@ class Qubit extends Block {
             new Electron(dots[2])
         ]
 
-        ThreeViewControllerInstance.addObjectToScene(this.object)
-        // create value label
-        this.update()
+        this.polarity = polarity
 
+        ThreeViewControllerInstance.addObjectToScene(this.object)
         Qubit.instances.push(this)
+    }
+
+    static startDeterminationUpdateLoop() {
+        setInterval(() => {
+            Qubit.instances.forEach(qubit => { 
+                qubit._showUndetermination() 
+            })
+        }, Qubit.UNDETERMINED_REFRESH_RATE)        
     }
 }
 
+Qubit.UNDETERMINED_REFRESH_RATE = 300 // seconds
 Qubit.DOT_DIST = 0.2
 Qubit.instances = []

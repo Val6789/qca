@@ -11,19 +11,26 @@
 
 class Electron {
     get position() {
-        return this.dot.position
+        return this._dot.position
     }
 
+    get dot() {
+        return this._dot
+    }
+
+    set dot(newDot) {
+        this._dot = newDot
+        Electron._updateParticles()
+    }
     
     remove() {
         Electron.instances.splice(Electron.instances.indexOf(this), 1)
-        Electron.particles.positions = Electron.instances.map(electron => electron.position)
-        ThreeViewControllerInstance.shouldRender()
+        Electron._updateParticles()
     }
 
     constructor(dot) {
         //properties 
-        this.dot = dot
+        this._dot = dot
         this.charge = 1.0
 
         Electron.particles.addAt(this.position)
@@ -34,6 +41,11 @@ class Electron {
         // init the instances object
         Electron.instances = []
         Electron.particles = new ParticleSystem([this._getSolidMaterial(), this._getInfluenceMaterial()])
+    }
+
+    static _updateParticles() {
+        Electron.particles.positions = Electron.instances.map(electron => electron.position)
+        ThreeViewControllerInstance.shouldRender()
     }
 
     static _getInfluenceMaterial() {

@@ -1,4 +1,4 @@
-/* global THREE:true, QubitEditorCursor:true */
+/* global THREE:true, QubitEditor:true */
 /* exported ToolboxController */
 
 class ToolboxController {
@@ -13,7 +13,7 @@ class ToolboxController {
         const buttonId = "get-camera"
         ToolboxController.cameraButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = true
-            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NOTHING
+            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
             console.log("camera mode.")
         })
     }
@@ -22,7 +22,7 @@ class ToolboxController {
         const buttonId = "place-qubits"
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
-            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.QUBIT
+            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
             console.log("add qubit.")
         })
     }
@@ -31,7 +31,7 @@ class ToolboxController {
         const buttonId = "place-positive-input"
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
-            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT
+            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.POSITIVE_INPUT
             console.log("add 1 input.")
         })
     }
@@ -40,7 +40,7 @@ class ToolboxController {
         const buttonId = "place-negative-input"
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
-            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT
+            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
             console.log("add 0 input.")
         })
     }
@@ -49,7 +49,7 @@ class ToolboxController {
         const buttonId = "place-output"
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
-            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.OUTPUT
+            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
             console.log("add output.")
         })
     }
@@ -58,7 +58,7 @@ class ToolboxController {
         const buttonId = "eraser"
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
-            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.REMOVE
+            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
             console.log("erase mode.")
         })
     }
