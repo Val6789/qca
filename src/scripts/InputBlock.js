@@ -4,6 +4,17 @@ class InputBlock {
         return this.object.position;
     }
 
+    remove() {
+        if (this.polarity > 0) {
+            InputBlock.positiveInstances.splice(InputBlock.positiveInstances.indexOf(this), 1)
+            InputBlock.positiveParticles.positions = InputBlock.positiveInstances.map(block => block.position)
+        } else {
+            InputBlock.negativeInstances.splice(InputBlock.negativeInstances.indexOf(this), 1)
+            InputBlock.negativeParticles.positions = InputBlock.negativeInstances.map(block => block.position)
+        }
+        ThreeViewControllerInstance.shouldRender()
+    }
+
     constructor(position, polarity) {
         if (polarity == 0) throw console.error("Input block cannot have zero values")
         this.polarity = polarity
@@ -34,6 +45,8 @@ class InputBlock {
 
         InputBlock.positiveInstances = []
         InputBlock.negativeInstances = []
+
+        InputBlock.particlesNeedUpdate = 0
     }
 
     static _getSolidMaterial(textureName) {

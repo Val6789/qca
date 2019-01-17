@@ -6,11 +6,18 @@ class ParticleSystem {
         this._setPositionBuffer(position.toArray(), this._particulesCount * this.ATTRIBUTE_SIZE)
     }
 
-    reloadPositions(positions) {
+    /**
+     * @param {Array<THREE.Vector3>} positions
+     */
+    set positions(positions) {
+        this._updateBuffer = positions
+    }
+
+    _reloadPositions(positions) {
         if(this.MAX_POINTS < positions.length * this.ATTRIBUTE_SIZE)
            throw console.warn("No more space in particle system")
 
-        let reducedPositionArray = positions.reduce((buffer, electron) => buffer.concat(positions.toArray()), [])
+        let reducedPositionArray = positions.reduce((buffer, position) => buffer.concat(position.toArray()), [])
         this._setPositionBuffer(reducedPositionArray, 0)
     }
 
@@ -29,9 +36,12 @@ class ParticleSystem {
     constructor(materials = [], maximumParticlesCount = 1000, attributeSize = 3) {
         this.MAX_POINTS = maximumParticlesCount
         this.ATTRIBUTE_SIZE = attributeSize
+        
 
         let array = new Float32Array(this.MAX_POINTS * this.ATTRIBUTE_SIZE)
         this._particulesCount = 0
+
+        this._updateBuffer = null
 
         this._positionAttributeBuffer = new THREE.BufferAttribute(array, this.ATTRIBUTE_SIZE)
         this._geometryBuffer = new THREE.BufferGeometry()
@@ -52,5 +62,10 @@ class ParticleSystem {
         })
 
         ThreeViewControllerInstance.addObjectToScene(this._particlesGroup)
+
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            if (this._updateBuffer) this._reloadPositions(this._updateBuffer)
+            this._updateBuffer = null
+        })
     }
 }

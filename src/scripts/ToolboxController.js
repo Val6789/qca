@@ -23,7 +23,7 @@ class ToolboxController {
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.QUBIT
-            console.log("edit mode.")
+            console.log("add qubit.")
         })
     }
 
@@ -32,7 +32,7 @@ class ToolboxController {
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT
-            console.log("edit mode.")
+            console.log("add 1 input.")
         })
     }
 
@@ -41,7 +41,7 @@ class ToolboxController {
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT
-            console.log("edit mode.")
+            console.log("add 0 input.")
         })
     }
 
@@ -50,7 +50,16 @@ class ToolboxController {
         ToolboxController.qubitButton = this._setButton(buttonId, () => {
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.OUTPUT
-            console.log("edit mode.")
+            console.log("add output.")
+        })
+    }
+
+    _setEraserButton() {
+        const buttonId = "eraser"
+        ToolboxController.qubitButton = this._setButton(buttonId, () => {
+            ThreeViewControllerInstance.orbitControls.enabled = false
+            QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.REMOVE
+            console.log("erase mode.")
         })
     }
 
@@ -59,6 +68,7 @@ class ToolboxController {
         this._setQubitButton()
         this._setNegativeInputButton()
         this._setPositiveInputButton()
+        this._setEraserButton()
     }
 
     constructor() {

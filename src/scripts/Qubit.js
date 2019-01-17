@@ -49,6 +49,13 @@ class Qubit {
         }
     }
 
+    remove() {
+        const removed = Qubit.instances.splice(Qubit.instances.indexOf(this), 1)[0]
+        removed.dots.forEach(dot => dot.remove())
+        removed.electrons.forEach(electron => electron.remove())
+        ThreeViewControllerInstance.shouldRender()
+    }
+
     constructor(position = new THREE.Vector3()) {
         const lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff
