@@ -27,10 +27,10 @@ const AssetManager = (function () {
     }))
 
     // Textures Loading
-    promises.push(waitTexture("circle"))
-    promises.push(waitTexture("disc"))
     promises.push(waitTexture("dot"))
     promises.push(waitTexture("electron"))
+    promises.push(waitTexture("positive_input"))
+    promises.push(waitTexture("negative_input"))
 
     // Skybox loading
     const createUrl = (name) => baseDir + "textures/skybox/" + name + ".png"

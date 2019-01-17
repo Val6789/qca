@@ -5,6 +5,7 @@
     Grid
     AssetManager
     ThreeViewControllerInstance
+    InputBlock
 */
 /* 
     exported 
@@ -13,7 +14,7 @@
 
 class QubitEditorCursor {
 
-    mousemoveHandler(event) {
+    _mousemoveHandler(event) {
         if (!this.grid) return
 
         // get mouse position
@@ -48,22 +49,64 @@ class QubitEditorCursor {
     }
 
 
-    clickHandler() {
-        if (QubitEditorCursor.canEdit) {
-            try {
-                let newQubit = new Qubit(this.cursor.position)
-                ThreeViewControllerInstance.addObjectToScene(newQubit.object)
+    _checkForSpace() {
+        var occupied = false
+        // check if place is occupied
+        occupied |= Qubit.instances.some(qubit => qubit.position.equals(this.cursor.position))
+        occupied |= InputBlock.positiveInstances.some(positiveInput => positiveInput.position.equals(this.cursor.position))
+        occupied |= InputBlock.negativeInstances.some(negativeInput => negativeInput.position.equals(this.cursor.position))
 
-                // Achievement
-                AchievementManager.Get().obtained("firstStep")
-            } catch (exception) {
-                console.info(exception)
+        return occupied
+    }
+
+    _getBlockOnCursor() {
+        const allBlocks = [].concat(Qubit.instances, InputBlock.negativeInstances, InputBlock.positiveInstances)
+        return allBlocks.find(block => block.position.equals(this.cursor.position))
+    }
+
+
+    _clickHandler() {
+        try {
+            switch (QubitEditorCursor.canEdit) {
+                case QubitEditorCursor.canEditEnumeration.QUBIT:
+                    if (this._checkForSpace())
+                        return
+                    else {
+                        // Achievement
+                        AchievementManager.Get().obtained("firstStep")
+                        return new Qubit(this.cursor.position)
+                    }
+
+
+
+                case QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT:
+                    if (this._checkForSpace())
+                        return
+                    else
+                        return new InputBlock(this.cursor.position, -1)
+
+                case QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT:
+                    if (this._checkForSpace())
+                        return
+                    else
+                        return new InputBlock(this.cursor.position, 1)
+
+
+                case QubitEditorCursor.canEditEnumeration.REMOVE:
+                    if (!this._checkForSpace())
+                        return
+                    else
+                        return this._getBlockOnCursor().remove()
+
+
             }
+        } catch (exception) {
+            console.info(exception)
         }
     }
 
 
-    makeCursor() {
+    _makeCursor() {
         // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(QubitEditorCursor.SIZE, QubitEditorCursor.HEIGHT, QubitEditorCursor.SIZE)
 
@@ -78,7 +121,7 @@ class QubitEditorCursor {
     }
 
 
-    makeGrid() {
+    _makeGrid() {
         this.grid = new Grid(AssetManager.Get().fonts.optimer)
         ThreeViewControllerInstance.addObjectToScene(this.grid.object)
         ThreeViewControllerInstance.callbackOnRender(() => {
@@ -86,20 +129,29 @@ class QubitEditorCursor {
         })
     }
 
+
     constructor() {
-        document.addEventListener("mousemove", ev => this.mousemoveHandler(ev))
-        document.addEventListener("mouseup", () => this.clickHandler())
+        document.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
+        document.addEventListener("mouseup", () => this._clickHandler())
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
         this.camera = ThreeViewControllerInstance.camera
 
-        this.makeCursor()
-        this.makeGrid()
+        this._makeCursor()
+        this._makeGrid()
     }
 }
 
 QubitEditorCursor.SIZE = 1
 QubitEditorCursor.HEIGHT = 0.3
 QubitEditorCursor.COLOR = 0x999999
-QubitEditorCursor.canEdit = false
+QubitEditorCursor.canEditEnumeration = {
+    NOTHING: 0,
+    QUBIT: 1,
+    POSITIVE_INPUT: 2,
+    NEGATIVE_INPUT: 3,
+    OUTPUT: 4,
+    REMOVE: 5
+}
+QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NOTHING

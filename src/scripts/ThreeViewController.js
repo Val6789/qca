@@ -57,6 +57,15 @@ class ThreeViewController {
         this.shouldRender()
     }
 
+    /**
+     * @brief Removes object from scene
+     * @param {THREE.Object3D} object 
+     */
+    removeObjectFromScene(object) {
+        this._scene.remove(object)
+        this.shouldRender()
+    }
+
 
     /**
      * @brief suggests controller to render the scene soon
@@ -69,6 +78,32 @@ class ThreeViewController {
         this._willRender = true
     }
 
+
+	/**
+	 * @brief set light/dark mode
+	 * @param mode true = light, false = dark
+	 */
+	setLightmode(mode) {
+		this.lightMode = mode
+		
+		//~ const skybox = this.scene.getObjectByName("Skybox")
+		//~ this.scene.remove(skybox)
+		
+		if(this.lightMode)
+		{
+			//~ this.addSkybox("_light")
+			this.scene.fog = new THREE.FogExp2(0xffffff, 0.005)
+			document.body.classList.remove("mode-dark")
+			document.body.classList.add("mode-light")
+		}
+		else
+		{
+			//~ this.addSkybox()
+			this.scene.fog = new THREE.FogExp2(0x000000, 0.005)
+			document.body.classList.remove("mode-light")
+			document.body.classList.add("mode-dark")
+		}
+	}
 
     /**
      * @brief class initializer, to be called after DOM and Asset loading 
@@ -87,6 +122,7 @@ class ThreeViewController {
         this._setCamera()
         this._setRenderer()
         this._setOrbit()
+        this.setLightmode(false)
     }
 
 
@@ -148,6 +184,9 @@ class ThreeViewController {
     // initialize orbit
     _setOrbit() {
         this._orbit = new THREE.OrbitControls(this._camera)
+        this._orbit = new THREE.OrbitControls(this.camera)
+        this._orbit.minDistance = 0.75;
+        this._orbit.maxDistance = 25;
 
         this._orbit.addEventListener("change", () => {
             this._render()

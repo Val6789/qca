@@ -6,7 +6,8 @@
     Dot,
     Electron,
     AssetManager,
-    ToolboxController,
+    ToolboxControllerInstance,
+    InputBlock,
     QubitEditorCursor,
     AchievementManager
 */
@@ -19,15 +20,17 @@ AssetManager.Create().then(() => {
     ThreeViewControllerInstance.init()
     Dot.init()
     Electron.init()
+    InputBlock.init()
 
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 0))).object)
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(0, 0, 3))).object)
     ThreeViewControllerInstance.addObjectToScene((new Qubit(new THREE.Vector3(-3, 0, -3))).object)
 
     new QubitEditorCursor()
-    ToolboxController.init()
 
     AchievementManager.Get().obtained("missionOne")
+
+    ToolboxControllerInstance.init()
 
 
 })
