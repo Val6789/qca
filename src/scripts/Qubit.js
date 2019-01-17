@@ -50,11 +50,6 @@ class Qubit {
     }
 
     constructor(position = new THREE.Vector3()) {
-
-        // check if place is occupied
-        if (Qubit.instances.some(qubit => qubit.position.equals(position)))
-            throw "there's already a qubit here!"
-
         const lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff
         })
@@ -82,6 +77,7 @@ class Qubit {
             new Electron(dots[2])
         ]
 
+        ThreeViewControllerInstance.addObjectToScene(this.object)
         // create value label
         this.update()
 

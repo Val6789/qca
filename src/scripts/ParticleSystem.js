@@ -26,7 +26,7 @@ class ParticleSystem {
         this._geometryBuffer.computeBoundingSphere()
     }
 
-    constructor(materials, maximumParticlesCount = 1000, attributeSize = 3) {
+    constructor(materials = [], maximumParticlesCount = 1000, attributeSize = 3) {
         this.MAX_POINTS = maximumParticlesCount
         this.ATTRIBUTE_SIZE = attributeSize
 
