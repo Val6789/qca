@@ -20,14 +20,14 @@ class Block {
             bevelEnabled: false
         }), lineMaterial)
         this.valueText.name = "ValueText"
-        this.valueText.geometry.translate(-0.1, -0.1, Qubit.QUBIT_THICK / 2) // center text on box (values adjusted for optimer font)
+        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2) // center text on box (values adjusted for optimer font)
         this.valueText.geometry.rotateX(-Math.PI / 2)
         this.object.add(this.valueText)
     }
 
     constructor(position) {
         const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
-        const cubeGeometry = new THREE.BoxGeometry(Qubit.QUBIT_SIZE, Qubit.QUBIT_THICK, Qubit.QUBIT_SIZE)
+        const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
         // create object and move it
@@ -38,3 +38,6 @@ class Block {
         ThreeViewControllerInstance.addObjectToScene(this.object)
     }
 }
+
+Block.QUBIT_SIZE = 0.8
+Block.QUBIT_THICK = 0.3

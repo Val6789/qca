@@ -65,6 +65,4 @@ class Qubit extends Block {
 }
 
 Qubit.DOT_DIST = 0.2
-Qubit.QUBIT_SIZE = 0.8
-Qubit.QUBIT_THICK = 0.3
 Qubit.instances = []
