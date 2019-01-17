@@ -39,6 +39,7 @@ class Qubit {
             new Electron(dots[2])
         ]
 
+        ThreeViewControllerInstance.addObjectToScene(this.object)
         Qubit.instances.push(this)
     }
 }

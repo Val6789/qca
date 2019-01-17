@@ -39,14 +39,23 @@ class QubitEditorCursor {
 
 
     clickHandler() {
-        if (QubitEditorCursor.canEdit) {
-            try{
-                let newQubit = new Qubit(this.cursor.position)
-                ThreeViewControllerInstance.addObjectToScene(newQubit.object)
-            } catch(exception) {
-                console.info(exception)
-            } 
-        }
+        try{
+            switch (QubitEditorCursor.canEdit) {
+                case QubitEditorCursor.canEditEnumeration.QUBIT:   
+                    new Qubit(this.cursor.position)
+                    break;
+                
+                case QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT:
+                    new InputBlock(this.cursor.position, -1)
+                    break;
+
+                case QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT:
+                    new InputBlock(this.cursor.position, 1)
+                    break;
+            }
+        } catch(exception) {
+            console.info(exception)
+        }    
     }
 
 
@@ -89,4 +98,11 @@ class QubitEditorCursor {
 QubitEditorCursor.SIZE = 1
 QubitEditorCursor.HEIGHT = 0.3
 QubitEditorCursor.COLOR = 0x999999
-QubitEditorCursor.canEdit = false
+QubitEditorCursor.canEditEnumeration = {
+    NOTHING: 0,
+    QUBIT: 1,
+    POSITIVE_INPUT: 2, 
+    NEGATIVE_INPUT: 3,
+    OUTPUT: 4
+}
+QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NOTHING
