@@ -122,6 +122,7 @@ class ThreeViewController {
         this._setCamera()
         this._setRenderer()
         this._setOrbit()
+        this.setLightmode(false)
     }
 
 
@@ -183,6 +184,9 @@ class ThreeViewController {
     // initialize orbit
     _setOrbit() {
         this._orbit = new THREE.OrbitControls(this._camera)
+        this._orbit = new THREE.OrbitControls(this.camera)
+        this._orbit.minDistance = 0.75;
+        this._orbit.maxDistance = 25;
 
         this._orbit.addEventListener("change", () => {
             this._render()
