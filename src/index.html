@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./styles/reset.css">
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/activities.css">
+    <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
 
     <!-- Librairies -->
@@ -35,6 +36,7 @@
     <script src="./scripts/Qubit.js"></script>
     <script src="./scripts/InputBlock.js"></script>
     <script src="./scripts/main.js" defer></script>
+    <script src="./scripts/GUI.js" defer></script>
 </head>
 
 <body class="wrapper">
@@ -81,9 +83,9 @@
         </nav>
 
         <nav class="layers">
-            <label class="layer-checkbox"><input type="checkbox">Qubit values</label>
-            <label class="layer-checkbox"><input type="checkbox">Outlines</label>
-            <label class="layer-checkbox"><input type="checkbox">Charge Fields</label>
+            <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
+            <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
+            <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
         </nav>
     </header>
 
@@ -97,47 +99,100 @@
 
     <aside class="activities active" id="activities">
         <nav class="activity-tabs">
-            <button class="hide-activities" id="toggle-activity-tab">
-                <img class="hide-activities-icon ifinactive" src="assets/buttons/inactive_sidebar.png" alt="show activities tab">
-                <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
-                X
-            </button>
-            <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
-            <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
-            <label class="activity-tab-button missions-tab" for="mission-check">Mission</label>
+            <div id="selectors">
+                <button class="hide-activities" id="toggle-activity-tab">
+                    <img class="hide-activities-icon ifinactive" src="assets/buttons/inactive_sidebar.png" alt="show activities tab">
+                    <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
+                    X
+                </button>
+                <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
+                <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
+                <label class="activity-tab-button missions-tab" for="mission-check">Missions</label>
+                <label class="activity-tab-button achievement-tab" for="achievement-check">Achievements</label>
+            </div>
 
-            <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />
-            <input class="activity-check" type="radio" id="demos-check" name="tab" />
-            <div id="drawer-demos" class="drawer">
-                <label for="no-drawer-check" class="drawer-close">[x]</label>
-                <h2>Demos</h2>
-                buttons for testing :
-                <button onclick="ThreeViewControllerInstance.setLightmode(true)">light mode</button>
-                <button onclick="ThreeViewControllerInstance.setLightmode(false)">dark mode</button>
-            </div>
-            <input class="activity-check" type="radio" id="tutorial-check" name="tab" />
-            <div id="drawer-tutorial" class="drawer">
-                <label for="no-drawer-check" class="drawer-close">[x]</label>
-                <h2>Tutorials</h2>
-                tutos
-                =
-            </div>
-            <input class="activity-check" type="radio" id="mission-check" name="tab" />
-            <div id="drawer-mission" class="drawer">
-                <label for="no-drawer-check" class="drawer-close">[x]</label>
-                <h2>Missions</h2>
-                mission
+            <div id="drawers">
+                <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />
+                <input class="activity-check" type="radio" id="demos-check" name="tab" />
+                <div id="drawer-demos" class="drawer">
+
+                    <div class="drawer-header">
+                        <h3>Demos</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        buttons for testing :
+                        <button onclick="ThreeViewControllerInstance.setLightmode(true)" class="btn">light mode</button>
+                        <button onclick="ThreeViewControllerInstance.setLightmode(false)" class="btn">dark mode</button>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+
+                </div>
+
+                <input class="activity-check" type="radio" id="tutorial-check" name="tab" />
+                <div id="drawer-tutorial" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Tutorial</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>This is the main</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+                </div>
+
+                <input class="activity-check" type="radio" id="mission-check" name="tab" />
+                <div id="drawer-mission" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Missions</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>This is the main</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+                </div>
+
+                <input class="activity-check" type="radio" id="achievement-check" name="tab" />
+                <div id="drawer-achievement" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Achievements</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>Try to complete all thoses achievements !</p>
+                        <div id="achievements-holder">
+                            <div id="template-achievement" class="achievement">
+                                <img src="assets/textures/achievements/default.png" alt="default">
+                                <h4>$fullname</h4>
+                                <p>$Description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+                </div>
             </div>
         </nav>
-
-        <section class="activity-tab demos">
-        </section>
-
-        <section class="activity-tab tutorial">
-        </section>
-
-        <section class="activity-tab missions">
-        </section>
     </aside>
 </body>
 
