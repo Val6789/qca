@@ -1,5 +1,13 @@
-/* global THREE:true, AssetManager:true */
-/* exported Electron */
+/* 
+    global
+    THREE, 
+    AssetManager,
+    ThreeViewControllerInstance
+*/
+/* 
+    exported 
+    Electron
+*/
 
 class Electron {
     get position() {
@@ -42,12 +50,12 @@ class Electron {
                     value: 0.5
                 }
             },
-            transparent : true,
-            opacity : 0.5,
-            blending : THREE.AdditiveBlending,
-            depthWrite : false,
-            depthTest : true,
-            depthFunc : THREE.NeverDepth
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            depthTest: true,
+            depthFunc: THREE.NeverDepth
         })
     }
 

@@ -1,5 +1,13 @@
-/* global THREE:true, AssetManager:true */
-/* exported Dot */
+/* 
+    global 
+    THREE,
+    AssetManager,
+    ThreeViewControllerInstance
+*/
+/* 
+    exported 
+    Dot 
+*/
 
 class Dot {
 

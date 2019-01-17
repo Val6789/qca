@@ -1,5 +1,12 @@
-/* global THREE:true , Electron:true, Qubit:true, Dot */
-/* exported ThreeViewController */
+/* 
+    global
+    THREE
+ */
+/* 
+    exported 
+    ThreeViewController
+    ThreeViewControllerInstance
+ */
 
 /**
  * CLASS ThreeViewController
@@ -24,7 +31,7 @@ class ThreeViewController {
     get camera() {
         return this._camera
     }
-    
+
     /**
      * @brief Orbit getter
      */
@@ -37,7 +44,7 @@ class ThreeViewController {
      * @param {Function} callback method called on render 
      */
     callbackOnRender(callback) {
-        this._onRenderObservers.push(callback)    
+        this._onRenderObservers.push(callback)
     }
 
 
@@ -45,7 +52,7 @@ class ThreeViewController {
      * @brief Does what's on the tin: adds a three object3D to the scene
      * @param {THREE.Object3D} object 
      */
-    addObjectToScene(object) {
+    addObjectToScene(object) {
         this._scene.add(object)
         this.shouldRender()
     }
@@ -72,7 +79,7 @@ class ThreeViewController {
         this._orbit
         this._scene
         this._renderer
-        this._willRender = false        
+        this._willRender = false
         this._onRenderObservers = []
 
         // init members
@@ -85,7 +92,7 @@ class ThreeViewController {
 
     // Private method rendering the scenes after calling the observers
     _render() {
-        this._onRenderObservers.forEach(callback => callback());
+        this._onRenderObservers.forEach(callback => callback())
         this._renderer.render(this._scene, this._camera)
         this._willRender = false
     }
@@ -110,7 +117,7 @@ class ThreeViewController {
         const farField = 1000
 
         this._camera = new THREE.PerspectiveCamera(fieldOfView, 1, nearField, farField)
-        
+
         this._camera.position.x = 5
         this._camera.position.y = 8
 
@@ -151,7 +158,7 @@ class ThreeViewController {
     constructor() {
         if (!ThreeViewController.instance) {
             ThreeViewController.instance = this
-        }           
+        }
 
         return ThreeViewController.instance
     }
