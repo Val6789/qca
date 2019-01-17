@@ -27,8 +27,19 @@ class Qubit {
 		this.object.add(this.valueText)
 	}
 	
-	// update text according to value
 	update() {
+		// update text according to value
+		if(this.electrons[0].dot.position.equals(this.dots[0].position)
+			&& this.electrons[1].dot.position.equals(this.dots[3].position)) {
+			this.setText("1")
+		}
+		else if(this.electrons[0].dot.position.equals(this.dots[1].position)
+			&& this.electrons[1].dot.position.equals(this.dots[2].position)) {
+			this.setText("0")
+		}
+		else {
+			this.setText("?")
+		}
 	}
 
     constructor(position = new THREE.Vector3()) {
@@ -65,7 +76,7 @@ class Qubit {
         ]
         
         // create value label
-        this.setText("X")
+        this.update()
 
         Qubit.instances.push(this)
     }
