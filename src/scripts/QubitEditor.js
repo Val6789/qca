@@ -9,10 +9,10 @@
 */
 /* 
     exported 
-    QubitEditorCursor
+    QubitEditor
 */
 
-class QubitEditorCursor {
+class QubitEditor {
 
     _mousemoveHandler(event) {
         if (!this.grid) return
@@ -67,8 +67,8 @@ class QubitEditorCursor {
 
     _clickHandler() {
         try {
-            switch (QubitEditorCursor.canEdit) {
-                case QubitEditorCursor.canEditEnumeration.QUBIT:
+            switch (this.canEdit) {
+                case QubitEditor.canEditEnumeration.QUBIT:
                     if (this._checkForSpace())
                         return
                     else {
@@ -79,20 +79,20 @@ class QubitEditorCursor {
 
 
 
-                case QubitEditorCursor.canEditEnumeration.NEGATIVE_INPUT:
+                case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
                     if (this._checkForSpace())
                         return
                     else
                         return new InputBlock(this.cursor.position, -1)
 
-                case QubitEditorCursor.canEditEnumeration.POSITIVE_INPUT:
+                case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
                     if (this._checkForSpace())
                         return
                     else
                         return new InputBlock(this.cursor.position, 1)
 
 
-                case QubitEditorCursor.canEditEnumeration.REMOVE:
+                case QubitEditor.canEditEnumeration.REMOVE:
                     if (!this._checkForSpace())
                         return
                     else
@@ -108,11 +108,11 @@ class QubitEditorCursor {
 
     _makeCursor() {
         // makes a box with parameters width, height, length
-        let cursorgeometry = new THREE.BoxGeometry(QubitEditorCursor.SIZE, QubitEditorCursor.HEIGHT, QubitEditorCursor.SIZE)
+        let cursorgeometry = new THREE.BoxGeometry(QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_HEIGHT, QubitEditor.CURSOR_SIZE)
 
         // makes a flat color material
         let cursormaterial = new THREE.LineBasicMaterial({
-            color: QubitEditorCursor.COLOR
+            color: QubitEditor.CURSOR_COLOR
         })
 
         // Creates a contour of the box with the white material: that's our the cursor
@@ -130,23 +130,35 @@ class QubitEditorCursor {
     }
 
 
-    constructor() {
+    init() {
         document.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
         document.addEventListener("mouseup", () => this._clickHandler())
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
         this.camera = ThreeViewControllerInstance.camera
+        this.canEdit = QubitEditor.canEditEnumeration.NOTHING
 
         this._makeCursor()
         this._makeGrid()
     }
+
+    constructor() {
+        if (!QubitEditor.instance) {
+            QubitEditor.instance = this
+        }
+
+        return QubitEditor.instance
+    }
 }
 
-QubitEditorCursor.SIZE = 1
-QubitEditorCursor.HEIGHT = 0.3
-QubitEditorCursor.COLOR = 0x999999
-QubitEditorCursor.canEditEnumeration = {
+const QubitEditorInstance = new QubitEditor()
+
+QubitEditor.CURSOR_SIZE = 1
+QubitEditor.CURSOR_HEIGHT = 0.3
+QubitEditor.CURSOR_COLOR = 0x999999
+
+QubitEditor.canEditEnumeration = {
     NOTHING: 0,
     QUBIT: 1,
     POSITIVE_INPUT: 2,
@@ -154,4 +166,3 @@ QubitEditorCursor.canEditEnumeration = {
     OUTPUT: 4,
     REMOVE: 5
 }
-QubitEditorCursor.canEdit = QubitEditorCursor.canEditEnumeration.NOTHING
