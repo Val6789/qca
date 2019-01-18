@@ -1,11 +1,10 @@
 class AppController {
 
     startUpdateLoop() {
-        const REFRESH_RATE = 20
 
-        setInterval(() => {
-            this.automata.process()
-        }, REFRESH_RATE)
+       this.interval = setInterval(() => {
+            if(!this.pauseMode) this.automata.process()
+        }, this.refreshRate)
     }
     
     _onAssetLoading() {
@@ -29,6 +28,14 @@ class AppController {
             })
         })
     }
+    setRefreshRate(rate) {
+        this.refreshRate = rate
+        clearInterval(this.interval)
+        startUpdateLoop()
+    }
+    setPause() {
+        this.pauseMode = this.pauseMode?false:true; 
+    }
 
 
     /**
@@ -38,7 +45,8 @@ class AppController {
         if (!AppController.instance) {
             AppController.instance = this
         }
-
+        this.refreshRate = 20;
+        this.pauseMode = false;
         return AppController.instance
     }
 }
