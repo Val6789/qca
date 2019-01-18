@@ -47,15 +47,16 @@ class QuantumAutomata {
      */
     removeBlock(position) {
         const hash = QuantumAutomata._positionHash(position)
-        const block = this._qubitMap[hash]
-        if (!block) throw console.info("Cell is empty:", hash)
+        if (!this._qubitMap.has(hash)) throw console.info("Cell is empty:", hash)
 
         // tries to remove from output list
-        const outputIndex = this._outputs.indexOf(block)
+        const block = this._qubitMap.get(hash)
+
+        const outputIndex = this._outputs.indexOf()
         if (outputIndex != -1) this._outputs.splice(outputIndex, 1)
 
         block.remove()
-        if (! delete this._qubitMap[hash]) throw console.error("Failed to delete qubit:", hash)
+        this._qubitMap.delete(hash)
     }
 
     
