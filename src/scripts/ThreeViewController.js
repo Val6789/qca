@@ -81,33 +81,6 @@ class ThreeViewController {
         requestAnimationFrame(() => this._render())
         this._willRender = true
     }
-
-
-	/**
-	 * @brief set light/dark mode
-     * @todo move this out of there. Light mode has nothing to do whith tree and thus should not be in threecontroller
-	 * @param {Boolean} mode true = light, false = dark
-	 */
-	setLightmode(mode) {
-        // creates skybox if undefined
-        if (!this.skybox) 
-            this.skybox = new Skybox()
-        
-        
-		if(mode) {
-            // Light mode
-			this.skybox.style = Skybox.styles.LIGHT
-			this._scene.fog = new THREE.FogExp2(0xffffff, 0.005)
-			document.body.classList.remove("mode-dark")
-			document.body.classList.add("mode-light")
-		} else {
-            // Dark mode
-            this.skybox.style = Skybox.styles.DEFAULT
-			this._scene.fog = new THREE.FogExp2(0x000000, 0.005)
-			document.body.classList.remove("mode-light")
-			document.body.classList.add("mode-dark")
-		}
-    }
     
 
     /**
@@ -128,7 +101,10 @@ class ThreeViewController {
         this._setCamera()
         this._setRenderer()
         this._setOrbit()
-        this.setLightmode(false)
+        setLightmode(false)
+        
+        //~ var axesHelper = new THREE.AxesHelper()
+		//~ this._scene.add( axesHelper )
     }
 
 
