@@ -1,0 +1,29 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color:#222;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+}
+
+:focus {
+    outline: none;
+}

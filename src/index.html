@@ -4,17 +4,207 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>QCA | Quantum Cellular Automata</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/activities.css">
+    <link rel="stylesheet" href="./styles/achievements.css">
+    <link rel="stylesheet" href="./styles/control-strip.css">
+
+    <!-- Librairies -->
+    <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
+    <script type="text/javascript" src="./scripts/lib/OrbitControls.js"></script>
+    <link rel="stylesheet" href="../node_modules/izitoast/dist/css/iziToast.min.css">
+    <script type="text/javascript" src="../node_modules/izitoast/dist/js/iziToast.min.js"></script>
+
+
+    <!-- Scripts -->
+    <script src="./scripts/AchievementManager.js"></script>
+    <script src="./scripts/Preset.js"></script>
+    <script src="./scripts/AssetManager.js"></script>
+    <script src="./scripts/ThreeViewController.js"></script>
+    <script src="./scripts/Axis.js"></script>
+    <script src="./scripts/QubitEditor.js"></script>
+    <script src="./scripts/ToolboxController.js"></script>
+    <script src="./scripts/ParticleSystem.js"></script>
+    <script src="./scripts/Grid.js"></script>
+    <script src="./scripts/Skybox.js"></script>
+    <script src="./scripts/Dot.js"></script>
+    <script src="./scripts/Electron.js"></script>
+    <script src="./scripts/Block.js"></script>
+    <script src="./scripts/Qubit.js"></script>
+    <script src="./scripts/InputBlock.js"></script>
+    <script src="./scripts/OutputBlock.js"></script>
+    <script src="./scripts/QuantumAutomata.js"></script>
+    <script src="./scripts/AppController.js"></script>
+    <script src="./scripts/main.js" defer></script>
+    <script src="./scripts/GUI.js" defer></script>
 </head>
 
-<body>
-    <section>
-        <div id="canvas"></div>
-    </section>
-    <script src="three/build/three.js"></script>
-    <script src="three-orbit-controls/index.js"></script>
-    <script src="scripts/main.js""></script>
+<body class="wrapper">
+    <!-- HEADER AND NAVBAR -->
+    <h1 class="title">Quantum cellular automata simulator</h1>
+
+    <header class="control-strip">
+        <nav class="time-buttons">
+            <button class="time-button" alt="Slower">
+                <img src="assets/buttons/slow.png" class="time-button-icon slow-button-icon">
+                Slower
+            </button>
+            <button class="time-button" alt="Play/Pause simulation">
+                <img src="assets/buttons/pause.png" class="time-button-icon play-button-icon">
+                Play
+            </button>
+            <button class="time-button" alt="Faster">
+                <img src="assets/buttons/fast.png" class="time-button-icon fast-button-icon">
+                Faster
+            </button>
+        </nav>
+
+        <nav class="toolbox">
+            <button class="tool active" alt="Control Camera" id="get-camera">
+                <img src="assets/buttons/Camera.png" class="tool-icon camera-icon">
+                Q
+            </button>
+            <button class="tool" alt="Positively charged influencer" id="positive-input">
+                <img src="assets/buttons/True.png" class="tool-icon positron-icon">
+                +
+            </button>
+            <button class="tool" alt="Negatively charged influencer" id="negative-input">
+                <img src="assets/buttons/False.png" class="tool-icon electron-icon">
+                -
+            </button>
+            <button class="tool" alt="Qubit" id="place-qubits">
+                <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
+                B
+            </button>
+            <button class="tool" alt="Qubit" id="place-output">
+                <img src="assets/buttons/Output.png" class="tool-icon output-icon">
+                O
+            </button>
+            <button class="tool" alt="Eraser" id="eraser">
+                <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
+                E
+            </button>
+        </nav>
+
+        <nav class="layers">
+            <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
+            <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
+            <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
+        </nav>
+    </header>
+
+    <!-- 3D VIEWPORT -->
+    <main id="viewport" class="viewport">
+		<div id="axis"></div>
+    </main>
+
+    <nav class="camera-controls">
+        <!-- camera controls -->
+    </nav>
+    </header>
+
+    <aside class="activities active" id="activities">
+        <nav class="activity-tabs">
+            <div id="selectors">
+                <button class="hide-activities" id="toggle-activity-tab">
+                    <img class="hide-activities-icon ifinactive" src="assets/buttons/inactive_sidebar.png" alt="show activities tab">
+                    <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
+                    X
+                </button>
+                <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
+                <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
+                <label class="activity-tab-button missions-tab" for="mission-check">Missions</label>
+                <label class="activity-tab-button achievement-tab" for="achievement-check">Achievements</label>
+            </div>
+
+            <div id="drawers">
+                <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />
+                <input class="activity-check" type="radio" id="demos-check" name="tab" />
+                <div id="drawer-demos" class="drawer">
+
+                    <div class="drawer-header">
+                        <h3>Demos</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        buttons for testing :
+                        <button onclick="setLightmode(true)" class="btn">light mode</button>
+                        <button onclick="setLightmode(false)" class="btn">dark mode</button>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+
+                </div>
+
+                <input class="activity-check" type="radio" id="tutorial-check" name="tab" />
+                <div id="drawer-tutorial" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Tutorial</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>This is the main</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+                </div>
+
+                <input class="activity-check" type="radio" id="mission-check" name="tab" />
+                <div id="drawer-mission" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Missions</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>This is the main</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
+                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
+                            beatae quae iste nesciunt minus facere.</p>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+                </div>
+
+                <input class="activity-check" type="radio" id="achievement-check" name="tab" />
+                <div id="drawer-achievement" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Achievements</h3>
+                        <label for="no-drawer-check" class="btn drawer-close">x</label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>Try to complete all thoses achievements !</p>
+                        <div id="achievements-holder">
+                            <div id="template-achievement" class="achievement">
+                                <img src="assets/textures/achievements/default.png" alt="default">
+                                <h4>$fullname</h4>
+                                <p>$Description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="btn">close</label>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </aside>
 </body>
+
 </html>

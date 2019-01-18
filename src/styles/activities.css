@@ -1,0 +1,136 @@
+@font-face {
+    font-family: "generica";
+    src:url("../assets/fonts/Generica.otf");
+}
+@font-face {
+    font-family: "genericabold";
+    src:url("../assets/fonts/GenericaBold.otf");
+}
+
+.activities {
+    position: relative;
+    grid-area: activities;
+}
+
+.activity-tabs {
+    display: flex;
+}
+
+.hide-activities {
+    display: block;
+    height: 2rem;
+    border-radius: 4px;
+}
+
+.activity-tab-button {
+    display: block;
+    writing-mode: vertical-rl;
+    text-orientation: sideways-right;
+
+    font-size: 0.8rem;
+    width: 1.2em;
+    padding: 0.5em;
+    margin: 0.3em 0;
+    background: #232323;
+    color: #BBB;
+
+    border: solid 1px #323232;
+    border-left: none;
+    border-radius: 0px 4px 4px 0px;
+
+    min-height: 8em;
+    text-align: center;
+
+    font-family: genericabold;
+    text-transform: uppercase;
+    cursor:pointer;
+
+    box-shadow:0px 0px 5px 5px rgba(0,0,0,0.2);
+    transition:0.5s;
+    display:none;
+}
+.activity-tab-button:hover {
+    background: #1A1A1A;
+}
+
+.activity-check {
+    display: none;
+}
+
+.drawer {
+    
+    display:none;
+    transition: visibility 200ms, opacity 200ms;
+
+    visibility: hidden;
+    opacity: 0;
+
+    /* Works only on recent Chrome/Webkit */
+    background: #111;
+    backdrop-filter: blur(5px);
+    font-family: generica;
+    position: fixed;
+    top: 10vw;
+    bottom: 10vw;
+    left: 10vw;
+    right: 10vw;
+
+    color: white;
+    border-radius: 4px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    box-shadow:0px 0px 20px 20px rgba(0,0,0,0.3);
+}
+
+:checked+.drawer {
+    visibility: visible;
+    opacity: 1;
+}
+
+.drawer-header,
+.drawer-action,
+.drawer-main {
+    display: flex;
+    position: relative;
+    padding: 2vw;
+    font-size: 1rem;
+    justify-content: center;
+}
+
+.drawer-header::after,
+.drawer-action::before {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    bottom: -1px;
+    height: 2px;
+    left: 0;
+    right: 0;
+    background-color: rgb(180, 180, 180);
+}
+
+.drawer-action::before {
+    bottom: auto;
+    top: -1px;
+}
+
+.drawer-header * {
+    font-size: 1.7rem;
+    font-family:genericaBold;
+}
+
+.drawer-main {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+    color:#F0F0F0;
+}
+
+.drawer-close {
+    position: absolute;
+    right: 3vw;
+    font-size: 1rem;
+}

@@ -1,0 +1,90 @@
+.wrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+
+    display: grid;
+    grid-template: "activities  title           title        "auto "activities  .               control-zoom "1fr "activities  control-strip   control-strip"auto /auto 1fr auto
+}
+#axis {
+    width: 75px;
+    height: 75px;
+    margin: 20px;
+    padding: 0px;
+    position: absolute;
+    right: 0px;
+    bottom: 60px;
+    z-index: 10;
+}
+.layers, .time-buttons
+{
+    display:none;
+}
+.mode-light {
+    color: #000;
+}
+
+.mode-dark {
+    color: #fff;
+}
+
+.viewport {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+.title {
+    position: relative;
+    grid-area: title;
+    display:none;
+}
+
+.camera-controls {
+    position: relative;
+    grid-area: control-zoom;
+}
+
+.inactive .ifactive,
+.active .ifinactive {
+    display: none;
+}
+
+.btn {
+    color: white;
+    cursor:pointer;
+    background-color: rgb(39, 39, 39);
+    padding: 1vw;
+    border-radius: 4px;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+}
+.btn:hover
+{
+    background-color:#101010;
+}
+
+button {
+    background-color:#222;
+    padding:3px;
+    border-radius:5px;
+    margin:2px;
+    cursor:pointer;
+    transition:0.5s;
+    box-sizing:border-box;
+}
+button.active {
+    border:1px solid #330;
+    box-shadow:0px 0px 3px 3px rgba(48,48,48,0.4);
+    background-color:#080808;
+}
+button:hover
+{
+    background-color:#000;
+}
