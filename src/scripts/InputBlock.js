@@ -1,4 +1,7 @@
 class InputBlock extends Block{
+
+    get balance() { return this.polarity }
+    
     remove() {
         super.remove()
         if (this.polarity > 0) {
@@ -11,9 +14,7 @@ class InputBlock extends Block{
     }
 
 
-    processNeighboorsInfluences() {
-        return this.polarity;
-    }
+    processNeighboorsInfluences() {}
 
     constructor(position, polarity, strength = 4) {
         if (polarity == 0) throw console.error("Input block cannot have zero values")

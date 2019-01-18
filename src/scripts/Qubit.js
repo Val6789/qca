@@ -88,6 +88,9 @@ class Qubit extends Block {
             default: throw console.error("Unexpected polarity value :", newValue)
         }
 
+        if (newValue != this.polarity)
+            console.error("Failed to set the polarity")
+
         // updates the text floating on the box
         this.setLabel(label)
     }
@@ -118,7 +121,7 @@ class Qubit extends Block {
      */
     applyPolarityBuffer() {
         this._visited = false
-        this.polarity = this._polarityBuffer
+        this.polarity = Math.sign(this.balance)
     }
 
 
@@ -138,25 +141,24 @@ class Qubit extends Block {
             const ADJACENT_KINK = 1
             const DIAGONAL_KINK = -0.2
 
-            const neighborPolarity = neighbor.processNeighboorsInfluences(automata)
+            
             const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
             
-            sigmaPj += neighborPolarity * neighbor.charge * kink
+            neighbor.processNeighboorsInfluences(automata)
+            sigmaPj += neighbor.balance * neighbor.charge * kink
 
             if (Number.isNaN(sigmaPj)) 
                 throw console.error("Compute error.")
         })
 
-        const numerator =  (EKIJ / (2 * GAMMA)) * sigmaPj
+        const numerator = sigmaPj * EKIJ / (2 * GAMMA)
 
         // balance saved for debugging purposes
-        this.balance = numerator / Math.hypot(1, numerator)
-        if (Number.isNaN(this.balance)) 
-            throw console.error("Compute error.")
-        this._polarityBuffer = Math.sign(this.balance)
-        return this._polarityBuffer
+        this.balance = numerator / Math.hypot(numerator, 1)
+        return this.balance
     }
+    
 
     /**
      * @private @method
@@ -206,7 +208,7 @@ class Qubit extends Block {
 
         // sets the polarity, makes sure the dots are in the right place
         this.polarity = polarity
-        this._polarityBuffer = polarity
+        this.balance = 0
 
         // tells the recursive processor if the polarity was updated
         this._visited = false

@@ -53,6 +53,9 @@ class QuantumAutomata {
         block.remove()
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
+
+        this._startProcessFrom(block)
+        this._applyProcessing()
     }
 
     
@@ -77,17 +80,23 @@ class QuantumAutomata {
      */
     process() {
         if (this._outputs.size === 0) return
+        this._outputs.forEach( output => this._startProcessFrom(output))
+        this._applyProcessing()
+    }
 
-        this._outputs.forEach( output => {
-            output._visited = false;
-            output.processNeighboorsInfluences(this)
-        })
 
+    _startProcessFrom(qubit) {
+        qubit._visited = false;
+        qubit.processNeighboorsInfluences(this)
+    }
+
+
+    _applyProcessing() {
         this._qubitMap.forEach(qubit => {
             if (qubit instanceof Qubit) qubit.applyPolarityBuffer()
         })
     }
-
+    
 
     /**
      * @private @method
@@ -125,7 +134,7 @@ class QuantumAutomata {
     }
 }
 
-// c bo
+
 /**
  * @private @static @constant @member
  */
