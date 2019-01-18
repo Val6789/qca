@@ -84,6 +84,7 @@ class ToolboxController {
     _setFieldsCheckbox() {
 		const checkbox = document.getElementById("check-fields")
 		checkbox.onclick = function() {
+			// TODO
 			if(checkbox.checked) {
 				//
 			}
