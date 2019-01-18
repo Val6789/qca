@@ -1,9 +1,4 @@
 class InputBlock extends Block{
-
-    get position() {
-        return this.object.position;
-    }
-
     remove() {
         super.remove()
         if (this.polarity > 0) {

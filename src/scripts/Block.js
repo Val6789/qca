@@ -1,13 +1,22 @@
 /**
- * Block CLASS
+ * @class Block
  * 
  * @brief Class reprensenting elements disposables on the world's grid
  * A box with a label on it.
  * Super-class of Qubit and InputBlock
  */
 class Block {
+    /**
+     * @public @property @readonly
+     * @brief Block position computed value
+     */
+    get position() {
+        return this.object.position
+    }
+
 
     /**
+     * @public @method
      * @brief Removes the block from the scene
      */
     remove() {
@@ -16,6 +25,7 @@ class Block {
 
     
     /**
+     * @public @method
      * @brief Sets the text on the label floating above the box
      * @param {String} text 
      * 
@@ -47,7 +57,7 @@ class Block {
 
 
     /**
-     * @brief Block constructor
+     * @constructor Block
      * @param {THREE.Vector3} position 
      * Creates object and add it to the scene
      */
@@ -70,6 +80,7 @@ class Block {
 }
 
 /**
+ * @static @constant
  * @brief Constants defining block dimentions.
  */
 Block.QUBIT_SIZE = 0.8
