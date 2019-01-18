@@ -10,6 +10,11 @@ class InputBlock extends Block{
         }
     }
 
+
+    processNeighboorsInfluences() {
+        return this.polarity;
+    }
+
     constructor(position, polarity) {
         if (polarity == 0) throw console.error("Input block cannot have zero values")
 

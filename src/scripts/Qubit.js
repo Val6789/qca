@@ -19,17 +19,24 @@
  */
 class Qubit extends Block {
 
+    // returns the binary state
+    get state() {
+        // todo handle NAN
+        return polarity > 0 ? 1 : 0
+    }
+    
+
     /**
      * @public @property
      * Getter on polarity computed value
      * @brief represents the qubit state bit value 0, bit value 1 or superposition
      */
     get polarity() {
-        if (!this.isDetermined) return NaN
+        if (!this.isDetermined) return 0
 
         const chargedDots = this.electrons.map( electron => electron.dot )
         if (chargedDots.includes(this.dots[0], this.dots[3])) return 1
-        if (chargedDots.includes(this.dots[1], this.dots[2])) return 0
+        if (chargedDots.includes(this.dots[1], this.dots[2])) return -1
 
         // unexpected case
         throw console.error("Qubit marked as determined without a valid polarisation.")
@@ -40,9 +47,7 @@ class Qubit extends Block {
      * @public @property
      * Setter on polarity computed value
      * @brief from given polarity value, will place the electron accordingly
-     * @param {Boolean} newValue true or false for qubit value 1 or 0
-     * @param {Number} newValue 0 or 1, qubit bit value
-     * @param {NaN} newValue will set qubit to a state of superpostion
+     * @param {Number} newValue -1, 0 or 1
      */
     set polarity(newValue) {
         // if newValue is already set no need do the following expensive steps
@@ -51,7 +56,7 @@ class Qubit extends Block {
         var label // will save the text displayed on the qubit
 
         switch (newValue) {
-            case 1: case true:
+            case 1:
                 // move electrons to the right dots
                 this.electrons[0].dot = this.dots[0]
                 this.electrons[1].dot = this.dots[3]
@@ -64,17 +69,19 @@ class Qubit extends Block {
                 break;
 
             // more of the same
-            case 0: case false:
+            case -1:
                 this.electrons[0].dot = this.dots[1]
                 this.electrons[1].dot = this.dots[2]
                 this.isDetermined = true
                 label = "0"
                 break;
             
-            default:
+            case 0:
                 // is determined false. The electrons will switch places freneticly
                 this.isDetermined = false
                 label = "?"
+
+            default: throw console.error("Unexpected polarity value :", newValue)
         }
 
         // updates the text floating on the box
@@ -98,6 +105,22 @@ class Qubit extends Block {
         removed.electrons.forEach(electron => electron.remove())
     }
 
+
+    applyPolarityBuffer() {
+        this.polarity = this._polarityBuffer
+    }
+
+
+    processNeighboorsInfluences() {
+        if (this._visited) return this._polarityBuffer
+        this._visited = true
+
+        const EKIJ = 1 // Kink energy between cells
+        const GAMMA = 1 // electron tunneling potential
+        var SigmaPj = 0 // Sum of neighbors influences
+
+
+    }
 
     /**
      * @private @method
@@ -127,7 +150,7 @@ class Qubit extends Block {
      * The instance is owned by the class inside Qubit.instances
      * A render will be called on the next frame
      */
-    constructor(position = new THREE.Vector3(), polarity = NaN) {
+    constructor(position = new THREE.Vector3(), polarity = 0) {
         // Creates the box with a label
         super(position) // haha
 
@@ -149,6 +172,10 @@ class Qubit extends Block {
 
         // sets the polarity, makes sure the dots are in the right place
         this.polarity = polarity
+        this._polarityBuffer = polarity
+
+        // tells the recursive processor if the polarity was updated
+        this._visited = false
 
         // Adds object to the scene, calling the render on the next frame
         ThreeViewControllerInstance.addObjectToScene(this.object)
@@ -156,7 +183,6 @@ class Qubit extends Block {
         // Saves the instance into the Class static collection
         Qubit.instances.push(this)
     }
-
 
     /**
      * @static @method
