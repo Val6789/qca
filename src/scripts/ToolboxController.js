@@ -67,12 +67,17 @@ class ToolboxController {
 		const checkbox = document.getElementById("check-values")
 		checkbox.onclick = function() {
 			if(checkbox.checked) {
-				// on every qbit, write label
+				Qubit.instances.forEach(function(e) {
+					e.object.getObjectByName("ValueText").material.visible = true
+				})
 			}
 			else {
-				// on every qbit
-				// this.object.remove(this.object.getObjectByName("ValueText"))
+				Qubit.instances.forEach(function(e) {
+					e.object.getObjectByName("ValueText").material.visible = false
+				})
 			}
+			
+			// TODO disable label setting (via flag ?) to prevent label updates
 		}
 	}
     
@@ -80,12 +85,15 @@ class ToolboxController {
 		const checkbox = document.getElementById("check-outlines")
 		checkbox.onclick = function() {
 			if(checkbox.checked) {
-				// on every qbit, add outline
+				e.object.material.visible = true
 			}
 			else {
-				// on every qbit
-				// this.object.remove(this.object.getObjectByName("Outline"))
+				Qubit.instances.forEach(function(e) {
+					e.object.material.visible = false
+				})
 			}
+			
+			// TODO set flag to make outlines not appear in new qubits
 		}
 	}
     
@@ -93,10 +101,10 @@ class ToolboxController {
 		const checkbox = document.getElementById("check-fields")
 		checkbox.onclick = function() {
 			if(checkbox.checked) {
-				// on every qbit, rm field
+				//
 			}
 			else {
-				//
+				//~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
 			}
 		}
 	}
