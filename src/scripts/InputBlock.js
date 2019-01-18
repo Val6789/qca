@@ -22,7 +22,7 @@ class InputBlock extends Block{
         super(position)
 
         this.polarity = polarity
-        this.charge = strength * polarity
+        this.charge = strength
 
         if (polarity > 0) {
             InputBlock.positiveParticles.addAt(this.position)  

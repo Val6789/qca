@@ -142,17 +142,19 @@ class Qubit extends Block {
             const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
             
-            sigmaPj +=  neighborPolarity * neighbor.charge * kink
+            sigmaPj += neighborPolarity * neighbor.charge * kink
 
             if (Number.isNaN(sigmaPj)) 
                 throw console.error("Compute error.")
         })
 
         const numerator =  (EKIJ / (2 * GAMMA)) * sigmaPj
-        const balance = numerator / Math.hypot(1, numerator)
-        if (Number.isNaN(balance)) 
+
+        // balance saved for debugging purposes
+        this.balance = numerator / Math.hypot(1, numerator)
+        if (Number.isNaN(this.balance)) 
             throw console.error("Compute error.")
-        this._polarityBuffer = Math.sign(balance)
+        this._polarityBuffer = Math.sign(this.balance)
         return this._polarityBuffer
     }
 
