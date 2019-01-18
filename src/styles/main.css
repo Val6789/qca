@@ -72,6 +72,7 @@ button {
 button.active {
     border:1px solid #330;
     box-shadow:0px 0px 3px 3px rgba(48,48,48,0.4);
+    background-color:#080808;
 }
 button:hover
 {
