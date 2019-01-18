@@ -9,7 +9,8 @@ const AssetManager = (function () {
         fonts: {},
         textures: {},
         json: {},
-        achievements: {}
+        achievements: {},
+        presets:{}
     }
     const baseDir = "assets/"
 
@@ -18,8 +19,8 @@ const AssetManager = (function () {
         const FONT_FILE_PATH = "assets/fonts/optimer_regular.typeface.json"
         new THREE.FontLoader().load(
             FONT_FILE_PATH,
-            (optimer) => {
-                instance.fonts.optimer = optimer
+            (optimer_regular) => {
+                instance.fonts.optimer = optimer_regular
                 resolve(self.fontCache)
             },
             undefined,
@@ -87,6 +88,24 @@ const AssetManager = (function () {
         })
         .catch(err => Promise.reject(Error(err.message))))
 
+    // Preset loading
+    const presets = ["not"]
+    for(let name of presets)
+    {
+        filename = baseDir + "/presets/"+name+".txt"
+        promises.push(fetch(filename, options)
+        .then(name, response => {
+            if (response.ok) {
+                return response.text()
+                    .then(name, text => {
+                        instance.presets[name] = new Preset(name, text)
+                    })
+            } else {
+                return Promise.reject(Error("error"))
+            }
+        })
+        .catch(err => Promise.reject(Error(err.message))))
+    }
 
     // JSON achievement
     promises.push(new Promise((resolve, reject) => {
