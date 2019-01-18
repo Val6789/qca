@@ -81,7 +81,7 @@ class QuantumAutomata {
         if (this._outputs.length == 0) return
 
         for (let output of this._outputs) {
-            output.visited = false;
+            output._visited = false;
             output.processNeighboorsInfluences(this)
         }
 

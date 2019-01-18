@@ -17,6 +17,7 @@ class InputBlock extends Block{
 
     constructor(position, polarity, strength = 4) {
         if (polarity == 0) throw console.error("Input block cannot have zero values")
+        polarity = Math.sign(polarity)
 
         super(position)
 
