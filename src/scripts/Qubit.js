@@ -43,6 +43,11 @@ class Qubit extends Block {
     }
 
 
+    get charge() {
+        return this.electrons.reduce((accumulator, electron) => (accumulator + electron.charge), 0) / this.electrons.length
+    }
+
+
     /**
      * @public @property
      * Setter on polarity computed value
@@ -107,19 +112,37 @@ class Qubit extends Block {
 
 
     applyPolarityBuffer() {
+        this._visited = false
         this.polarity = this._polarityBuffer
     }
 
 
-    processNeighboorsInfluences() {
+    /**
+     * 
+     * @param {QuantumAutomata} automata 
+     */
+    processNeighboorsInfluences(automata) {
         if (this._visited) return this._polarityBuffer
         this._visited = true
 
         const EKIJ = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
-        var SigmaPj = 0 // Sum of neighbors influences
+        var sigmaPj = 0 // Sum of neighbors influences
 
+        for (let neighbor of automata.getQubitNeighborsAround(this.position)) {
+            const ADJACENT_KINK = 1
+            const DIAGONAL_KINK = -0.2
 
+            const neighborPolarity = neighbor.processNeighboorsInfluences(automata)
+            const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
+            const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
+
+            sigmaPj +=  neighborPolarity * neighbor.charge * kink
+        }
+
+        const numerator = sigmaPj * EKIJ / (2 * GAMMA)
+        this._polarityBuffer = numerator / Math.hypot(1, numerator)
+        return this._polarityBuffer
     }
 
     /**
