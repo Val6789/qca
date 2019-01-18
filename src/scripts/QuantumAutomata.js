@@ -1,5 +1,3 @@
-import iziToast from "izitoast";
-
 class QuantumAutomata {
 
     /**

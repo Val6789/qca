@@ -24,16 +24,11 @@
 
 class AppController {
 
-    loadNewAutomata() {
-        this.automata = new QuantumAutomata()
-    }
-
-
     startUpdateLoop() {
         const REFRESH_RATE = 20
 
         setTimeout(() => {
-            this.automata.process()
+            this._automata.process()
         }, REFRESH_RATE)
     }
     
@@ -52,7 +47,7 @@ class AppController {
     _init() {
         AssetManager.Create().then(() => {
             this._onAssetLoading()
-            this.loadNewAutomata()
+            this.automata = new QuantumAutomata()
         })
     }
 

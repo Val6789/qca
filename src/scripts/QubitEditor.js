@@ -74,7 +74,7 @@ class QubitEditor {
                     else {
                         // Achievement
                         AchievementManager.Get().obtained("firstStep")
-                        return new Qubit(this.cursor.position)
+                        return AppControllerInstance.automata.addQubit(this.cursor.position)
                     }
 
 
@@ -83,26 +83,26 @@ class QubitEditor {
                     if (this._checkForSpace())
                         return
                     else
-                        return new InputBlock(this.cursor.position, -1)
+                        return AppControllerInstance.automata.addInput(this.cursor.position, -1)
 
                 case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
                     if (this._checkForSpace())
                         return
                     else
-                        return new InputBlock(this.cursor.position, 1)
+                        return AppControllerInstance.automata.addInput(this.cursor.position, 1)
 
                 case QubitEditor.canEditEnumeration.OUTPUT:
                     if (this._checkForSpace())
                         return
                     else
-                        return new OutputBlock(this.cursor.position)
+                        return AppControllerInstance.automata.addOutput(this.cursor.position)
 
 
                 case QubitEditor.canEditEnumeration.REMOVE:
                     if (!this._checkForSpace())
                         return
                     else
-                        return this._getBlockOnCursor().remove()
+                        return AppControllerInstance.automata.removeBlock(this._getBlockOnCursor().position)
 
 
             }
