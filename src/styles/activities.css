@@ -5,7 +5,6 @@
 
 .activity-tabs {
     display: flex;
-    flex-direction: column;
 }
 
 .hide-activities {
@@ -18,15 +17,19 @@
     display: block;
     writing-mode: vertical-rl;
     text-orientation: sideways-right;
-    
+
     font-size: 0.8rem;
     width: 1.2em;
     padding: 0.5em;
     margin: 0.3em 0;
-    border: solid 1px #444;
     background: linear-gradient(to left, #2A2A2A, #222222);
     color: #BBB;
+
+    border: solid 1px #444;
+    border-left: none;
     border-radius: 4px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
 
     min-height: 8em;
     text-align: center;
@@ -35,6 +38,79 @@
     text-transform: uppercase;
 }
 
-.activity-radio {
+.activity-check {
     display: none;
+}
+
+.drawer {
+    transition: visibility 200ms, opacity 200ms;
+
+    visibility: hidden;
+    opacity: 0;
+
+    /* Works only on recent Chrome/Webkit */
+    background: rgba(255, 255, 255, 0.89);
+    backdrop-filter: blur(5px);
+
+    position: fixed;
+    top: 10vw;
+    bottom: 10vw;
+    left: 10vw;
+    right: 10vw;
+
+    color: black;
+    border-radius: 4px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+:checked+.drawer {
+    visibility: visible;
+    opacity: 1;
+}
+
+.drawer-header,
+.drawer-action,
+.drawer-main {
+    display: flex;
+    position: relative;
+    padding: 2vw;
+    font-size: 1rem;
+    justify-content: center;
+}
+
+.drawer-header::after,
+.drawer-action::before {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    bottom: -1px;
+    height: 2px;
+    left: 0;
+    right: 0;
+    background-color: rgb(180, 180, 180);
+}
+
+.drawer-action::before {
+    bottom: auto;
+    top: -1px;
+}
+
+.drawer-header * {
+    font-size: 1.7rem;
+}
+
+.drawer-main {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: scroll;
+}
+
+.drawer-close {
+    position: absolute;
+    right: 3vw;
+    font-size: 1rem;
 }

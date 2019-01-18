@@ -1,5 +1,4 @@
 .wrapper {
-    color: #fff;
     position: fixed;
     left: 0;
     top: 0;
@@ -8,13 +7,18 @@
     z-index: 100;
 
     display: grid;
-    grid-template: "activities  title           title        " auto
-                   "activities  .               control-zoom " 1fr
-                   "activities  control-strip   control-strip" auto
-                   /auto        1fr             auto
+    grid-template: "activities  title           title        "auto "activities  .               control-zoom "1fr "activities  control-strip   control-strip"auto /auto 1fr auto
 }
 
-.viewport{
+.mode-light {
+    color: #000;
+}
+
+.mode-dark {
+    color: #fff;
+}
+
+.viewport {
     position: fixed;
     left: 0;
     top: 0;
@@ -36,4 +40,13 @@
 .inactive .ifactive,
 .active .ifinactive {
     display: none;
+}
+
+.btn {
+    color: white;
+    background-color: rgb(39, 39, 39);
+    padding: 1vw;
+    border-radius: 4px;
+    text-transform: capitalize;
+    font-size: 1.2rem;
 }
