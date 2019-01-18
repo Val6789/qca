@@ -97,8 +97,9 @@ class QubitEditor {
 
 
     init() {
-        document.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
-        document.addEventListener("mouseup", () => this._clickHandler())
+        const domViewportElement = ThreeViewControllerInstance.renderer.domElement
+        domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
+        domViewportElement.addEventListener("mouseup", () => this._clickHandler())
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()

@@ -41,6 +41,13 @@ class ThreeViewController {
         return this._orbit
     }
 
+    /**
+     * @brief Renderer getter
+     */
+    get renderer() {
+        return this._renderer
+    }
+
 
     /**
      * @brief adds observer method to the render-observers-collection
