@@ -54,7 +54,7 @@ class Qubit extends Block {
      */
     set polarity(newValue) {
         // if newValue is already set no need do the following expensive steps
-        if (newValue == this.polarity) return
+        if (newValue === this.polarity) return
 
         var label // will save the text displayed on the qubit
 
@@ -148,7 +148,7 @@ class Qubit extends Block {
                 throw console.error("Compute error.")
         })
 
-        const numerator = sigmaPj * EKIJ / (2 * GAMMA)
+        const numerator =  (EKIJ / (2 * GAMMA)) * sigmaPj
         const balance = numerator / Math.hypot(1, numerator)
         if (Number.isNaN(balance)) 
             throw console.error("Compute error.")
@@ -188,7 +188,6 @@ class Qubit extends Block {
         // Creates the box with a label
         super(position) // haha
 
-
         // TODO OUTPUTS EXTENDS QUBIT, QUBIT CAN HIDE ELECTRONS
 
         // create dots
@@ -209,6 +208,8 @@ class Qubit extends Block {
 
         // tells the recursive processor if the polarity was updated
         this._visited = false
+
+        this.setLabel("?")
 
         // Adds object to the scene, calling the render on the next frame
         ThreeViewControllerInstance.addObjectToScene(this.object)

@@ -52,7 +52,7 @@ class QuantumAutomata {
         // tries to remove from output list
         const block = this._qubitMap.get(hash)
 
-        const outputIndex = this._outputs.indexOf()
+        const outputIndex = this._outputs.indexOf(block)
         if (outputIndex != -1) this._outputs.splice(outputIndex, 1)
 
         block.remove()
@@ -97,13 +97,14 @@ class QuantumAutomata {
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
-        if (this._qubitMap.get(hash)){
+        if (this._qubitMap.has(hash)){
             console.warn("Cell is occupied:", hash)
             block.remove()
             return false
+        } else {
+            this._qubitMap.set(hash, block)
+            return true
         }
-        this._qubitMap.set(hash, block)
-        return true
     }
 
     
