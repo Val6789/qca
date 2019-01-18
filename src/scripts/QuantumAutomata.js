@@ -26,7 +26,7 @@ class QuantumAutomata {
      * @param {Number} State 0 or 1
      */
     addInput(position, value) {
-        this._addBlock(new InputBlock(position, value))
+        this._addBlock(new InputBlock(position, value ? 1 : -1 ))
     }
 
 
@@ -37,7 +37,7 @@ class QuantumAutomata {
     addOutput(position) {
         const newBlock = new OutputBlock(position)
         if (this._addBlock(newBlock))
-            this._outputs.push(newBlock)
+            this._outputs.add(newBlock)
     }
 
 
@@ -49,13 +49,9 @@ class QuantumAutomata {
         const hash = QuantumAutomata._positionHash(position)
         if (!this._qubitMap.has(hash)) throw console.info("Cell is empty:", hash)
 
-        // tries to remove from output list
         const block = this._qubitMap.get(hash)
-
-        const outputIndex = this._outputs.indexOf()
-        if (outputIndex != -1) this._outputs.splice(outputIndex, 1)
-
         block.remove()
+        this._outputs.delete(block)
         this._qubitMap.delete(hash)
     }
 
@@ -68,8 +64,10 @@ class QuantumAutomata {
     getQubitNeighborsAround(position) {
         return QuantumAutomata._NEIGHBOR_MAP.reduce((accumulator, neighborRelativePosition) => {
             const neighborPosition = (new THREE.Vector3()).addVectors(position, neighborRelativePosition)
-            const qubit = this.getQubit(neighborPosition)
-            return qubit ? accumulator.concat([qubit]) : accumulator
+            const hash = QuantumAutomata._positionHash(neighborPosition)
+            if (this._qubitMap.has(hash)) 
+                accumulator.push(this._qubitMap.get(hash))
+            return accumulator
         }, [])
     }
 
@@ -78,16 +76,16 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
-        if (this._outputs.length == 0) return
+        if (this._outputs.size === 0) return
 
-        for (let output of this._outputs) {
-            output.visited = false;
+        this._outputs.forEach( output => {
+            output._visited = false;
             output.processNeighboorsInfluences(this)
-        }
+        })
 
         this._qubitMap.forEach(qubit => {
             if (qubit instanceof Qubit) qubit.applyPolarityBuffer()
-        });
+        })
     }
 
 
@@ -97,13 +95,14 @@ class QuantumAutomata {
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
-        if (this._qubitMap.get(hash)){
+        if (this._qubitMap.has(hash)){
             console.warn("Cell is occupied:", hash)
             block.remove()
             return false
+        } else {
+            this._qubitMap.set(hash, block)
+            return true
         }
-        this._qubitMap.set(hash, block)
-        return true
     }
 
     
@@ -112,7 +111,7 @@ class QuantumAutomata {
      */
     constructor() {
         this._qubitMap = new Map()
-        this._outputs =  new Array()
+        this._outputs =  new Set()
     }
 
     
@@ -131,12 +130,12 @@ class QuantumAutomata {
  * @private @static @constant @member
  */
 QuantumAutomata._NEIGHBOR_MAP = [
-    new THREE.Vector3( 0, 0, 1),
-    new THREE.Vector3( 1, 0, 1),
-    new THREE.Vector3( 1, 0, 0),
-    new THREE.Vector3( 1, 0,-1),
-    new THREE.Vector3( 0, 0,-1),
-    new THREE.Vector3(-1, 0,-1),
-    new THREE.Vector3(-1, 0, 0),
-    new THREE.Vector3(-1, 0, 1)
+    new THREE.Vector3( 0, 0, 1), // up
+    new THREE.Vector3( 1, 0, 1), // up right
+    new THREE.Vector3( 1, 0, 0), // right
+    new THREE.Vector3( 1, 0,-1), // right down
+    new THREE.Vector3( 0, 0,-1), // down
+    new THREE.Vector3(-1, 0,-1), // down left
+    new THREE.Vector3(-1, 0, 0), // left
+    new THREE.Vector3(-1, 0, 1)  // up left
 ]

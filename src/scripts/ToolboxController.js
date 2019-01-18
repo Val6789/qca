@@ -5,112 +5,114 @@ class ToolboxController {
 
     _setButton(id, callback) {
         var button = document.getElementById(id)
-        button.addEventListener("click", callback)
+        button.addEventListener("click", event => {
+            callback(event)
+            event.stopPropagation()
+        }, false)
         return button
     }
-    _setActive(elem) {
-        let lastActive = elem.target.parentNode.getElementsByClassName('active');
-        if(lastActive.length > 0) lastActive[0].classList.remove('active')
-        elem.target.classList.add('active')
+
+    
+    _setActive(element) {
+        let lastActive = document.querySelector("active");
+        if(lastActive) lastActive.classList.remove('active')
+        element.classList.add('active')
     }
+
 
     _setCameraButton() {
         const buttonId = "get-camera"
-        this.cameraButton = this._setButton(buttonId, (elem) => {
-            this._setActive(elem);
+        this.cameraButton = this._setButton(buttonId, (event) => {
+            this._setActive(event.target)
             ThreeViewControllerInstance.orbitControls.enabled = true
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
-            console.log("camera mode.")
         })
     }
+
 
     _setQubitButton() {
         const buttonId = "place-qubits"
-        this.qubitButton = this._setButton(buttonId, (elem) => {
-            this._setActive(elem);
+        this.qubitButton = this._setButton(buttonId, (event) => {
+            this._setActive(event.target)
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
-            console.log("add qubit.")
         })
     }
+
 
     _setPositiveInputButton() {
         const buttonId = "positive-input"
-        this.positiveInputButton = this._setButton(buttonId, (elem) => {
-            this._setActive(elem);
+        this.positiveInputButton = this._setButton(buttonId, (event) => {
+            this._setActive(event.target)
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.POSITIVE_INPUT
-            console.log("add 1 input.")
         })
     }
+
 
     _setNegativeInputButton() {
         const buttonId = "negative-input"
-        this.negativeInputButton = this._setButton(buttonId, (elem) => {
-            this._setActive(elem);
+        this.negativeInputButton = this._setButton(buttonId, (event) => {
+            this._setActive(event.target)
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-            console.log("add 0 input.")
         })
     }
+
 
     _setOutputButton() {
         const buttonId = "place-output"
-        this.outputButton = this._setButton(buttonId, (elem) => {
-            this._setActive(elem);
+        this.outputButton = this._setButton(buttonId, (event) => {
+            this._setActive(event.target)
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
-            console.log("add output.")
         })
     }
 
+
     _setEraserButton() {
         const buttonId = "eraser"
-        this.eraserButton = this._setButton(buttonId, (elem) => {
-            this._setActive(elem);
+        this.eraserButton = this._setButton(buttonId, (event) => {
+            this._setActive(event.target)
             ThreeViewControllerInstance.orbitControls.enabled = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
-            console.log("erase mode.")
         })
     }
+
     
     _setValuesCheckbox() {
 		const checkbox = document.getElementById("check-values")
 		checkbox.onclick = function() {
-			if(checkbox.checked) {
-				// on every qbit, write label
-			}
-			else {
-				// on every qbit
-				// this.object.remove(this.object.getObjectByName("ValueText"))
-			}
+			Qubit.instances.forEach(function(e) {
+				e.object.getObjectByName("ValueText").material.visible = checkbox.checked
+			})			
 		}
 	}
     
+
     _setOutlinesCheckbox() {
 		const checkbox = document.getElementById("check-outlines")
 		checkbox.onclick = function() {
-			if(checkbox.checked) {
-				// on every qbit, add outline
-			}
-			else {
-				// on every qbit
-				// this.object.remove(this.object.getObjectByName("Outline"))
-			}
+			Qubit.instances.forEach(function(e) {
+				e.object.material.visible = checkbox.checked
+			})
 		}
-	}
+    }
+    
     
     _setFieldsCheckbox() {
 		const checkbox = document.getElementById("check-fields")
 		checkbox.onclick = function() {
+			// TODO
 			if(checkbox.checked) {
-				// on every qbit, rm field
-			}
-			else {
 				//
 			}
+			else {
+				//~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
+			}
 		}
-	}
+    }
+    
 
     init() {
         this._setCameraButton()
@@ -119,10 +121,6 @@ class ToolboxController {
         this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
-        
-        this._setValuesCheckbox()
-        this._setOutlinesCheckbox()
-        this._setFieldsCheckbox()
     }
 
     constructor() {

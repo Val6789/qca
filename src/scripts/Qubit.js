@@ -54,7 +54,7 @@ class Qubit extends Block {
      */
     set polarity(newValue) {
         // if newValue is already set no need do the following expensive steps
-        if (newValue == this.polarity) return
+        if (newValue === this.polarity) return
 
         var label // will save the text displayed on the qubit
 
@@ -142,17 +142,19 @@ class Qubit extends Block {
             const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
             
-            sigmaPj +=  neighborPolarity * neighbor.charge * kink
+            sigmaPj += neighborPolarity * neighbor.charge * kink
 
             if (Number.isNaN(sigmaPj)) 
                 throw console.error("Compute error.")
         })
 
-        const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        const balance = numerator / Math.hypot(1, numerator)
-        if (Number.isNaN(balance)) 
+        const numerator =  (EKIJ / (2 * GAMMA)) * sigmaPj
+
+        // balance saved for debugging purposes
+        this.balance = numerator / Math.hypot(1, numerator)
+        if (Number.isNaN(this.balance)) 
             throw console.error("Compute error.")
-        this._polarityBuffer = Math.sign(balance)
+        this._polarityBuffer = Math.sign(this.balance)
         return this._polarityBuffer
     }
 
@@ -188,7 +190,6 @@ class Qubit extends Block {
         // Creates the box with a label
         super(position) // haha
 
-
         // TODO OUTPUTS EXTENDS QUBIT, QUBIT CAN HIDE ELECTRONS
 
         // create dots
@@ -209,6 +210,8 @@ class Qubit extends Block {
 
         // tells the recursive processor if the polarity was updated
         this._visited = false
+
+        this.setLabel("?")
 
         // Adds object to the scene, calling the render on the next frame
         ThreeViewControllerInstance.addObjectToScene(this.object)

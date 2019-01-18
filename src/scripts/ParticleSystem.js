@@ -51,6 +51,7 @@ class ParticleSystem {
         this._geometryBuffer.computeBoundingSphere()
 
         this._particlesGroup = new THREE.Group()
+        this._particlesGroup.name = "Particles"
 
         // if only one material was given, turn it into an array
         if (materials instanceof THREE.Material)

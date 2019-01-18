@@ -2,7 +2,7 @@
 /* exported Grid */
 
 class Grid {
-    constructor(font, offset = 0, size = 10, divisions = 10) {
+    constructor(font, offset = 0, size = 300, divisions = 300) {
         this.object = new THREE.GridHelper(size, divisions)
         this.object.position.set(-0.5, offset, -0.5)
 
@@ -12,7 +12,9 @@ class Grid {
         this.object.add(this.hitzone)
 
         const material = new THREE.MeshBasicMaterial({
-            color: 0xffffff
+            color: 0xffffff,
+            opacity: 0.1,
+            transparent: true
         })
 
         this.size = 0.3
@@ -53,10 +55,12 @@ class Grid {
         this.t_yp = new THREE.Mesh(t_yp, material)
         this.t_yn = new THREE.Mesh(t_yn, material)
 
+		/*
         this.object.add(this.t_xp)
         this.object.add(this.t_xn)
         this.object.add(this.t_yp)
         this.object.add(this.t_yn)
+        */
 
         const distance = (size / 2) + 1
         this.t_xp.position.set(+distance, offset, 0)
