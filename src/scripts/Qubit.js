@@ -21,10 +21,14 @@ class Qubit extends Block {
 
     // returns the binary state
     get state() {
-        // todo handle NAN
-        return polarity > 0 ? 1 : 0
+        const polarity = this.polarity;
+        if (polarity == 1 || polarity == -1) return polarity
+        else return NaN
     }
     
+    set state(newValue) {
+        this.polarity = newValue * 2 - 1
+    }
 
     /**
      * @public @property
@@ -41,12 +45,6 @@ class Qubit extends Block {
         // unexpected case
         throw console.error("Qubit marked as determined without a valid polarisation.")
     }
-
-
-    get charge() {
-        return this.electrons.reduce((accumulator, electron) => (accumulator + electron.charge), 0) / this.electrons.length
-    }
-
 
     /**
      * @public @property
@@ -94,6 +92,10 @@ class Qubit extends Block {
     }
 
 
+    get charge() {
+        return this.electrons.reduce((accumulator, electron) => (accumulator + electron.charge), 0) / this.electrons.length
+    }
+
     /**
      * @public @method
      * @brief Removes qubit from the world
@@ -110,7 +112,9 @@ class Qubit extends Block {
         removed.electrons.forEach(electron => electron.remove())
     }
 
-
+    /**
+     * 
+     */
     applyPolarityBuffer() {
         this._visited = false
         this.polarity = this._polarityBuffer
@@ -128,20 +132,26 @@ class Qubit extends Block {
         const EKIJ = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
         var sigmaPj = 0 // Sum of neighbors influences
-
-        for (let neighbor of automata.getQubitNeighborsAround(this.position)) {
+        
+        automata.getQubitNeighborsAround(this.position).forEach(neighbor => {
             const ADJACENT_KINK = 1
             const DIAGONAL_KINK = -0.2
 
             const neighborPolarity = neighbor.processNeighboorsInfluences(automata)
             const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
-
+            
             sigmaPj +=  neighborPolarity * neighbor.charge * kink
-        }
+
+            if (Number.isNaN(sigmaPj)) 
+                throw console.error("Compute error.")
+        })
 
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        this._polarityBuffer = numerator / Math.hypot(1, numerator)
+        const balance = numerator / Math.hypot(1, numerator)
+        if (Number.isNaN(balance)) 
+            throw console.error("Compute error.")
+        this._polarityBuffer = Math.sign(balance)
         return this._polarityBuffer
     }
 
@@ -176,6 +186,9 @@ class Qubit extends Block {
     constructor(position = new THREE.Vector3(), polarity = 0) {
         // Creates the box with a label
         super(position) // haha
+
+
+        // TODO OUTPUTS EXTENDS QUBIT, QUBIT CAN HIDE ELECTRONS
 
         // create dots
         var self = this

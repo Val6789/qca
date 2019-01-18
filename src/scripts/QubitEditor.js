@@ -80,11 +80,8 @@ class QubitEditor {
                 case QubitEditor.canEditEnumeration.OUTPUT:
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
 
-
                 case QubitEditor.canEditEnumeration.REMOVE:
                     return AppControllerInstance.automata.removeBlock(this._getBlockOnCursor().position)
-
-
             }
         } catch (exception) {
             console.info(exception)
