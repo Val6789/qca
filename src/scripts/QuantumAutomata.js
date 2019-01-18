@@ -80,6 +80,7 @@ class QuantumAutomata {
         }
 
         this._qubitMap.forEach(qubit => qubit.applyPolarityBuffer())
+        console.log(this)
     }
 
 
@@ -89,7 +90,11 @@ class QuantumAutomata {
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
-        if (this._qubitMap[hash]) throw console.warn("Cell is occupied:", hash)
+        if (this._qubitMap[hash]) {
+            console.warn("Cell is occupied:", hash)
+            block.remove()
+            return false
+        }
         this._qubitMap[hash] = block
         return true
     }

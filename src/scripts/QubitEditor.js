@@ -69,40 +69,20 @@ class QubitEditor {
         try {
             switch (this.canEdit) {
                 case QubitEditor.canEditEnumeration.QUBIT:
-                    if (this._checkForSpace())
-                        return
-                    else {
-                        // Achievement
-                        AchievementManager.Get().obtained("firstStep")
-                        return AppControllerInstance.automata.addQubit(this.cursor.position)
-                    }
-
-
+                    return AppControllerInstance.automata.addQubit(this.cursor.position)
 
                 case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
-                    if (this._checkForSpace())
-                        return
-                    else
-                        return AppControllerInstance.automata.addInput(this.cursor.position, -1)
+                    return AppControllerInstance.automata.addInput(this.cursor.position, -1)
 
                 case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
-                    if (this._checkForSpace())
-                        return
-                    else
-                        return AppControllerInstance.automata.addInput(this.cursor.position, 1)
+                    return AppControllerInstance.automata.addInput(this.cursor.position, 1)
 
                 case QubitEditor.canEditEnumeration.OUTPUT:
-                    if (this._checkForSpace())
-                        return
-                    else
-                        return AppControllerInstance.automata.addOutput(this.cursor.position)
+                    return AppControllerInstance.automata.addOutput(this.cursor.position)
 
 
                 case QubitEditor.canEditEnumeration.REMOVE:
-                    if (!this._checkForSpace())
-                        return
-                    else
-                        return AppControllerInstance.automata.removeBlock(this._getBlockOnCursor().position)
+                    return AppControllerInstance.automata.removeBlock(this._getBlockOnCursor().position)
 
 
             }
