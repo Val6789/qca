@@ -110,8 +110,8 @@ class ThreeViewController {
         this._setOrbit()
         setLightmode(false)
         
-        //~ var axesHelper = new THREE.AxesHelper()
-		//~ this._scene.add( axesHelper )
+        // add axes
+        this._axis = new Axis(this._camera)
     }
 
 
@@ -122,6 +122,8 @@ class ThreeViewController {
         this._onRenderObservers.forEach(callback => callback())
         this._renderer.render(this._scene, this._camera)
         this._willRender = false
+        
+        this._axis.render(this._camera)
     }
 
 

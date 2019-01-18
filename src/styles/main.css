@@ -9,6 +9,16 @@
     display: grid;
     grid-template: "activities  title           title        "auto "activities  .               control-zoom "1fr "activities  control-strip   control-strip"auto /auto 1fr auto
 }
+#axis {
+    width: 75px;
+    height: 75px;
+    margin: 20px;
+    padding: 0px;
+    position: absolute;
+    right: 0px;
+    bottom: 60px;
+    z-index: 10;
+}
 .layers, .time-buttons
 {
     display:none;
