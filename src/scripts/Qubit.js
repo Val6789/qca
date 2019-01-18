@@ -83,6 +83,7 @@ class Qubit extends Block {
                 // is determined false. The electrons will switch places freneticly
                 this.isDetermined = false
                 label = "?"
+                break;
 
             default: throw console.error("Unexpected polarity value :", newValue)
         }
@@ -183,7 +184,7 @@ class Qubit extends Block {
      * The instance is owned by the class inside Qubit.instances
      * A render will be called on the next frame
      */
-    constructor(position = new THREE.Vector3(), polarity = 0) {
+    constructor(position = new THREE.Vector3(), polarity = 0, enableParticles = true) {
         // Creates the box with a label
         super(position) // haha
 
@@ -192,18 +193,14 @@ class Qubit extends Block {
 
         // create dots
         var self = this
-        this.dots = [
-            new Dot(Qubit.DOT_DIST, Qubit.DOT_DIST, self),
-            new Dot(-Qubit.DOT_DIST, Qubit.DOT_DIST, self),
-            new Dot(Qubit.DOT_DIST, -Qubit.DOT_DIST, self),
-            new Dot(-Qubit.DOT_DIST, -Qubit.DOT_DIST, self)
-        ]
+
+        this.dots = Qubit.DOT_PLACEMENTS.map(position => new Dot(position, self, enableParticles))
 
         // create electrons
         let dots = this.dots
         this.electrons = [
-            new Electron(dots[1]),
-            new Electron(dots[2])
+            new Electron(dots[1], enableParticles),
+            new Electron(dots[2], enableParticles)
         ]
 
         // sets the polarity, makes sure the dots are in the right place
@@ -244,7 +241,12 @@ Qubit.UNDETERMINED_REFRESH_RATE = 200 // seconds
  * @static @private @constant
  * @brief distance of the electron from the center of qubit 
  * */
-Qubit.DOT_DIST = 0.3
+Qubit.DOT_PLACEMENTS = [
+    new THREE.Vector3(0.2, 0, 0.2),
+    new THREE.Vector3(0.2, 0, -0.2),
+    new THREE.Vector3(-0.2, 0, 0.2),
+    new THREE.Vector3(-0.2, 0, -0.2)
+]
 
 /** 
  * @static @private

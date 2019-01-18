@@ -17,26 +17,28 @@ class Dot {
     }
 
     remove() {
-        Dot.instances.splice(Dot.instances.indexOf(this), 1)
-        Dot.particles.positions = Dot.instances.map(dot => dot.position)
+        if (!this.isVisible) return
+        Dot.visibleInstances.splice(Dot.visibleInstances.indexOf(this), 1)
+        Dot.particles.positions = Dot.visibleInstances.map(dot => dot.position)
         ThreeViewControllerInstance.shouldRender()
     }
 
-    constructor(offsetX, offsetZ, qubit) {
+    constructor(relativePosition, qubit, visible = false) {
         // properties
-        this.relativeQubitPosition = new THREE.Vector3(offsetX, 0, offsetZ)
+        this.relativeQubitPosition = relativePosition
         this.parentQubit = qubit
         
-        // add particle for the new dot
-        Dot.particles.addAt(this.position)
-
-        // push dot in the instance collection
-        Dot.instances.push(this)
+        if(this.isVisible = visible) {
+            // add particle for the new dot
+            Dot.particles.addAt(this.position)
+            // push dot in the instance collection
+            Dot.visibleInstances.push(this)
+        }
     }
 
     static init() {
         // init the instances object
-        Dot.instances = []
+        Dot.visibleInstances = []
 
         // create particle system
         Dot.particles = new ParticleSystem(Dot._getSolidMaterial())

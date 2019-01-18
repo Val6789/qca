@@ -20,31 +20,35 @@ class Electron {
 
     set dot(newDot) {
         this._dot = newDot
-        Electron._updateParticles()
+        if (this.isVisible)
+            Electron._updateParticles()
     }
     
     remove() {
-        Electron.instances.splice(Electron.instances.indexOf(this), 1)
+        if (!this.isVisible) return
+        Electron.visibleInstances.splice(Electron.visibleInstances.indexOf(this), 1)
         Electron._updateParticles()
     }
 
-    constructor(dot) {
+    constructor(dot, visible = false) {
         //properties 
         this._dot = dot
         this.charge = 1.0
 
-        Electron.particles.addAt(this.position)
-        Electron.instances.push(this)
+        if(this.isVisible = visible) {
+            Electron.particles.addAt(this.position)
+            Electron.visibleInstances.push(this)
+        }
     }
 
     static init() {
         // init the instances object
-        Electron.instances = []
+        Electron.visibleInstances = []
         Electron.particles = new ParticleSystem([this._getSolidMaterial(), this._getInfluenceMaterial()])
     }
 
     static _updateParticles() {
-        Electron.particles.positions = Electron.instances.map(electron => electron.position)
+        Electron.particles.positions = Electron.visibleInstances.map(electron => electron.position)
         ThreeViewControllerInstance.shouldRender()
     }
 

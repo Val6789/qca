@@ -18,7 +18,7 @@ class OutputBlock extends Qubit {
     }
 
     constructor(position) {
-        super(position)
+        super(position, 0, false)
         this.polarity = NaN
     }
 
