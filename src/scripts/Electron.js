@@ -75,7 +75,7 @@ class Electron {
 
     static _getSolidMaterial() {
         return new THREE.PointsMaterial({
-            size: 0.5,
+            size: Electron.RADIUS,
             sizeAttenuation: true,
             map: AssetManager.Get().textures.electron,
             transparent: false,
@@ -85,7 +85,7 @@ class Electron {
 
 }
 
-Electron.RADIUS = 0.8
+Electron.RADIUS = 0.3
 Electron.INFLUENCE_SIZE = 2000.0
 Electron.INFLUENCE_COLOR = 0x00ff00
 Electron.bufferNeedsUpdate = false

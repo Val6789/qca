@@ -44,7 +44,7 @@ class Dot {
 
     static _getSolidMaterial() {
         return new THREE.PointsMaterial({
-            size: 0.5,
+            size: Dot.RADIUS,
             sizeAttenuation: true,
             map: AssetManager.Get().textures.dot,
             transparent: true,
@@ -53,5 +53,5 @@ class Dot {
     }
 }
 
-Dot.RADIUS = 0.9
+Dot.RADIUS = 0.3
 Dot._bufferNeedsUpdate = false

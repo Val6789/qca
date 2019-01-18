@@ -244,7 +244,7 @@ Qubit.UNDETERMINED_REFRESH_RATE = 200 // seconds
  * @static @private @constant
  * @brief distance of the electron from the center of qubit 
  * */
-Qubit.DOT_DIST = 0.2
+Qubit.DOT_DIST = 0.3
 
 /** 
  * @static @private

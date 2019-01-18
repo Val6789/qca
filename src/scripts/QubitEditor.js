@@ -88,7 +88,7 @@ class QubitEditor {
 
 
     _makeGrid() {
-        this.grid = new Grid(AssetManager.Get().fonts.optimer)
+        this.grid = new Grid(AssetManager.Get().fonts.optimer, -QubitEditor.CURSOR_HEIGHT / 2)
         ThreeViewControllerInstance.addObjectToScene(this.grid.object)
         ThreeViewControllerInstance.callbackOnRender(() => {
             this.grid.lookCamera(ThreeViewControllerInstance.camera.position)
