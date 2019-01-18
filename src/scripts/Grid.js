@@ -2,9 +2,9 @@
 /* exported Grid */
 
 class Grid {
-    constructor(font, size = 10, divisions = 10) {
+    constructor(font, offset = 0, size = 10, divisions = 10) {
         this.object = new THREE.GridHelper(size, divisions)
-        this.object.position.set(-0.5, 0, -0.5)
+        this.object.position.set(-0.5, offset, -0.5)
 
         this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size,size))
         this.hitzone.lookAt(0,1,0)
@@ -59,10 +59,10 @@ class Grid {
         this.object.add(this.t_yn)
 
         const distance = (size / 2) + 1
-        this.t_xp.position.set(+distance, 0, 0)
-        this.t_xn.position.set(-distance, 0, 0)
-        this.t_yp.position.set(0, 0, +distance)
-        this.t_yn.position.set(0, 0, -distance)
+        this.t_xp.position.set(+distance, offset, 0)
+        this.t_xn.position.set(-distance, offset, 0)
+        this.t_yp.position.set(0, offset, +distance)
+        this.t_yn.position.set(0, offset, -distance)
     }
 
     lookCamera(cameraPosition) {

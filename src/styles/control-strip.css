@@ -3,9 +3,12 @@
     grid-area: control-strip;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
+    text-align:center;
     padding: 0.5rem;
-    border-top: #bbb 1px solid;
+    border-top: #111 1px solid;
+    background-color:rgba(0,0,0,0.6);
+    box-shadow:0px -15px 20px rgba(0,0,0,0.4);
 }
 
 .time-button, .tool {
@@ -22,8 +25,13 @@
 
 .hide-activities {
     font-size: 0;
+    display:none;
 }
 
 .hide-activities-icon {
     height: 24px;
+}
+.toolbox
+{
+    margin:auto;
 }
