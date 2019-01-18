@@ -1,4 +1,4 @@
-class OutputBlock extends Block {
+class OutputBlock extends Qubit {
 
     set polarity(value) {
         var label

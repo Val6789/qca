@@ -15,12 +15,13 @@ class InputBlock extends Block{
         return this.polarity;
     }
 
-    constructor(position, polarity) {
+    constructor(position, polarity, strength = 4) {
         if (polarity == 0) throw console.error("Input block cannot have zero values")
 
         super(position)
 
         this.polarity = polarity
+        this.charge = strength * polarity
 
         if (polarity > 0) {
             InputBlock.positiveParticles.addAt(this.position)  
