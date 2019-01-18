@@ -91,6 +91,12 @@ class QubitEditor {
                     else
                         return new InputBlock(this.cursor.position, 1)
 
+                case QubitEditor.canEditEnumeration.OUTPUT:
+                    if (this._checkForSpace())
+                        return
+                    else
+                        return new OutputBlock(this.cursor.position)
+
 
                 case QubitEditor.canEditEnumeration.REMOVE:
                     if (!this._checkForSpace())
