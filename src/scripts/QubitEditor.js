@@ -48,63 +48,23 @@ class QubitEditor {
         }
     }
 
-
-    _checkForSpace() {
-        var occupied = false
-        // check if place is occupied
-        occupied |= Qubit.instances.some(qubit => qubit.position.equals(this.cursor.position))
-        occupied |= InputBlock.positiveInstances.some(positiveInput => positiveInput.position.equals(this.cursor.position))
-        occupied |= InputBlock.negativeInstances.some(negativeInput => negativeInput.position.equals(this.cursor.position))
-
-        return occupied
-    }
-
-    _getBlockOnCursor() {
-        const allBlocks = [].concat(Qubit.instances, InputBlock.negativeInstances, InputBlock.positiveInstances)
-        return allBlocks.find(block => block.position.equals(this.cursor.position))
-    }
-
-
     _clickHandler() {
         try {
             switch (this.canEdit) {
                 case QubitEditor.canEditEnumeration.QUBIT:
-                    if (this._checkForSpace())
-                        return
-                    else {
-                        // Achievement
-                        AchievementManager.Get().obtained("firstStep")
-                        return new Qubit(this.cursor.position)
-                    }
-
-
+                    return AppControllerInstance.automata.addQubit(this.cursor.position)
 
                 case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
-                    if (this._checkForSpace())
-                        return
-                    else
-                        return new InputBlock(this.cursor.position, -1)
+                    return AppControllerInstance.automata.addInput(this.cursor.position, -1)
 
                 case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
-                    if (this._checkForSpace())
-                        return
-                    else
-                        return new InputBlock(this.cursor.position, 1)
+                    return AppControllerInstance.automata.addInput(this.cursor.position, 1)
 
                 case QubitEditor.canEditEnumeration.OUTPUT:
-                    if (this._checkForSpace())
-                        return
-                    else
-                        return new OutputBlock(this.cursor.position)
-
+                    return AppControllerInstance.automata.addOutput(this.cursor.position)
 
                 case QubitEditor.canEditEnumeration.REMOVE:
-                    if (!this._checkForSpace())
-                        return
-                    else
-                        return this._getBlockOnCursor().remove()
-
-
+                    return AppControllerInstance.automata.removeBlock(this.cursor.position)
             }
         } catch (exception) {
             console.info(exception)
@@ -128,7 +88,7 @@ class QubitEditor {
 
 
     _makeGrid() {
-        this.grid = new Grid(AssetManager.Get().fonts.optimer)
+        this.grid = new Grid(AssetManager.Get().fonts.optimer, -QubitEditor.CURSOR_HEIGHT / 2)
         ThreeViewControllerInstance.addObjectToScene(this.grid.object)
         ThreeViewControllerInstance.callbackOnRender(() => {
             this.grid.lookCamera(ThreeViewControllerInstance.camera.position)

@@ -1,4 +1,4 @@
-class OutputBlock extends Block {
+class OutputBlock extends Qubit {
 
     set polarity(value) {
         var label
@@ -18,7 +18,7 @@ class OutputBlock extends Block {
     }
 
     constructor(position) {
-        super(position)
+        super(position, 0, false)
         this.polarity = NaN
     }
 

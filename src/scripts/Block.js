@@ -22,7 +22,6 @@ class Block {
     remove() {
         ThreeViewControllerInstance.removeObjectFromScene(this.object) // will call a render
     }
-
     
     /**
      * @public @method
@@ -69,6 +68,9 @@ class Block {
         
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
+
+        // makes sure the position is an integer
+        position.round()
 
         // creates the box
         this.object = new THREE.LineSegments(edgesGeometry, lineMaterial)
