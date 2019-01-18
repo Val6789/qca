@@ -22,6 +22,7 @@
 
 .hide-activities {
     font-size: 0;
+    display:none;
 }
 
 .hide-activities-icon {
