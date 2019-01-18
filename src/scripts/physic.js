@@ -5,7 +5,6 @@ class Qbit {
 		this.x = x;
 		this.y = y;
 		this.value = value;
-		this.trueValue = value;
 		this.nextValue = value;
 		this.fixed = fixed;
 		this.load = load;
@@ -32,16 +31,15 @@ class Qbit {
 		this.visited = false;
 		if(!this.fixed)
 		{
-			this.trueValue = this.nextValue;
-			if(this.trueValue == 0) this.value = 0
-			else this.value = (this.trueValue<0?-1:1)
+			if(this.nextValue == 0) this.value = 0
+			else this.value = (this.nextValue<0?-1:1)
 		}
 	}
 	id() {
 		return 'x'+this.x+'y'+this.y;
 	}
 	inverseValue() {
-		if(this.fixed) this.value = this.nextValue = this.trueValue = (this.trueValue<0?1:-1);
+		if(this.fixed) this.value = this.nextValue = (this.value<0?1:-1);
 	}
 	getValue() {
 		if(this.value == 1) return 1
@@ -54,7 +52,6 @@ class Ask extends Qbit {
 		this.askQbit = true;
 		this.value = 0
 		this.nextValue = 0;
-		this.trueValue = 0;
 	}
 	getValue() {
 		if(this.value > 0) return "1"
@@ -63,58 +60,18 @@ class Ask extends Qbit {
 	}
 }
 
-class Family {
-	constructor(color="orange") {
-		this.qbits = [];
-		this.color = color;
-	}
-	addQbit(q){
-		if(this.scene.addQbit(q)) {
-			this.qbits.push(q);
-			return q;
-		}
-		return false;
-	}
-	process(){
-		for(var q of this.qbits)
-			q.process(this.scene.getNeighbour(q.x,q.y));
-	}
-	apply() {
-		for(var q of this.qbits)
-			q.apply();
-	}
-	getQbitIndex(x,y) {
-		var i = 0;
-		while(i < this.qbits.length) {
-			if(this.qbits[i].x == x && this.qbits[i].y == y) return this.qbits[i]
-			i++;
-		}
-		return false;
-	}
-	remove(x,y) {
-		this.scene.removeQbit(x,y);
-		var i = this.getQbitIndex(x,y);
-		if(i) this.qbits.slice(i,1);
-	}
-}
-
 class Scene {
 	constructor(){
-		this.families = [];
+		this.qbits = [];
 		this.mapQb = [];
 		this.ask = false;
 	}
-	addFamily(f){
-		f.scene = this;
-		this.families.push(f);
-		return f;
-	}
 	process(){
-		this.ask.visited = false;
 		if(this.ask) {
+			this.ask.visited = false;
 			this.ask.process(this);
 			this.ask.apply();
-			for(var f of this.families) f.apply()
+			for(var q of this.qbits) q.apply();
 		}
 	}
 	getQbit(x,y) {
@@ -125,6 +82,7 @@ class Scene {
 	addQbit(q) {
 		if(!this.getQbit(q.x,q.y) && (this.ask.x != q.x || this.ask.y != q.y)){
 			this.mapQb[q.id()] = q;
+			this.qbits.push(q);
 			return true;
 		}
 		return false;
