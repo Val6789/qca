@@ -48,23 +48,6 @@ class QubitEditor {
         }
     }
 
-
-    _checkForSpace() {
-        var occupied = false
-        // check if place is occupied
-        occupied |= Qubit.instances.some(qubit => qubit.position.equals(this.cursor.position))
-        occupied |= InputBlock.positiveInstances.some(positiveInput => positiveInput.position.equals(this.cursor.position))
-        occupied |= InputBlock.negativeInstances.some(negativeInput => negativeInput.position.equals(this.cursor.position))
-
-        return occupied
-    }
-
-    _getBlockOnCursor() {
-        const allBlocks = [].concat(Qubit.instances, InputBlock.negativeInstances, InputBlock.positiveInstances)
-        return allBlocks.find(block => block.position.equals(this.cursor.position))
-    }
-
-
     _clickHandler() {
         try {
             switch (this.canEdit) {
@@ -81,7 +64,7 @@ class QubitEditor {
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
 
                 case QubitEditor.canEditEnumeration.REMOVE:
-                    return AppControllerInstance.automata.removeBlock(this._getBlockOnCursor().position)
+                    return AppControllerInstance.automata.removeBlock(this.cursor.position)
             }
         } catch (exception) {
             console.info(exception)
