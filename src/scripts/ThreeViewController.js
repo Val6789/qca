@@ -123,7 +123,7 @@ class ThreeViewController {
         this._renderer.render(this._scene, this._camera)
         this._willRender = false
         
-        this._axis.render(this._camera)
+        this._axis.render(this._camera, this._orbit)
     }
 
 

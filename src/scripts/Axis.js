@@ -12,14 +12,15 @@ class Axis {
 		this._scene = new THREE.Scene()
 		
 		this._camera = new THREE.PerspectiveCamera(70, 1, 1, 1000)
-		this._camera.up = camera.up;
+		this._camera.up = camera.up
 		
 		this.object = new THREE.AxesHelper()
 		this._scene.add(this.object)
 	}
 	
-	render(camera) {
+	render(camera, controls) {
 		this._camera.position.copy(camera.position)
+		this._camera.position.sub(controls.target)
 		this._camera.position.setLength(2)
 	
 	    this._camera.lookAt(this._scene.position)
