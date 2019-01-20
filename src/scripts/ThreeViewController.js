@@ -138,6 +138,9 @@ class ThreeViewController {
         this._camera.aspect = width / height
         this._camera.updateProjectionMatrix()
         this._renderer.setSize(width, height)
+
+        // show updates
+        this.shouldRender()
     }
 
 
