@@ -80,19 +80,19 @@
                 <img src="assets/buttons/Camera.png" class="tool-icon camera-icon">
                 Q
             </button>
-            <button class="tool" alt="Positively charged influencer" id="positive-input">
+            <button class="tool draggable" alt="Positively charged influencer" id="positive-input">
                 <img src="assets/buttons/True.png" class="tool-icon positron-icon">
                 +
             </button>
-            <button class="tool" alt="Negatively charged influencer" id="negative-input">
+            <button class="tool draggable" alt="Negatively charged influencer" id="negative-input">
                 <img src="assets/buttons/False.png" class="tool-icon electron-icon">
                 -
             </button>
-            <button class="tool" alt="Qubit" id="place-qubits">
+            <button class="tool draggable" alt="Qubit" id="place-qubits">
                 <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
                 B
             </button>
-            <button class="tool" alt="Qubit" id="place-output">
+            <button class="tool draggable" alt="Qubit" id="place-output">
                 <img src="assets/buttons/Output.png" class="tool-icon output-icon">
                 O
             </button>
@@ -216,17 +216,5 @@
             </div>
         </nav>
     </aside>
-
-    <script>
-        // force  remove of the overlay (for livereload)
-        if (AppControllerInstance.isReady) AppControllerInstance.show()
-
-        // start the app
-        AppControllerInstance.init().then(() => {
-            AppControllerInstance.startUpdateLoop()
-            AppControllerInstance.ready()
-        })
-    </script>
 </body>
-
 </html>
