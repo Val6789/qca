@@ -64,7 +64,7 @@ class Electron {
                     value: new THREE.Color(Electron.INFLUENCE_COLOR)
                 },
                 opacity: {
-                    value: 0.5
+                    value: Electron.INFLUENCE_STRENGH
                 },
                 viewportHeight: {} // defined on render
             },
@@ -98,6 +98,7 @@ class Electron {
 }
 
 Electron.RADIUS = 0.3
-Electron.INFLUENCE_SIZE = 4.0
+Electron.INFLUENCE_SIZE = 3.0
+Electron.INFLUENCE_STRENGH = 0.4
 Electron.INFLUENCE_COLOR = 0x00ff00
 Electron.bufferNeedsUpdate = false
