@@ -57,8 +57,8 @@ class AppController {
         if (!AppController.instance) {
             AppController.instance = this
         }
-        this.refreshRate = 20;
-        this.pauseMode = false;
+        this.refreshRate = 20
+        this.pauseMode = false
         return AppController.instance
     }
 }

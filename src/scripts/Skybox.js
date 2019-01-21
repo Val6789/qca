@@ -1,7 +1,7 @@
 class Skybox {
     
-    switchStyle() {
-        this.style = Skybox.styles.DARK ? Skybox.styles.LIGHT : Skybox.styles.DARK
+    setStyle(style) {
+        this.style = style
     }
     
     get scene() {
@@ -12,7 +12,7 @@ class Skybox {
     }
     
     constructor() {
-
+        
         // Scene and camera
         this.sceneLight = new THREE.Scene()
         this.sceneLight.name = "Scene Light"

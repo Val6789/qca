@@ -212,7 +212,7 @@ class ThreeViewController {
         // set renderer
         this._renderer = new THREE.WebGLRenderer({ antialias: true })
         this._renderer.setPixelRatio(window.devicePixelRatio)
-        this._renderer.autoclear = false
+        this._renderer.autoClear = false
 
         // insert in DOM
         document.getElementById(viewportElementId).appendChild(this._renderer.domElement)
@@ -241,8 +241,9 @@ class ThreeViewController {
     _setSkybox() {
         this._skybox = new Skybox()
         console.log(this._skybox)
-        console.log(this._skybox.scene)
-        this.addLayer(this._skybox.scene, this._skybox.camera)
+        console.log(this._skybox.sceneDark)
+        this.addLayer(this._skybox.sceneDark, this._skybox.camera)
+        this.addLayer(this._skybox.sceneLight, this._skybox.camera)
     }
 
 

@@ -242,8 +242,7 @@ class Qubit extends Block {
  * @static @private @constant 
  * @brief defines superposition electron movmement frequency 
  * */
-Qubit.UNDETERMINED_REFRESH_RATE = 200 // seconds
-
+Qubit.UNDETERMINED_REFRESH_RATE = 100 // seconds
 /** 
  * @static @private @constant
  * @brief distance of the electron from the center of qubit 
