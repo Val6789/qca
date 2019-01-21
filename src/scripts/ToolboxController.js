@@ -119,6 +119,16 @@ class ToolboxController {
 		}
     }
     
+    _setPauseButton() {
+		var button = document.getElementById("play-button")
+	}
+	
+	_setSlowButton() {
+	}
+	
+	_setFastButton() {
+	}
+    
 
     init() {
         this._setCameraButton()
@@ -127,6 +137,9 @@ class ToolboxController {
         this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
+        this._setPauseButton()
+        this._setSlowButton()
+        this._setFastButton()
     }
 
     constructor() {
