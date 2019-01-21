@@ -49,7 +49,7 @@ class QuantumAutomata {
      */
     removeBlock(position) {
         const hash = QuantumAutomata._positionHash(position)
-        if (!this._qubitMap.has(hash)) throw console.info("Cell is empty:", hash)
+        if (!this._qubitMap.has(hash)) return
 
         const block = this._qubitMap.get(hash)
         block.remove()
@@ -70,7 +70,7 @@ class QuantumAutomata {
         return QuantumAutomata._NEIGHBOR_MAP.reduce((accumulator, neighborRelativePosition) => {
             const neighborPosition = (new THREE.Vector3()).addVectors(position, neighborRelativePosition)
             const hash = QuantumAutomata._positionHash(neighborPosition)
-            if (this._qubitMap.has(hash)) 
+            if (this._qubitMap.has(hash))
                 accumulator.push(this._qubitMap.get(hash))
             return accumulator
         }, [])
