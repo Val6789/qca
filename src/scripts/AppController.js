@@ -31,11 +31,11 @@ class AppController {
     setRefreshRate(rate) {
         this.refreshRate = rate
         clearInterval(this.interval)
-        startUpdateLoop()
+        this.startUpdateLoop()
     }
 
     setPause() {
-        this.pauseMode = this.pauseMode?false:true;
+		this.pauseMode =! this.pauseMode
     }
 
     ready() {

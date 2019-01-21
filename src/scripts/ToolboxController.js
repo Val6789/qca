@@ -2,7 +2,8 @@
 /* exported ToolboxController */
 
 class ToolboxController {
-
+	// Tool buttons //
+	
     _setButton(id, callback) {
         var button = document.getElementById(id)
         button.addEventListener("click", event => {
@@ -85,6 +86,7 @@ class ToolboxController {
         })
     }
 
+	// Checkboxes //
     
     _setValuesCheckbox() {
 		const checkbox = document.getElementById("check-values")
@@ -119,6 +121,31 @@ class ToolboxController {
 		}
     }
     
+    // Speed buttons //
+    
+    _setPauseButton() {
+		var button = document.getElementById("play-button")
+		button.onclick = function() {
+			AppControllerInstance.setPause()
+		}
+	}
+	
+	_setSlowButton() {
+		const button = document.getElementById("slow-button")
+		button.onclick = function() {
+			AppControllerInstance.pauseMode = false
+			AppControllerInstance.setRefreshRate(50)
+		}
+	}
+	
+	_setFastButton() {
+		const button = document.getElementById("fast-button")
+		button.onclick = function() {
+			AppControllerInstance.pauseMode = false
+			AppControllerInstance.setRefreshRate(5)
+		}
+	}
+    
 
     init() {
         this._setCameraButton()
@@ -127,6 +154,10 @@ class ToolboxController {
         this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
+        
+        this._setPauseButton()
+        this._setSlowButton()
+        this._setFastButton()
     }
 
     constructor() {
