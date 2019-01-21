@@ -189,6 +189,63 @@ class ToolboxController {
         this._currentDragPlayload = null;
     }
 
+    _setZoomSlider() {
+        const button = document.getElementById("zoom-control");
+
+        const onSliderChange = event => {
+            const zoom = parseInt(event.currentTarget.value)
+            const currentzoom = ThreeViewControllerInstance.camera.position.distanceTo(ThreeViewControllerInstance.orbitControls.target)
+            ThreeViewControllerInstance.camera.translateZ(zoom - currentzoom)
+
+            // update controls
+            ThreeViewControllerInstance.orbitControls.update()
+            ThreeViewControllerInstance.shouldRender()
+            event.stopPropagation()
+
+            console.log("hello")
+        }
+
+        button.addEventListener("mousedown", ev => ev.stopPropagation())
+        button.addEventListener("mousemove", onSliderChange)
+        button.addEventListener("touchmove", onSliderChange)
+
+
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            const currentzoom = ThreeViewControllerInstance.camera.position.distanceTo(ThreeViewControllerInstance.orbitControls.target)
+            button.value = currentzoom
+        })
+    }
+
+
+    _setCameraJoystick() {
+        const button = document.getElementById("joystick-control")
+        var centerX = button.offsetLeft + button.clientWidth / 2
+        var centerY = button.offsetTop + button.clientHeight / 2
+
+        console.log( centerX, centerY)
+
+        const onJoystick = (x,y) => {
+            const translation = new THREE.Vector3(centerX - x, 0, centerY - y)
+            ThreeViewControllerInstance.camera.position.add(translation)
+
+            console.log(ThreeViewControllerInstance.camera.position, translation)
+
+            ThreeViewControllerInstance.orbitControls.update()
+            ThreeViewControllerInstance.shouldRender()
+        }
+
+        button.addEventListener("touchmove", event => {
+            const touch = event.touches.item(0)
+            onJoystick(touch.clientX, touch.clientY)
+            event.stopPropagation()
+        })
+
+        button.addEventListener("mousemove", event => {
+            onJoystick(event.clientX, event.clientY)
+            event.stopPropagation()
+        })
+    }
+
     
     // Speed buttons //
     
@@ -229,6 +286,9 @@ class ToolboxController {
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
+
+        this._setZoomSlider()
+        this._setCameraJoystick()
     }
 
     constructor() {
