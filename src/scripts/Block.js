@@ -54,6 +54,30 @@ class Block {
         // calls render to show the new text
         ThreeViewControllerInstance.shouldRender()
     }
+    
+    setSublabel(text) {
+        // because we can't update an existing TextGeometry's text, we need to delete and create it again
+        this.object.remove(this.object.getObjectByName("SubLabel"))
+
+        var lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+        lineMaterial.visible = document.getElementById("check-values").checked
+
+        this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
+            font: AssetManager.Get().fonts.optimer,
+            size: 0.1,
+            height: 0,
+            curveSegments: 4,
+            bevelEnabled: false
+        }), lineMaterial)
+        this.valueText.name = "SubLabel"
+        this.valueText.geometry.translate(-0.35, 0.3, Block.QUBIT_THICK / 2) // adjust text on box (values adjusted for optimer font)
+        this.valueText.geometry.rotateX(-Math.PI / 2)
+
+        this.object.add(this.valueText)
+
+        // calls render to show the new text
+        ThreeViewControllerInstance.shouldRender()
+    }
 
     setColor(color) {
         this.object.material.color = new THREE.Color(color)

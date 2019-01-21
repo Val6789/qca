@@ -127,6 +127,8 @@ class Qubit extends Block {
         if(this.balance > 0) yellow = 0
         else if(this.balance < 0) blue = 0
         this.setColor("rgb("+yellow+","+yellow+","+blue+")")
+        
+        this.setSublabel(this.balance.toString())
     }
 
 
