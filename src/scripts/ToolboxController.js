@@ -126,6 +126,7 @@ class ToolboxController {
     _setPauseButton() {
 		var button = document.getElementById("play-button")
 		button.onclick = function() {
+			AppControllerInstance.setRefreshRate(20)
 			AppControllerInstance.setPause()
 		}
 	}
@@ -134,7 +135,7 @@ class ToolboxController {
 		const button = document.getElementById("slow-button")
 		button.onclick = function() {
 			AppControllerInstance.pauseMode = false
-			AppControllerInstance.setRefreshRate(50)
+			AppControllerInstance.setRefreshRate(150)
 		}
 	}
 	
@@ -142,7 +143,7 @@ class ToolboxController {
 		const button = document.getElementById("fast-button")
 		button.onclick = function() {
 			AppControllerInstance.pauseMode = false
-			AppControllerInstance.setRefreshRate(5)
+			AppControllerInstance.setRefreshRate(1)
 		}
 	}
     
