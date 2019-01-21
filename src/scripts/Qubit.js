@@ -157,6 +157,11 @@ class Qubit extends Block {
         // balance saved for debugging purposes
         this.balance = numerator / Math.hypot(numerator, 1)
         return this.balance
+        const balance = numerator / Math.hypot(1, numerator)
+        if (Number.isNaN(balance)) 
+            throw console.error("Compute error.")
+        this._polarityBuffer = Math.sign(balance)
+        return this._polarityBuffer*this.charge
     }
     
 
@@ -198,6 +203,8 @@ class Qubit extends Block {
         var self = this
 
         this.dots = Qubit.DOT_PLACEMENTS.map(position => new Dot(position, self, enableParticles))
+
+        this.type = "qubit"
 
         // create electrons
         let dots = this.dots

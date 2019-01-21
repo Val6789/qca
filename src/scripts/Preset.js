@@ -7,32 +7,38 @@ class Preset {
 		{
 			blockPosition = new THREE.Vector3(block.x,block.y,block.z)
 			switch(block.type) {
-				case "one":
-					this.QubitsTab.push(new InputBlock(blockPosition, 1))
+				case "input1":
+					this._qubitsTab.push(new InputBlock(blockPosition, 1))
 					break;
-				case "zero":
-					this.QubitsTab.push(new InputBlock(blockPosition, -1))
+				case "input0":
+					this._qubitsTab.push(new InputBlock(blockPosition, -1))
 					break;
-				case "variable":
-					this.QubitsTab.push(new Qubit(blockPosition))
+				case "qubit":
+					this._qubitsTab.push(new Qubit(blockPosition))
 					break;
-				case "out":
-					this.QubitsTab.push(new OutputBlock(blockPosition))
+				case "ouput":
+					this._qubitsTab.push(new OutputBlock(blockPosition))
 					break;
 			}
 		}
 	}
 
-	static exportQuantumAutomata(quantomAutomata) {
+	static exportQuantomAutomata(quantomAutomata) {
 		var quantomExport = []
         quantomAutomata._qubitMap.forEach(qubit => {
-        	// TO DO when the editor work again
+        	let qPosition = qubit.position
+        	let exportQubit = {x:qPosition.x,y:qPosition.y,z:qPosition.z,type:qubit.type}
+        	if(qubit.type == "input"){
+        		exportQubit.type += qubit.polarity
+        	}
+        	quantomExport.push(exportQubit)
         })
+        window.open('data:text/plain;charset=utf-8,'+JSON.stringify(quantomExport))
 	}
 
 	constructor(name, jsonPresetDescription) {
 		this.name = name
-		this.QubitsTab = []
+		this._qubitsTab = []
 		this.processMap(JSON.parse(jsonPresetDescription))
 	}
 }

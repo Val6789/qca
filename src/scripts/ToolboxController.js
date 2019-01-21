@@ -14,8 +14,8 @@ class ToolboxController {
 
     
     _setActive(element) {
-        let lastActive = document.querySelector("active");
-        if(lastActive) lastActive.classList.remove('active')
+        let lastActive = element.parentNode.getElementsByClassName('active')
+        if(lastActive.length > 0) lastActive[0].classList.remove('active')
         element.classList.add('active')
     }
 

@@ -1,1 +1,1 @@
-[{"x":0,"y":0,"z":0,"type":"one"},{"x":1,"y":0,"z":0,"type":"variable"}]
+[{"x":0,"y":0,"z":1,"type":"input1"},{"x":0,"y":0,"z":0,"type":"qubit"},{"x":0,"y":0,"z":-1,"type":"qubit"},{"x":-1,"y":0,"z":-1,"type":"qubit"},{"x":1,"y":0,"z":-1,"type":"qubit"},{"x":1,"y":0,"z":-2,"type":"qubit"},{"x":-1,"y":0,"z":-2,"type":"qubit"},{"x":0,"y":0,"z":-3,"type":"qubit"},{"x":0,"y":0,"z":-4,"type":"output"}]
