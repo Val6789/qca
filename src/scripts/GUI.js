@@ -82,7 +82,8 @@ function setLightmode(mode) {
         document.body.classList.add("mode-light")
     } else {
         // Dark mode
-        ThreeViewControllerInstance._skybox.setStyle(Skybox.styles.LIGHT)
+        console.log("DARK")
+        ThreeViewControllerInstance._skybox.setStyle(Skybox.styles.DARK)
         ThreeViewControllerInstance._scene.fog = new THREE.FogExp2(0x363F4B, 0.005)
         document.body.classList.remove("mode-light")
         document.body.classList.add("mode-dark")

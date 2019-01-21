@@ -1,50 +1,60 @@
+/* 
+    global 
+    ThreeViewControllerInstance
+*/
+
 class Skybox {
     
     setStyle(style) {
-        this.style = style
+        if (this.style != style) {
+            this.style = style
+            ThreeViewControllerInstance.shouldRender()
+            if ( style == Skybox.styles.DARK)
+                this.material = Skybox._getSkyboxMaterial("Dark")
+            else
+                this.material = Skybox._getSkyboxMaterial("Light")
+        }
     }
-    
-    get scene() {
-        if (this.style == Skybox.styles.DARK)
-            return this.sceneDark
-        else
-            return this.sceneLight
-    }
-    
+        
     constructor() {
         
         // Scene and camera
-        this.sceneLight = new THREE.Scene()
-        this.sceneLight.name = "Scene Light"
-        this.sceneDark = new THREE.Scene()
-        this.sceneLight.name = "Scene Dark"
+        this.scene = new THREE.Scene()
+        
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
 
         // Materials
-        this.materialDark = Skybox._getSkyboxMaterial("Dark")
-        this.materialLight = Skybox._getSkyboxMaterial("Light")
+        this.material = Skybox._getSkyboxMaterial("Dark")
+        console.log(this.material.uniforms.tCube.value.image)
 
         // Geometry
         this.geometry = new THREE.BoxGeometry(Skybox.SIZE, Skybox.SIZE, Skybox.SIZE)
         
         // Light and dark
-        this.meshDark = new THREE.Mesh(this.geometry, this.materialDark)
-        this.meshLight = new THREE.Mesh(this.geometry, this.materialLight)
+        this.mesh = new THREE.Mesh(this.geometry, this.material)
         
         // Settings
         this.style = Skybox.styles.DEFAULT
         this.name = "Skybox"
         
         // Add to scenes
-        this.sceneDark.add(this.meshDark)
-        this.sceneLight.add(this.meshLight)
+        this.scene.add(this.mesh)
+        
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            let q = ThreeViewControllerInstance.camera.quaternion
+            this.camera.quaternion.set(q.x, q.y, q.z, q.w)
+        })
     }
 
     static _getSkyboxMaterial(specifier) {
-        let reflectionCubeTexture = AssetManager.Get().textures["skybox" + specifier]
+        
+        let path = "skybox" + specifier
+        console.log(path)
+        let reflectionCubeTexture = AssetManager.Get().textures[path]
         reflectionCubeTexture.format = THREE.RGBFormat
 
-        let shader = THREE.ShaderLib["cube"]
+        console.log(reflectionCubeTexture)
+        const shader = Object.assign({}, THREE.ShaderLib["cube"])
         shader.uniforms["tCube"].value = reflectionCubeTexture
 
         return new THREE.ShaderMaterial({

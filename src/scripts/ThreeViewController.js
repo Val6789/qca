@@ -80,11 +80,13 @@ class ThreeViewController {
     }
 
     addLayer(scene, camera) {
-        this._layers.push({
+        let layer = {
             scene: scene,
             camera: camera,
             active: true
-        })
+        }
+        this._layers.push(layer)
+        return layer
     }
 
 
@@ -141,6 +143,8 @@ class ThreeViewController {
         this._axis.render(this._camera, this._orbit)
 
         this._layers.forEach((l) => {
+            if (!l.active) 
+                return
             try {
                 this._renderer.render(l.scene, l.camera)
             } catch (e) {
@@ -240,10 +244,7 @@ class ThreeViewController {
      */
     _setSkybox() {
         this._skybox = new Skybox()
-        console.log(this._skybox)
-        console.log(this._skybox.sceneDark)
-        this.addLayer(this._skybox.sceneDark, this._skybox.camera)
-        this.addLayer(this._skybox.sceneLight, this._skybox.camera)
+        this.addLayer(this._skybox.scene, this._skybox.camera)
     }
 
 
