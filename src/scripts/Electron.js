@@ -53,7 +53,7 @@ class Electron {
     }
 
     static _getInfluenceMaterial() {
-        return new THREE.ShaderMaterial({
+        var shader =  new THREE.ShaderMaterial({
             vertexShader: AssetManager.Get().shaders["influences.vs.glsl"],
             fragmentShader: AssetManager.Get().shaders["influences.fs.glsl"],
             uniforms: {
@@ -65,7 +65,8 @@ class Electron {
                 },
                 opacity: {
                     value: 0.5
-                }
+                },
+                viewportHeight: {} // defined on render
             },
             transparent: true,
             opacity: 0.5,
@@ -74,6 +75,13 @@ class Electron {
             depthTest: true,
             depthFunc: THREE.NeverDepth
         })
+
+        // update uniform on render
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            shader.uniforms.viewportHeight.value = ThreeViewControllerInstance.renderer.getSize().height
+        })
+
+        return shader
     }
 
 
@@ -90,6 +98,6 @@ class Electron {
 }
 
 Electron.RADIUS = 0.3
-Electron.INFLUENCE_SIZE = 2000.0
+Electron.INFLUENCE_SIZE = 4.0
 Electron.INFLUENCE_COLOR = 0x00ff00
 Electron.bufferNeedsUpdate = false
