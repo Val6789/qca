@@ -14,8 +14,8 @@ class ToolboxController {
 
     
     _setActive(element) {
-        let lastActive = document.querySelector("active");
-        if(lastActive) lastActive.classList.remove('active')
+        let lastActive = element.parentNode.getElementsByClassName('active')
+        if(lastActive.length > 0) lastActive[0].classList.remove('active')
         element.classList.add('active')
     }
 
@@ -24,7 +24,8 @@ class ToolboxController {
         const buttonId = "get-camera"
         this.cameraButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enabled = true
+            ThreeViewControllerInstance.orbitControls.enableRotate = true
+            ThreeViewControllerInstance.orbitControls.enablePan = true
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
         })
     }
@@ -34,7 +35,8 @@ class ToolboxController {
         const buttonId = "place-qubits"
         this.qubitButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enabled = false
+            ThreeViewControllerInstance.orbitControls.enableRotate = false
+            ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
         })
     }
@@ -44,7 +46,8 @@ class ToolboxController {
         const buttonId = "positive-input"
         this.positiveInputButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enabled = false
+            ThreeViewControllerInstance.orbitControls.enableRotate = false
+            ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.POSITIVE_INPUT
         })
     }
@@ -54,7 +57,8 @@ class ToolboxController {
         const buttonId = "negative-input"
         this.negativeInputButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enabled = false
+            ThreeViewControllerInstance.orbitControls.enableRotate = false
+            ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
         })
     }
@@ -64,7 +68,8 @@ class ToolboxController {
         const buttonId = "place-output"
         this.outputButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enabled = false
+            ThreeViewControllerInstance.orbitControls.enableRotate = false
+            ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
         })
     }
@@ -74,7 +79,8 @@ class ToolboxController {
         const buttonId = "eraser"
         this.eraserButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enabled = false
+            ThreeViewControllerInstance.orbitControls.enableRotate = false
+            ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
         })
     }

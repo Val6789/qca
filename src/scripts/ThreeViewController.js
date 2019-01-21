@@ -123,7 +123,7 @@ class ThreeViewController {
         this._renderer.render(this._scene, this._camera)
         this._willRender = false
         
-        this._axis.render(this._camera)
+        this._axis.render(this._camera, this._orbit)
     }
 
 
@@ -138,6 +138,9 @@ class ThreeViewController {
         this._camera.aspect = width / height
         this._camera.updateProjectionMatrix()
         this._renderer.setSize(width, height)
+
+        // show updates
+        this.shouldRender()
     }
 
 

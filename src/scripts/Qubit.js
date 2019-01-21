@@ -199,6 +199,8 @@ class Qubit extends Block {
 
         this.dots = Qubit.DOT_PLACEMENTS.map(position => new Dot(position, self, enableParticles))
 
+        this.type = "qubit"
+
         // create electrons
         let dots = this.dots
         this.electrons = [

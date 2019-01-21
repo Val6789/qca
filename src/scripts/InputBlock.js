@@ -25,6 +25,8 @@ class InputBlock extends Block{
         this.polarity = polarity
         this.charge = strength
 
+        this.type = "input"
+
         if (polarity > 0) {
             InputBlock.positiveParticles.addAt(this.position)  
             InputBlock.positiveInstances.push(this)
