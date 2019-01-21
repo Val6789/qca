@@ -21,7 +21,7 @@
     bottom: 60px;
     z-index: 10;
 }
-.layers, .time-buttons
+.layers
 {
     display:none;
 }
