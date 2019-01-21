@@ -89,7 +89,7 @@ const AssetManager = (function () {
         .catch(err => Promise.reject(Error(err.message))))
 
     // Preset loading
-    const presets = ["not"]
+    const presets = ["not","simple","majority"]
     for(let name of presets)
     {
         filename = baseDir + "/presets/"+name+".txt"
