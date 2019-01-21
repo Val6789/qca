@@ -40,14 +40,6 @@ class QuantumAutomata {
             this._outputs.add(newBlock)
     }
 
-    /*addPreset(preset) {
-        var clearSpace, i = 0;
-        while(i < preset._qubitsTab.length){
-            if(this.getQubit)  
-        }
-    }*/
-
-
     /**
      * @public @method
      * @param {THREE.Vector3} position 
