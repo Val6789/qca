@@ -78,7 +78,7 @@ class QubitEditor {
         this.updateCursor(event.clientX, event.clientY)
     }
 
-    _clickHandler() {
+    _clickHandler(event) {
         if(this._leftClickDown) this._leftClickDown = false;
         if(event.button == 0)
             this.edit()
