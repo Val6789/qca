@@ -35,21 +35,42 @@ const AssetManager = (function () {
 
     // Skybox loading
     const createUrl = (name) => baseDir + "textures/skybox/" + name + ".png"
-    const urls = [
-        createUrl("right"),
-        createUrl("left"),
-        createUrl("top"),
-        createUrl("bottom"),
-        createUrl("back"),
-        createUrl("front")
+    const urlsLight = [
+        createUrl("right_light"),
+        createUrl("left_light"),
+        createUrl("top_light"),
+        createUrl("bottom_light"),
+        createUrl("back_light"),
+        createUrl("front_light")
+    ]
+    const urlsDark = [
+        createUrl("right_dark"),
+        createUrl("left_dark"),
+        createUrl("top_dark"),
+        createUrl("bottom_dark"),
+        createUrl("back_dark"),
+        createUrl("front_dark")
     ]
     promises.push(new Promise((resolve, reject) => {
         new THREE.CubeTextureLoader()
             .setCrossOrigin(true)
             .load(
-                urls,
+                urlsLight,
                 (texture) => {
-                    instance.textures.skybox = texture
+                    instance.textures.skyboxLight = texture
+                    resolve(texture)
+                },
+                undefined,
+                reject
+            )
+    }))
+    promises.push(new Promise((resolve, reject) => {
+        new THREE.CubeTextureLoader()
+            .setCrossOrigin(true)
+            .load(
+                urlsDark,
+                (texture) => {
+                    instance.textures.skyboxDark = texture
                     resolve(texture)
                 },
                 undefined,
