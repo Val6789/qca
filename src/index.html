@@ -40,12 +40,21 @@
     <script src="./scripts/OutputBlock.js"></script>
     <script src="./scripts/QuantumAutomata.js"></script>
     <script src="./scripts/AppController.js"></script>
+    <script src="./scripts/KeyBoardController.js"></script>
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/GUI.js" defer></script>
-    <script src="./scripts/KeyBoardController.js"></script>
 </head>
 
 <body class="wrapper">
+
+    <!-- LOADING SCREEN -->
+    <div class="loading-overlay" id="loading-overlay">
+        <img class="loading-spinner" src="assets/buttons/Qubit.png" alt="loading">
+        <div>
+            Loading..
+        </div>
+    </div>
+
     <!-- HEADER AND NAVBAR -->
     <h1 class="title">Quantum cellular automata simulator</h1>
 
@@ -206,6 +215,17 @@
             </div>
         </nav>
     </aside>
+
+    <script>
+        // force  remove of the overlay (for livereload)
+        if (AppControllerInstance.isReady) AppControllerInstance.show()
+
+        // start the app
+        AppControllerInstance.init().then(() => {
+            AppControllerInstance.startUpdateLoop()
+            AppControllerInstance.ready()
+        })
+    </script>
 </body>
 
 </html>
