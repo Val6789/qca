@@ -46,31 +46,39 @@ class QubitEditor {
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
             ThreeViewControllerInstance.shouldRender()
         }
+        
+        if(this._leftClickDown && this.canEdit && this._firstLeftMove.distanceTo(this.cursor.position) > 0.5) 
+            return AppControllerInstance.automata.addQubit(this.cursor.position)
     }
 
-    _clickHandler() {
-        try {
-            switch (this.canEdit) {
-                case QubitEditor.canEditEnumeration.QUBIT:
-                    return AppControllerInstance.automata.addQubit(this.cursor.position)
+    _clickHandler(event) {
+        if(this._leftClickDown) this._leftClickDown = false;
+        if(event.button == 0) {
+            try {
+                switch (this.canEdit) {
+                    case QubitEditor.canEditEnumeration.QUBIT:
+                        return AppControllerInstance.automata.addQubit(this.cursor.position)
 
-                case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
-                    return AppControllerInstance.automata.addInput(this.cursor.position, false)
+                    case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
+                        return AppControllerInstance.automata.addInput(this.cursor.position, false)
 
-                case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
-                    return AppControllerInstance.automata.addInput(this.cursor.position, true)
+                    case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
+                        return AppControllerInstance.automata.addInput(this.cursor.position, true)
 
-                case QubitEditor.canEditEnumeration.OUTPUT:
-                    return AppControllerInstance.automata.addOutput(this.cursor.position)
+                    case QubitEditor.canEditEnumeration.OUTPUT:
+                        return AppControllerInstance.automata.addOutput(this.cursor.position)
 
-                case QubitEditor.canEditEnumeration.REMOVE:
-                    return AppControllerInstance.automata.removeBlock(this.cursor.position)
+                    case QubitEditor.canEditEnumeration.REMOVE:
+                        return AppControllerInstance.automata.removeBlock(this.cursor.position)
+                }
+            } catch (exception) {
+                console.info(exception)
             }
-        } catch (exception) {
-            console.info(exception)
+        }
+        else if(event.button == 2 && this.canEdit) {
+            return AppControllerInstance.automata.removeBlock(this.cursor.position)
         }
     }
-
 
     _makeCursor() {
         // makes a box with parameters width, height, length
@@ -95,11 +103,21 @@ class QubitEditor {
         })
     }
 
+    _mousedownHandler(event) {
+        if(event.button == 0)
+        {
+            this._leftClickDown = true;
+            this._firstLeftMove.copy(this.cursor.position)
+        }
+    }
+
 
     init() {
         const domViewportElement = ThreeViewControllerInstance.renderer.domElement
         domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
-        domViewportElement.addEventListener("mouseup", () => this._clickHandler())
+        domViewportElement.addEventListener("mouseup", ev => this._clickHandler(ev))
+        domViewportElement.addEventListener("mousedown", ev => this._mousedownHandler(ev))
+        domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
@@ -114,7 +132,8 @@ class QubitEditor {
         if (!QubitEditor.instance) {
             QubitEditor.instance = this
         }
-
+        this._leftClickDown = false;
+        this._firstLeftMove = new THREE.Vector3()
         return QubitEditor.instance
     }
 }

@@ -55,6 +55,10 @@ class Block {
         ThreeViewControllerInstance.shouldRender()
     }
 
+    setColor(color) {
+        this.object.material.color = new THREE.Color(color)
+    }
+
 
     /**
      * @constructor Block

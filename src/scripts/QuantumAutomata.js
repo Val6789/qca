@@ -15,7 +15,7 @@ class QuantumAutomata {
      * @param {THREE.Vector3} position 
      */
     addQubit(position) {
-        this._addBlock(new Qubit(position))
+        return this._addBlock(new Qubit(position))
     }
 
     
@@ -26,7 +26,7 @@ class QuantumAutomata {
      * @param {Number} State 0 or 1
      */
     addInput(position, value) {
-        this._addBlock(new InputBlock(position, value ? 1 : -1 ))
+        return this._addBlock(new InputBlock(position, value ? 1 : -1 ))
     }
 
 
@@ -36,8 +36,12 @@ class QuantumAutomata {
      */
     addOutput(position) {
         const newBlock = new OutputBlock(position)
-        if (this._addBlock(newBlock))
+        var exist = this._addBlock(newBlock)
+        if (exist) {
             this._outputs.add(newBlock)
+            return true
+        }
+        return exist
     }
 
     /**
@@ -104,7 +108,7 @@ class QuantumAutomata {
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
         if (this._qubitMap.has(hash)){
-            console.warn("Cell is occupied:", hash)
+            // console.warn("Cell is occupied:", hash)
             block.remove()
             return false
         } else {

@@ -122,6 +122,9 @@ class Qubit extends Block {
     applyPolarityBuffer() {
         this._visited = false
         this.polarity = Math.sign(this.balance)
+        let blue = Math.round(64 + (this.balance>0?1:-1)*128 + 64*this.balance);
+        let yellow = 255 - blue
+        this.setColor("rgb("+yellow+","+yellow+","+blue+")")
     }
 
 
