@@ -1,6 +1,8 @@
 /* 
     global
     THREE
+    Skybox
+    Axis
  */
 /* 
     exported 
@@ -77,6 +79,16 @@ class ThreeViewController {
         this.shouldRender()
     }
 
+    addLayer(scene, camera) {
+        let layer = {
+            scene: scene,
+            camera: camera,
+            active: true
+        }
+        this._layers.push(layer)
+        return layer
+    }
+
 
     /**
      * @brief suggests controller to render the scene soon
@@ -85,10 +97,13 @@ class ThreeViewController {
      */
     shouldRender() {
         if (this._willRender == true) return
-        requestAnimationFrame(() => this._render())
+        requestAnimationFrame(() => {
+            this._render()
+            this._willRender = false
+        })
         this._willRender = true
     }
-    
+
 
     /**
      * @brief class initializer, to be called after DOM and Asset loading 
@@ -104,12 +119,15 @@ class ThreeViewController {
         this._skybox
 
         // init members
+        this._createLayers()
+        this._setSkybox()
         this._setScene()
         this._setCamera()
+        this.addLayer(this._scene, this._camera)
         this._setRenderer()
         this._setOrbit()
         setLightmode(false)
-        
+
         // add axes
         this._axis = new Axis(this._camera)
     }
@@ -120,10 +138,22 @@ class ThreeViewController {
      */
     _render() {
         this._onRenderObservers.forEach(callback => callback())
+
         this._renderer.render(this._scene, this._camera)
-        this._willRender = false
-        
         this._axis.render(this._camera, this._orbit)
+
+        this._layers.forEach((l) => {
+            if (!l.active) 
+                return
+            try {
+                this._renderer.render(l.scene, l.camera)
+            } catch (e) {
+                console.log(l)
+                console.error(e)
+            }
+        })
+
+
     }
 
 
@@ -141,6 +171,10 @@ class ThreeViewController {
 
         // show updates
         this.shouldRender()
+    }
+
+    _createLayers() {
+        this._layers = []
     }
 
 
@@ -182,6 +216,7 @@ class ThreeViewController {
         // set renderer
         this._renderer = new THREE.WebGLRenderer({ antialias: true })
         this._renderer.setPixelRatio(window.devicePixelRatio)
+        this._renderer.autoClear = false
 
         // insert in DOM
         document.getElementById(viewportElementId).appendChild(this._renderer.domElement)
@@ -195,13 +230,21 @@ class ThreeViewController {
     _setOrbit() {
         this._orbit = new THREE.OrbitControls(this._camera)
 
-        this._orbit.minDistance = 0.75;
-        this._orbit.maxDistance = 25;
+        this._orbit.minDistance = 0.75
+        this._orbit.maxDistance = 25
 
         // render on camera movements
         this._orbit.addEventListener("change", () => {
             this._render()
         })
+    }
+
+    /**
+     * @brief Skybox initializer
+     */
+    _setSkybox() {
+        this._skybox = new Skybox()
+        this.addLayer(this._skybox.scene, this._skybox.camera)
     }
 
 

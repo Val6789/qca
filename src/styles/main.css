@@ -23,7 +23,7 @@
     bottom: 60px;
     z-index: 10;
 }
-.layers, .time-buttons
+.layers
 {
     display:none;
 }
@@ -108,6 +108,7 @@ button:hover
     flex-direction: column;
     text-align: center;
     font-family: sans-serif;
+    color:white;
 }
 
 .loading-spinner {

@@ -73,22 +73,19 @@ AchievementManager.OnReady(() => {
  * @param {Boolean} mode true = light, false = dark
  */
 function setLightmode(mode) {
-	// creates skybox if undefined
-	if (!this.skybox) 
-		ThreeViewControllerInstance.skybox = new Skybox()
-	
-	
-	if(mode) {
-		// Light mode
-		ThreeViewControllerInstance.skybox.style = Skybox.styles.LIGHT
-		ThreeViewControllerInstance._scene.fog = new THREE.FogExp2(0xffffff, 0.005)
-		document.body.classList.remove("mode-dark")
-		document.body.classList.add("mode-light")
-	} else {
-		// Dark mode
-		ThreeViewControllerInstance.skybox.style = Skybox.styles.DEFAULT
-		ThreeViewControllerInstance._scene.fog = new THREE.FogExp2(0x363F4B, 0.005)
-		document.body.classList.remove("mode-light")
-		document.body.classList.add("mode-dark")
-	}
+    // creates skybox if undefined
+    if (mode) {
+        // Light mode
+        ThreeViewControllerInstance._skybox.setStyle(Skybox.styles.LIGHT)
+        ThreeViewControllerInstance._scene.fog = new THREE.FogExp2(0xffffff, 0.005)
+        document.body.classList.remove("mode-dark")
+        document.body.classList.add("mode-light")
+    } else {
+        // Dark mode
+        console.log("DARK")
+        ThreeViewControllerInstance._skybox.setStyle(Skybox.styles.DARK)
+        ThreeViewControllerInstance._scene.fog = new THREE.FogExp2(0x363F4B, 0.005)
+        document.body.classList.remove("mode-light")
+        document.body.classList.add("mode-dark")
+    }
 }

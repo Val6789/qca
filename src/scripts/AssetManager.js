@@ -13,6 +13,7 @@ const AssetManager = (function () {
         presets:{}
     }
     const baseDir = "assets/"
+    const presets = ["not","simple","majority"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {
@@ -35,21 +36,42 @@ const AssetManager = (function () {
 
     // Skybox loading
     const createUrl = (name) => baseDir + "textures/skybox/" + name + ".png"
-    const urls = [
-        createUrl("right"),
-        createUrl("left"),
-        createUrl("top"),
-        createUrl("bottom"),
-        createUrl("back"),
-        createUrl("front")
+    const urlsLight = [
+        createUrl("right_light"),
+        createUrl("left_light"),
+        createUrl("top_light"),
+        createUrl("bottom_light"),
+        createUrl("back_light"),
+        createUrl("front_light")
+    ]
+    const urlsDark = [
+        createUrl("right_dark"),
+        createUrl("left_dark"),
+        createUrl("top_dark"),
+        createUrl("bottom_dark"),
+        createUrl("back_dark"),
+        createUrl("front_dark")
     ]
     promises.push(new Promise((resolve, reject) => {
         new THREE.CubeTextureLoader()
             .setCrossOrigin(true)
             .load(
-                urls,
+                urlsLight,
                 (texture) => {
-                    instance.textures.skybox = texture
+                    instance.textures.skyboxLight = texture
+                    resolve(texture)
+                },
+                undefined,
+                reject
+            )
+    }))
+    promises.push(new Promise((resolve, reject) => {
+        new THREE.CubeTextureLoader()
+            .setCrossOrigin(true)
+            .load(
+                urlsDark,
+                (texture) => {
+                    instance.textures.skyboxDark = texture
                     resolve(texture)
                 },
                 undefined,
@@ -89,23 +111,17 @@ const AssetManager = (function () {
         .catch(err => Promise.reject(Error(err.message))))
 
     // Preset loading
-    const presets = ["not","simple","majority"]
-    for(let name of presets)
-    {
-        filename = baseDir + "/presets/"+name+".txt"
-        promises.push(fetch(filename, options)
-        .then(name, response => {
-            if (response.ok) {
-                return response.text()
-                    .then(name, text => {
-                        instance.presets[name] = new Preset(name, text)
-                    })
-            } else {
-                return Promise.reject(Error("error"))
-            }
-        })
-        .catch(err => Promise.reject(Error(err.message))))
-    }
+
+    presets.forEach(name => {
+        promises.push(new Promise((resolve, reject) => {
+            readJSON(name, "presets")
+                .then(() => {
+                    instance.presets[name] = instance.json[name]
+                    resolve()
+                })
+                .catch(reject)
+        }))
+    })
 
     // JSON achievement
     promises.push(new Promise((resolve, reject) => {
@@ -164,8 +180,8 @@ const AssetManager = (function () {
         })
     }
 
-    function readJSON(filename) {
-        const path = baseDir + "data/" + filename + ".json"
+    function readJSON(filename,dir="data") {
+        const path = baseDir + dir + "/" + filename + ".json"
         return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest()
             xhr.open("GET", path, true)

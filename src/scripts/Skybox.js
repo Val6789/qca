@@ -1,65 +1,75 @@
+/* 
+    global 
+    ThreeViewControllerInstance
+*/
+
 class Skybox {
-    set style(skyboxStyle) {
-        if (this._style === skyboxStyle) return
-
-        
-        this._style = skyboxStyle
-        this.remove()
-
-        const geometry = new THREE.BoxGeometry(Skybox.SIZE, Skybox.SIZE, Skybox.SIZE)
-        var material
-
-        switch(skyboxStyle) {
-            case Skybox.styles.DEFAULT:
-                material = Skybox._getSkyboxMaterial()
-                break
-            
-            
-            case Skybox.styles.LIGHT:
-                material = Skybox._getSkyboxMaterial("_light")
-                break
-        
-            default: throw console.error("Unkown skybox style")
+    
+    setStyle(style) {
+        if (this.style != style) {
+            this.style = style
+            ThreeViewControllerInstance.shouldRender()
+            if ( style == Skybox.styles.DARK)
+                this.material = Skybox._getSkyboxMaterial("Dark")
+            else
+                this.material = Skybox._getSkyboxMaterial("Light")
         }
-
-        this.object = new THREE.Mesh(geometry, material)
-        ThreeViewControllerInstance.addObjectToScene(this.object)
     }
-
-
-    remove() {
-        ThreeViewControllerInstance.removeObjectFromScene(this.object)
-    }
-
-    constructor() {
-        const material = Skybox._getSkyboxMaterial()
         
-        this.style = Skybox.styles.DEFAULT;
+    constructor() {
+        
+        // Scene and camera
+        this.scene = new THREE.Scene()
+        
+        this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
 
-        const geometry = new THREE.BoxGeometry(Skybox.SIZE, Skybox.SIZE, Skybox.SIZE)
-        this.object = new THREE.Mesh(geometry, material)
-        ThreeViewControllerInstance.addObjectToScene(this.object)
+        // Materials
+        this.material = Skybox._getSkyboxMaterial("Dark")
+        console.log(this.material.uniforms.tCube.value.image)
+
+        // Geometry
+        this.geometry = new THREE.BoxGeometry(Skybox.SIZE, Skybox.SIZE, Skybox.SIZE)
+        
+        // Light and dark
+        this.mesh = new THREE.Mesh(this.geometry, this.material)
+        
+        // Settings
+        this.style = Skybox.styles.DEFAULT
+        this.name = "Skybox"
+        
+        // Add to scenes
+        this.scene.add(this.mesh)
+        
+        ThreeViewControllerInstance.callbackOnRender(() => {
+            let q = ThreeViewControllerInstance.camera.quaternion
+            this.camera.quaternion.set(q.x, q.y, q.z, q.w)
+        })
     }
 
-    static _getSkyboxMaterial(specifier ="") {
-        let reflectionCubeTexture = AssetManager.Get().textures["skybox" + specifier]
+    static _getSkyboxMaterial(specifier) {
+        
+        let path = "skybox" + specifier
+        console.log(path)
+        let reflectionCubeTexture = AssetManager.Get().textures[path]
         reflectionCubeTexture.format = THREE.RGBFormat
-        
-        let shader = THREE.ShaderLib["cube"]
-		shader.uniforms["tCube"].value = reflectionCubeTexture
 
-		return new THREE.ShaderMaterial({
-			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader,
-			uniforms: shader.uniforms,
-			depthWrite: false,
-			side: THREE.BackSide
+        console.log(reflectionCubeTexture)
+        const shader = Object.assign({}, THREE.ShaderLib["cube"])
+        shader.uniforms["tCube"].value = reflectionCubeTexture
+
+        return new THREE.ShaderMaterial({
+            fragmentShader: shader.fragmentShader,
+            vertexShader: shader.vertexShader,
+            uniforms: shader.uniforms,
+            depthWrite: false,
+            side: THREE.BackSide
         })
     }
 }
 
-Skybox.SIZE = 500
+Skybox.SIZE = 100
 Skybox.styles = {
+    DARK: 0,
     DEFAULT: 0,
     LIGHT: 1
 }

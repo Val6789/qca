@@ -31,11 +31,11 @@ class AppController {
     setRefreshRate(rate) {
         this.refreshRate = rate
         clearInterval(this.interval)
-        startUpdateLoop()
+        this.startUpdateLoop()
     }
 
     setPause() {
-        this.pauseMode = this.pauseMode?false:true;
+		this.pauseMode =! this.pauseMode
     }
 
     ready() {
@@ -57,10 +57,14 @@ class AppController {
         if (!AppController.instance) {
             AppController.instance = this
         }
-        this.refreshRate = 20;
+        this.refreshRate = AppController.SPEED;
         this.pauseMode = false;
         return AppController.instance
     }
 }
 
 const AppControllerInstance = new AppController()
+
+AppController.SPEED = 20
+AppController.SPEED_SLOW = 150
+AppController.SPEED_FAST = 1

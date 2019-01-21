@@ -30,9 +30,11 @@ class InputBlock extends Block{
         if (polarity > 0) {
             InputBlock.positiveParticles.addAt(this.position)  
             InputBlock.positiveInstances.push(this)
+            this.setColor(0x0000ff)
         } else {
             InputBlock.negativeParticles.addAt(this.position)  
             InputBlock.negativeInstances.push(this)
+            this.setColor(0xffff00)
         }
     }
 

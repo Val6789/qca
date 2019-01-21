@@ -15,7 +15,7 @@ class QuantumAutomata {
      * @param {THREE.Vector3} position 
      */
     addQubit(position) {
-        this._addBlock(new Qubit(position))
+        return this._addBlock(new Qubit(position))
     }
 
     
@@ -26,7 +26,7 @@ class QuantumAutomata {
      * @param {Number} State 0 or 1
      */
     addInput(position, value) {
-        this._addBlock(new InputBlock(position, value ? 1 : -1 ))
+        return this._addBlock(new InputBlock(position, value ? 1 : -1 ))
     }
 
 
@@ -36,17 +36,12 @@ class QuantumAutomata {
      */
     addOutput(position) {
         const newBlock = new OutputBlock(position)
-        if (this._addBlock(newBlock))
+        if (this._addBlock(newBlock)) {
             this._outputs.add(newBlock)
-    }
-
-    /*addPreset(preset) {
-        var clearSpace, i = 0;
-        while(i < preset._qubitsTab.length){
-            if(this.getQubit)  
+            return true
         }
-    }*/
-
+        return exist
+    }
 
     /**
      * @public @method
@@ -111,9 +106,16 @@ class QuantumAutomata {
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
-        if (this._qubitMap.has(hash)){
-            console.warn("Cell is occupied:", hash)
-            block.remove()
+        var exist = this._qubitMap.has(hash)
+        if (exist){
+            if(exist.type == 'input')
+            {
+                /* échanger les qubits */
+            }
+            else
+            {
+                block.remove()
+            }
             return false
         } else {
             this._qubitMap.set(hash, block)
