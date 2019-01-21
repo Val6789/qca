@@ -19,16 +19,12 @@ class QubitEditor {
             switch (this.canEdit) {
                 case QubitEditor.canEditEnumeration.QUBIT:
                     return AppControllerInstance.automata.addQubit(this.cursor.position)
-
                 case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
                     return AppControllerInstance.automata.addInput(this.cursor.position, false)
-
                 case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
                     return AppControllerInstance.automata.addInput(this.cursor.position, true)
-
                 case QubitEditor.canEditEnumeration.OUTPUT:
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
-
                 case QubitEditor.canEditEnumeration.REMOVE:
                     return AppControllerInstance.automata.removeBlock(this.cursor.position)
             }
@@ -75,10 +71,10 @@ class QubitEditor {
 
     _mousemoveHandler(event) {
         if(this.updateCursor(event.clientX, event.clientY)) {
-            if(this._leftClickDown && this.canEdit && this._firstLeftMove.distanceTo(this.cursor.position) > 0.5) 
-                AppControllerInstance.automata.addQubit(this.cursor.position)
-            else if(this._rightClickDown && this.canEdit)
+            if(this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
                 AppControllerInstance.automata.removeBlock(this.cursor.position)
+            else if(this._leftClickDown && this.canEdit && this._firstLeftMove.distanceTo(this.cursor.position) > 0.5) 
+                AppControllerInstance.automata.addQubit(this.cursor.position)
         }
     }
 
