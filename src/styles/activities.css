@@ -65,7 +65,7 @@
     /* Works only on recent Chrome/Webkit */
     background: #111;
     backdrop-filter: blur(5px);
-    font-family: generica;
+    font-family: arial;
     position: fixed;
     top: 10vw;
     bottom: 10vw;
