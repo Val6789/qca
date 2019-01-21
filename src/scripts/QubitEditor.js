@@ -14,12 +14,35 @@
 
 class QubitEditor {
 
-    _mousemoveHandler(event) {
+    edit() {
+        try {
+            switch (this.canEdit) {
+                case QubitEditor.canEditEnumeration.QUBIT:
+                    return AppControllerInstance.automata.addQubit(this.cursor.position)
+
+                case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
+                    return AppControllerInstance.automata.addInput(this.cursor.position, false)
+
+                case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
+                    return AppControllerInstance.automata.addInput(this.cursor.position, true)
+
+                case QubitEditor.canEditEnumeration.OUTPUT:
+                    return AppControllerInstance.automata.addOutput(this.cursor.position)
+
+                case QubitEditor.canEditEnumeration.REMOVE:
+                    return AppControllerInstance.automata.removeBlock(this.cursor.position)
+            }
+        } catch (exception) {
+            console.info(exception)
+        }
+    }
+
+    updateCursor(screenX, screenY) {
         if (!this.grid) return
 
         // get mouse position
-        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+        this.mouse.x = (screenX / window.innerWidth) * 2 - 1
+        this.mouse.y = -(screenY/ window.innerHeight) * 2 + 1
 
         // cast ray from the camera, through the cursor
         this.raycaster.setFromCamera(this.mouse, this.camera)
@@ -48,27 +71,12 @@ class QubitEditor {
         }
     }
 
+    _mousemoveHandler(event) {
+        this.updateCursor(event.clientX, event.clientY)
+    }
+
     _clickHandler() {
-        try {
-            switch (this.canEdit) {
-                case QubitEditor.canEditEnumeration.QUBIT:
-                    return AppControllerInstance.automata.addQubit(this.cursor.position)
-
-                case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
-                    return AppControllerInstance.automata.addInput(this.cursor.position, false)
-
-                case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
-                    return AppControllerInstance.automata.addInput(this.cursor.position, true)
-
-                case QubitEditor.canEditEnumeration.OUTPUT:
-                    return AppControllerInstance.automata.addOutput(this.cursor.position)
-
-                case QubitEditor.canEditEnumeration.REMOVE:
-                    return AppControllerInstance.automata.removeBlock(this.cursor.position)
-            }
-        } catch (exception) {
-            console.info(exception)
-        }
+       this.edit()
     }
 
 
