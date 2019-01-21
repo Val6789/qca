@@ -1,3 +1,5 @@
+
+
 .wrapper {
     position: fixed;
     left: 0;
@@ -87,4 +89,40 @@ button.active {
 button:hover
 {
     background-color:#000;
+}
+
+.loading-overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    background: #1b1c1d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.loading-spinner {
+    position: relative;
+    animation-name: spinner;
+    animation-duration: 2000ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    width: 3rem;
+    height: 3rem;
+    padding: 1rem;
+}
+
+@keyframes spinner {
+    from {
+        transform: rotateZ(0deg);
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
 }

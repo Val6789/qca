@@ -180,7 +180,7 @@ class ThreeViewController {
         const viewportElementId = "viewport"
 
         // set renderer
-        this._renderer = new THREE.WebGLRenderer()
+        this._renderer = new THREE.WebGLRenderer({ antialias: true })
         this._renderer.setPixelRatio(window.devicePixelRatio)
 
         // insert in DOM

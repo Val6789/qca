@@ -1,12 +1,11 @@
 class AppController {
 
     startUpdateLoop() {
-
        this.interval = setInterval(() => {
             if(!this.pauseMode) this.automata.process()
         }, this.refreshRate)
     }
-    
+
     _onAssetLoading() {
         ThreeViewControllerInstance.init()
         Dot.init()
@@ -28,13 +27,26 @@ class AppController {
             })
         })
     }
+
     setRefreshRate(rate) {
         this.refreshRate = rate
         clearInterval(this.interval)
         startUpdateLoop()
     }
+
     setPause() {
-        this.pauseMode = this.pauseMode?false:true; 
+        this.pauseMode = this.pauseMode?false:true;
+    }
+
+    ready() {
+        this.isReady = true
+        this.show()
+        console.log("ready for action.")
+    }
+
+    show() {
+        var overlay = document.getElementById("loading-overlay")
+        overlay.parentElement.removeChild(overlay)
     }
 
 
