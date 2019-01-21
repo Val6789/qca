@@ -58,6 +58,7 @@ class QubitEditor {
                 switch (this.canEdit) {
                     case QubitEditor.canEditEnumeration.QUBIT:
                         return AppControllerInstance.automata.addQubit(this.cursor.position)
+
                     case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
                         return AppControllerInstance.automata.addInput(this.cursor.position, false)
 
