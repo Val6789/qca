@@ -1,7 +1,6 @@
 class AppController {
 
     startUpdateLoop() {
-
        this.interval = setInterval(() => {
             if(!this.pauseMode) this.automata.process()
         }, this.refreshRate)
@@ -31,10 +30,10 @@ class AppController {
     setRefreshRate(rate) {
         this.refreshRate = rate
         clearInterval(this.interval)
-        startUpdateLoop()
+        this.startUpdateLoop()
     }
     setPause() {
-        this.pauseMode = this.pauseMode?false:true; 
+        this.pauseMode =! this.pauseMode
     }
 
 
