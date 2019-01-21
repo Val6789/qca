@@ -43,8 +43,8 @@ class Preset {
                 case "input1":
                     automata.addInput(blockPosition, 1)
                     break;
-                case "input0":
-                    automata.addInput(blockPosition, -1)
+                case "input-1":
+                    automata.addInput(blockPosition, 0)
                     break;
                 case "qubit":
                     automata.addQubit(blockPosition)

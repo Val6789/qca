@@ -106,15 +106,15 @@ class QuantumAutomata {
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
-        var exist = this._qubitMap.has(hash)
-        if (exist){
+        if (this._qubitMap.has(hash)){
+            let exist = this.getQubit(block.position)
+            block.remove()
             if(exist.type == 'input')
             {
-                /* échanger les qubits */
-            }
-            else
-            {
-                block.remove()
+                let value = exist.polarity
+                let position = exist.position
+                this.removeBlock(exist.position)
+                this.addInput(position,(value>0))
             }
             return false
         } else {
