@@ -36,8 +36,7 @@ class QuantumAutomata {
      */
     addOutput(position) {
         const newBlock = new OutputBlock(position)
-        var exist = this._addBlock(newBlock)
-        if (exist) {
+        if (this._addBlock(newBlock)) {
             this._outputs.add(newBlock)
             return true
         }
@@ -107,9 +106,16 @@ class QuantumAutomata {
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
-        if (this._qubitMap.has(hash)){
-            // console.warn("Cell is occupied:", hash)
-            block.remove()
+        var exist = this._qubitMap.has(hash)
+        if (exist){
+            if(exist.type == 'input')
+            {
+                /* échanger les qubits */
+            }
+            else
+            {
+                block.remove()
+            }
             return false
         } else {
             this._qubitMap.set(hash, block)
