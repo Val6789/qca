@@ -100,5 +100,5 @@ class Electron {
 Electron.RADIUS = 0.3
 Electron.INFLUENCE_SIZE = 3.0
 Electron.INFLUENCE_STRENGH = 0.4
-Electron.INFLUENCE_COLOR = 0x00ff00
+Electron.INFLUENCE_COLOR = 0x39ffff
 Electron.bufferNeedsUpdate = false
