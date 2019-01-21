@@ -46,7 +46,7 @@ class QubitEditor {
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
             ThreeViewControllerInstance.shouldRender()
         }
-        console.log(this._firstLeftMove.distanceTo(this.cursor.position))
+        
         if(this._leftClickDown && this.canEdit && this._firstLeftMove.distanceTo(this.cursor.position) > 0.5) 
             return AppControllerInstance.automata.addQubit(this.cursor.position)
     }
