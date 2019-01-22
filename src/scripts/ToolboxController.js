@@ -90,7 +90,7 @@ class ToolboxController {
         this.eraserButton = this._setButton(buttonId, (event) => {self._setEraserButtonClick(event.target)})
     }
     _setEraserButtonClick(target) {
-        this._setActive(event.target)
+        this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
         QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
@@ -129,6 +129,29 @@ class ToolboxController {
 				//~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
 			}
 		}
+    }
+
+    _setHistoryButtons() {
+        this._updateHistoryButtons()
+        var self = this
+        document.getElementById('undo-button').onclick = function() {
+            History.undo()
+            self._updateHistoryButtons()
+        }
+        document.getElementById('redo-button').onclick = function() {
+            History.redo()
+           self._updateHistoryButtons()
+        }
+    }
+
+    _updateHistoryButtons() {
+        const undoBtn = document.getElementById('undo-button')
+        const redoBtn = document.getElementById('redo-button')
+        if(History.canUndo() && undoBtn.classList.contains("inactive")) undoBtn.classList.remove("inactive")
+        else if(!History.canUndo() && !undoBtn.classList.contains("inactive")) undoBtn.classList.add("inactive")
+
+        if(History.canRedo() && redoBtn.classList.contains("inactive")) redoBtn.classList.remove("inactive")
+        else if(!History.canRedo() && !redoBtn.classList.contains("inactive")) redoBtn.classList.add("inactive")
     }
 
 
@@ -239,6 +262,8 @@ class ToolboxController {
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
+
+        this._setHistoryButtons()
 
         this._setCameraJoystick()
 

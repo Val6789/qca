@@ -74,18 +74,27 @@
     <h1 class="title">Quantum cellular automata simulator</h1>
 
     <nav class="time-buttons">
-        <button class="time-button" alt="Slower" id="slow-button">
-            <img src="assets/buttons/slow.png" class="time-button-icon" id="slow-button-icon">
+        <button class="time-button" alt="Slower" id="slow-button" title="slower">
+            <img src="assets/buttons/playx2.png" class="time-button-icon" id="slow-button-icon">
             Slower
         </button>
-        <button class="time-button" alt="Play/Pause simulation" id="play-button">
+        <button class="time-button" alt="Play/Pause simulation" id="play-button" title="play / pause">
             <img src="assets/buttons/pause.png" class="time-button-icon" id="pause-button-icon">
             <img src="assets/buttons/play.png" class="time-button-icon" id="play-button-icon">
             Play
         </button>
-        <button class="time-button" alt="Faster" id="fast-button">
-            <img src="assets/buttons/fast.png" class="time-button-icon" id="fast-button-icon">
+        <button class="time-button" alt="Faster" id="fast-button" title="faster">
+            <img src="assets/buttons/playx3.png" class="time-button-icon" id="fast-button-icon">
             Faster
+        </button>
+    </nav>
+
+    <nav class="history">
+        <button class="history-button" alt="Slower" id="undo-button" title="undo">
+            <img src="assets/buttons/undo.png" class="time-button-icon">
+        </button>
+        <button class="history-button" alt="Faster" id="redo-button" title="redo">
+            <img src="assets/buttons/redo.png" class="time-button-icon">
         </button>
     </nav>
 
@@ -101,7 +110,7 @@
 
     <header class="control-strip">
         <nav class="toolbox">
-            <button class="tool active" alt="Control Camera" id="get-camera">
+            <button class="tool active" alt="Control Camera" id="get-camera" title="Mode camera">
                 <img src="assets/buttons/Camera.png" class="tool-icon camera-icon">
                 Q
             </button>
@@ -114,20 +123,20 @@
                 <img src="assets/buttons/False.png" class="tool-icon electron-icon">
                 -
             </button>-->
-            <button class="tool draggable" alt="Negatively charged influencer" id="negative-input">
+            <button class="tool draggable" alt="Negatively charged influencer" id="negative-input" title="Add input">
                 <img src="assets/buttons/Input.png" class="tool-icon electron-icon">
                 -
             </button>
-            <button class="tool draggable" alt="Qubit" id="place-qubits">
+            <button class="tool draggable" alt="Qubit" id="place-qubits" title="Add Qubit">
                 <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
                 B
             </button>
-            <button class="tool draggable" alt="Qubit" id="place-output">
+            <button class="tool draggable" alt="Qubit" id="place-output" title="Add output">
                 <img src="assets/buttons/Output.png" class="tool-icon output-icon">
                 O
             </button>
             <div class="separator"></div>
-            <button class="tool" alt="Eraser" id="eraser">
+            <button class="tool" alt="Eraser" id="eraser" title="Erease">
                 <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
                 E
             </button>
