@@ -40,7 +40,7 @@ class QuantumAutomata {
             this._outputs.add(newBlock)
             return true
         }
-        return exist
+        return false
     }
 
     /**
@@ -52,6 +52,7 @@ class QuantumAutomata {
         if (!this._qubitMap.has(hash)) return
 
         const block = this._qubitMap.get(hash)
+        History.add('remove',block.type,position,block.type,block.polarity);
         block.remove()
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
@@ -110,6 +111,7 @@ class QuantumAutomata {
             let exist = this.getQubit(block.position)
             if(exist.type == 'input' && block.type == 'input')
             {
+                History.add('change',block.type,block.position,block.polarity);
                 let value = exist.polarity
                 let position = exist.position
                 this.removeBlock(exist.position)
@@ -118,6 +120,7 @@ class QuantumAutomata {
             block.remove()
             return false
         } else {
+            History.add('add',block.type,block.position,block.polarity);
             this._qubitMap.set(hash, block)
             return true
         }

@@ -3,7 +3,7 @@
  *
  */
  
-window.onkeyup = function(e){
+window.addEventListener('keyup',function(e){
     const KEY_E = 69;
 
     switch(e.keyCode){
@@ -11,4 +11,4 @@ window.onkeyup = function(e){
             Preset.exportQuantomAutomata(new AppController().automata);
             break;
     }
-}
+});
