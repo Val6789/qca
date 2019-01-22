@@ -17,6 +17,14 @@
 #fast-button-icon, #slow-button-icon {
     height:1rem;
 }
+@media (max-width: 600px) {
+	.time-button-icon {
+		height: 3rem;
+	}
+	#fast-button-icon, #slow-button-icon {
+		height: 2rem;
+	}
+}
 
 .tool {
     font-size: 0;
@@ -50,6 +58,11 @@
     height: 2rem;
     border-left: solid 1px #bbb;
     margin: 1rem;
+}
+@media (max-width: 600px) {
+	.separator {
+		margin: 0;
+	}
 }
 
 .history {
