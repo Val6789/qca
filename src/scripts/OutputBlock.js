@@ -1,7 +1,7 @@
 class OutputBlock extends Qubit {
 
     remove() {
-        OutputBlock.instances.remove(this)
+        OutputBlock.instances.delete(this)
         super.remove()
     }
 
@@ -17,8 +17,10 @@ class OutputBlock extends Qubit {
     }
 
     static set isVisible(boolean) {
+        if (OutputBlock._isVisible === boolean) return
         OutputBlock._isVisible = boolean
-        OutputBlock.instances.map( block => block.object.visible = boolean)
+        OutputBlock.instances.forEach( block => block.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }
 

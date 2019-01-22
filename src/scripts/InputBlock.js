@@ -66,8 +66,10 @@ class InputBlock extends Block{
     }
 
     static set isVisible(boolean) {
+        if (InputBlock._isVisible === boolean) return
         InputBlock._isVisible = boolean
         InputBlock.positiveInstances.forEach( qubit => qubit.object.visible = boolean)
         InputBlock.negativeInstances.forEach( qubit => qubit.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }

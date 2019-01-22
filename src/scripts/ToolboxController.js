@@ -146,6 +146,10 @@ class ToolboxController {
         this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control", false)
     }
 
+
+    _setOverlaySelector() {
+        this._overlaySelector = new OverlaySelector()
+    }
     
     // Speed buttons //
     
@@ -227,6 +231,7 @@ class ToolboxController {
         this._setHistoryButtons()
 
         this._setCameraJoystick()
+        this._setOverlaySelector()
 
         window.addEventListener("keydown",ev => this._keydownHandler(ev))
     }

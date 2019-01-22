@@ -102,3 +102,7 @@ Electron.INFLUENCE_SIZE = 3.0
 Electron.INFLUENCE_STRENGH = 0.4
 Electron.INFLUENCE_COLOR = 0x39ffff
 Electron.bufferNeedsUpdate = false
+
+// indexes of particle layer
+Electron.TEXTURE_LAYER = 0
+Electron.INFLUENCE_LAYER = 1

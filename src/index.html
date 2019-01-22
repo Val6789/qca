@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
     <link rel="stylesheet" href="./styles/joystick-controls.css">
+    <link rel="stylesheet" href="./styles/layer-selector.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
@@ -101,9 +102,18 @@
 
 
     <nav class="layers">
-        <label class="layer-checkbox"><input type="checkbox" id="show-qubit" checked /><img alt="Qubit values" src="assets/buttons/qubit_layer.png"></label>
-        <label class="layer-checkbox"><input type="checkbox" id="show-electrons" checked /><img alt="Electrons" src="assets/buttons/electron_layer.png"></label>
-        <label class="layer-checkbox"><input type="checkbox" id="show-influence" checked /><img alt="Charge Fields" src="assets/buttons/influence_layer.png"></label>
+        <label class="layer-toggle">
+            <input class="layer-checkbox" type="checkbox" id="show-qubit" checked />
+            <img class="layer-toggle-icon" alt="Qubit values" src="assets/buttons/qubit_layer.png">
+        </label>
+        <label class="layer-toggle">
+            <input class="layer-checkbox" type="checkbox" id="show-electrons" checked />
+            <img class="layer-toggle-icon" alt="Electrons" src="assets/buttons/electron_layer.png">
+        </label>
+        <label class="layer-toggle">
+            <input class="layer-checkbox" type="checkbox" id="show-influence" checked />
+            <img class="layer-toggle-icon" alt="Charge Fields" src="assets/buttons/influence_layer.png">
+        </label>
     </nav>
 
 

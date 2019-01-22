@@ -252,8 +252,10 @@ class Qubit extends Block {
     }
 
     static set isVisible(boolean) {
+        if (Qubit._isVisible === boolean) return
         Qubit._isVisible = boolean
         Qubit.instances.forEach( qubit => qubit.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }
 

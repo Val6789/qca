@@ -1,35 +1,45 @@
 class OverlaySelector {
     // Checkboxes //
 
-    _setQubitLayerSelector() {
-        const checkbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
+    _setQubitLayerSelector()  {
+        var checkbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
         function toggleQubits() {
-            Qubit.isVisible = checkbox.value
-            InputBlock.isVisible = checkbox.value
-            OutputBlock.isVisible = checkbox.value
+            Qubit.isVisible = checkbox.checked
+            InputBlock.isVisible = checkbox.checked
+            OutputBlock.isVisible = checkbox.checked
         }
         checkbox.addEventListener("change", toggleQubits)
         toggleQubits()
     }
 
 
-    _setElectronLayerSelector() {
-        const checkbox = document.getElementById(OverlaySelector.ELECTRON_SELECTOR_ID)
-        checkbox.addEventListener("change", {
-
-        })
+    _setInfluenceLayerSelector() {
+        var checkbox = document.getElementById(OverlaySelector.ELECTRON_SELECTOR_ID)
+        function toggleElectrons() {
+            console.log('hello')
+            Electron.particles.layers[Electron.TEXTURE_LAYER].visible = checkbox.checked
+            Dot.particles.layers[0].visible = checkbox.checked
+            ThreeViewControllerInstance.shouldRender()
+        }
+        checkbox.addEventListener("change", toggleElectrons)
+        toggleElectrons()
     }
 
 
-    _setInfluenceLayerSelector() {
-        const checkbox = document.getElementById(OverlaySelector.INFLUENCE_SELECTOR_ID)
-        checkbox.addEventListener("change", {
-
-        })
+    _setElectronLayerSelector() {
+        var checkbox = document.getElementById(OverlaySelector.INFLUENCE_SELECTOR_ID)
+        function toggleInfluences() {
+            Electron.particles.layers[Electron.INFLUENCE_LAYER].visible = checkbox.checked
+            ThreeViewControllerInstance.shouldRender()
+        }
+        checkbox.addEventListener("change", toggleInfluences)
+        toggleInfluences()
     }
 
     constructor() {
-
+        this._setQubitLayerSelector()
+        this._setInfluenceLayerSelector()
+        this._setElectronLayerSelector()
     }
 }
 
