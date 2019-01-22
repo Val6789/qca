@@ -45,7 +45,8 @@
     <script src="./scripts/QuantumAutomata.js"></script>
     <script src="./scripts/AppController.js"></script>
     <script src="./scripts/KeyBoardController.js"></script>
-    <script src="./scripts/History.js" defer></script>
+    <script src="./scripts/History.js"></script>
+    <script src="./scripts/OverlaySelector.js"></script>
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/GUI.js" defer></script>
 </head>
@@ -100,9 +101,9 @@
 
 
     <nav class="layers">
-        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
-        <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
-        <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
+        <label class="layer-checkbox"><input type="checkbox" id="show-qubit" checked /><img alt="Qubit values" src="assets/buttons/qubit_layer.png"></label>
+        <label class="layer-checkbox"><input type="checkbox" id="show-electrons" checked /><img alt="Electrons" src="assets/buttons/electron_layer.png"></label>
+        <label class="layer-checkbox"><input type="checkbox" id="show-influence" checked /><img alt="Charge Fields" src="assets/buttons/influence_layer.png"></label>
     </nav>
 
 
@@ -270,9 +271,10 @@
                         <button onclick="setLightmode(true)" class="btn">Light mode</button>
                         <button onclick="setLightmode(false)" class="btn">Dark mode</button>
                         <p>Layers :</p>
-                        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
+                        <!-- Peut pas avoir deux id identique dans le document -->
+                        <!-- <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
 						<label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
-						<label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
+						<label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label> -->
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="btn">close</label>
