@@ -189,7 +189,7 @@ class ThreeViewController {
 
         this._camera = new THREE.PerspectiveCamera(fieldOfView, 1, nearField, farField)
 
-        this._camera.position.x = 5
+        this._camera.position.z = 5
         this._camera.position.y = 8
 
         // update camera and render when user resizes the window
