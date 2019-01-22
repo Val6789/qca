@@ -156,9 +156,7 @@
                         <label for="no-drawer-check" class="btn drawer-close">x</label>
                     </div>
                     <div class="drawer-main">
-                        buttons for testing :
-                        <button onclick="setLightmode(true)" class="btn">light mode</button>
-                        <button onclick="setLightmode(false)" class="btn">dark mode</button>
+						demos !
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="btn">close</label>
@@ -227,14 +225,20 @@
                     </div>
                 </div>
                 
-                <input class="settings-check" type="radio" id="settings-check" name="tab" />
+                <input class="activity-check" type="radio" id="settings-check" name="tab" />
                 <div id="drawer-settings" class="drawer">
                     <div class="drawer-header">
                         <h3>Settings</h3>
                         <label for="no-drawer-check" class="btn drawer-close">x</label>
                     </div>
                     <div class="drawer-main">
-                        <p>Try to complete all thoses achievements !</p>
+                        <p>Display mode :</p>
+                        <button onclick="setLightmode(true)" class="btn">Light mode</button>
+                        <button onclick="setLightmode(false)" class="btn">Dark mode</button>
+                        <p>Layers :</p>
+                        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
+						<label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
+						<label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="btn">close</label>
