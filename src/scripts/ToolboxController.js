@@ -122,83 +122,6 @@ class ToolboxController {
     }
 
 
-    _setDraggableTools() {
-        const tools = document.querySelectorAll(".draggable.tool")
-        tools.forEach( tool => {
-            tool.addEventListener("touchstart", event => this._initiateDrag(event))
-            tool.addEventListener("touchmove", event => this._updateDrag(event))
-            tool.addEventListener("touchend", event => this._executeDrop(event))
-
-            tool.addEventListener("mousedown", event => this._initiateDrag(event))
-            document.addEventListener("mousemove", event => this._updateDrag(event))
-            document.addEventListener("mouseup", event => this._executeDrop(event))
-        })
-        this._currentDragPlayload = undefined
-    }
-
-    _initiateDrag(event) {
-        ThreeViewControllerInstance.orbitControls.enableRotate = false
-        ThreeViewControllerInstance.orbitControls.enablePan = false
-        if (this._currentDragPlayload) document.body.removeChild(this._currentDragPlayload.domElement)
-
-        var item
-        switch (event.currentTarget.id) {
-            case "get-camera":
-                item = QubitEditor.canEditEnumeration.NOTHING
-                break;
-            case "place-qubits":
-                item = QubitEditor.canEditEnumeration.QUBIT
-                break;
-            case "positive-input":
-                item = QubitEditor.canEditEnumeration.POSITIVE_INPUT
-                break;
-            case "negative-input":
-                item = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-                break;
-            case "place-output":
-                item = QubitEditor.canEditEnumeration.OUTPUT
-                break;
-            case "eraser":
-                item = QubitEditor.canEditEnumeration.REMOVE
-                break;
-        }
-
-        this._currentDragPlayload = {
-            item: item,
-            domElement: document.body.appendChild(event.currentTarget.cloneNode(true))
-        }
-    }
-
-    _updateDrag(event) {
-        var pointer
-        if (event instanceof TouchEvent)
-            pointer = event.touches.item(0)
-        else
-            pointer = event
-
-        console.log(pointer.clientX, pointer.clientY)
-
-        QubitEditorInstance.updateCursor(pointer.clientX, pointer.clientY)
-        if (this._currentDragPlayload) this._currentDragPlayload.domElement.style.cssText = `
-            position: fixed;
-            z-index: 100000;
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 0.9;
-            border: solid 3px yellow;
-            left: ${pointer.clientX}px;
-            top: ${pointer.clientY}px;`
-    }
-
-    _executeDrop() {
-        ThreeViewControllerInstance.orbitControls.enableRotate = true
-        ThreeViewControllerInstance.orbitControls.enablePan = true
-        if (this._currentDragPlayload) {
-            QubitEditorInstance.canEdit = this._currentDragPlayload.item
-            QubitEditorInstance.edit()
-            document.body.removeChild(this._currentDragPlayload.domElement)
-        }
-        this._currentDragPlayload = null;
-    }
 
     _setZoomSlider() {
         const button = document.getElementById("zoom-control");
@@ -326,7 +249,6 @@ class ToolboxController {
         this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
-        this._setDraggableTools()
         
         this._setPauseButton()
         this._setSlowButton()
@@ -334,6 +256,25 @@ class ToolboxController {
 
         this._setZoomSlider()
         this._setCameraJoystick()
+
+        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool")
+
+        this._dragAndDropToolControls.onDragCallback(targetElement => {
+            console.log(targetElement)
+            switch (targetElement.id) {
+                case "get-camera": return QubitEditor.canEditEnumeration.NOTHING
+                case "place-qubits": return QubitEditor.canEditEnumeration.QUBIT
+                case "positive-input": return QubitEditor.canEditEnumeration.POSITIVE_INPUT
+                case "negative-input": return QubitEditor.canEditEnumeration.NEGATIVE_INPUT
+                case "place-output": return QubitEditor.canEditEnumeration.OUTPUT
+                case "eraser": return QubitEditor.canEditEnumeration.REMOVE
+            }
+        })
+
+        this._dragAndDropToolControls.onDropCallback( payload => {
+            QubitEditorInstance.canEdit = payload
+            QubitEditorInstance.edit()
+        })
     }
 
     constructor() {
