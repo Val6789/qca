@@ -36,7 +36,7 @@ class ParticleSystem {
     constructor(materials = [], maximumParticlesCount = 1000, attributeSize = 3) {
         this.MAX_POINTS = maximumParticlesCount
         this.ATTRIBUTE_SIZE = attributeSize
-        
+
 
         let array = new Float32Array(this.MAX_POINTS * this.ATTRIBUTE_SIZE)
         this._particulesCount = 0

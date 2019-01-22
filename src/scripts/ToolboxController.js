@@ -122,78 +122,29 @@ class ToolboxController {
     }
 
 
+    _setDraggableTools() {
+        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool")
 
-    _setZoomSlider() {
-        const button = document.getElementById("zoom-control");
+        this._dragAndDropToolControls.onDragCallback(targetElement => {
+            console.log(targetElement)
+            switch (targetElement.id) {
+                case "get-camera": return QubitEditor.canEditEnumeration.NOTHING
+                case "place-qubits": return QubitEditor.canEditEnumeration.QUBIT
+                case "positive-input": return QubitEditor.canEditEnumeration.POSITIVE_INPUT
+                case "negative-input": return QubitEditor.canEditEnumeration.NEGATIVE_INPUT
+                case "place-output": return QubitEditor.canEditEnumeration.OUTPUT
+                case "eraser": return QubitEditor.canEditEnumeration.REMOVE
+            }
+        })
 
-        const onSliderChange = event => {
-            const zoom = parseInt(event.currentTarget.value)
-            const currentzoom = ThreeViewControllerInstance.camera.position.distanceTo(ThreeViewControllerInstance.orbitControls.target)
-            ThreeViewControllerInstance.camera.translateZ(zoom - currentzoom)
-
-            // update controls
-            ThreeViewControllerInstance.orbitControls.update()
-            ThreeViewControllerInstance.shouldRender()
-            event.stopPropagation()
-
-            console.log("hello")
-        }
-
-        button.addEventListener("mousedown", ev => ev.stopPropagation())
-        button.addEventListener("mousemove", onSliderChange)
-        button.addEventListener("touchmove", onSliderChange)
-
-
-        ThreeViewControllerInstance.callbackOnRender(() => {
-            const currentzoom = ThreeViewControllerInstance.camera.position.distanceTo(ThreeViewControllerInstance.orbitControls.target)
-            button.value = currentzoom
+        this._dragAndDropToolControls.onDropCallback( payload => {
+            QubitEditorInstance.canEdit = payload
+            QubitEditorInstance.edit()
         })
     }
 
-
     _setCameraJoystick() {
-        const button = document.getElementById("joystick-control")
-        const up = new THREE.Vector3(0,1,0)
-        var centerX = button.offsetLeft + button.clientWidth / 2
-        var centerY = button.offsetTop + button.clientHeight / 2
-        const radius = Math.hypot(button.clientWidth, button.clientHeight)
-        var pointerBuffer = null
-
-
-        function apply() {
-            if (pointerBuffer) requestAnimationFrame(apply); else return
-            var translate = new THREE.Vector3(pointerBuffer.clientX - centerX, 0, pointerBuffer.clientY - centerY)
-            if (translate.length > radius) return
-
-            const cameraOrientation = ThreeViewControllerInstance.camera.getWorldQuaternion()
-            translate.multiplyScalar(0.01)
-            translate.applyQuaternion(cameraOrientation)
-            translate.projectOnPlane(up)
-            console.log(translate, up, cameraOrientation)
-
-
-            ThreeViewControllerInstance.orbitControls.target.add(translate)
-            ThreeViewControllerInstance.camera.position.add(translate)
-
-            ThreeViewControllerInstance.orbitControls.update()
-            ThreeViewControllerInstance.shouldRender()
-        }
-
-        function update(pointer) { pointerBuffer = pointer}
-        function start(pointer) {
-            update(pointer)
-            requestAnimationFrame(apply)
-        }
-        function end() { pointerBuffer = null }
-
-
-        button.addEventListener("mousedown", event => { start(event); event.stopPropagation() })
-        button.addEventListener("mousemove", event => { update(event); event.stopPropagation()  })
-        button.addEventListener("mouseup", event => { end(); event.stopPropagation() })
-
-        button.addEventListener("touchstart", event => { start(event.touches.item(0)); event.stopPropagation()  })
-        button.addEventListener("touchmove", event => { update(event.touches.item(0)); event.stopPropagation()  })
-        button.addEventListener("touchend", event => { end(); event.stopPropagation() })
+        this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control")
     }
 
     
@@ -249,32 +200,13 @@ class ToolboxController {
         this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
+        this._setDraggableTools()
         
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
 
-        this._setZoomSlider()
         this._setCameraJoystick()
-
-        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool")
-
-        this._dragAndDropToolControls.onDragCallback(targetElement => {
-            console.log(targetElement)
-            switch (targetElement.id) {
-                case "get-camera": return QubitEditor.canEditEnumeration.NOTHING
-                case "place-qubits": return QubitEditor.canEditEnumeration.QUBIT
-                case "positive-input": return QubitEditor.canEditEnumeration.POSITIVE_INPUT
-                case "negative-input": return QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-                case "place-output": return QubitEditor.canEditEnumeration.OUTPUT
-                case "eraser": return QubitEditor.canEditEnumeration.REMOVE
-            }
-        })
-
-        this._dragAndDropToolControls.onDropCallback( payload => {
-            QubitEditorInstance.canEdit = payload
-            QubitEditorInstance.edit()
-        })
     }
 
     constructor() {
