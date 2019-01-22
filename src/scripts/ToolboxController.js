@@ -221,11 +221,13 @@ class ToolboxController {
         const button = document.getElementById("joystick-control")
         var centerX = button.offsetLeft + button.clientWidth / 2
         var centerY = button.offsetTop + button.clientHeight / 2
+        const radius = Math.hypot(button.clientWidth, button.clientHeight)
 
         console.log( centerX, centerY)
 
         const onJoystick = (x,y) => {
             const translation = new THREE.Vector3(centerX - x, 0, centerY - y)
+            if (radius < translation.length()) return
             ThreeViewControllerInstance.camera.position.add(translation)
 
             console.log(ThreeViewControllerInstance.camera.position, translation)
@@ -241,8 +243,10 @@ class ToolboxController {
         })
 
         button.addEventListener("mousemove", event => {
-            onJoystick(event.clientX, event.clientY)
-            event.stopPropagation()
+            if(event.buttons === 1) {
+                onJoystick(event.clientX, event.clientY)
+                event.stopPropagation()
+            }
         })
     }
 
