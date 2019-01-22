@@ -23,8 +23,7 @@
     bottom: 0px;
     z-index: 10;
 }
-.layers
-{
+.layers {
     display:none;
 }
 .mode-light {
@@ -60,6 +59,7 @@
     display: none;
 }
 
+/* Buttons */
 .btn {
     color: white;
     cursor:pointer;
@@ -69,8 +69,7 @@
     text-transform: capitalize;
     font-size: 1.2rem;
 }
-.btn:hover
-{
+.btn:hover {
     background-color:#101010;
 }
 
@@ -89,11 +88,11 @@ button.active {
     box-shadow:0px 0px 3px 3px rgba(48,48,48,0.4);
     background-color:#080808;
 }
-button:hover
-{
+button:hover {
     background-color:#000;
 }
 
+/* Spinner */
 .loading-overlay {
     position: fixed;
     width: 100vw;
