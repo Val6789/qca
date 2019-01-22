@@ -6,7 +6,7 @@ class ToolboxController {
 	
     _setButton(id, callback) {
         var button = document.getElementById(id)
-        button.addEventListener("click", event => {
+        button.addEventListener("mouseup", event => {
             callback(event)
             event.stopPropagation()
         }, false)
@@ -23,27 +23,31 @@ class ToolboxController {
 
     _setCameraButton() {
         const buttonId = "get-camera"
-        this.cameraButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = true
-            ThreeViewControllerInstance.orbitControls.enablePan = true
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
-        })
+        var self = this
+        this.cameraButton = this._setButton(buttonId, event=>{self._setCameraButtonClick(event.target)})
+    }
+    _setCameraButtonClick(target){
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = true
+        ThreeViewControllerInstance.orbitControls.enablePan = true
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
     }
 
 
     _setQubitButton() {
         const buttonId = "place-qubits"
-        this.qubitButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
-        })
+        var self = this
+        this.qubitButton = this._setButton(buttonId, (event) => {self._setQubitButtonClick(event.target)})
+    }
+    _setQubitButtonClick(target) {
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
     }
 
 
-    _setPositiveInputButton() {
+    /*_setPositiveInputButton() {
         const buttonId = "positive-input"
         this.positiveInputButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
@@ -51,39 +55,45 @@ class ToolboxController {
             ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.POSITIVE_INPUT
         })
-    }
+    }*/
 
 
     _setNegativeInputButton() {
         const buttonId = "negative-input"
-        this.negativeInputButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-        })
+        var self = this
+        this.negativeInputButton = this._setButton(buttonId, (event) => {self_setNegativeInputButtonClick(event.target)})
+    }
+    _setNegativeInputButtonClick(target) {
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
     }
 
 
     _setOutputButton() {
         const buttonId = "place-output"
-        this.outputButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
-        })
+        var self = this
+        this.outputButton = this._setButton(buttonId, (event) => {self._setOutputButtonClick(event.target)})
+    }
+    _setOutputButtonClick(target) {
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
     }
 
 
     _setEraserButton() {
         const buttonId = "eraser"
-        this.eraserButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
-        })
+        var self = this
+        this.eraserButton = this._setButton(buttonId, (event) => {self._setEraserButtonClick(event.target)})
+    }
+    _setEraserButtonClick(target) {
+        this._setActive(event.target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
     }
 
 	// Checkboxes //
@@ -123,70 +133,28 @@ class ToolboxController {
 
 
     _setDraggableTools() {
-        const tools = document.querySelectorAll(".draggable.tool")
-        tools.forEach( tool => {
-            tool.addEventListener("touchstart", event => this._initiateDrag(event))
-            tool.addEventListener("touchmove", event => this._updateDrag(event))
-            tool.addEventListener("touchend", event => this._executeDrop(event))
+        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
+
+        this._dragAndDropToolControls.onDragCallback(targetElement => {
+            console.log(targetElement)
+            switch (targetElement.id) {
+                case "get-camera": return QubitEditor.canEditEnumeration.NOTHING
+                case "place-qubits": return QubitEditor.canEditEnumeration.QUBIT
+                case "positive-input": return QubitEditor.canEditEnumeration.POSITIVE_INPUT
+                case "negative-input": return QubitEditor.canEditEnumeration.NEGATIVE_INPUT
+                case "place-output": return QubitEditor.canEditEnumeration.OUTPUT
+                case "eraser": return QubitEditor.canEditEnumeration.REMOVE
+            }
         })
-        this._currentDragPlayload = undefined
-    }
 
-    _initiateDrag(event) {
-        ThreeViewControllerInstance.orbitControls.enableRotate = false
-        ThreeViewControllerInstance.orbitControls.enablePan = false
-        if (this._currentDragPlayload) document.body.removeChild(this._currentDragPlayload.domElement)
-
-        var item
-        switch (event.currentTarget.id) {
-            case "get-camera":
-                item = QubitEditor.canEditEnumeration.NOTHING
-                break;
-            case "place-qubits":
-                item = QubitEditor.canEditEnumeration.QUBIT
-                break;
-            case "positive-input":
-                item = QubitEditor.canEditEnumeration.POSITIVE_INPUT
-                break;
-            case "negative-input":
-                item = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-                break;
-            case "place-output":
-                item = QubitEditor.canEditEnumeration.OUTPUT
-                break;
-            case "eraser":
-                item = QubitEditor.canEditEnumeration.REMOVE
-                break;
-        }
-
-        this._currentDragPlayload = {
-            item: item,
-            domElement: document.body.appendChild(event.currentTarget.cloneNode(true))
-        }
-    }
-
-    _updateDrag(event) {
-        const touch = event.touches.item(0)
-        QubitEditorInstance.updateCursor(touch.clientX, touch.clientY)
-        if (this._currentDragPlayload) this._currentDragPlayload.domElement.style.cssText = `
-            position: fixed;
-            z-index: 100000;
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 0.9;
-            border: solid 3px yellow;
-            left: ${event.touches.item(0).clientX}px;
-            top: ${event.touches.item(0).clientY}px;`
-    }
-
-    _executeDrop(event) {
-        ThreeViewControllerInstance.orbitControls.enableRotate = true
-        ThreeViewControllerInstance.orbitControls.enablePan = true
-        if (this._currentDragPlayload) {
-            QubitEditorInstance.canEdit = this._currentDragPlayload.item
+        this._dragAndDropToolControls.onDropCallback( payload => {
+            QubitEditorInstance.canEdit = payload
             QubitEditorInstance.edit()
-            document.body.removeChild(this._currentDragPlayload.domElement)
-        }
-        this._currentDragPlayload = null;
+        })
+    }
+
+    _setCameraJoystick() {
+        this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control", false)
     }
 
     
@@ -233,13 +201,33 @@ class ToolboxController {
 			AppControllerInstance.setRefreshRate(AppController.SPEED_FAST)
 		}
 	}
+    _keydownHandler(event) {
+        switch(event.keyCode) {
+            case 81: // Q -> qubit
+                this._setQubitButtonClick(document.getElementById('place-qubits'))
+                break;
+            case 79: // O -> output
+                this._setOutputButtonClick(document.getElementById('place-output'))
+                break;
+            case 73: // I -> input
+                this._setNegativeInputButtonClick(document.getElementById('negative-input'))
+                break;
+            case 77: // M -> move
+            case 67: // C -> move
+                this._setCameraButtonClick(document.getElementById('get-camera'))
+                break;
+            case 82: // R ->remove
+                this._setEraserButtonClick(document.getElementById('eraser'))
+                break;
+        }
+    }
     
 
     init() {
         this._setCameraButton()
         this._setQubitButton()
         this._setNegativeInputButton()
-        this._setPositiveInputButton()
+        //this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
         this._setDraggableTools()
@@ -251,6 +239,10 @@ class ToolboxController {
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
+
+        this._setCameraJoystick()
+
+        window.addEventListener("keydown",ev => this._keydownHandler(ev))
     }
 
     constructor() {

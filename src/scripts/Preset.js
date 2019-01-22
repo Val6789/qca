@@ -5,7 +5,7 @@ class Preset {
 		var quantomExport = []
         quantomAutomata._qubitMap.forEach(qubit => {
         	let qPosition = qubit.position
-        	let exportQubit = {x:qPosition.x,y:qPosition.y,z:qPosition.z,type:qubit.type}
+        	let exportQubit = {x:qPosition.x,y:qPosition.y,z:qPosition.z,type:qubit.type,fixed:qubit.fixed}
         	if(qubit.type == "input"){
         		exportQubit.type += qubit.polarity
         	}
@@ -37,21 +37,25 @@ class Preset {
         }
 
         var  blockPosition
+        var newBlock;
         for(let block of this.presetDescription) {
             blockPosition = new THREE.Vector3(block.x,block.y,block.z)
             switch(block.type) {
                 case "input1":
-                    automata.addInput(blockPosition, 1)
+                    newBlock = automata.addInput(blockPosition, 1)
                     break;
                 case "input-1":
-                    automata.addInput(blockPosition, 0)
+                    newBlock = automata.addInput(blockPosition, 0)
                     break;
                 case "qubit":
-                    automata.addQubit(blockPosition)
+                    newBlock = automata.addQubit(blockPosition)
                     break;
                 case "output":
-                    automata.addOutput(blockPosition)
+                    newBlock = automata.addOutput(blockPosition)
                     break;
+            }
+            if(block.fixed) {
+                block.fixe();
             }
         }
         return true

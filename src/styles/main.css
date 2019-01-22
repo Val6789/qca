@@ -19,8 +19,8 @@
     margin: 20px;
     padding: 0px;
     position: absolute;
-    right: 0px;
-    bottom: 60px;
+    left: 0px;
+    bottom: 0px;
     z-index: 10;
 }
 .layers
