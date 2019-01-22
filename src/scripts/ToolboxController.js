@@ -43,7 +43,7 @@ class ToolboxController {
     }
 
 
-    _setPositiveInputButton() {
+    /*_setPositiveInputButton() {
         const buttonId = "positive-input"
         this.positiveInputButton = this._setButton(buttonId, (event) => {
             this._setActive(event.target)
@@ -51,7 +51,7 @@ class ToolboxController {
             ThreeViewControllerInstance.orbitControls.enablePan = false
             QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.POSITIVE_INPUT
         })
-    }
+    }*/
 
 
     _setNegativeInputButton() {
@@ -197,7 +197,7 @@ class ToolboxController {
         this._setCameraButton()
         this._setQubitButton()
         this._setNegativeInputButton()
-        this._setPositiveInputButton()
+        //this._setPositiveInputButton()
         this._setOutputButton()
         this._setEraserButton()
         this._setDraggableTools()
