@@ -39,16 +39,21 @@ class JoystickCameraControls {
         // stops the loop if the pointer is undefined
         if (this.pointer) requestAnimationFrame(() => this._apply()); else return
 
-        // 
+        // creates vector from joystick center to pointer position
         var translate = new THREE.Vector3(this.pointer.clientX - this.CENTER_X, 0, this.pointer.clientY - this.CENTER_Y)
         if (translate.length > this.RADIUS) return
 
-        const cameraOrientation = ThreeViewControllerInstance.camera.getWorldQuaternion()
+        // converts vector to a camera translation
+        var cameraOrientation = new THREE.Quaternion()
+        ThreeViewControllerInstance.camera.getWorldQuaternion(cameraOrientation)
+        // scaling
         translate.multiplyScalar(this.DOLLY_SPEED)
-        translate.applyQuaternion(cameraOrientation)
-        translate.projectOnPlane(this.UP)
-        console.log(translate, this.UP, cameraOrientation)
 
+        // orient to camera
+        translate.applyQuaternion(cameraOrientation)
+
+        // project on grid
+        translate.projectOnPlane(this.UP)
 
         ThreeViewControllerInstance.orbitControls.target.add(translate)
         ThreeViewControllerInstance.camera.position.add(translate)
@@ -71,8 +76,6 @@ class JoystickCameraControls {
         ThreeViewControllerInstance.orbitControls.update()
         ThreeViewControllerInstance.shouldRender()
         event.stopPropagation()
-
-        console.log("hello")
     }
 
     /**
@@ -102,9 +105,9 @@ class JoystickCameraControls {
      */
     _setJoystick(joystickID) {
         const button = document.getElementById(joystickID)
-        this.CENTER_X = button.offsetLeft + button.clientWidth / 2
-        this.CENTER_Y = button.offsetTop + button.clientHeight / 2
-        this.RADIUS = Math.hypot(button.clientWidth, button.clientHeight)
+        this.CENTER_X = button.offsetLeft
+        this.CENTER_Y = button.offsetTop
+        this.RADIUS = Math.hypot(button.clientWidth, button.clientHeight) / 2
 
         this.pointer = null
 
