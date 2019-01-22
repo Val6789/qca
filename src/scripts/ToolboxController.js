@@ -194,9 +194,27 @@ class ToolboxController {
     
     _setPauseButton() {
 		var button = document.getElementById("play-button")
+		var pause = document.getElementById("pause-button-icon")
+		var play = document.getElementById("play-button-icon")
+		
+		// unpaused by default
+		play.style.display = "none"
+		pause.style.display = "inline"
+		
 		button.onclick = function() {
-			AppControllerInstance.setRefreshRate(AppController.SPEED)
-			AppControllerInstance.setPause()
+			if(AppControllerInstance.pauseMode) { // is app paused ?
+				AppControllerInstance.setRefreshRate(AppController.SPEED)
+				AppControllerInstance.pauseMode = false
+				
+				play.style.display = "none"
+				pause.style.display = "inline"
+			}
+			else {
+				AppControllerInstance.pauseMode = true
+				
+				play.style.display = "inline"
+				pause.style.display = "none"
+			}
 		}
 	}
 	
