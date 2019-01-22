@@ -149,7 +149,6 @@ class ThreeViewController {
 
         this._axis.update(this._camera, this._orbit)
         this._axis.render()
-        console.log("RENDER")
 
         this._layers.forEach((l) => {
             if (!l.active)
@@ -197,8 +196,8 @@ class ThreeViewController {
 
         this._camera = new THREE.PerspectiveCamera(fieldOfView, 1, nearField, farField)
 
-        this._camera.position.x = 5
-        this._camera.position.y = 8
+        this._camera.position.set(-8, 0, 0)
+        this._camera.lookAt(new THREE.Vector3(0, 0, 0))
 
         // update camera and render when user resizes the window
         window.addEventListener("resize", () => {
@@ -262,14 +261,17 @@ class ThreeViewController {
      * @brief Create IntroScene
      */
     _setIntro() {
+        //this._orbit.enabled = false
+
         return new Promise((resolve) => {
+
             let intro = new IntroScene(resolve)
             intro.setCamera(this._camera)
 
             let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
             intro.setLayer(layer)
 
-            console.log(intro)
+            intro.start()
         })
     }
 

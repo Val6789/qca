@@ -8,6 +8,7 @@
     "lint": "node ./node_modules/eslint/bin/eslint.js ./src/**/*.js"
   },
   "dependencies": {
+    "gsap": "^2.0.2",
     "izitoast": "^1.4.0",
     "three": "^0.100.0"
   },

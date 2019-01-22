@@ -1,0 +1,56 @@
+#info-holder {
+    position: fixed;
+    top: 65vw;
+    bottom: 10vw;
+    left: 10vw;
+    right: 10vw;
+
+    border-radius: 6px;
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+
+    --colorShadow: rgb(26, 26, 26);
+    -moz-box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    -webkit-box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    -o-box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=var(--colorShadow), Direction=NaN, Strength=10);
+
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+
+    transition: opacity 400ms ease-in-out;
+}
+
+#info-holder.info-holder-hidden {
+    opacity: 0;
+}
+
+#info-holder h4 {
+    font-size: 2rem;
+}
+
+#info-holder-text {
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+
+#info-holder-text p {
+    animation: enter 200ms ease-in;
+}
+
+#info-holder span {
+    align-self: flex-end;
+    cursor: pointer;
+    text-decoration: underline;
+    order: 999;
+}
+
+@keyframes enter {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}

@@ -13,6 +13,67 @@
 class ToolboxController {
     // Tool buttons //
 
+    // =================== Info Holder ===================
+    hideInfoHolder() {
+        if (!this.$infoHolder)
+            this.$infoHolder = document.getElementById("info-holder")
+
+        this.$infoHolder.classList.add("info-holder-hidden")
+    }
+
+    revealInfoHolder() {
+        if (!this.$infoHolder)
+            this.$infoHolder = document.getElementById("info-holder")
+
+        this.$infoHolder.classList.remove("info-holder-hidden")
+    }
+
+    addInfoHolderText(text) {
+        if (!this.$infoHolder)
+            this.$infoHolder = document.getElementById("info-holder")
+        const p = document.createElement("p")
+        p.innerHTML = text
+        this.$infoHolder.children[1].appendChild(p)
+    }
+
+    setInfoHolderTitle(title) {
+        if (!this.$infoHolder)
+            this.$infoHolder = document.getElementById("info-holder")
+
+        const $title = this.$infoHolder.children[0]
+        $title.innerText = title
+    }
+
+    clearInfoHolder() {
+        if (!this.$infoHolder)
+            this.$infoHolder = document.getElementById("info-holder")
+        while (this.$infoHolder.children.length > 1) {
+            this.$infoHolder.removeChild(this.$infoHolder.children[1])
+        }
+    }
+
+    setInfoHolderNextClickCallback(callback) {
+        if (!this.$infoHolder)
+            this.$infoHolder = document.getElementById("info-holder")
+        this.$infoHolder.children[2].onclick = callback
+    }
+
+    // =================== Controls ===================
+    revealControls() {
+        if (!this.$controls)
+            this.$controls = document.querySelector("header.control-strip")
+
+        this.$controls.classList.remove("hidden")
+    }
+
+    hideControls() {
+        if (!this.$controls)
+            this.$controls = document.querySelector("header.control-strip")
+
+        this.$controls.classList.add("hidden")
+
+    }
+
     _setButton(id, callback) {
         var button = document.getElementById(id)
         button.addEventListener("click", event => {

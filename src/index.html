@@ -14,12 +14,17 @@
     <link rel="stylesheet" href="./styles/activities.css">
     <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
+    <link rel="stylesheet" href="./styles/info-holder.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
     <script type="text/javascript" src="./scripts/lib/OrbitControls.js"></script>
+
     <link rel="stylesheet" href="../node_modules/izitoast/dist/css/iziToast.min.css">
     <script type="text/javascript" src="../node_modules/izitoast/dist/js/iziToast.min.js"></script>
+    <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/TweenLite.js"></script>
+    <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/TimelineLite.js"></script>
+
 
 
     <!-- Scripts -->
@@ -134,7 +139,14 @@
     </nav>
     </header>
 
-    <aside class="activities active" id="activities">
+    <aside id="info-holder" class="info-holder-hidden">
+        <h4>Title of the info</h4>
+        <div id="info-holder-text"></div>
+        <span>Next</span>
+    </aside>
+
+    <aside class="
+        activities active" id="activities">
         <nav class="activity-tabs">
             <div id="selectors">
                 <button class="hide-activities" id="toggle-activity-tab">

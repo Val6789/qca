@@ -39,6 +39,8 @@
         "ThreeViewControllerInstance": true,
         "QubitEditorInstance": true,
         "ToolboxControllerInstance": true,
-        "GUIinstance": true
+        "GUIinstance": true,
+        "TweenLite": true,
+        "TimelineLite": true
     }
 }
