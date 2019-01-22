@@ -17,10 +17,9 @@ class IntroScene {
         this._scene = new THREE.Scene()
 
         let pos = new THREE.Vector3(0, 0, 0)
-        var elecs = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
-        elecs.addAt(pos)
-
-        this._scene.add(elecs._particlesGroup)
+        this._particles = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
+        this._particles.addAt(pos)
+        this._scene.add(this._particles._particlesGroup)
 
         let light = new THREE.PointLight(0xffffff, 1, 100)
         light.position.set(-5, 0, 0)
@@ -62,8 +61,9 @@ class IntroScene {
     }
 
     async start() {
-        //await this._welcomeScene()
+        await this._welcomeScene()
         await this._electronScene()
+        this._deleteScene()
         this.callbackDone()
     }
 
@@ -132,9 +132,8 @@ class IntroScene {
                     endline = () => {
                         ToolboxControllerInstance.addInfoHolderText(text)
                         // Letter per second
-                        const avgReadingSpeed = 20.25
-                        lineLatency += avgReadingSpeed * text.length
-                        console.log("New line latency :", lineLatency)
+                        const avgReadingSpeed = 25.25
+                        lineLatency = avgReadingSpeed * text.length
                         littleResolve()
                         timeout = null
                         endline = null
@@ -142,20 +141,48 @@ class IntroScene {
                     timeout = setTimeout(endline, lineLatency)
                 })
             }
-            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+            const lineCallback = () => {
                 if (timeout)
                     clearTimeout(timeout)
                 if (endline)
                     endline()
-            })
-            await addLine("So this is an <b>electron</b>.")
-            await addLine("An electron is something that exist in the <b>real world</b>.")
-            await addLine("The real world is the place where most humans live.")
-            await addLine("But you already know that.")
-            await addLine("What you don't know is : <b>What's an electron ?</b>")
+            }
+            const paragraphCallBack = () => {
+                return new Promise(resolve => {
+                    ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+                        resolve()
+                    })
+                })
 
+            }
+            const json = AssetManager.Get().json.electronIntro
+            console.log(json)
+
+            for (let i = 0; i < json.length; i++) {
+                const paragraph = json[i]
+                ToolboxControllerInstance.setInfoHolderNextClickCallback(lineCallback)
+                for (let j = 0; j < paragraph.length; j++) {
+                    const line = paragraph[j]
+                    await addLine(line)
+                }
+
+                // Paragraph finished
+                await paragraphCallBack()
+                ToolboxControllerInstance.clearInfoHolder()
+                lineLatency = 0
+            }
+
+            // Clear
+            resolve()
         })
 
+    }
+
+    _deleteScene() {
+        ToolboxControllerInstance.revealControls()
+        ToolboxControllerInstance.hideInfoHolder()
+        Utils.doDispose(this._scene)
+        this._particles._destructor()
     }
 
     _createTextMesh(text, x, y, z) {

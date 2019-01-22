@@ -47,9 +47,11 @@ class ToolboxController {
     clearInfoHolder() {
         if (!this.$infoHolder)
             this.$infoHolder = document.getElementById("info-holder")
-        while (this.$infoHolder.children.length > 1) {
-            this.$infoHolder.removeChild(this.$infoHolder.children[1])
+        const node = this.$infoHolder.children[1]
+        while (node.firstChild) {
+            node.removeChild(node.firstChild)
         }
+
     }
 
     setInfoHolderNextClickCallback(callback) {

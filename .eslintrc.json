@@ -41,6 +41,7 @@
         "ToolboxControllerInstance": true,
         "GUIinstance": true,
         "TweenLite": true,
-        "TimelineLite": true
+        "TimelineLite": true,
+        "Utils": true
     }
 }

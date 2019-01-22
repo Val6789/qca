@@ -42,6 +42,10 @@ class ParticleSystem {
         this._geometryBuffer.computeBoundingSphere()
     }
 
+    _destructor() {
+        Utils.doDispose(this._particlesGroup)
+    }
+
     constructor(materials = [], maximumParticlesCount = 1000, attributeSize = 3) {
         this.MAX_POINTS = maximumParticlesCount
         this.ATTRIBUTE_SIZE = attributeSize

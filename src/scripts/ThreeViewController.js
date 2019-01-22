@@ -132,9 +132,7 @@ class ThreeViewController {
         this._setOrbit()
 
         this._setIntro()
-            .then(() => {
-                this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
-            })
+            .then(this._afterIntro())
 
         // add axes
         GUIinstance.setLightmode(false)
@@ -261,8 +259,7 @@ class ThreeViewController {
      * @brief Create IntroScene
      */
     _setIntro() {
-        //this._orbit.enabled = false
-
+        this._orbit.enabled = false
         return new Promise((resolve) => {
 
             let intro = new IntroScene(resolve)
@@ -273,6 +270,29 @@ class ThreeViewController {
 
             intro.start()
         })
+    }
+
+    _afterIntro() {
+        return () => {
+
+            this._layers.pop()
+            this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
+            this.shouldRender()
+            let center = new THREE.Vector3(0, 0, 0)
+            TweenLite.to(this._camera.position, 1, {
+                x: -8,
+                y: 5,
+                z: -3,
+                onUpdate: () => {
+                    this._camera.lookAt(center)
+                    this._render()
+                },
+                onComplete: () => {
+                    this._orbit.enabled = true
+                    this._orbit.update()
+                }
+            })
+        }
     }
 
     /**
