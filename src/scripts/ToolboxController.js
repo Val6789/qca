@@ -61,7 +61,7 @@ class ToolboxController {
     _setNegativeInputButton() {
         const buttonId = "negative-input"
         var self = this
-        this.negativeInputButton = this._setButton(buttonId, (event) => {self_setNegativeInputButtonClick(event.target)})
+        this.negativeInputButton = this._setButton(buttonId, (event) => {self._setNegativeInputButtonClick(event.target)})
     }
     _setNegativeInputButtonClick(target) {
         this._setActive(target)
