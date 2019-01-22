@@ -1,3 +1,7 @@
+/*
+    global
+    Skybox
+*/
 // Activity selection handling
 document.getElementById("toggle-activity-tab")
     .addEventListener("click", (e) => {

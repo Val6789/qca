@@ -120,16 +120,21 @@ class ThreeViewController {
 
         // init members
         this._createLayers()
-        this._setSkybox()
-        this._setScene()
-        this._setCamera()
-        this.addLayer(this._scene, this._camera)
         this._setRenderer()
+        this._setSkybox()
         this._setOrbit()
         setLightmode(false)
 
+        // Add common scene, camera and control
+        this._setScene()
+        this._setCamera()
+        this.mainLayer = this.addLayer(this._scene, this._camera)
+        this.mainLayer.active = false
+
         // add axes
         this._axis = new Axis(this._camera)
+
+        console.log("Intro done")
     }
 
 
@@ -143,7 +148,7 @@ class ThreeViewController {
         this._axis.render(this._camera, this._orbit)
 
         this._layers.forEach((l) => {
-            if (!l.active) 
+            if (!l.active)
                 return
             try {
                 this._renderer.render(l.scene, l.camera)
@@ -214,7 +219,9 @@ class ThreeViewController {
         const viewportElementId = "viewport"
 
         // set renderer
-        this._renderer = new THREE.WebGLRenderer({ antialias: true })
+        this._renderer = new THREE.WebGLRenderer({
+            antialias: true
+        })
         this._renderer.setPixelRatio(window.devicePixelRatio)
         this._renderer.autoClear = false
 
@@ -246,7 +253,6 @@ class ThreeViewController {
         this._skybox = new Skybox()
         this.addLayer(this._skybox.scene, this._skybox.camera)
     }
-
 
     /**
      * @brief Singleton constructor

@@ -1,9 +1,18 @@
-/* global THREE:true, QubitEditor:true */
-/* exported ToolboxController */
+/* 
+    global
+    QubitEditor
+    AppController
+    Qubit
+*/
+/* 
+    exported 
+    ToolboxController
+    ToolboxControllerInstance
+*/
 
 class ToolboxController {
-	// Tool buttons //
-	
+    // Tool buttons //
+
     _setButton(id, callback) {
         var button = document.getElementById(id)
         button.addEventListener("click", event => {
@@ -13,11 +22,11 @@ class ToolboxController {
         return button
     }
 
-    
+
     _setActive(element) {
-        let lastActive = element.parentNode.getElementsByClassName('active')
-        if(lastActive.length > 0) lastActive[0].classList.remove('active')
-        element.classList.add('active')
+        let lastActive = element.parentNode.getElementsByClassName("active")
+        if (lastActive.length > 0) lastActive[0].classList.remove("active")
+        element.classList.add("active")
     }
 
 
@@ -86,45 +95,44 @@ class ToolboxController {
         })
     }
 
-	// Checkboxes //
-    
+    // Checkboxes //
+
     _setValuesCheckbox() {
-		const checkbox = document.getElementById("check-values")
-		checkbox.onclick = function() {
-			Qubit.instances.forEach(function(e) {
-				e.object.getObjectByName("ValueText").material.visible = checkbox.checked
-			})			
-		}
-	}
-    
+        const checkbox = document.getElementById("check-values")
+        checkbox.onclick = function () {
+            Qubit.instances.forEach(function (e) {
+                e.object.getObjectByName("ValueText").material.visible = checkbox.checked
+            })
+        }
+    }
+
 
     _setOutlinesCheckbox() {
-		const checkbox = document.getElementById("check-outlines")
-		checkbox.onclick = function() {
-			Qubit.instances.forEach(function(e) {
-				e.object.material.visible = checkbox.checked
-			})
-		}
+        const checkbox = document.getElementById("check-outlines")
+        checkbox.onclick = function () {
+            Qubit.instances.forEach(function (e) {
+                e.object.material.visible = checkbox.checked
+            })
+        }
     }
-    
-    
+
+
     _setFieldsCheckbox() {
-		const checkbox = document.getElementById("check-fields")
-		checkbox.onclick = function() {
-			// TODO
-			if(checkbox.checked) {
-				//
-			}
-			else {
-				//~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
-			}
-		}
+        const checkbox = document.getElementById("check-fields")
+        checkbox.onclick = function () {
+            // TODO
+            if (checkbox.checked) {
+                //
+            } else {
+                //~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
+            }
+        }
     }
 
 
     _setDraggableTools() {
         const tools = document.querySelectorAll(".draggable.tool")
-        tools.forEach( tool => {
+        tools.forEach(tool => {
             tool.addEventListener("touchstart", event => this._initiateDrag(event))
             tool.addEventListener("touchmove", event => this._updateDrag(event))
             tool.addEventListener("touchend", event => this._executeDrop(event))
@@ -141,22 +149,22 @@ class ToolboxController {
         switch (event.currentTarget.id) {
             case "get-camera":
                 item = QubitEditor.canEditEnumeration.NOTHING
-                break;
+                break
             case "place-qubits":
                 item = QubitEditor.canEditEnumeration.QUBIT
-                break;
+                break
             case "positive-input":
                 item = QubitEditor.canEditEnumeration.POSITIVE_INPUT
-                break;
+                break
             case "negative-input":
                 item = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-                break;
+                break
             case "place-output":
                 item = QubitEditor.canEditEnumeration.OUTPUT
-                break;
+                break
             case "eraser":
                 item = QubitEditor.canEditEnumeration.REMOVE
-                break;
+                break
         }
 
         this._currentDragPlayload = {
@@ -178,7 +186,7 @@ class ToolboxController {
             top: ${event.touches.item(0).clientY}px;`
     }
 
-    _executeDrop(event) {
+    _executeDrop() {
         ThreeViewControllerInstance.orbitControls.enableRotate = true
         ThreeViewControllerInstance.orbitControls.enablePan = true
         if (this._currentDragPlayload) {
@@ -186,54 +194,53 @@ class ToolboxController {
             QubitEditorInstance.edit()
             document.body.removeChild(this._currentDragPlayload.domElement)
         }
-        this._currentDragPlayload = null;
+        this._currentDragPlayload = null
     }
 
-    
+
     // Speed buttons //
-    
+
     _setPauseButton() {
-		var button = document.getElementById("play-button")
-		var pause = document.getElementById("pause-button-icon")
-		var play = document.getElementById("play-button-icon")
-		
-		// unpaused by default
-		play.style.display = "none"
-		pause.style.display = "inline"
-		
-		button.onclick = function() {
-			if(AppControllerInstance.pauseMode) { // is app paused ?
-				AppControllerInstance.setRefreshRate(AppController.SPEED)
-				AppControllerInstance.pauseMode = false
-				
-				play.style.display = "none"
-				pause.style.display = "inline"
-			}
-			else {
-				AppControllerInstance.pauseMode = true
-				
-				play.style.display = "inline"
-				pause.style.display = "none"
-			}
-		}
-	}
-	
-	_setSlowButton() {
-		const button = document.getElementById("slow-button")
-		button.onclick = function() {
-			AppControllerInstance.pauseMode = false
-			AppControllerInstance.setRefreshRate(AppController.SPEED_SLOW)
-		}
-	}
-	
-	_setFastButton() {
-		const button = document.getElementById("fast-button")
-		button.onclick = function() {
-			AppControllerInstance.pauseMode = false
-			AppControllerInstance.setRefreshRate(AppController.SPEED_FAST)
-		}
-	}
-    
+        var button = document.getElementById("play-button")
+        var pause = document.getElementById("pause-button-icon")
+        var play = document.getElementById("play-button-icon")
+
+        // unpaused by default
+        play.style.display = "none"
+        pause.style.display = "inline"
+
+        button.onclick = function () {
+            if (AppControllerInstance.pauseMode) { // is app paused ?
+                AppControllerInstance.setRefreshRate(AppController.SPEED)
+                AppControllerInstance.pauseMode = false
+
+                play.style.display = "none"
+                pause.style.display = "inline"
+            } else {
+                AppControllerInstance.pauseMode = true
+
+                play.style.display = "inline"
+                pause.style.display = "none"
+            }
+        }
+    }
+
+    _setSlowButton() {
+        const button = document.getElementById("slow-button")
+        button.onclick = function () {
+            AppControllerInstance.pauseMode = false
+            AppControllerInstance.setRefreshRate(AppController.SPEED_SLOW)
+        }
+    }
+
+    _setFastButton() {
+        const button = document.getElementById("fast-button")
+        button.onclick = function () {
+            AppControllerInstance.pauseMode = false
+            AppControllerInstance.setRefreshRate(AppController.SPEED_FAST)
+        }
+    }
+
 
     init() {
         this._setCameraButton()
@@ -243,7 +250,7 @@ class ToolboxController {
         this._setOutputButton()
         this._setEraserButton()
         this._setDraggableTools()
-        
+
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
@@ -252,7 +259,7 @@ class ToolboxController {
     constructor() {
         if (!ToolboxController.instance) {
             ToolboxController.instance = this
-        } 
+        }
 
         return ToolboxController.instance
     }

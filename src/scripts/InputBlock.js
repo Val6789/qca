@@ -1,7 +1,19 @@
-class InputBlock extends Block{
+/*
+    global
+    Block
+    ParticleSystem
+*/
+/*
+    exported InputBlock
+*/
 
-    get balance() { return this.polarity }
-    
+
+class InputBlock extends Block {
+
+    get balance() {
+        return this.polarity
+    }
+
     remove() {
         super.remove()
         if (this.polarity > 0) {
@@ -28,11 +40,11 @@ class InputBlock extends Block{
         this.type = "input"
 
         if (polarity > 0) {
-            InputBlock.positiveParticles.addAt(this.position)  
+            InputBlock.positiveParticles.addAt(this.position)
             InputBlock.positiveInstances.push(this)
             this.setColor(0x0000ff)
         } else {
-            InputBlock.negativeParticles.addAt(this.position)  
+            InputBlock.negativeParticles.addAt(this.position)
             InputBlock.negativeInstances.push(this)
             this.setColor(0xffff00)
         }

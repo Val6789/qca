@@ -1,8 +1,6 @@
 /* 
     global
-    THREE, 
-    AssetManager,
-    ThreeViewControllerInstance
+    ParticleSystem
 */
 /* 
     exported 
@@ -23,7 +21,7 @@ class Electron {
         if (this.isVisible)
             Electron._updateParticles()
     }
-    
+
     remove() {
         if (!this.isVisible) return
         Electron.visibleInstances.splice(Electron.visibleInstances.indexOf(this), 1)
@@ -35,7 +33,7 @@ class Electron {
         this._dot = dot
         this.charge = 1.0
 
-        if(this.isVisible = visible) {
+        if (this.isVisible == visible) {
             Electron.particles.addAt(this.position)
             Electron.visibleInstances.push(this)
         }
@@ -53,7 +51,7 @@ class Electron {
     }
 
     static _getInfluenceMaterial() {
-        var shader =  new THREE.ShaderMaterial({
+        var shader = new THREE.ShaderMaterial({
             vertexShader: AssetManager.Get().shaders["influences.vs.glsl"],
             fragmentShader: AssetManager.Get().shaders["influences.fs.glsl"],
             uniforms: {

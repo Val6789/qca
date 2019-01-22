@@ -1,15 +1,11 @@
 /* 
     global
-    THREE
-    Qubit
     Grid
-    AssetManager
-    ThreeViewControllerInstance
-    InputBlock
 */
 /* 
     exported 
     QubitEditor
+    QubitEditorInstance
 */
 
 class QubitEditor {
@@ -38,7 +34,7 @@ class QubitEditor {
 
         // get mouse position
         this.mouse.x = (screenX / window.innerWidth) * 2 - 1
-        this.mouse.y = -(screenY/ window.innerHeight) * 2 + 1
+        this.mouse.y = -(screenY / window.innerHeight) * 2 + 1
 
         // cast ray from the camera, through the cursor
         this.raycaster.setFromCamera(this.mouse, this.camera)
@@ -70,20 +66,20 @@ class QubitEditor {
     }
 
     _mousemoveHandler(event) {
-        if(this.updateCursor(event.clientX, event.clientY)) {
-            if(this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
+        if (this.updateCursor(event.clientX, event.clientY)) {
+            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
                 AppControllerInstance.automata.removeBlock(this.cursor.position)
-            else if(this._leftClickDown && this.canEdit/* && this._firstLeftMove.distanceTo(this.cursor.position) > 0.3*/) 
+            else if (this._leftClickDown && this.canEdit /* && this._firstLeftMove.distanceTo(this.cursor.position) > 0.3*/ )
                 AppControllerInstance.automata.addQubit(this.cursor.position)
         }
     }
 
     _clickHandler(event) {
-        if(this._leftClickDown) this._leftClickDown = false;
-        if(this._rightClickDown) this._rightClickDown = false;
-        if(event.button == 0)
+        if (this._leftClickDown) this._leftClickDown = false
+        if (this._rightClickDown) this._rightClickDown = false
+        if (event.button == 0)
             this.edit()
-        else if(event.button == 2 && this.canEdit)
+        else if (event.button == 2 && this.canEdit)
             return AppControllerInstance.automata.removeBlock(this.cursor.position)
     }
 
@@ -111,14 +107,11 @@ class QubitEditor {
     }
 
     _mousedownHandler(event) {
-        if(event.button == 0)
-        {
-            this._leftClickDown = true;
+        if (event.button == 0) {
+            this._leftClickDown = true
             this._firstLeftMove.copy(this.cursor.position)
-        }
-        else if(event.button == 2)
-        {
-            this._rightClickDown = true;
+        } else if (event.button == 2) {
+            this._rightClickDown = true
         }
     }
 
@@ -143,8 +136,8 @@ class QubitEditor {
         if (!QubitEditor.instance) {
             QubitEditor.instance = this
         }
-        this._leftClickDown = false;
-        this._rightClickDown = false;
+        this._leftClickDown = false
+        this._rightClickDown = false
         this._firstLeftMove = new THREE.Vector3()
         return QubitEditor.instance
     }
