@@ -1,3 +1,5 @@
+import { pipeline } from "stream";
+
 /* global THREE:true, QubitEditor:true */
 /* exported ToolboxController */
 
@@ -6,7 +8,7 @@ class ToolboxController {
 	
     _setButton(id, callback) {
         var button = document.getElementById(id)
-        button.addEventListener("click", event => {
+        button.addEventListener("mouseup", event => {
             callback(event)
             event.stopPropagation()
         }, false)
@@ -128,6 +130,10 @@ class ToolboxController {
             tool.addEventListener("touchstart", event => this._initiateDrag(event))
             tool.addEventListener("touchmove", event => this._updateDrag(event))
             tool.addEventListener("touchend", event => this._executeDrop(event))
+
+            tool.addEventListener("mousedown", event => this._initiateDrag(event))
+            document.addEventListener("mousemove", event => this._updateDrag(event))
+            document.addEventListener("mouseup", event => this._executeDrop(event))
         })
         this._currentDragPlayload = undefined
     }
@@ -166,19 +172,26 @@ class ToolboxController {
     }
 
     _updateDrag(event) {
-        const touch = event.touches.item(0)
-        QubitEditorInstance.updateCursor(touch.clientX, touch.clientY)
+        var pointer
+        if (event instanceof TouchEvent)
+            pointer = event.touches.item(0)
+        else
+            pointer = event
+
+        console.log(pointer.clientX, pointer.clientY)
+
+        QubitEditorInstance.updateCursor(pointer.clientX, pointer.clientY)
         if (this._currentDragPlayload) this._currentDragPlayload.domElement.style.cssText = `
             position: fixed;
             z-index: 100000;
             transform: translate(-50%, -50%) scale(1.2);
             opacity: 0.9;
             border: solid 3px yellow;
-            left: ${event.touches.item(0).clientX}px;
-            top: ${event.touches.item(0).clientY}px;`
+            left: ${pointer.clientX}px;
+            top: ${pointer.clientY}px;`
     }
 
-    _executeDrop(event) {
+    _executeDrop() {
         ThreeViewControllerInstance.orbitControls.enableRotate = true
         ThreeViewControllerInstance.orbitControls.enablePan = true
         if (this._currentDragPlayload) {
@@ -222,32 +235,30 @@ class ToolboxController {
         var centerX = button.offsetLeft + button.clientWidth / 2
         var centerY = button.offsetTop + button.clientHeight / 2
         const radius = Math.hypot(button.clientWidth, button.clientHeight)
+        var pointer = null
 
-        console.log( centerX, centerY)
 
-        const onJoystick = (x,y) => {
-            const translation = new THREE.Vector3(centerX - x, 0, centerY - y)
-            if (radius < translation.length()) return
-            ThreeViewControllerInstance.camera.position.add(translation)
-
-            console.log(ThreeViewControllerInstance.camera.position, translation)
-
-            ThreeViewControllerInstance.orbitControls.update()
-            ThreeViewControllerInstance.shouldRender()
+        function apply() {
+            if (pointer) requestAnimationFrame(apply)
+            if (hypot(pointer.clientX, pointer.clientY) > radius) return
+            const translate = new THREE.Vector3(pointer.clientX, 0, pointer.clientY)
         }
+        
+        function update(pointer) { pointer = pointer}
+        function start(pointer) { 
+            requestAnimationFrame(apply)
+            update(pointer)
+        }
+        function end() { pointer = null }
 
-        button.addEventListener("touchmove", event => {
-            const touch = event.touches.item(0)
-            onJoystick(touch.clientX, touch.clientY)
-            event.stopPropagation()
-        })
 
-        button.addEventListener("mousemove", event => {
-            if(event.buttons === 1) {
-                onJoystick(event.clientX, event.clientY)
-                event.stopPropagation()
-            }
-        })
+        button.addEventListener("mousedown", event => { start(event) })
+        button.addEventListener("mousemove", event => { update(event) })
+        button.addEventListener("mouseup", end)
+
+        button.addEventListener("touchstart", event => { start(event.touches.item(0)) })
+        button.addEventListener("touchmove", event => { update(event.touches.item(0)) })
+        button.addEventListener("touchend", end)
     }
 
     
@@ -255,9 +266,27 @@ class ToolboxController {
     
     _setPauseButton() {
 		var button = document.getElementById("play-button")
+		var pause = document.getElementById("pause-button-icon")
+		var play = document.getElementById("play-button-icon")
+		
+		// unpaused by default
+		play.style.display = "none"
+		pause.style.display = "inline"
+		
 		button.onclick = function() {
-			AppControllerInstance.setRefreshRate(AppController.SPEED)
-			AppControllerInstance.setPause()
+			if(AppControllerInstance.pauseMode) { // is app paused ?
+				AppControllerInstance.setRefreshRate(AppController.SPEED)
+				AppControllerInstance.pauseMode = false
+				
+				play.style.display = "none"
+				pause.style.display = "inline"
+			}
+			else {
+				AppControllerInstance.pauseMode = true
+				
+				play.style.display = "inline"
+				pause.style.display = "none"
+			}
 		}
 	}
 	
