@@ -73,7 +73,7 @@ class QubitEditor {
         if(this.updateCursor(event.clientX, event.clientY)) {
             if(this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
                 AppControllerInstance.automata.removeBlock(this.cursor.position)
-            else if(this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.QUBIT/* && this._firstLeftMove.distanceTo(this.cursor.position) > 0.3*/) 
+            else if(this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.QUBIT)
                 AppControllerInstance.automata.addQubit(this.cursor.position)
         }
     }

@@ -43,6 +43,12 @@ class QuantumAutomata {
         return false
     }
 
+    reset() {
+        this._qubitMap.forEach(qubit=>{
+            this.removeBlock(qubit.position,true)
+        })
+    }
+
     /**
      * @public @method
      * @param {THREE.Vector3} position 
