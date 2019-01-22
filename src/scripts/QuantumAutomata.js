@@ -46,12 +46,14 @@ class QuantumAutomata {
     /**
      * @public @method
      * @param {THREE.Vector3} position 
+     * @param {bool} adminRemove To remove fixed blocks (fixed blocks are ones wich can't be modified in missions) 
      */
-    removeBlock(position) {
+    removeBlock(position,adminRemove=false) {
         const hash = QuantumAutomata._positionHash(position)
         if (!this._qubitMap.has(hash)) return
 
         const block = this._qubitMap.get(hash)
+        if(block.fixed && !adminRemove) return
         History.add('remove',block.type,position,block.type,block.polarity);
         block.remove()
         this._outputs.delete(block)

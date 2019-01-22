@@ -83,6 +83,10 @@ class Block {
         this.object.material.color = new THREE.Color(color)
     }
 
+    fixe() {
+        this.fixed = true;
+    }
+
 
     /**
      * @constructor Block
@@ -96,6 +100,8 @@ class Block {
         
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
+
+        this.fixed = false;
 
         // makes sure the position is an integer
         position.round()
