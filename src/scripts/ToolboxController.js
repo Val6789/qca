@@ -1,5 +1,3 @@
-import { pipeline } from "stream";
-
 /* global THREE:true, QubitEditor:true */
 /* exported ToolboxController */
 
@@ -232,33 +230,47 @@ class ToolboxController {
 
     _setCameraJoystick() {
         const button = document.getElementById("joystick-control")
+        const up = new THREE.Vector3(0,1,0)
         var centerX = button.offsetLeft + button.clientWidth / 2
         var centerY = button.offsetTop + button.clientHeight / 2
         const radius = Math.hypot(button.clientWidth, button.clientHeight)
-        var pointer = null
+        var pointerBuffer = null
 
 
         function apply() {
-            if (pointer) requestAnimationFrame(apply)
-            if (hypot(pointer.clientX, pointer.clientY) > radius) return
-            const translate = new THREE.Vector3(pointer.clientX, 0, pointer.clientY)
+            if (pointerBuffer) requestAnimationFrame(apply); else return
+            var translate = new THREE.Vector3(pointerBuffer.clientX - centerX, 0, pointerBuffer.clientY - centerY)
+            if (translate.length > radius) return
+
+            const cameraOrientation = ThreeViewControllerInstance.camera.getWorldQuaternion()
+            translate.multiplyScalar(0.01)
+            translate.applyQuaternion(cameraOrientation)
+            translate.projectOnPlane(up)
+            console.log(translate, up, cameraOrientation)
+
+
+            ThreeViewControllerInstance.orbitControls.target.add(translate)
+            ThreeViewControllerInstance.camera.position.add(translate)
+
+            ThreeViewControllerInstance.orbitControls.update()
+            ThreeViewControllerInstance.shouldRender()
         }
-        
-        function update(pointer) { pointer = pointer}
-        function start(pointer) { 
-            requestAnimationFrame(apply)
+
+        function update(pointer) { pointerBuffer = pointer}
+        function start(pointer) {
             update(pointer)
+            requestAnimationFrame(apply)
         }
-        function end() { pointer = null }
+        function end() { pointerBuffer = null }
 
 
-        button.addEventListener("mousedown", event => { start(event) })
-        button.addEventListener("mousemove", event => { update(event) })
-        button.addEventListener("mouseup", end)
+        button.addEventListener("mousedown", event => { start(event); event.stopPropagation() })
+        button.addEventListener("mousemove", event => { update(event); event.stopPropagation()  })
+        button.addEventListener("mouseup", event => { end(); event.stopPropagation() })
 
-        button.addEventListener("touchstart", event => { start(event.touches.item(0)) })
-        button.addEventListener("touchmove", event => { update(event.touches.item(0)) })
-        button.addEventListener("touchend", end)
+        button.addEventListener("touchstart", event => { start(event.touches.item(0)); event.stopPropagation()  })
+        button.addEventListener("touchmove", event => { update(event.touches.item(0)); event.stopPropagation()  })
+        button.addEventListener("touchend", event => { end(); event.stopPropagation() })
     }
 
     
