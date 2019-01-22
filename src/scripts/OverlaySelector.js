@@ -7,6 +7,9 @@ class OverlaySelector {
             Qubit.isVisible = checkbox.checked
             InputBlock.isVisible = checkbox.checked
             OutputBlock.isVisible = checkbox.checked
+
+            // forces active css 
+            checkbox.parentElement.classList.toggle("active",checkbox.checked)
         }
         checkbox.addEventListener("change", toggleQubits)
         toggleQubits()
@@ -16,9 +19,11 @@ class OverlaySelector {
     _setInfluenceLayerSelector() {
         var checkbox = document.getElementById(OverlaySelector.ELECTRON_SELECTOR_ID)
         function toggleElectrons() {
-            console.log('hello')
             Electron.particles.layers[Electron.TEXTURE_LAYER].visible = checkbox.checked
             Dot.particles.layers[0].visible = checkbox.checked
+
+            // forces active css 
+            checkbox.parentElement.classList.toggle("active",checkbox.checked)
             ThreeViewControllerInstance.shouldRender()
         }
         checkbox.addEventListener("change", toggleElectrons)
@@ -30,6 +35,9 @@ class OverlaySelector {
         var checkbox = document.getElementById(OverlaySelector.INFLUENCE_SELECTOR_ID)
         function toggleInfluences() {
             Electron.particles.layers[Electron.INFLUENCE_LAYER].visible = checkbox.checked
+
+            // forces active css 
+            checkbox.parentElement.classList.toggle("active",checkbox.checked)
             ThreeViewControllerInstance.shouldRender()
         }
         checkbox.addEventListener("change", toggleInfluences)

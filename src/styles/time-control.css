@@ -1,7 +1,7 @@
-.layers {
+.time-buttons {
     position: fixed;
     top: 0;
-    left: 50%;
+    right: 50%;
 
     display: flex;
     padding: 0.5rem;
@@ -9,13 +9,11 @@
     background: rgba(0,0,0,0.8);
     border-radius: 12px;
     box-shadow: 0 0 20px  rgba(0,0,0,0.2);
+
+    font-size: 0;
 }
 
-.layers .layer-checkbox {
-    display: none;
-}
-
-.layers .layer-toggle {
+.time-buttons .time-button {
     box-sizing: border-box;
     display: block;
     width: 2rem;
@@ -28,15 +26,13 @@
     filter:grayscale();
 }
 
-.layers .layer-toggle.active {
+.time-buttons .time-button.active {
     background: #333;
     border-color: #FE0;
     filter: none;
 }
 
-
-
-.layers .layer-toggle .layer-toggle-icon {
+.time-buttons .time-button .time-button-icon {
     width: 100%;
     height: 100%;
     object-fit: contain;
