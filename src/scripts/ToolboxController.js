@@ -144,7 +144,7 @@ class ToolboxController {
     }
 
     _setCameraJoystick() {
-        this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control")
+        this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control", false)
     }
 
     

@@ -83,14 +83,21 @@ class JoystickCameraControls {
      * @brief sets the event lisenter
      * @param {String} zoomSliderId dom element id
      */
-    _setZoomSlider(zoomSliderId) {
+    _setZoomSlider(zoomSliderId, enableMouse = true) {
         const button = document.getElementById(zoomSliderId);
 
-        button.addEventListener("mousemove", this._onSliderChange)
+
         button.addEventListener("touchmove", this._onSliderChange)
 
-        // disables orbital camera controls in front of the slider
-        button.addEventListener("mousedown", ev => ev.stopPropagation())
+        if (enableMouse) {
+            button.addEventListener("mousemove", this._onSliderChange)
+            // disables orbital camera controls in front of the slider
+            button.addEventListener("mousedown", ev => ev.stopPropagation())
+        } else if(window.matchMedia("(pointer: fine)").matches) {
+            console.log("zoom slider disabled")
+            button.style.visibility = "hidden"
+        }
+
 
         ThreeViewControllerInstance.callbackOnRender(() => {
             const currentzoom = ThreeViewControllerInstance.camera.position.distanceTo(ThreeViewControllerInstance.orbitControls.target)
@@ -103,7 +110,7 @@ class JoystickCameraControls {
      * @brief sets event listener and compute constants
      * @param {String} joystickID dom element id
      */
-    _setJoystick(joystickID) {
+    _setJoystick(joystickID, enableMouse = true) {
         const button = document.getElementById(joystickID)
         this.CENTER_X = button.offsetLeft
         this.CENTER_Y = button.offsetTop
@@ -111,10 +118,15 @@ class JoystickCameraControls {
 
         this.pointer = null
 
+        if (enableMouse) {
+            button.addEventListener("mousedown", event => { this._start(event); event.stopPropagation() })
+            button.addEventListener("mousemove", event => { this._update(event); event.stopPropagation()  })
+            button.addEventListener("mouseup", event => { this._end(); event.stopPropagation() })
+        } else if(window.matchMedia("(pointer: fine)").matches) {
+            console.log("joystick disabled")
+            button.style.visibility = "hidden"
+        }
 
-        button.addEventListener("mousedown", event => { this._start(event); event.stopPropagation() })
-        button.addEventListener("mousemove", event => { this._update(event); event.stopPropagation()  })
-        button.addEventListener("mouseup", event => { this._end(); event.stopPropagation() })
 
         button.addEventListener("touchstart", event => { this._start(event.touches.item(0)); event.stopPropagation()  })
         button.addEventListener("touchmove", event => { this._update(event.touches.item(0)); event.stopPropagation()  })
@@ -126,11 +138,11 @@ class JoystickCameraControls {
      * @param {String} joystickID dom element id
      * @param {String} zoomSliderId dom element id
      */
-    constructor(joystickID, zoomSliderId) {
+    constructor(joystickID, zoomSliderId, enableMouse = true) {
         this.UP = new THREE.Vector3(0,1,0)
         this.DOLLY_SPEED = 0.01;
 
-        this._setJoystick(joystickID)
-        this._setZoomSlider(zoomSliderId)
+        this._setJoystick(joystickID, enableMouse)
+        this._setZoomSlider(zoomSliderId, enableMouse)
     }
 }
