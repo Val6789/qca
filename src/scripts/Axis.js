@@ -25,12 +25,19 @@ class Axis {
         this._scene.add(this.object)
     }
 
-    render(camera, controls) {
+    render() {
+        this._renderer.render(this._scene, this._camera)
+    }
+
+    update(camera, controls) {
         this._camera.position.copy(camera.position)
         this._camera.position.sub(controls.target)
         this._camera.position.setLength(2)
 
         this._camera.lookAt(this._scene.position)
-        this._renderer.render(this._scene, this._camera)
+    }
+
+    setLayer(layer) {
+        this.layer = layer
     }
 }

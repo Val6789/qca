@@ -6,8 +6,8 @@ class Grid {
         this.object = new THREE.GridHelper(size, divisions)
         this.object.position.set(-0.5, offset, -0.5)
 
-        this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size,size))
-        this.hitzone.lookAt(0,1,0)
+        this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size, size))
+        this.hitzone.lookAt(0, 1, 0)
         this.hitzone.material.visible = false
         this.object.add(this.hitzone)
 
@@ -55,7 +55,7 @@ class Grid {
         this.t_yp = new THREE.Mesh(t_yp, material)
         this.t_yn = new THREE.Mesh(t_yn, material)
 
-		/*
+        /*
         this.object.add(this.t_xp)
         this.object.add(this.t_xn)
         this.object.add(this.t_yp)

@@ -11,6 +11,10 @@ class ParticleSystem {
         this._setPositionBuffer(position.toArray(), this._particulesCount * this.ATTRIBUTE_SIZE)
     }
 
+    get object() {
+        return this._particlesGroup
+    }
+
     /**
      * @param {Array<THREE.Vector3>} positions
      */
@@ -66,8 +70,6 @@ class ParticleSystem {
             let particles = new THREE.Points(this._geometryBuffer, material)
             this._particlesGroup.add(particles)
         })
-
-        ThreeViewControllerInstance.addObjectToScene(this._particlesGroup)
 
         ThreeViewControllerInstance.callbackOnRender(() => {
             if (this._updateBuffer) this._reloadPositions(this._updateBuffer)

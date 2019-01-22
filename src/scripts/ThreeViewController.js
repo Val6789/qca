@@ -3,6 +3,7 @@
     THREE
     Skybox
     Axis
+    IntroScene
  */
 /* 
     exported 
@@ -79,10 +80,11 @@ class ThreeViewController {
         this.shouldRender()
     }
 
-    addLayer(scene, camera) {
+    addLayer(name, scene, camera) {
         let layer = {
-            scene: scene,
-            camera: camera,
+            name,
+            scene,
+            camera,
             active: true
         }
         this._layers.push(layer)
@@ -120,21 +122,22 @@ class ThreeViewController {
 
         // init members
         this._createLayers()
-        this._setRenderer()
-        this._setSkybox()
-        this._setOrbit()
-        setLightmode(false)
 
         // Add common scene, camera and control
         this._setScene()
         this._setCamera()
-        this.mainLayer = this.addLayer(this._scene, this._camera)
-        this.mainLayer.active = false
+        this._setSkybox()
+        this._axis = new Axis(this._camera)
+        this._setRenderer()
+        this._setOrbit()
+
+        this._setIntro()
+            .then(() => {
+                this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
+            })
 
         // add axes
-        this._axis = new Axis(this._camera)
-
-        console.log("Intro done")
+        GUIinstance.setLightmode(false)
     }
 
 
@@ -144,8 +147,9 @@ class ThreeViewController {
     _render() {
         this._onRenderObservers.forEach(callback => callback())
 
-        this._renderer.render(this._scene, this._camera)
-        this._axis.render(this._camera, this._orbit)
+        this._axis.update(this._camera, this._orbit)
+        this._axis.render()
+        console.log("RENDER")
 
         this._layers.forEach((l) => {
             if (!l.active)
@@ -157,7 +161,6 @@ class ThreeViewController {
                 console.error(e)
             }
         })
-
 
     }
 
@@ -242,7 +245,7 @@ class ThreeViewController {
 
         // render on camera movements
         this._orbit.addEventListener("change", () => {
-            this._render()
+            this.shouldRender()
         })
     }
 
@@ -251,7 +254,23 @@ class ThreeViewController {
      */
     _setSkybox() {
         this._skybox = new Skybox()
-        this.addLayer(this._skybox.scene, this._skybox.camera)
+        this.addLayer("Skybox", this._skybox.scene, this._skybox.camera)
+    }
+
+
+    /**
+     * @brief Create IntroScene
+     */
+    _setIntro() {
+        return new Promise((resolve) => {
+            let intro = new IntroScene(resolve)
+            intro.setCamera(this._camera)
+
+            let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
+            intro.setLayer(layer)
+
+            console.log(intro)
+        })
     }
 
     /**

@@ -38,6 +38,7 @@
         "AppControllerInstance": true,
         "ThreeViewControllerInstance": true,
         "QubitEditorInstance": true,
-        "ToolboxControllerInstance": true
+        "ToolboxControllerInstance": true,
+        "GUIinstance": true
     }
 }

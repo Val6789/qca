@@ -33,7 +33,8 @@ class Electron {
         this._dot = dot
         this.charge = 1.0
 
-        if (this.isVisible == visible) {
+        this.isVisible = visible
+        if (visible) {
             Electron.particles.addAt(this.position)
             Electron.visibleInstances.push(this)
         }
@@ -42,7 +43,8 @@ class Electron {
     static init() {
         // init the instances object
         Electron.visibleInstances = []
-        Electron.particles = new ParticleSystem([this._getSolidMaterial(), this._getInfluenceMaterial()])
+        Electron.particles = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
+        ThreeViewControllerInstance.addObjectToScene(Electron.particles.object)
     }
 
     static _updateParticles() {
