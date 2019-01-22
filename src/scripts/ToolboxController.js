@@ -90,7 +90,7 @@ class ToolboxController {
         this.eraserButton = this._setButton(buttonId, (event) => {self._setEraserButtonClick(event.target)})
     }
     _setEraserButtonClick(target) {
-        this._setActive(event.target)
+        this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
         QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
