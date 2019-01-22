@@ -7,6 +7,7 @@
     src:url("../assets/fonts/GenericaBold.otf");
 }
 
+/* Activities */
 .activities {
     position: relative;
     grid-area: activities;
@@ -56,6 +57,7 @@
     display: none;
 }
 
+/* Drawers */
 .drawer {
     transition: visibility 200ms, opacity 200ms;
 

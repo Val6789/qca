@@ -40,8 +40,7 @@
     height: 24px;
 }
 
-.toolbox
-{
+.toolbox {
     display: flex;
     margin:auto;
     justify-content: space-around;

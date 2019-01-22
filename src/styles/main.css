@@ -23,8 +23,7 @@
     bottom: 0px;
     z-index: 10;
 }
-.layers
-{
+.layers {
     display:none;
 }
 .mode-light {
@@ -60,6 +59,7 @@
     display: none;
 }
 
+/* Buttons */
 .btn {
     color: white;
     cursor:pointer;
@@ -91,9 +91,10 @@ button.active {
 }
 button:hover
 {
-    background-color:#111;
+    background-color:#000;
 }
 
+/* Spinner */
 .loading-overlay {
     position: fixed;
     width: 100vw;
