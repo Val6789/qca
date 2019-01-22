@@ -137,6 +137,14 @@ const AssetManager = (function () {
             })
             .catch(reject)
     }))
+
+    // JSON facts
+    promises.push(new Promise((resolve, reject) => {
+        readJSON("facts").then(() => {
+            resolve()
+        }).catch(reject)
+    }));
+
     promises.push(waitTexture("default", ".png", "textures", "achievements"))
 
     // Return value
