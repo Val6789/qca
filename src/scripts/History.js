@@ -61,6 +61,7 @@ class HistoryClass {
             this.front = []
             this.back.push(new Action(action, type, position, value))
         }
+        ToolboxControllerInstance._updateHistoryButtons()
     }
     constructor() {
         if (!HistoryClass.instance) {
