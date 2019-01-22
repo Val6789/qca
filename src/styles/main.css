@@ -71,7 +71,7 @@
 }
 .btn:hover
 {
-    background-color:#101010;
+    background-color:#050505;
 }
 
 button {
@@ -91,7 +91,7 @@ button.active {
 }
 button:hover
 {
-    background-color:#000;
+    background-color:#111;
 }
 
 .loading-overlay {
@@ -117,9 +117,17 @@ button:hover
     animation-duration: 2000ms;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    background-color:#111;
+    z-index:-1;
     width: 3rem;
     height: 3rem;
-    padding: 1rem;
+    padding: 2rem;
+    border-radius:50%;
+    box-shadow:0px 0px 100px 100px #111;
+}
+
+.cross {
+    height:25px;
 }
 
 @keyframes spinner {

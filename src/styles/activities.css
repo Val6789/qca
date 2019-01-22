@@ -133,6 +133,8 @@
 
 .drawer-close {
     position: absolute;
-    right: 3vw;
-    font-size: 1rem;
+    right: 1vw;
+    top:1vw;
+    display:block;
+    font-size:0em;
 }
