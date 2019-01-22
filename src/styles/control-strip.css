@@ -13,13 +13,25 @@
     box-shadow:0px 0px 20px 20px rgba(0,0,0,0.1);
     margin: 0.5rem;
 }
-
+.time-buttons {
+    padding:5px;
+    margin:auto;
+    display:inline-block;
+}
 .time-button, .tool {
     font-size: 0;
+}
+.time-button, .history-button {
+    padding:5px;
+    background-color:rgba(0,0,0,0.5);
+    vertical-align:middle;
 }
 
 .time-button-icon {
     height: 1.5rem;
+}
+#fast-button-icon, #slow-button-icon {
+    height:1rem;
 }
 
 .tool {
@@ -40,7 +52,8 @@
     height: 24px;
 }
 
-.toolbox {
+.toolbox
+{
     display: flex;
     margin:auto;
     justify-content: space-around;
@@ -54,3 +67,17 @@
     margin: 1rem;
 }
 
+.history {
+    positiion:fixed;
+    right:0px;
+    top:0px;
+    margin:5px;
+}
+.history-button img {
+    height:1rem;
+}
+.history-button.inactive {
+    background-color:rgba(128,128,128,1.0);
+    opacity:0.5;
+    cursor:default;
+}
