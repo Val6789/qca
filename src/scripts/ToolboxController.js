@@ -123,7 +123,7 @@ class ToolboxController {
 
 
     _setDraggableTools() {
-        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool")
+        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
             console.log(targetElement)
