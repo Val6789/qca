@@ -60,6 +60,7 @@ class QuantumAutomata {
 
         const block = this._qubitMap.get(hash)
         if(block.fixed && !adminRemove) return
+
         History.add('remove',block.type,position,block.type,block.polarity);
         block.remove()
         this._outputs.delete(block)

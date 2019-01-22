@@ -71,7 +71,8 @@ class Action {
 	constructor(act,type,position,value) {
 		this.act = act
 		this.type = type
-		this.position = position
+		this.position = new THREE.Vector3();
+		this.position.copy(position)
 		this.value = value
 	}
 	revert() {
