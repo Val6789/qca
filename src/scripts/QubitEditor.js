@@ -68,18 +68,23 @@ class QubitEditor {
         // if the cursor changed, call for a render
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
             ThreeViewControllerInstance.shouldRender()
+            return true
         }
-        
-        if(this._leftClickDown && this.canEdit && this._firstLeftMove.distanceTo(this.cursor.position) > 0.5) 
-            return AppControllerInstance.automata.addQubit(this.cursor.position)
+        return false
     }
 
     _mousemoveHandler(event) {
-        this.updateCursor(event.clientX, event.clientY)
+        if(this.updateCursor(event.clientX, event.clientY)) {
+            if(this._leftClickDown && this.canEdit && this._firstLeftMove.distanceTo(this.cursor.position) > 0.5) 
+                AppControllerInstance.automata.addQubit(this.cursor.position)
+            else if(this._rightClickDown && this.canEdit)
+                AppControllerInstance.automata.removeBlock(this.cursor.position)
+        }
     }
 
     _clickHandler(event) {
         if(this._leftClickDown) this._leftClickDown = false;
+        if(this._rightClickDown) this._rightClickDown = false;
         if(event.button == 0)
             this.edit()
         else if(event.button == 2 && this.canEdit)
@@ -115,6 +120,10 @@ class QubitEditor {
             this._leftClickDown = true;
             this._firstLeftMove.copy(this.cursor.position)
         }
+        else if(event.button == 2)
+        {
+            this._rightClickDown = true;
+        }
     }
 
 
@@ -139,6 +148,7 @@ class QubitEditor {
             QubitEditor.instance = this
         }
         this._leftClickDown = false;
+        this._rightClickDown = false;
         this._firstLeftMove = new THREE.Vector3()
         return QubitEditor.instance
     }
