@@ -23,23 +23,27 @@ class ToolboxController {
 
     _setCameraButton() {
         const buttonId = "get-camera"
-        this.cameraButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = true
-            ThreeViewControllerInstance.orbitControls.enablePan = true
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
-        })
+        var self = this
+        this.cameraButton = this._setButton(buttonId, event=>{self._setCameraButtonClick(event.target)})
+    }
+    _setCameraButtonClick(target){
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = true
+        ThreeViewControllerInstance.orbitControls.enablePan = true
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
     }
 
 
     _setQubitButton() {
         const buttonId = "place-qubits"
-        this.qubitButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
-        })
+        var self = this
+        this.qubitButton = this._setButton(buttonId, (event) => {self._setQubitButtonClick(event.target)})
+    }
+    _setQubitButtonClick(target) {
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
     }
 
 
@@ -56,34 +60,40 @@ class ToolboxController {
 
     _setNegativeInputButton() {
         const buttonId = "negative-input"
-        this.negativeInputButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-        })
+        var self = this
+        this.negativeInputButton = this._setButton(buttonId, (event) => {self_setNegativeInputButtonClick(event.target)})
+    }
+    _setNegativeInputButtonClick(target) {
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
     }
 
 
     _setOutputButton() {
         const buttonId = "place-output"
-        this.outputButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
-        })
+        var self = this
+        this.outputButton = this._setButton(buttonId, (event) => {self._setOutputButtonClick(event.target)})
+    }
+    _setOutputButtonClick(target) {
+        this._setActive(target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
     }
 
 
     _setEraserButton() {
         const buttonId = "eraser"
-        this.eraserButton = this._setButton(buttonId, (event) => {
-            this._setActive(event.target)
-            ThreeViewControllerInstance.orbitControls.enableRotate = false
-            ThreeViewControllerInstance.orbitControls.enablePan = false
-            QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
-        })
+        var self = this
+        this.eraserButton = this._setButton(buttonId, (event) => {self._setEraserButtonClick(event.target)})
+    }
+    _setEraserButtonClick(target) {
+        this._setActive(event.target)
+        ThreeViewControllerInstance.orbitControls.enableRotate = false
+        ThreeViewControllerInstance.orbitControls.enablePan = false
+        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
     }
 
 	// Checkboxes //
@@ -191,6 +201,26 @@ class ToolboxController {
 			AppControllerInstance.setRefreshRate(AppController.SPEED_FAST)
 		}
 	}
+    _keydownHandler(event) {
+        switch(event.keyCode) {
+            case 81: // Q -> qubit
+                this._setQubitButtonClick(document.getElementById('place-qubits'))
+                break;
+            case 79: // O -> output
+                this._setOutputButtonClick(document.getElementById('place-output'))
+                break;
+            case 73: // I -> input
+                this._setNegativeInputButtonClick(document.getElementById('negative-input'))
+                break;
+            case 77: // M -> move
+            case 67: // C -> move
+                this._setCameraButtonClick(document.getElementById('get-camera'))
+                break;
+            case 82: // R ->remove
+                this._setEraserButtonClick(document.getElementById('eraser'))
+                break;
+        }
+    }
     
 
     init() {
@@ -207,6 +237,8 @@ class ToolboxController {
         this._setFastButton()
 
         this._setCameraJoystick()
+
+        window.addEventListener("keydown",ev => this._keydownHandler(ev))
     }
 
     constructor() {

@@ -122,7 +122,6 @@ class QubitEditor {
         }
     }
 
-
     init() {
         const domViewportElement = ThreeViewControllerInstance.renderer.domElement
         domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
