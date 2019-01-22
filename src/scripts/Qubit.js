@@ -128,7 +128,8 @@ class Qubit extends Block {
         else if(this.balance < 0) blue = 0
         this.setColor("rgb("+yellow+","+yellow+","+blue+")")
         
-        this.setSublabel(this.balance.toString())
+        // Uncomment to show balance on corner of qubit
+        // this.setSublabel(this.balance.toString())
     }
 
 
