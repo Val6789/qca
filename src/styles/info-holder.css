@@ -25,6 +25,7 @@
 }
 
 #info-holder.info-holder-hidden {
+    visibility: hidden;
     opacity: 0;
 }
 

@@ -66,14 +66,14 @@ class ToolboxController {
     // =================== Controls ===================
     revealControls() {
         if (!this.$controls)
-            this.$controls = document.querySelector("header.control-strip")
+            this.$controls = document.querySelector("nav.camera-controls")
 
         this.$controls.classList.remove("hidden")
     }
 
     hideControls() {
         if (!this.$controls)
-            this.$controls = document.querySelector("header.control-strip")
+            this.$controls = document.querySelector("nav.camera-controls")
 
         this.$controls.classList.add("hidden")
 
@@ -180,41 +180,6 @@ class ToolboxController {
         ThreeViewControllerInstance.orbitControls.enablePan = false
         QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
     }
-
-    // Checkboxes //
-
-    _setValuesCheckbox() {
-        const checkbox = document.getElementById("check-values")
-        checkbox.onclick = function () {
-            Qubit.instances.forEach(function (e) {
-                e.object.getObjectByName("ValueText").material.visible = checkbox.checked
-            })
-        }
-    }
-
-
-    _setOutlinesCheckbox() {
-        const checkbox = document.getElementById("check-outlines")
-        checkbox.onclick = function () {
-            Qubit.instances.forEach(function (e) {
-                e.object.material.visible = checkbox.checked
-            })
-        }
-    }
-
-
-    _setFieldsCheckbox() {
-        const checkbox = document.getElementById("check-fields")
-        checkbox.onclick = function () {
-            // TODO
-            if (checkbox.checked) {
-                //
-            } else {
-                //~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
-            }
-        }
-    }
-
 
     _setHistoryButtons() {
         this._updateHistoryButtons()
@@ -346,10 +311,6 @@ class ToolboxController {
         this._setOutputButton()
         this._setEraserButton()
         this._setDraggableTools()
-
-        this._setValuesCheckbox()
-        this._setOutlinesCheckbox()
-        this._setFieldsCheckbox()
 
         this._setPauseButton()
         this._setSlowButton()

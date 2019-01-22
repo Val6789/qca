@@ -156,7 +156,6 @@ class IntroScene {
 
             }
             const json = AssetManager.Get().json.electronIntro
-            console.log(json)
 
             for (let i = 0; i < json.length; i++) {
                 const paragraph = json[i]
