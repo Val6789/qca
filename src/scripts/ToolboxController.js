@@ -6,7 +6,7 @@ class ToolboxController {
 	
     _setButton(id, callback) {
         var button = document.getElementById(id)
-        button.addEventListener("click", event => {
+        button.addEventListener("mouseup", event => {
             callback(event)
             event.stopPropagation()
         }, false)
@@ -123,70 +123,28 @@ class ToolboxController {
 
 
     _setDraggableTools() {
-        const tools = document.querySelectorAll(".draggable.tool")
-        tools.forEach( tool => {
-            tool.addEventListener("touchstart", event => this._initiateDrag(event))
-            tool.addEventListener("touchmove", event => this._updateDrag(event))
-            tool.addEventListener("touchend", event => this._executeDrop(event))
+        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool")
+
+        this._dragAndDropToolControls.onDragCallback(targetElement => {
+            console.log(targetElement)
+            switch (targetElement.id) {
+                case "get-camera": return QubitEditor.canEditEnumeration.NOTHING
+                case "place-qubits": return QubitEditor.canEditEnumeration.QUBIT
+                case "positive-input": return QubitEditor.canEditEnumeration.POSITIVE_INPUT
+                case "negative-input": return QubitEditor.canEditEnumeration.NEGATIVE_INPUT
+                case "place-output": return QubitEditor.canEditEnumeration.OUTPUT
+                case "eraser": return QubitEditor.canEditEnumeration.REMOVE
+            }
         })
-        this._currentDragPlayload = undefined
-    }
 
-    _initiateDrag(event) {
-        ThreeViewControllerInstance.orbitControls.enableRotate = false
-        ThreeViewControllerInstance.orbitControls.enablePan = false
-        if (this._currentDragPlayload) document.body.removeChild(this._currentDragPlayload.domElement)
-
-        var item
-        switch (event.currentTarget.id) {
-            case "get-camera":
-                item = QubitEditor.canEditEnumeration.NOTHING
-                break;
-            case "place-qubits":
-                item = QubitEditor.canEditEnumeration.QUBIT
-                break;
-            /*case "positive-input":
-                item = QubitEditor.canEditEnumeration.POSITIVE_INPUT
-                break;*/
-            case "negative-input":
-                item = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
-                break;
-            case "place-output":
-                item = QubitEditor.canEditEnumeration.OUTPUT
-                break;
-            case "eraser":
-                item = QubitEditor.canEditEnumeration.REMOVE
-                break;
-        }
-
-        this._currentDragPlayload = {
-            item: item,
-            domElement: document.body.appendChild(event.currentTarget.cloneNode(true))
-        }
-    }
-
-    _updateDrag(event) {
-        const touch = event.touches.item(0)
-        QubitEditorInstance.updateCursor(touch.clientX, touch.clientY)
-        if (this._currentDragPlayload) this._currentDragPlayload.domElement.style.cssText = `
-            position: fixed;
-            z-index: 100000;
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 0.9;
-            border: solid 3px yellow;
-            left: ${event.touches.item(0).clientX}px;
-            top: ${event.touches.item(0).clientY}px;`
-    }
-
-    _executeDrop(event) {
-        ThreeViewControllerInstance.orbitControls.enableRotate = true
-        ThreeViewControllerInstance.orbitControls.enablePan = true
-        if (this._currentDragPlayload) {
-            QubitEditorInstance.canEdit = this._currentDragPlayload.item
+        this._dragAndDropToolControls.onDropCallback( payload => {
+            QubitEditorInstance.canEdit = payload
             QubitEditorInstance.edit()
-            document.body.removeChild(this._currentDragPlayload.domElement)
-        }
-        this._currentDragPlayload = null;
+        })
+    }
+
+    _setCameraJoystick() {
+        this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control")
     }
 
     
@@ -247,6 +205,8 @@ class ToolboxController {
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
+
+        this._setCameraJoystick()
     }
 
     constructor() {

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./styles/activities.css">
     <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
+    <link rel="stylesheet" href="./styles/joystick-controls.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
@@ -30,6 +31,8 @@
     <script src="./scripts/Axis.js"></script>
     <script src="./scripts/QubitEditor.js"></script>
     <script src="./scripts/ToolboxController.js"></script>
+    <script src="./scripts/JoystickCameraControls.js"></script>
+    <script src="./scripts/DragAndDropControls.js"></script>
     <script src="./scripts/ParticleSystem.js"></script>
     <script src="./scripts/Grid.js"></script>
     <script src="./scripts/Skybox.js"></script>
@@ -70,28 +73,37 @@
     <!-- HEADER AND NAVBAR -->
     <h1 class="title">Quantum cellular automata simulator</h1>
 
-    <header class="control-strip">
-        <nav class="time-buttons">
-            <button class="time-button" alt="Slower" id="slow-button">
-                <img src="assets/buttons/slow.png" class="time-button-icon" id="slow-button-icon">
-                Slower
-            </button>
-            <button class="time-button" alt="Play/Pause simulation" id="play-button">
-                <img src="assets/buttons/pause.png" class="time-button-icon" id="pause-button-icon">
-                <img src="assets/buttons/play.png" class="time-button-icon" id="play-button-icon">
-                Play
-            </button>
-            <button class="time-button" alt="Faster" id="fast-button">
-                <img src="assets/buttons/fast.png" class="time-button-icon" id="fast-button-icon">
-                Faster
-            </button>
-        </nav>
+    <nav class="time-buttons">
+        <button class="time-button" alt="Slower" id="slow-button">
+            <img src="assets/buttons/slow.png" class="time-button-icon" id="slow-button-icon">
+            Slower
+        </button>
+        <button class="time-button" alt="Play/Pause simulation" id="play-button">
+            <img src="assets/buttons/pause.png" class="time-button-icon" id="pause-button-icon">
+            <img src="assets/buttons/play.png" class="time-button-icon" id="play-button-icon">
+            Play
+        </button>
+        <button class="time-button" alt="Faster" id="fast-button">
+            <img src="assets/buttons/fast.png" class="time-button-icon" id="fast-button-icon">
+            Faster
+        </button>
+    </nav>
 
+
+    <nav class="layers">
+        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
+        <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
+        <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
+    </nav>
+
+
+    <header class="control-strip">
         <nav class="toolbox">
             <button class="tool active" alt="Control Camera" id="get-camera">
                 <img src="assets/buttons/Camera.png" class="tool-icon camera-icon">
                 Q
             </button>
+            <div class="separator"></div>
             <!--<button class="tool draggable" alt="Positively charged influencer" id="positive-input">
                 <img src="assets/buttons/True.png" class="tool-icon positron-icon">
                 +
@@ -112,27 +124,36 @@
                 <img src="assets/buttons/Output.png" class="tool-icon output-icon">
                 O
             </button>
+            <div class="separator"></div>
             <button class="tool" alt="Eraser" id="eraser">
                 <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
                 E
             </button>
         </nav>
-
-        <nav class="layers">
-            <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
-            <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
-            <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
-        </nav>
     </header>
+
+
+    <nav class="camera-controls">
+
+            <!-- camera controls -->
+        <input class="zoom-control" type="range" id="zoom-control" min="1" max="25">
+        <button class="pan-control" id="joystick-control">
+            <!-- Inline svg solves issue with selection on touch devices -->
+            <svg style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
+                 unselectable="on"
+                 onselectstart="return false;"
+                 width="128"
+                 height="128"
+                 xmlns="http://www.w3.org/2000/svg">
+                 <g fill="none" fill-rule="evenodd"><circle fill="#FFF" cx="64" cy="64" r="3"/><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M47.42 16.5L64 .5M80.58 16.5L64 .5"/></g><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M47.42 111.5l16.58 16M80.58 111.5L64 127.5"/></g><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M111.5 47.42l16 16.58M111.5 80.58l16-16.58"/><g><path d="M16.5 47.42L.5 64M16.5 80.58L.5 64"/></g></g></g>
+            </svg>
+        </button>
+    </nav>
 
     <!-- 3D VIEWPORT -->
     <main id="viewport" class="viewport">
 		<div id="axis"></div>
     </main>
-
-    <nav class="camera-controls">
-        <!-- camera controls -->
-    </nav>
     </header>
 
     <aside class="activities active" id="activities">
