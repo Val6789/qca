@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./styles/activities.css">
     <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
+    <link rel="stylesheet" href="./styles/joystick-controls.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
@@ -137,7 +138,15 @@
             <!-- camera controls -->
         <input class="zoom-control" type="range" id="zoom-control" min="1" max="25">
         <button class="pan-control" id="joystick-control">
-            <img src="assets/buttons/Pan.png"/>
+            <!-- Inline svg solves issue with selection on touch devices -->
+            <svg style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
+                 unselectable="on"
+                 onselectstart="return false;"
+                 width="128"
+                 height="128"
+                 xmlns="http://www.w3.org/2000/svg">
+                 <g fill="none" fill-rule="evenodd"><circle fill="#FFF" cx="64" cy="64" r="3"/><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M47.42 16.5L64 .5M80.58 16.5L64 .5"/></g><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M47.42 111.5l16.58 16M80.58 111.5L64 127.5"/></g><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M111.5 47.42l16 16.58M111.5 80.58l16-16.58"/><g><path d="M16.5 47.42L.5 64M16.5 80.58L.5 64"/></g></g></g>
+            </svg>
         </button>
     </nav>
 
