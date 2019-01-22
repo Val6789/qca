@@ -39,6 +39,8 @@ class InputBlock extends Block {
 
         this.type = "input"
 
+        this.object.visible = InputBlock._isVisible
+
         if (polarity > 0) {
             InputBlock.positiveParticles.addAt(this.position)
             InputBlock.positiveInstances.push(this)
@@ -57,6 +59,7 @@ class InputBlock extends Block {
         InputBlock.positiveInstances = []
         InputBlock.negativeInstances = []
 
+        InputBlock._isVisible = true
         InputBlock.particlesNeedUpdate = 0
     }
 
@@ -68,5 +71,17 @@ class InputBlock extends Block {
             transparent: false,
             alphaTest: 0.1
         })
+    }
+
+    static get isVisible() {
+        return InputBlock._isVisible
+    }
+
+    static set isVisible(boolean) {
+        if (InputBlock._isVisible === boolean) return
+        InputBlock._isVisible = boolean
+        InputBlock.positiveInstances.forEach( qubit => qubit.object.visible = boolean)
+        InputBlock.negativeInstances.forEach( qubit => qubit.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }

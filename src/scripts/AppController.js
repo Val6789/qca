@@ -29,8 +29,8 @@ class AppController {
         Qubit.startDeterminationUpdateLoop()
         new QubitEditor()
         AchievementManager.Get().obtained("missionOne")
-        ToolboxControllerInstance.init()
         QubitEditorInstance.init()
+        ToolboxControllerInstance.init()
     }
 
     init() {

@@ -4,6 +4,7 @@
     AppController
     Qubit
     DragAndDropControls
+    OverlaySelector
     JoystickCameraControls
 */
 /* 
@@ -136,7 +137,7 @@ class ToolboxController {
     }*/
 
 
-    _setNegativeInputButton() {
+    _setInputButton() {
         const buttonId = "negative-input"
         var self = this
         this.negativeInputButton = this._setButton(buttonId, (event) => {
@@ -214,6 +215,7 @@ class ToolboxController {
         }
     }
 
+
     _setHistoryButtons() {
         this._updateHistoryButtons()
         var self = this
@@ -242,7 +244,6 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
-            console.log(targetElement)
             switch (targetElement.id) {
                 case "get-camera":
                     return QubitEditor.canEditEnumeration.NOTHING
@@ -269,6 +270,10 @@ class ToolboxController {
         this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control", false)
     }
 
+
+    _setOverlaySelector() {
+        this._overlaySelector = new OverlaySelector()
+    }
 
     // Speed buttons //
 
@@ -337,8 +342,7 @@ class ToolboxController {
     init() {
         this._setCameraButton()
         this._setQubitButton()
-        this._setNegativeInputButton()
-        //this._setPositiveInputButton()
+        this._setInputButton()
         this._setOutputButton()
         this._setEraserButton()
         this._setDraggableTools()
@@ -354,6 +358,7 @@ class ToolboxController {
         this._setHistoryButtons()
 
         this._setCameraJoystick()
+        this._setOverlaySelector()
 
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
     }

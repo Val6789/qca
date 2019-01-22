@@ -43,7 +43,6 @@ class Block {
         var lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff
         })
-        lineMaterial.visible = document.getElementById("check-values").checked
 
         this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
             font: AssetManager.Get().fonts.optimer,
@@ -69,7 +68,6 @@ class Block {
         var lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff
         })
-        lineMaterial.visible = document.getElementById("check-values").checked
 
         this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
             font: AssetManager.Get().fonts.optimer,
@@ -107,7 +105,6 @@ class Block {
         var lineMaterial = new THREE.LineBasicMaterial({
             color: 0xffffff
         })
-        lineMaterial.visible = document.getElementById("check-outlines").checked
 
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)

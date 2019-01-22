@@ -70,8 +70,10 @@ class ParticleSystem {
         if (materials instanceof THREE.Material)
             materials = [materials]
 
+        this.layers = new Array()
         materials.forEach(material => {
             let particles = new THREE.Points(this._geometryBuffer, material)
+            this.layers.push(particles)
             this._particlesGroup.add(particles)
         })
 

@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="./styles/control-strip.css">
     <link rel="stylesheet" href="./styles/info-holder.css">
     <link rel="stylesheet" href="./styles/joystick-controls.css">
+    <link rel="stylesheet" href="./styles/layer-selector.css">
+    <link rel="stylesheet" href="./styles/time-control.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
@@ -53,7 +55,8 @@
     <script src="./scripts/QuantumAutomata.js"></script>
     <script src="./scripts/AppController.js"></script>
     <script src="./scripts/KeyBoardController.js"></script>
-    <script src="./scripts/History.js" defer></script>
+    <script src="./scripts/History.js"></script>
+    <script src="./scripts/OverlaySelector.js"></script>
     <script src="./scripts/main.js" defer></script>
     <script src="./scripts/GUI.js" defer></script>
 </head>
@@ -111,11 +114,19 @@
     <!-- These checkboxes are now in the settings pane. They can only be at one place. -->
     <!--
     <nav class="layers">
-        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
-        <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
-        <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
+        <label class="layer-toggle">
+            <img class="layer-toggle-icon" alt="Qubit values" src="assets/buttons/qubit_layer.png">
+            <input class="layer-checkbox" type="checkbox" id="show-qubit" checked />
+        </label>
+        <label class="layer-toggle">
+            <img class="layer-toggle-icon" alt="Electrons" src="assets/buttons/electron_layer.png">
+            <input class="layer-checkbox" type="checkbox" id="show-electrons" checked />
+        </label>
+        <label class="layer-toggle">
+            <img class="layer-toggle-icon" alt="Charge Fields" src="assets/buttons/influence_layer.png">
+            <input class="layer-checkbox" type="checkbox" id="show-influence" checked />
+        </label>
     </nav>
-    -->
 
 
     <header class="control-strip">
@@ -133,24 +144,24 @@
                 <img src="assets/buttons/False.png" class="tool-icon electron-icon">
                 -
             </button>-->
-            <button class="tool draggable" alt="Negatively charged influencer" id="negative-input" title="Add input">
-                <img src="assets/buttons/Input.png" class="tool-icon electron-icon">
-                -
-            </button>
-            <button class="tool draggable" alt="Qubit" id="place-qubits" title="Add Qubit">
-                <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
-                B
-            </button>
-            <button class="tool draggable" alt="Qubit" id="place-output" title="Add output">
-                <img src="assets/buttons/Output.png" class="tool-icon output-icon">
-                O
-            </button>
-            <div class="separator"></div>
-            <button class="tool" alt="Eraser" id="eraser" title="Erease">
-                <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
-                E
-            </button>
-        </nav>
+    <button class="tool draggable" alt="Negatively charged influencer" id="negative-input" title="Add input">
+        <img src="assets/buttons/Input.png" class="tool-icon electron-icon">
+        -
+    </button>
+    <button class="tool draggable" alt="Qubit" id="place-qubits" title="Add Qubit">
+        <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
+        B
+    </button>
+    <button class="tool draggable" alt="Qubit" id="place-output" title="Add output">
+        <img src="assets/buttons/Output.png" class="tool-icon output-icon">
+        O
+    </button>
+    <div class="separator"></div>
+    <button class="tool" alt="Eraser" id="eraser" title="Erease">
+        <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
+        E
+    </button>
+    </nav>
     </header>
 
 
@@ -303,9 +314,11 @@
                         <button onclick="setLightmode(true)" class="btn">Light mode</button>
                         <button onclick="setLightmode(false)" class="btn">Dark mode</button>
                         <p>Layers :</p>
-                        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit values</label>
+                        <label class="layer-checkbox"><input type="checkbox" id="check-values" checked />Qubit
+                            values</label>
                         <label class="layer-checkbox"><input type="checkbox" id="check-outlines" checked />Outlines</label>
-                        <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge Fields</label>
+                        <label class="layer-checkbox"><input type="checkbox" id="check-fields" checked />Charge
+                            Fields</label>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="btn">close</label>
