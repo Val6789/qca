@@ -244,6 +244,10 @@ class ToolboxController {
         this._setEraserButton()
         this._setDraggableTools()
         
+        this._setValuesCheckbox()
+        this._setOutlinesCheckbox()
+        this._setFieldsCheckbox()
+        
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
