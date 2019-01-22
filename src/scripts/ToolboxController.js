@@ -58,7 +58,7 @@ class ToolboxController {
     }*/
 
 
-    _setNegativeInputButton() {
+    _setInputButton() {
         const buttonId = "negative-input"
         var self = this
         this.negativeInputButton = this._setButton(buttonId, (event) => {self._setNegativeInputButtonClick(event.target)})
@@ -96,40 +96,7 @@ class ToolboxController {
         QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
     }
 
-	// Checkboxes //
-    
-    _setValuesCheckbox() {
-		const checkbox = document.getElementById("check-values")
-		checkbox.onclick = function() {
-			Qubit.instances.forEach(function(e) {
-				e.object.getObjectByName("ValueText").material.visible = checkbox.checked
-			})			
-		}
-	}
-    
 
-    _setOutlinesCheckbox() {
-		const checkbox = document.getElementById("check-outlines")
-		checkbox.onclick = function() {
-			Qubit.instances.forEach(function(e) {
-				e.object.material.visible = checkbox.checked
-			})
-		}
-    }
-    
-    
-    _setFieldsCheckbox() {
-		const checkbox = document.getElementById("check-fields")
-		checkbox.onclick = function() {
-			// TODO
-			if(checkbox.checked) {
-				//
-			}
-			else {
-				//~ ThreeViewControllerInstance.scene.getObjectByName("Particles").material.visible = false
-			}
-		}
-    }
 
     _setHistoryButtons() {
         this._updateHistoryButtons()
@@ -159,7 +126,6 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
-            console.log(targetElement)
             switch (targetElement.id) {
                 case "get-camera": return QubitEditor.canEditEnumeration.NOTHING
                 case "place-qubits": return QubitEditor.canEditEnumeration.QUBIT
@@ -180,6 +146,10 @@ class ToolboxController {
         this._joystickCameraControls = new JoystickCameraControls("joystick-control", "zoom-control", false)
     }
 
+
+    _setOverlaySelector() {
+        this._overlaySelector = new OverlaySelector()
+    }
     
     // Speed buttons //
     
@@ -244,21 +214,16 @@ class ToolboxController {
                 break;
         }
     }
-    
+
 
     init() {
         this._setCameraButton()
         this._setQubitButton()
-        this._setNegativeInputButton()
-        //this._setPositiveInputButton()
+        this._setInputButton()
         this._setOutputButton()
         this._setEraserButton()
         this._setDraggableTools()
-        
-        this._setValuesCheckbox()
-        this._setOutlinesCheckbox()
-        this._setFieldsCheckbox()
-        
+
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
@@ -266,6 +231,7 @@ class ToolboxController {
         this._setHistoryButtons()
 
         this._setCameraJoystick()
+        this._setOverlaySelector()
 
         window.addEventListener("keydown",ev => this._keydownHandler(ev))
     }

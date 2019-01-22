@@ -226,6 +226,7 @@ class Qubit extends Block {
         this.setLabel("?")
 
         // Adds object to the scene, calling the render on the next frame
+        this.object.visible = Qubit._isVisible
         ThreeViewControllerInstance.addObjectToScene(this.object)
 
         // Saves the instance into the Class static collection
@@ -242,7 +243,19 @@ class Qubit extends Block {
             Qubit.instances.forEach(qubit => { 
                 qubit._showUndetermination() 
             })
-        }, Qubit.UNDETERMINED_REFRESH_RATE)        
+        }, Qubit.UNDETERMINED_REFRESH_RATE)
+    }
+
+
+    static get isVisible() {
+        return Qubit._isVisible
+    }
+
+    static set isVisible(boolean) {
+        if (Qubit._isVisible === boolean) return
+        Qubit._isVisible = boolean
+        Qubit.instances.forEach( qubit => qubit.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }
 
@@ -267,3 +280,5 @@ Qubit.DOT_PLACEMENTS = [
  * @brief contains all the instances of Qubit
  * */
 Qubit.instances = []
+
+Qubit._isVisible = true
