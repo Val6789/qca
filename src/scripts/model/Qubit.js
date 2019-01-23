@@ -149,19 +149,15 @@ class Qubit extends Block {
         const GAMMA = 1 // electron tunneling potential
         var sigmaPj = 0 // Sum of neighbors influences
 
-        var entangled = automata.getEntangledBlocks(this)
+        var entangled = [this].concat(automata.getEntangledBlocks(this))
 
-        var neighbors = automata.getQubitNeighborsAround(this.position)
         entangled.forEach(block => {
-            neighbors = neighbors.concat(automata.getQubitNeighborsAround(block.position))
-        })
-
-        neighbors.forEach(neighbor => {
+            automata.getQubitNeighborsAround(block.position).forEach(neighbor => {
             const ADJACENT_KINK = 1
             const DIAGONAL_KINK = -0.2
 
 
-            const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
+            const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
 
             neighbor.processNeighboorsInfluences(automata)
@@ -169,6 +165,8 @@ class Qubit extends Block {
 
             if (Number.isNaN(sigmaPj))
                 throw console.error("Compute error.")
+
+            })
         })
 
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
@@ -178,7 +176,7 @@ class Qubit extends Block {
 
         entangled.forEach( block => {
             block.balance = this.balance
-            block._visited = true
+            // block._visited = true
         })
 
         return this.balance

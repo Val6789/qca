@@ -100,7 +100,6 @@ class QuantumAutomata {
 
         History.add('remove',block.type,position,block.type,block.polarity);
 
-
         this._bridges.forEach(bridge => {
             const bridgedBlock = bridge.traverseIfIsAnEnterPoint(block)
             if (bridgedBlock) this._bridges.delete(bridge.remove())
