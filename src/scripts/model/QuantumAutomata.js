@@ -8,8 +8,8 @@ class QuantumAutomata {
 
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
-     * @returns {Qubit} 
+     * @param {THREE.Vector3} position
+     * @returns {Qubit}
      */
     getQubit(position) {
         return this._qubitMap.get(QuantumAutomata._positionHash(position))
@@ -17,7 +17,7 @@ class QuantumAutomata {
 
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      */
     addQubit(position) {
         return this._addBlock(new Qubit(position))
@@ -63,7 +63,7 @@ class QuantumAutomata {
 
         // initiate bridge
         else
-            new Bridge(this._qubitMap.get(hash))
+            this._bridges.add(new Bridge(this._qubitMap.get(hash)))
     }
 
 
@@ -84,43 +84,60 @@ class QuantumAutomata {
 
         const block = this._qubitMap.get(hash)
         if(block.fixed && !adminRemove) return
+
         History.add('remove',block.type,position,block.type,block.polarity);
+
+
+        this._bridges.forEach(bridge => {
+            const bridgedBlock = bridge.traverseIfIsAnEnterPoint(block)
+            if (bridgedBlock) this._bridges.delete(bridge.remove())
+        })
+
         block.remove()
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
 
-        this._startProcessFrom(block)
-        this._applyProcessing()
+        // this._startProcessFrom(block)
+        // this._applyProcessing()
     }
 
-    
     /**
      * @public @method
      * @param {THREE.Vector3} position 
      * @returns {Array<Qubit>} Array of qubits near the position
      */
-    getQubitNeighborsAround(position) {
-        return QuantumAutomata._NEIGHBOR_MAP.reduce((accumulator, neighborRelativePosition) => {
-            const neighborPosition = (new THREE.Vector3()).addVectors(position, neighborRelativePosition)
-            const hash = QuantumAutomata._positionHash(neighborPosition)
-            if (this._qubitMap.has(hash))
-                accumulator.push(this._qubitMap.get(hash))
-            return accumulator
-        }, [])
+    getQubitNeighborsAround(startingPosition) {
+        const getPositionNeighbors = position => {
+            return QuantumAutomata._NEIGHBOR_MAP.reduce((accumulator, neighborRelativePosition) => {
+                const neighborPosition = (new THREE.Vector3()).addVectors(position, neighborRelativePosition)
+                const hash = QuantumAutomata._positionHash(neighborPosition)
+                if (this._qubitMap.has(hash))
+                    accumulator.push(this._qubitMap.get(hash))
+                return accumulator
+            }, [])
+        }
+
+        var neighbors = getPositionNeighbors(startingPosition)
+        this._bridges.forEach( bridge => {
+            const bridgedBlock = bridge.traverseIfIsAnEnterPoint(startingPosition)
+            if(bridgedBlock) neighbors = neighbors.concat(getPositionNeighbors(bridgedBlock.startingPosition))
+        })
+
+        return neighbors
     }
 
-    
+
     /**
      * @public @method
      */
     process() {
         if (this._outputs.size === 0) return
-        this._outputs.forEach( output => this._startProcessFrom(output))
+        this._outputs.forEach( output => this._startProcessFrom(output))
         this._applyProcessing()
     }
 
 
-    _startProcessFrom(qubit) {
+    _startProcessFrom(qubit) {
         qubit._visited = false;
         qubit.processNeighboorsInfluences(this)
     }
@@ -165,6 +182,7 @@ class QuantumAutomata {
     constructor() {
         this._qubitMap = new Map()
         this._outputs =  new Set()
+        this._bridges = new Set()
     }
 
     

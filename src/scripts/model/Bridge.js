@@ -1,5 +1,13 @@
 class Bridge {
+
+    traverseIfIsAnEnterPoint(qubit) {
+        if (qubit === this.start) return this.end
+        if (qubit === this.end) return this.start
+        return false
+    }
+
     setDestination(qubit) {
+        if(qubit === this.start) return
         this.end = qubit
         this._updateCurve(this.end.position)
         Bridge.pending = null
@@ -9,6 +17,13 @@ class Bridge {
         ThreeViewControllerInstance.removeObjectFromScene(this._spline)
         this._spline = Bridge._createCurve(this.start.position, endPosition)
         ThreeViewControllerInstance.addObjectToScene(this._spline)
+    }
+
+    remove() {
+        ThreeViewControllerInstance.removeObjectFromScene(this._spline)
+        if (Bridge.pending === this)
+            Bridge.pending = undefined
+        return this
     }
 
     constructor(qubit) {
