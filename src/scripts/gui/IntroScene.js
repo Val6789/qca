@@ -64,7 +64,7 @@ class IntroScene {
         //await this._welcomeScene()
         this.doTutorial = await this._choiceScene()
         if (this.doTutorial) {
-            //await this._electronScene()
+            await this._electronScene()
             await this._dotScene()
         }
         this._deleteScene()
@@ -150,54 +150,14 @@ class IntroScene {
 
     _electronScene() {
         return new Promise(async (resolve) => {
+            
+            // UI
             ToolboxControllerInstance.revealInfoHolder()
             ToolboxControllerInstance.setInfoHolderTitle("Electron")
-            let lineLatency = 1000
-            let timeout, endline
-            const addLine = (text) => {
-                return new Promise(littleResolve => {
-                    endline = () => {
-                        ToolboxControllerInstance.addInfoHolderText(text)
-                        // Letter per second
-                        const avgReadingSpeed = 25.25
-                        lineLatency = avgReadingSpeed * text.length
-                        littleResolve()
-                        timeout = null
-                        endline = null
-                    }
-                    timeout = setTimeout(endline, lineLatency)
-                })
-            }
-            const lineCallback = () => {
-                if (timeout)
-                    clearTimeout(timeout)
-                if (endline)
-                    endline()
-            }
-            const paragraphCallBack = () => {
-                return new Promise(resolve => {
-                    ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
-                        resolve()
-                    })
-                })
-
-            }
             const json = AssetManager.Get().json.electronIntro
-
-            for (let i = 0; i < json.length; i++) {
-                const paragraph = json[i]
-                ToolboxControllerInstance.setInfoHolderNextClickCallback(lineCallback)
-                for (let j = 0; j < paragraph.length; j++) {
-                    const line = paragraph[j]
-                    await addLine(line)
-                }
-
-                // Paragraph finished
-                await paragraphCallBack()
-                ToolboxControllerInstance.clearInfoHolder()
-                lineLatency = 0
-            }
-
+            
+            // Text
+            await this._displayJSON(json)
             // Clear
             resolve()
         })
@@ -221,8 +181,11 @@ class IntroScene {
             })
             ToolboxControllerInstance.setInfoHolderTitle("Dot")
             ToolboxControllerInstance.revealInfoHolder()
+            const json = AssetManager.Get().json.dotIntro
 
-            //resolve()
+            // Texte
+            await this._displayJSON(json)
+            resolve()
 
         })
     }
@@ -261,5 +224,66 @@ class IntroScene {
         }
         mesh.length = box.max.length() * 2
         return mesh
+    }
+
+    _lineCallback(endline, timeout) {
+        if (timeout)
+            clearTimeout(timeout)
+        if (endline)
+            endline()
+    }
+
+    _paragraphCallBack() {
+        return new Promise(resolve => {
+            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+                resolve()
+            })
+        })
+
+    }
+
+    async _displayJSON(json) {
+        if (!json)
+            return
+
+        // Variables
+        let lineLatency = 1000,
+            timeout, endline
+        
+        // Add line
+        const addLine = (text) => {
+            return new Promise(littleResolve => {
+                endline = () => {
+                    ToolboxControllerInstance.addInfoHolderText(text)
+                    // Letter per second
+                    const avgReadingSpeed = 25.25
+                    lineLatency = avgReadingSpeed * text.length
+                    timeout = null
+                    endline = null
+                    littleResolve()
+                }
+                timeout = setTimeout(endline, lineLatency)
+            })
+        }
+
+        for (let i = 0; i < json.length; i++) {
+            const paragraph = json[i]
+
+            // Force the next line
+            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+                this._lineCallback(endline, timeout)
+            })
+
+            // Await for the line latency to be completed
+            for (let j = 0; j < paragraph.length; j++) {
+                const line = paragraph[j]
+                await addLine(line)
+            }
+
+            // Paragraph finished
+            await this._paragraphCallBack()
+            ToolboxControllerInstance.clearInfoHolder()
+            lineLatency = 0
+        }
     }
 }

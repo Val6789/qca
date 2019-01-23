@@ -38,8 +38,6 @@ class ToolboxController {
         const $tutorial = this.$choiceHolder.children.namedItem("choice-tutorial")
         const $sandbox = this.$choiceHolder.children.namedItem("choice-sandbox")
         
-        console.log($tutorial)
-        
         let promises = [
             new Promise((resolve) => {
                 $tutorial.onclick = () => {
