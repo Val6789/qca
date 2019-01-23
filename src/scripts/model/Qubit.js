@@ -3,7 +3,7 @@
     THREE
     Dot
     Electron
-    AssetManager
+    Block
 */
 /*
     exported
@@ -21,7 +21,7 @@ class Qubit extends Block {
 
     // returns the binary state
     get state() {
-        const polarity = this.polarity;
+        const polarity = this.polarity
         if (polarity == 1 || polarity == -1) return polarity
         else return NaN
     }
@@ -38,7 +38,7 @@ class Qubit extends Block {
     get polarity() {
         if (!this.isDetermined) return 0
 
-        const chargedDots = this.electrons.map( electron => electron.dot )
+        const chargedDots = this.electrons.map(electron => electron.dot)
         if (chargedDots.includes(this.dots[0], this.dots[3])) return 1
         if (chargedDots.includes(this.dots[1], this.dots[2])) return -1
 
@@ -69,23 +69,24 @@ class Qubit extends Block {
 
                 // define text label
                 label = "1"
-                break;
+                break
 
-            // more of the same
+                // more of the same
             case -1:
                 this.electrons[0].dot = this.dots[1]
                 this.electrons[1].dot = this.dots[2]
                 this.isDetermined = true
                 label = "0"
-                break;
+                break
 
             case 0:
                 // is determined false. The electrons will switch places freneticly
                 this.isDetermined = false
                 label = "?"
-                break;
+                break
 
-            default: throw console.error("Unexpected polarity value :", newValue)
+            default:
+                throw console.error("Unexpected polarity value :", newValue)
         }
 
         if (newValue != this.polarity)
@@ -124,9 +125,15 @@ class Qubit extends Block {
         this.polarity = Math.sign(this.balance)
         let yellow = 255
         let blue = 255
-        if(this.balance > 0) yellow = 0
-        else if(this.balance < 0) blue = 0
-        this.setColor("rgb("+yellow+","+yellow+","+blue+")")
+        if (this.balance > 0) {
+            yellow = 64-Math.round(64*Math.abs(this.balance))
+            blue = Math.round(Math.max(128 + 128*Math.abs(this.balance),255))
+        }
+        else if (this.balance < 0) {
+            blue = 64-Math.round(64*Math.abs(this.balance))
+            yellow = Math.round(Math.min(128 + 128*Math.abs(this.balance),255))
+        }
+        this.setColor("rgb(" + yellow + "," + yellow + "," + blue + ")")
     }
 
 
@@ -185,7 +192,7 @@ class Qubit extends Block {
      */
     _showUndetermination() {
         if (this.isDetermined) return
-        this.electrons.forEach( electron => {
+        this.electrons.forEach(electron => {
             const chargedDots = this.electrons.map(electron => electron.dot)
             const emptyDots = this.dots.filter(dot => !chargedDots.includes(dot))
 
@@ -264,7 +271,7 @@ class Qubit extends Block {
     static set isVisible(boolean) {
         if (Qubit._isVisible === boolean) return
         Qubit._isVisible = boolean
-        Qubit.instances.forEach( qubit => qubit.object.visible = boolean)
+        Qubit.instances.forEach(qubit => qubit.object.visible = boolean)
         ThreeViewControllerInstance.shouldRender()
     }
 }
