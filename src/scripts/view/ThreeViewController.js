@@ -161,6 +161,40 @@ class ThreeViewController {
 
     }
 
+    /**
+     * @brief inserts axis in the scene
+     */
+    _mainAxis() {
+        const size = 10000
+        this.axies = new THREE.Object3D()
+
+        var geometry = new THREE.Geometry()
+        geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(size,0,0))
+        this.axies.add(new THREE.Line( geometry, new THREE.LineBasicMaterial({
+            color: 0xFF0000,
+            opacity: 0.5,
+            transparent: true
+        })))
+
+        geometry = new THREE.Geometry()
+        geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(0,size,0))
+        this.axies.add(new THREE.Line( geometry, new THREE.LineBasicMaterial({
+            color: 0x00FF00,
+            opacity: 0.5,
+            transparent: true
+        })))
+
+        geometry = new THREE.Geometry()
+        geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,size))
+        this.axies.add(new THREE.Line( geometry, new THREE.LineBasicMaterial({
+            color: 0x0000FF,
+            opacity: 0.5,
+            transparent: true
+        })))
+
+        this.addObjectToScene(this.axies)
+    }
+
 
     /**
      *  @brief Private method. Informs the renderer of aspect ratio changes
