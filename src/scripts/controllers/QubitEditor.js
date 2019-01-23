@@ -10,6 +10,10 @@
 
 class QubitEditor {
 
+    callbackOnCursorMove(callback) {
+        this.cursorMoveCallbacks.push(callback)
+    }
+
     edit() {
         try {
             switch (this.canEdit) {
@@ -23,6 +27,8 @@ class QubitEditor {
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
                 case QubitEditor.canEditEnumeration.REMOVE:
                     return AppControllerInstance.automata.removeBlock(this.cursor.position)
+                case QubitEditor.canEditEnumeration.BRIDGE:
+                    return AppControllerInstance.automata.makeBridge(this.cursor.position)
             }
         } catch (exception) {
             console.info(exception)
@@ -31,11 +37,6 @@ class QubitEditor {
 
     updateCursor(screenX, screenY, wheelDelta = 0) {
         if (!this.grid) return
-
-        if (wheelDelta != 0) {
-            const gridOffset = Math.ceil(wheelDelta / 10)
-            this.grid.object.translateY(gridOffset)
-        }
 
         // get mouse position
         this.mouse.x = (screenX / window.innerWidth) * 2 - 1
@@ -57,31 +58,52 @@ class QubitEditor {
         // for that intersection
         if (intersection[0]) {
             // move the cursor there
-            let translation = intersection[0].point.sub(this.cursor.position).round()
-            this.cursor.translateX(translation.x)
-            this.cursor.translateY(translation.y)
-            this.cursor.translateZ(translation.z)
+            let translation = intersection[0].point
+            translation.y += this.cursor.position.y + wheelDelta
+            translation.sub(this.cursor.position).round()
+
+            this.cursor.position.add(translation)
+            this.cursor.position.y = Math.max(-QubitEditor.MAX_STACKING, Math.min(this.cursor.position.y, QubitEditor.MAX_STACKING))
+        }
+
+
+        if (this.isMagnetic && wheelDelta == 0) {
+            var closestBlockPosition = AppControllerInstance.automata.getOccupiedPositions().reduce((best, current) => {
+                if (!best) return current
+                if (this.cursor.position.distanceToSquared(best) > this.cursor.position.distanceToSquared(current)) return current
+                return best
+            }, false)
+
+            if (closestBlockPosition) this.cursor.position.copy(closestBlockPosition)
         }
 
         // if the cursor changed, call for a render
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
+            this._updateYColumn()
+            this.cursorMoveCallbacks.forEach( callback => callback(this.cursor.position))
             ThreeViewControllerInstance.shouldRender()
             return true
         }
         return false
     }
 
+    _updateYColumn() {
+        this._yColumn.position.copy(this.cursor.position)
+        this._yColumn.scale.y = Math.ceil(this.cursor.position.y - QubitEditor.CURSOR_HEIGHT / 2)
+        this._yColumn.position.y = (this.cursor.position.y) / 2 - QubitEditor.CURSOR_HEIGHT / 2
+        this._yColumn.visible = this._yColumn.scale.y != 0
+    }
+
     _wheelHandler(event) {
         if (!this._mousePosition || this.canEdit === QubitEditor.canEditEnumeration.NOTHING) return
-        this.updateCursor(this._mousePosition.clientX, this._mousePosition.clientY, event.deltaY)
+        this.updateCursor(this._mousePosition.clientX, this._mousePosition.clientY, Math.sign(event.deltaY))
         event.stopPropagation()
-        console.log(event)
     }
 
     _mousemoveHandler(event) {
         this._mousePosition = event
         if (this.updateCursor(event.clientX, event.clientY)) {
-            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
+            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
                 AppControllerInstance.automata.removeBlock(this.cursor.position)
             else if (this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.QUBIT)
                 AppControllerInstance.automata.addQubit(this.cursor.position)
@@ -100,6 +122,7 @@ class QubitEditor {
     _makeCursor() {
         // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_HEIGHT, QubitEditor.CURSOR_SIZE)
+        let yColumnGeometry = new THREE.BoxGeometry(QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_SIZE)
 
         // makes a flat color material
         let cursormaterial = new THREE.LineBasicMaterial({
@@ -108,6 +131,8 @@ class QubitEditor {
 
         // Creates a contour of the box with the white material: that's our the cursor
         this.cursor = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
+        this._yColumn = new THREE.LineSegments(new THREE.EdgesGeometry(yColumnGeometry), cursormaterial)
+        ThreeViewControllerInstance.addObjectToScene(this._yColumn)
         ThreeViewControllerInstance.addObjectToScene(this.cursor)
     }
 
@@ -138,9 +163,13 @@ class QubitEditor {
         this.mouse = new THREE.Vector2()
         this.camera = ThreeViewControllerInstance.camera
         this.canEdit = QubitEditor.canEditEnumeration.NOTHING
+        this.cursorMoveCallbacks = new Array()
+        this.isMagnetic = false
 
         this._makeCursor()
         this._makeGrid()
+
+        this._updateYColumn()
     }
 
     constructor() {
@@ -159,6 +188,7 @@ const QubitEditorInstance = new QubitEditor()
 QubitEditor.CURSOR_SIZE = 1
 QubitEditor.CURSOR_HEIGHT = 0.3
 QubitEditor.CURSOR_COLOR = 0x999999
+QubitEditor.MAX_STACKING = 10
 
 QubitEditor.canEditEnumeration = {
     NOTHING: 0,
@@ -166,5 +196,6 @@ QubitEditor.canEditEnumeration = {
     POSITIVE_INPUT: 2,
     NEGATIVE_INPUT: 3,
     OUTPUT: 4,
-    REMOVE: 5
+    REMOVE: 5,
+    BRIDGE: 6
 }

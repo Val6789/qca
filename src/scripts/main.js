@@ -6,3 +6,4 @@ AppControllerInstance.init().then(() => {
     AppControllerInstance.startUpdateLoop()
     AppControllerInstance.ready()
 })
+

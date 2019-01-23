@@ -150,12 +150,15 @@ class Qubit extends Block {
         const GAMMA = 1 // electron tunneling potential
         var sigmaPj = 0 // Sum of neighbors influences
 
-        automata.getQubitNeighborsAround(this.position).forEach(neighbor => {
+        var entangled = [this].concat(automata.getEntangledBlocks(this))
+
+        entangled.forEach(block => {
+            automata.getQubitNeighborsAround(block.position).forEach(neighbor => {
             const ADJACENT_KINK = 1
             const DIAGONAL_KINK = -0.2
 
 
-            const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
+            const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
 
             neighbor.processNeighboorsInfluences(automata)
@@ -163,12 +166,20 @@ class Qubit extends Block {
 
             if (Number.isNaN(sigmaPj))
                 throw console.error("Compute error.")
+
+            })
         })
 
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
 
         // balance saved for debugging purposes
         this.balance = numerator / Math.hypot(numerator, 1)
+
+        entangled.forEach( block => {
+            block.balance = this.balance
+            // block._visited = true
+        })
+
         return this.balance
     }
 
@@ -201,7 +212,7 @@ class Qubit extends Block {
      * The instance is owned by the class inside Qubit.instances
      * A render will be called on the next frame
      */
-    constructor(position = new THREE.Vector3(), polarity = 0, enableParticles = true) {
+    constructor(position = new THREE.Vector3(0,0,0), polarity = 0, enableParticles = true) {
         // Creates the box with a label
         super(position) // haha
 

@@ -9,19 +9,24 @@
 
 class QuantumAutomata {
 
+    getOccupiedPositions() {
+        var values = new Array()
+        this._qubitMap.forEach(value => values.push(value))
+        return values.map(block => block.position)
+    }
+
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
-     * @returns {Qubit} 
+     * @param {THREE.Vector3} position
+     * @returns {Qubit}
      */
     getQubit(position) {
         return this._qubitMap.get(QuantumAutomata._positionHash(position))
     }
 
-
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      */
     addQubit(position) {
         return this._addBlock(new Qubit(position))
@@ -30,7 +35,7 @@ class QuantumAutomata {
 
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      * @param {Boolean} State
      * @param {Number} State 0 or 1
      */
@@ -52,6 +57,29 @@ class QuantumAutomata {
         return false
     }
 
+     /**
+     * @public @method
+     * @param {THREE.Vector3} position
+     */
+    makeBridge(position) {
+        // check if cell is set
+        const hash = QuantumAutomata._positionHash(position)
+        if(!this._qubitMap.has(hash)) return
+        const block = this._qubitMap.get(hash)
+
+        if (block instanceof InputBlock) return
+        if (block instanceof OutputBlock) return
+
+        // check for pending bridge
+        if (Bridge.pending)
+            Bridge.pending.setDestination(block)
+
+        // initiate bridge
+        else
+            this._bridges.add(new Bridge(block))
+    }
+
+
     reset() {
         this._qubitMap.forEach(qubit => {
             this.removeBlock(qubit.position, true)
@@ -71,6 +99,12 @@ class QuantumAutomata {
         if(block.fixed && !adminRemove) return
 
         History.add('remove',block.type,position,block.type,block.polarity);
+
+        this._bridges.forEach(bridge => {
+            const bridgedBlock = bridge.traverseIfIsAnEnterPoint(block)
+            if (bridgedBlock) this._bridges.delete(bridge.remove())
+        })
+
         block.remove()
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
@@ -79,10 +113,9 @@ class QuantumAutomata {
         this._applyProcessing()
     }
 
-
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      * @returns {Array<Qubit>} Array of qubits near the position
      */
     getQubitNeighborsAround(position) {
@@ -95,6 +128,23 @@ class QuantumAutomata {
         }, [])
     }
 
+
+    /**
+     * @param {Qubit}
+     * @returns {Array<Qubit>} entangled qubits
+     */
+    getEntangledBlocks(sourceBlock) {
+        var entangledBlocks = new Array()
+        sourceBlock._checkedForEntenglement = true
+        this._bridges.forEach(bridge => {
+            const end = bridge.traverseIfIsAnEnterPoint(sourceBlock)
+            if (end && !end._checkedForEntenglement) {
+                entangledBlocks.push(end)
+                entangledBlocks = entangledBlocks.concat(this.getEntangledBlocks(end))
+            }
+        })
+        return entangledBlocks
+    }
 
     /**
      * @public @method
@@ -115,6 +165,7 @@ class QuantumAutomata {
     _applyProcessing() {
         this._qubitMap.forEach(qubit => {
             if (qubit instanceof Qubit) qubit.applyPolarityBuffer()
+            qubit._checkedForEntenglement = false
         })
     }
 
@@ -149,7 +200,8 @@ class QuantumAutomata {
      */
     constructor() {
         this._qubitMap = new Map()
-        this._outputs = new Set()
+        this._outputs =  new Set()
+        this._bridges = new Set()
     }
 
 

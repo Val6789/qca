@@ -138,8 +138,8 @@ class ThreeViewController {
     }
 
 
-    /** 
-     * @brief Private method rendering the scenes after calling the observers 
+    /**
+     * @brief Private method rendering the scenes after calling the observers
      */
     _render() {
         this._onRenderObservers.forEach(callback => callback())
