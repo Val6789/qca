@@ -57,7 +57,8 @@
     <script src="./scripts/gui/KeyBoardController.js"></script>
     <script src="./scripts/gui/GUI.js" defer></script>
     <script src="./scripts/gui/OverlaySelector.js"></script>
-    <script src="./scripts/IntroScene.js"></script>
+    <script src="./scripts/Utils.js"></script>
+    <script src="./scripts/gui/IntroScene.js"></script>
     <script src="./scripts/main.js" defer></script>
 </head>
 
@@ -87,6 +88,15 @@
     <h1 class="title">Quantum cellular automata simulator</h1>
 
     <div id="top-control-bar">
+
+        <nav class="control-bar-mini">
+            <button class="button-mini" alt="Slower" id="undo-button" title="undo">
+                <img src="assets/buttons/undo.png" class="button-mini-icon">
+            </button>
+            <button class="button-mini" alt="Faster" id="redo-button" title="redo">
+                <img src="assets/buttons/redo.png" class="button-mini-icon">
+            </button>
+        </nav>
         <nav class="control-bar-mini">
             <button class="button-mini" alt="Slower" id="slow-button" title="slower">
                 <img src="assets/buttons/playx2.png" class="button-mini-icon" id="slow-button-icon">
@@ -100,15 +110,6 @@
             <button class="button-mini" alt="Faster" id="fast-button" title="faster">
                 <img src="assets/buttons/playx3.png" class="button-mini-icon" id="fast-button-icon">
                 Faster
-            </button>
-        </nav>
-
-        <nav class="control-bar-mini">
-            <button class="button-mini" alt="Slower" id="undo-button" title="undo">
-                <img src="assets/buttons/undo.png" class="button-mini-icon">
-            </button>
-            <button class="button-mini" alt="Faster" id="redo-button" title="redo">
-                <img src="assets/buttons/redo.png" class="button-mini-icon">
             </button>
         </nav>
 

@@ -8,13 +8,13 @@
 }
 
 .control-bar-mini {
-    display:block;
     padding: 0.5rem;
     margin: 0.5rem;
     background: rgba(0,0,0,0.8);
     border-radius: 12px;
     box-shadow: 0 0 20px  rgba(0,0,0,0.2);
     font-size: 0;
+    display:flex;
 }
 
 .control-bar-mini .button-mini {
@@ -36,7 +36,6 @@
 }
 
 .button-mini {
-    display:inline-block;
 }
 
 .control-bar-mini .button-mini.active {
