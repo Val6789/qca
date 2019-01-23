@@ -5,6 +5,7 @@
     ParticleSystem
     TweenLite
     TimelineLite
+    ToolboxControllerInstance
 */
 /* 
     exported 
@@ -16,10 +17,13 @@ class IntroScene {
         this.callbackDone = callbackDone
         this._scene = new THREE.Scene()
 
-        let pos = new THREE.Vector3(0, 0, 0)
-        this._particles = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
-        this._particles.addAt(pos)
-        this._scene.add(this._particles._particlesGroup)
+        // Create the electron Particles system
+        this._electrons = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
+        this._scene.add(this._electrons._particlesGroup)
+
+        // Create the dot
+        this._dots = new ParticleSystem([Dot._getSolidMaterial()])
+        this._scene.add(this._dots._particlesGroup)
 
         let light = new THREE.PointLight(0xffffff, 1, 100)
         light.position.set(-5, 0, 0)
@@ -30,21 +34,16 @@ class IntroScene {
             opacity: 1
 
         })
-        const size = 0.25
         this.TEXT_GEOMETRY_OPTIONS = {
             font: AssetManager.Get().fonts.optimer,
-            size: size,
+            size: 0.25,
             height: 0.1,
             curveSegments: 8,
             bevelEnabled: false
         }
-
         this.UPDATE_FUNCTION = () => {
             ThreeViewControllerInstance.shouldRender()
         }
-
-        // Update GUI
-        ToolboxControllerInstance.hideControls()
 
     }
 
@@ -61,17 +60,34 @@ class IntroScene {
     }
 
     async start() {
+        this._setupScene()
         await this._welcomeScene()
-        await this._electronScene()
+        this.doTutorial = await this._choiceScene()
+        if (this.doTutorial) {
+            await this._electronScene()
+            await this._dotScene()
+            await this._qubitScene()
+        }
         this._deleteScene()
         this.callbackDone()
     }
 
+    _setupScene() {
+
+        // Update GUI
+        ToolboxControllerInstance.hideUI()
+
+        // Create the electron
+        let pos = new THREE.Vector3(0, 0, 0)
+        this._electrons.addAt(pos)
+    }
+
     _welcomeScene() {
+        const speed = 1
         return new Promise((resolve) => {
             // Camera movement
             let camPos = this._camera.position
-            TweenLite.to(camPos, 5, {
+            TweenLite.to(camPos, 4 / speed, {
                 x: "+=4",
                 onUpdate: this.UPDATE_FUNCTION,
                 onComplete: resolve
@@ -79,10 +95,13 @@ class IntroScene {
 
             // Timeline
             let timeline = new TimelineLite()
+            this.timeline = timeline
+            timeline.timeScale(speed)
             const rotation = new THREE.Vector3(-4, 0, 0)
-            const TIMER_SPACE = 0.3
-            let timing = 1
+            const TIMER_SPACE = 0.2 / speed
+            let timing = 0.6
             let texts = []
+            this.texts = texts
             const lineDisplay = (startY, startZ, line) => {
                 line = line.split(" ")
                 let y = startY
@@ -97,91 +116,184 @@ class IntroScene {
                 }
             }
 
-            const clearTexts = () => {
-                timing += 1
-                timeline.to(texts[0].material, 1, {
-                    opacity: 0,
-                    onComplete: () => {
-                        for (let i = 0; i < texts.length; i++) {
-                            this._scene.remove(texts[i])
-                        }
-                    }
-                }, timing)
-            }
-
             // Fist two lines
-            lineDisplay(1.3, -0.35, "Hello")
-            lineDisplay(0.8, -0.85, "Welcome to")
-            lineDisplay(-0.9, -1.15, "QCA Simulator")
-            clearTexts()
-            timeline.eventCallback("onComplete", () => {
-                setTimeout(resolve, 1000)
+            lineDisplay(1.4, -0.35, "Hello")
+            lineDisplay(0.9, -0.85, "Welcome to")
+            lineDisplay(0.4, -1.15, "QCA Simulator")
+            timeline.to({}, 0, {
+                onComplete: () => {
+                    resolve()
+                }
+            }, 1.5)
+
+        })
+    }
+
+    _choiceScene() {
+        return new Promise(async (resolve) => {
+            ToolboxControllerInstance.revealChoice()
+            let choice = await ToolboxControllerInstance.choiceClick()
+
+            // Hide
+            ToolboxControllerInstance.hideChoice()
+            
+            let texts = this.texts
+            TweenLite.to(texts[0].material, 0.4, {
+                opacity: 0,
+                onUpdate: this.UPDATE_FUNCTION,
+                onComplete: () => {
+                    for (let i = 0; i < texts.length; i++) {
+                        this._scene.remove(texts[i])
+                    }
+                    delete this.texts
+                }
             })
 
+            if (choice === "tutorial") {
+                resolve(true)
+            } else if (choice === "sandbox") {
+                resolve(false)
+            }
         })
     }
 
     _electronScene() {
         return new Promise(async (resolve) => {
+
+            // UI
             ToolboxControllerInstance.revealInfoHolder()
             ToolboxControllerInstance.setInfoHolderTitle("Electron")
-            let lineLatency = 1000
-            let timeout, endline
-            const addLine = (text) => {
-                return new Promise(littleResolve => {
-                    endline = () => {
-                        ToolboxControllerInstance.addInfoHolderText(text)
-                        // Letter per second
-                        const avgReadingSpeed = 25.25
-                        lineLatency = avgReadingSpeed * text.length
-                        littleResolve()
-                        timeout = null
-                        endline = null
-                    }
-                    timeout = setTimeout(endline, lineLatency)
-                })
-            }
-            const lineCallback = () => {
-                if (timeout)
-                    clearTimeout(timeout)
-                if (endline)
-                    endline()
-            }
-            const paragraphCallBack = () => {
-                return new Promise(resolve => {
-                    ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
-                        resolve()
-                    })
-                })
-
-            }
             const json = AssetManager.Get().json.electronIntro
 
-            for (let i = 0; i < json.length; i++) {
-                const paragraph = json[i]
-                ToolboxControllerInstance.setInfoHolderNextClickCallback(lineCallback)
-                for (let j = 0; j < paragraph.length; j++) {
-                    const line = paragraph[j]
-                    await addLine(line)
-                }
-
-                // Paragraph finished
-                await paragraphCallBack()
-                ToolboxControllerInstance.clearInfoHolder()
-                lineLatency = 0
-            }
+            // Text
+            await this._displayJSON(json)
 
             // Clear
+            this._electrons.clean()
             resolve()
         })
 
     }
 
+    _dotScene() {
+        return new Promise(async (resolve) => {
+            // Creation
+            ToolboxControllerInstance.hideInfoHolder()
+            let pos = new THREE.Vector3(0, 0, 0)
+            this._dots.addAt(pos)
+            let camPos = this._camera.position
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 2, {
+                    x: "+=2",
+                    onUpdate: this.UPDATE_FUNCTION,
+                    onComplete: littleResolve
+                })
+            })
+            ToolboxControllerInstance.setInfoHolderTitle("Dot")
+            ToolboxControllerInstance.revealInfoHolder()
+
+            // Text
+            const json = AssetManager.Get().json.dotIntro
+            await this._displayJSON(json)
+
+            // Add an electron
+            this._electrons.addAt(pos)
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 0.2, {
+                    x: "-=1",
+                    onUpdate: this.UPDATE_FUNCTION,
+                    onComplete: littleResolve
+                })
+            })
+
+            // Second text
+            const json2 = AssetManager.Get().json.dotIntro2
+            await this._displayJSON(json2)
+
+            // Clean and resolve
+            this._electrons.clean()
+            this._dots.clean()
+            this.UPDATE_FUNCTION()
+            resolve()
+
+        })
+    }
+
+    _qubitScene() {
+        return new Promise(async (resolve) => {
+            // Clean
+            this._electrons.clean()
+            this._dots.clean()
+
+            // Text
+            ToolboxControllerInstance.setInfoHolderTitle("Qubit")
+            ToolboxControllerInstance.revealInfoHolder()
+            const json = AssetManager.Get().json.qubitIntro
+            await this._displayJSON(json)
+
+            // Creation
+            ToolboxControllerInstance.hideInfoHolder()
+            let pos = new THREE.Vector3(0, 0, 0)
+            let qubit = new Qubit()
+            let camPos = this._camera.position
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 2, {
+                    x: 0,
+                    y: 4,
+                    z: 6,
+                    onUpdate: () => {
+                        this._camera.lookAt(pos)
+                        this.UPDATE_FUNCTION()
+                    },
+                    onComplete: littleResolve
+                })
+            })
+            ToolboxControllerInstance.revealInfoHolder()
+
+            // Text 2            
+            const json2 = AssetManager.Get().json.qubitIntro2
+            await this._displayJSON(json2)
+
+            // Display the 1
+            qubit.polarity = 1
+            this.UPDATE_FUNCTION()
+            ToolboxControllerInstance.setInfoHolderTitle("State 1")
+            await this._paragraphCallBack()
+
+
+            // Display the 0
+            qubit.polarity = -1
+            this.UPDATE_FUNCTION()
+            ToolboxControllerInstance.setInfoHolderTitle("State 0")
+            await this._paragraphCallBack()
+
+            // Basic
+            qubit.polarity = 0
+            this.UPDATE_FUNCTION()
+
+
+            // Text 3
+            ToolboxControllerInstance.setInfoHolderTitle("Qubit")
+            const json3 = AssetManager.Get().json.qubitIntro3
+            await this._displayJSON(json3)
+
+
+            // Clean and resolve
+            qubit.remove()
+            resolve()
+
+        })
+    }
+
     _deleteScene() {
-        ToolboxControllerInstance.revealControls()
+        ToolboxControllerInstance.revealUI()
         ToolboxControllerInstance.hideInfoHolder()
         Utils.doDispose(this._scene)
-        this._particles._destructor()
+        this._electrons._destructor()
+
+        if (this.doTutorial) {
+            AchievementManager.Get().obtained("tutorial")
+        }
     }
 
     _createTextMesh(text, x, y, z) {
@@ -207,5 +319,66 @@ class IntroScene {
         }
         mesh.length = box.max.length() * 2
         return mesh
+    }
+
+    _lineCallback(endline, timeout) {
+        if (timeout)
+            clearTimeout(timeout)
+        if (endline)
+            endline()
+    }
+
+    _paragraphCallBack() {
+        return new Promise(resolve => {
+            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+                resolve()
+            })
+        })
+
+    }
+
+    async _displayJSON(json) {
+        if (!json)
+            throw Error("No json:" + json)
+
+        // Variables
+        let lineLatency = 1000,
+            timeout, endline
+
+        // Add line
+        const addLine = (text) => {
+            return new Promise(littleResolve => {
+                endline = () => {
+                    ToolboxControllerInstance.addInfoHolderText(text)
+                    // Letter per second
+                    const avgReadingSpeed = 25.25
+                    lineLatency = avgReadingSpeed * text.length
+                    timeout = null
+                    endline = null
+                    littleResolve()
+                }
+                timeout = setTimeout(endline, lineLatency)
+            })
+        }
+
+        for (let i = 0; i < json.length; i++) {
+            const paragraph = json[i]
+
+            // Force the next line
+            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+                this._lineCallback(endline, timeout)
+            })
+
+            // Await for the line latency to be completed
+            for (let j = 0; j < paragraph.length; j++) {
+                const line = paragraph[j]
+                await addLine(line)
+            }
+
+            // Paragraph finished
+            await this._paragraphCallBack()
+            ToolboxControllerInstance.clearInfoHolder()
+            lineLatency = 0
+        }
     }
 }

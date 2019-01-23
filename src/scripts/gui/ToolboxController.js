@@ -2,7 +2,6 @@
     global
     QubitEditor
     AppController
-    Qubit
     DragAndDropControls
     OverlaySelector
     JoystickCameraControls
@@ -14,7 +13,45 @@
 */
 
 class ToolboxController {
+
+
     // Tool buttons //
+    // =================== Choice Holder ===================
+
+    revealChoice() {
+        if (!this.$choiceHolder)
+            this.$choiceHolder = document.getElementById("choice-holder")
+
+        this.$choiceHolder.classList.remove("hidden")
+    }
+    
+    hideChoice() {
+        if (!this.$choiceHolder)
+            this.$choiceHolder = document.getElementById("choice-holder")
+
+        this.$choiceHolder.classList.add("hidden")
+    }
+    
+    choiceClick() {
+        if (!this.$choiceHolder)
+            this.$choiceHolder = document.getElementById("choice-holder")
+        const $tutorial = this.$choiceHolder.children.namedItem("choice-tutorial")
+        const $sandbox = this.$choiceHolder.children.namedItem("choice-sandbox")
+        
+        let promises = [
+            new Promise((resolve) => {
+                $tutorial.onclick = () => {
+                    resolve("tutorial")
+                }
+            }),
+            new Promise((resolve) => {
+                $sandbox.onclick = () => {
+                    resolve("sandbox")
+                }
+            })
+        ]
+        return Promise.race(promises)
+    }
 
     // =================== Info Holder ===================
     hideInfoHolder() {
@@ -63,21 +100,27 @@ class ToolboxController {
         this.$infoHolder.children[2].onclick = callback
     }
 
-    // =================== Controls ===================
-    revealControls() {
-        if (!this.$controls)
-            this.$controls = document.querySelector("nav.camera-controls")
-
-        this.$controls.classList.remove("hidden")
+    // =================== UI ===================
+    revealUI() {
+        if (!this.$ui)
+            this.$ui = document.querySelectorAll(".ui")
+        this.$ui.forEach(ui => {
+            ui.classList.remove("hidden")
+        })
     }
 
-    hideControls() {
-        if (!this.$controls)
-            this.$controls = document.querySelector("nav.camera-controls")
+    hideUI() {
+        if (!this.$ui)
+            this.$ui = document.querySelectorAll(".ui")
 
-        this.$controls.classList.add("hidden")
+        this.$ui.forEach(ui => {
+            ui.classList.add("hidden")
+        })
 
     }
+
+
+    // =================== OTHER ===================
 
     _setButton(id, callback) {
         var button = document.getElementById(id)
@@ -316,7 +359,7 @@ class ToolboxController {
                 this._setToolWithId("get-camera")
                 break
             case 9: // Tab
-                this._setToolWithId(ToolboxController.buttonIdList[(ToolboxController.buttonIdList.indexOf(this.currentToolSelected)+1)%ToolboxController.buttonIdList.length])
+                this._setToolWithId(ToolboxController.buttonIdList[(ToolboxController.buttonIdList.indexOf(this.currentToolSelected) + 1) % ToolboxController.buttonIdList.length])
                 event.stopPropagation()
                 event.preventDefault()
                 break
@@ -390,4 +433,4 @@ class ToolboxController {
 }
 
 const ToolboxControllerInstance = new ToolboxController()
-ToolboxController.buttonIdList = ["get-camera","negative-input","place-qubits","place-output","eraser"]
+ToolboxController.buttonIdList = ["get-camera", "negative-input", "place-qubits", "place-output", "eraser"]

@@ -67,6 +67,8 @@ const AchievementManager = (function () {
         iziToast.success(iziToastOptions)
 
     }
+    
+    const done = (achievement) => instance.achievements[achievement].fullfilled
 
     return {
         Get: () => {
@@ -88,6 +90,7 @@ const AchievementManager = (function () {
         instance.store = store
         instance.wipe = wipe
         instance.obtained = obtained
+        instance.done = done
         load()
 
         if (DEBUG) {

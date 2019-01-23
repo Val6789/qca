@@ -1,0 +1,48 @@
+#choice-holder {
+    position: fixed;
+    top: 50vh;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    
+    transition: all 200ms ease-in-out;
+    
+}
+
+.card {
+    border-radius: 6px;
+    padding: 24px;
+    
+    min-width: 35vw;
+
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+
+    --colorShadow: rgb(26, 26, 26);
+    -moz-box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    -webkit-box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    -o-box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    box-shadow: 0px 0px 10px 2px var(--colorShadow);
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=var(--colorShadow), Direction=NaN, Strength=10);
+
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+
+    transition: all 200ms ease-in-out;
+
+    font-family:arial;
+    z-index:2;
+    cursor: pointer;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h2 {
+    font-size: 2rem;
+    text-align: center;
+}

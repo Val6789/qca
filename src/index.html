@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./styles/info-holder.css">
     <link rel="stylesheet" href="./styles/joystick-controls.css">
     <link rel="stylesheet" href="./styles/top-control-bar.css">
+    <link rel="stylesheet" href="./styles/choice-holder.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
@@ -80,14 +81,14 @@
             </g>
         </svg>
         <div>
-            Loading..
+            Loading...
         </div>
     </div>
 
     <!-- HEADER AND NAVBAR -->
     <h1 class="title">Quantum cellular automata simulator</h1>
 
-    <div id="top-control-bar">
+    <div id="top-control-bar" class="ui">
 
         <nav class="control-bar-mini">
             <button class="button-mini" alt="Slower" id="undo-button" title="undo">
@@ -130,7 +131,7 @@
     </div>
 
 
-    <header class="control-strip">
+    <header class="control-strip ui">
         <nav class="toolbox">
             <button class="tool active" alt="Control Camera" id="get-camera" title="Mode camera">
                 <img src="assets/buttons/Camera.png" class="tool-icon camera-icon">
@@ -168,9 +169,19 @@
             </button>
         </nav>
     </header>
+    
+    <section id="choice-holder" class="hidden">
+        <div class="card" id="choice-tutorial">
+            <img src="assets/buttons/tuto-icon.png" alt="Tutorial logo">
+            <h2>Tutorial</h2>
+        </div>
+        <div class="card" id="choice-sandbox">
+            <img src="assets/buttons/sandbox-icon.png" alt="sandbox logo">
+            <h2>Sandbox</h2>
+        </div>
+    </section>
 
-
-    <nav class="camera-controls">
+    <nav class="camera-controls ui">
 
         <!-- camera controls -->
         <input class="zoom-control" type="range" id="zoom-control" min="1" max="25">
@@ -210,7 +221,7 @@
     </aside>
 
     <aside class="
-        activities active" id="activities">
+        activities active ui" id="activities">
         <nav class="activity-tabs">
             <div id="selectors">
                 <button class="hide-activities" id="toggle-activity-tab">

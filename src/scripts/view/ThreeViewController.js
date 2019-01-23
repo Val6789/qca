@@ -124,7 +124,6 @@ class ThreeViewController {
         this._createLayers()
 
         // Add common scene, camera and control
-        this._setScene()
         this._setCamera()
         this._setSkybox()
         this._axis = new Axis(this._camera)
@@ -144,9 +143,11 @@ class ThreeViewController {
      */
     _render() {
         this._onRenderObservers.forEach(callback => callback())
-
-        this._axis.update(this._camera, this._orbit)
-        this._axis.render()
+        
+        if (this._axis) {
+            this._axis.update(this._camera, this._orbit)
+            this._axis.render()
+        }
 
         this._layers.forEach((l) => {
             if (!l.active)
@@ -169,24 +170,24 @@ class ThreeViewController {
         this.axies = new THREE.Object3D()
 
         var geometry = new THREE.Geometry()
-        geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(size,0,0))
-        this.axies.add(new THREE.Line( geometry, new THREE.LineBasicMaterial({
+        geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(size, 0, 0))
+        this.axies.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({
             color: 0xFF0000,
             opacity: 0.5,
             transparent: true
         })))
 
         geometry = new THREE.Geometry()
-        geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(0,size,0))
-        this.axies.add(new THREE.Line( geometry, new THREE.LineBasicMaterial({
+        geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, size, 0))
+        this.axies.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({
             color: 0x00FF00,
             opacity: 0.5,
             transparent: true
         })))
 
         geometry = new THREE.Geometry()
-        geometry.vertices.push(new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,size))
-        this.axies.add(new THREE.Line( geometry, new THREE.LineBasicMaterial({
+        geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, size))
+        this.axies.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({
             color: 0x0000FF,
             opacity: 0.5,
             transparent: true
@@ -293,30 +294,46 @@ class ThreeViewController {
      * @brief Create IntroScene
      */
     _setIntro() {
-        this._orbit.enabled = false
-        return new Promise((resolve) => {
+        // DISPLAY ACHIEVEMENT
+        AchievementManager.Get().achievements.tutorial.fullfilled = false
+        
+        if (AchievementManager.Get().done("tutorial")) {
+            return new Promise(resolve => resolve())
+        } else {
+            this._orbit.enabled = false
+            return new Promise((resolve) => {
 
-            let intro = new IntroScene(resolve)
-            intro.setCamera(this._camera)
+                let intro = new IntroScene(resolve)
+                intro.setCamera(this._camera)
 
-            let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
-            intro.setLayer(layer)
+                let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
+                intro.setLayer(layer)
+                
+                this._scene = intro._scene
 
-            intro.start()
-        })
+                intro.start()
+            })
+        }
     }
 
     _afterIntro() {
         return () => {
-
-            this._layers.pop()
+            if ( this._layers.length > 1) {
+                delete this._layers[1]
+            }
+            
+            // Creation
+            this._setScene()
+            QubitEditorInstance.init()
+            
+            // Create the main layer
             this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
             this.shouldRender()
             let center = new THREE.Vector3(0, 0, 0)
             TweenLite.to(this._camera.position, 1, {
-                x: -8,
-                y: 5,
-                z: -3,
+                x: 4,
+                y: 7,
+                z: 5,
                 onUpdate: () => {
                     this._camera.lookAt(center)
                     this._render()

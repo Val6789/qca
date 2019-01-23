@@ -10,6 +10,10 @@ class ParticleSystem {
 
         this._setPositionBuffer(position.toArray(), this._particulesCount * this.ATTRIBUTE_SIZE)
     }
+    
+    clean() {
+        this.positions = []
+    }
 
     get object() {
         return this._particlesGroup
