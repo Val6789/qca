@@ -1,9 +1,9 @@
-/* 
+/*
     global
     Grid
 */
-/* 
-    exported 
+/*
+    exported
     QubitEditor
     QubitEditorInstance
 */
@@ -29,8 +29,13 @@ class QubitEditor {
         }
     }
 
-    updateCursor(screenX, screenY) {
+    updateCursor(screenX, screenY, wheelDelta = 0) {
         if (!this.grid) return
+
+        if (wheelDelta != 0) {
+            const gridOffset = Math.ceil(wheelDelta / 10)
+            this.grid.object.translateY(gridOffset)
+        }
 
         // get mouse position
         this.mouse.x = (screenX / window.innerWidth) * 2 - 1
@@ -54,6 +59,7 @@ class QubitEditor {
             // move the cursor there
             let translation = intersection[0].point.sub(this.cursor.position).round()
             this.cursor.translateX(translation.x)
+            this.cursor.translateY(translation.y)
             this.cursor.translateZ(translation.z)
         }
 
@@ -65,9 +71,17 @@ class QubitEditor {
         return false
     }
 
+    _wheelHandler(event) {
+        if (!this._mousePosition || this.canEdit === QubitEditor.canEditEnumeration.NOTHING) return
+        this.updateCursor(this._mousePosition.clientX, this._mousePosition.clientY, event.deltaY)
+        event.stopPropagation()
+        console.log(event)
+    }
+
     _mousemoveHandler(event) {
+        this._mousePosition = event
         if (this.updateCursor(event.clientX, event.clientY)) {
-            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
+            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
                 AppControllerInstance.automata.removeBlock(this.cursor.position)
             else if (this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.QUBIT)
                 AppControllerInstance.automata.addQubit(this.cursor.position)
@@ -101,9 +115,6 @@ class QubitEditor {
     _makeGrid() {
         this.grid = new Grid(AssetManager.Get().fonts.optimer, -QubitEditor.CURSOR_HEIGHT / 2)
         ThreeViewControllerInstance.addObjectToScene(this.grid.object)
-        ThreeViewControllerInstance.callbackOnRender(() => {
-            this.grid.lookCamera(ThreeViewControllerInstance.camera.position)
-        })
     }
 
     _mousedownHandler(event) {
@@ -121,6 +132,7 @@ class QubitEditor {
         domViewportElement.addEventListener("mouseup", ev => this._clickHandler(ev))
         domViewportElement.addEventListener("mousedown", ev => this._mousedownHandler(ev))
         domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
+        domViewportElement.addEventListener("wheel", ev => this._wheelHandler(ev))
 
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
