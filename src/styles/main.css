@@ -13,6 +13,7 @@
     display: grid;
     grid-template: "activities  title           title        "auto "activities  .               control-zoom "1fr "activities  control-strip   control-strip"auto /auto 1fr auto
 }
+
 #axis {
     width: 75px;
     height: 75px;
@@ -23,9 +24,11 @@
     bottom: 0px;
     z-index: 10;
 }
+
 .layers {
-    display:none;
+    display: none;
 }
+
 .mode-light {
     color: #000;
 }
@@ -46,7 +49,7 @@
 .title {
     position: relative;
     grid-area: title;
-    display:none;
+    display: none;
 }
 
 .camera-controls {
@@ -59,39 +62,43 @@
     display: none;
 }
 
-/* Buttons */
+.hidden {
+    display: none;
+}
+
 .btn {
     color: white;
-    cursor:pointer;
+    cursor: pointer;
     background-color: rgb(39, 39, 39);
     padding: 1vw;
     border-radius: 4px;
     text-transform: capitalize;
     font-size: 1.2rem;
 }
-.btn:hover
-{
-    background-color:#050505;
+
+.btn:hover {
+    background-color: #050505;
 }
 
 button {
-    background-color:#222;
-    padding:3px;
-    border-radius:5px;
-    margin:2px;
-    cursor:pointer;
+    background-color: #222;
+    padding: 3px;
+    border-radius: 5px;
+    margin: 2px;
+    cursor: pointer;
     transition: 0.5s;
     transition: transform 0;
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
+
 button.active {
-    border:1px solid #330;
-    box-shadow:0px 0px 3px 3px rgba(48,48,48,0.4);
-    background-color:#080808;
+    border: 1px solid #330;
+    box-shadow: 0px 0px 3px 3px rgba(48, 48, 48, 0.4);
+    background-color: #080808;
 }
-button:hover
-{
-    background-color:#000;
+
+button:hover {
+    background-color: #000;
 }
 
 /* Spinner */
@@ -109,7 +116,7 @@ button:hover
     flex-direction: column;
     text-align: center;
     font-family: sans-serif;
-    color:white;
+    color: white;
 }
 
 .loading-spinner {
@@ -118,23 +125,24 @@ button:hover
     animation-duration: 2000ms;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-    background-color:#111;
-    z-index:-1;
+    background-color: #111;
+    z-index: -1;
     width: 3rem;
     height: 3rem;
     padding: 2rem;
-    border-radius:50%;
-    box-shadow:0px 0px 100px 100px #111;
+    border-radius: 50%;
+    box-shadow: 0px 0px 100px 100px #111;
 }
 
 .cross {
-    height:25px;
+    height: 25px;
 }
 
 @keyframes spinner {
     from {
         transform: rotateZ(0deg);
     }
+
     to {
         transform: rotateZ(360deg);
     }

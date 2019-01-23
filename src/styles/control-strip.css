@@ -13,28 +13,21 @@
     box-shadow:0px 0px 20px 20px rgba(0,0,0,0.1);
     margin: 0.5rem;
 }
-.time-buttons {
-    padding:5px;
-    margin:auto;
-    display:inline-block;
-}
-.time-button, .tool {
-    font-size: 0;
-}
-.time-button, .history-button {
-    padding:5px;
-    background-color:rgba(0,0,0,0.5);
-    vertical-align:middle;
-}
 
-.time-button-icon {
-    height: 1.5rem;
-}
 #fast-button-icon, #slow-button-icon {
     height:1rem;
 }
+@media (max-width: 600px) {
+	.time-button-icon {
+		height: 3rem;
+	}
+	#fast-button-icon, #slow-button-icon {
+		height: 2rem;
+	}
+}
 
 .tool {
+    font-size: 0;
     margin: 0.5rem;
     padding: 0.5rem;
 }
@@ -65,6 +58,11 @@
     height: 2rem;
     border-left: solid 1px #bbb;
     margin: 1rem;
+}
+@media (max-width: 600px) {
+	.separator {
+		margin: 0;
+	}
 }
 
 .history {

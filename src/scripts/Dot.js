@@ -1,8 +1,6 @@
-/* 
-    global 
-    THREE,
-    AssetManager,
-    ThreeViewControllerInstance
+/*
+    global
+    ParticleSystem
 */
 /* 
     exported 
@@ -27,8 +25,9 @@ class Dot {
         // properties
         this.relativeQubitPosition = relativePosition
         this.parentQubit = qubit
-        
-        if(this.isVisible = visible) {
+
+        this.isVisible = visible
+        if (visible) {
             // add particle for the new dot
             Dot.particles.addAt(this.position)
             // push dot in the instance collection
@@ -42,6 +41,7 @@ class Dot {
 
         // create particle system
         Dot.particles = new ParticleSystem(Dot._getSolidMaterial())
+        ThreeViewControllerInstance.addObjectToScene(Dot.particles.object)
     }
 
     static _getSolidMaterial() {

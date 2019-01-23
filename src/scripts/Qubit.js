@@ -1,9 +1,8 @@
 /* 
     global 
-    THREE
     Dot
     Electron
-    AssetManager
+    Block
 */
 /* 
     exported 
@@ -21,12 +20,12 @@ class Qubit extends Block {
 
     // returns the binary state
     get state() {
-        const polarity = this.polarity;
+        const polarity = this.polarity
         if (polarity == 1 || polarity == -1) return polarity
         else return NaN
     }
-    
-    set state(newValue) {
+
+    set state(newValue) {
         this.polarity = newValue * 2 - 1
     }
 
@@ -38,7 +37,7 @@ class Qubit extends Block {
     get polarity() {
         if (!this.isDetermined) return 0
 
-        const chargedDots = this.electrons.map( electron => electron.dot )
+        const chargedDots = this.electrons.map(electron => electron.dot)
         if (chargedDots.includes(this.dots[0], this.dots[3])) return 1
         if (chargedDots.includes(this.dots[1], this.dots[2])) return -1
 
@@ -69,23 +68,24 @@ class Qubit extends Block {
 
                 // define text label
                 label = "1"
-                break;
+                break
 
-            // more of the same
+                // more of the same
             case -1:
                 this.electrons[0].dot = this.dots[1]
                 this.electrons[1].dot = this.dots[2]
                 this.isDetermined = true
                 label = "0"
-                break;
-            
+                break
+
             case 0:
                 // is determined false. The electrons will switch places freneticly
                 this.isDetermined = false
                 label = "?"
-                break;
+                break
 
-            default: throw console.error("Unexpected polarity value :", newValue)
+            default:
+                throw console.error("Unexpected polarity value :", newValue)
         }
 
         if (newValue != this.polarity)
@@ -124,10 +124,10 @@ class Qubit extends Block {
         this.polarity = Math.sign(this.balance)
         let yellow = 255
         let blue = 255
-        if(this.balance > 0) yellow = 0
-        else if(this.balance < 0) blue = 0
-        this.setColor("rgb("+yellow+","+yellow+","+blue+")")
-        
+        if (this.balance > 0) yellow = 0
+        else if (this.balance < 0) blue = 0
+        this.setColor("rgb(" + yellow + "," + yellow + "," + blue + ")")
+
         // Uncomment to show balance on corner of qubit
         // this.setSublabel(this.balance.toString())
     }
@@ -144,19 +144,19 @@ class Qubit extends Block {
         const EKIJ = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
         var sigmaPj = 0 // Sum of neighbors influences
-        
+
         automata.getQubitNeighborsAround(this.position).forEach(neighbor => {
             const ADJACENT_KINK = 1
             const DIAGONAL_KINK = -0.2
 
-            
+
             const relativePosition = (new THREE.Vector3()).subVectors(this.position, neighbor.position)
             const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
-            
+
             neighbor.processNeighboorsInfluences(automata)
             sigmaPj += neighbor.balance * neighbor.charge * kink
 
-            if (Number.isNaN(sigmaPj)) 
+            if (Number.isNaN(sigmaPj))
                 throw console.error("Compute error.")
         })
 
@@ -166,7 +166,7 @@ class Qubit extends Block {
         this.balance = numerator / Math.hypot(numerator, 1)
         return this.balance
     }
-    
+
 
     /**
      * @private @method
@@ -175,7 +175,7 @@ class Qubit extends Block {
      */
     _showUndetermination() {
         if (this.isDetermined) return
-        this.electrons.forEach( electron => {
+        this.electrons.forEach(electron => {
             const chargedDots = this.electrons.map(electron => electron.dot)
             const emptyDots = this.dots.filter(dot => !chargedDots.includes(dot))
 
@@ -184,7 +184,7 @@ class Qubit extends Block {
         })
     }
 
-    
+
     /**
      * @constructor of Qubit
      * @warning Places the object in the scene, no need to do it again.
@@ -226,6 +226,7 @@ class Qubit extends Block {
         this.setLabel("?")
 
         // Adds object to the scene, calling the render on the next frame
+        this.object.visible = Qubit._isVisible
         ThreeViewControllerInstance.addObjectToScene(this.object)
 
         // Saves the instance into the Class static collection
@@ -239,10 +240,22 @@ class Qubit extends Block {
      */
     static startDeterminationUpdateLoop() {
         setInterval(() => {
-            Qubit.instances.forEach(qubit => { 
-                qubit._showUndetermination() 
+            Qubit.instances.forEach(qubit => {
+                qubit._showUndetermination()
             })
-        }, Qubit.UNDETERMINED_REFRESH_RATE)        
+        }, Qubit.UNDETERMINED_REFRESH_RATE)
+    }
+
+
+    static get isVisible() {
+        return Qubit._isVisible
+    }
+
+    static set isVisible(boolean) {
+        if (Qubit._isVisible === boolean) return
+        Qubit._isVisible = boolean
+        Qubit.instances.forEach(qubit => qubit.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }
 
@@ -267,3 +280,5 @@ Qubit.DOT_PLACEMENTS = [
  * @brief contains all the instances of Qubit
  * */
 Qubit.instances = []
+
+Qubit._isVisible = true

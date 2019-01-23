@@ -1,8 +1,23 @@
+/*
+    global
+    Dot
+    Electron
+    Qubit
+    InputBlock
+    QubitEditor
+    QuantumAutomata
+*/
+/*
+    exported
+    AppControllerInstance
+*/
+
+
 class AppController {
 
     startUpdateLoop() {
-       this.interval = setInterval(() => {
-            if(!this.pauseMode) this.automata.process()
+        this.interval = setInterval(() => {
+            if (!this.pauseMode) this.automata.process()
         }, this.refreshRate)
     }
 
@@ -14,12 +29,12 @@ class AppController {
         Qubit.startDeterminationUpdateLoop()
         new QubitEditor()
         AchievementManager.Get().obtained("missionOne")
-        ToolboxControllerInstance.init()
         QubitEditorInstance.init()
+        ToolboxControllerInstance.init()
     }
 
     init() {
-        return new Promise( resolve => {
+        return new Promise(resolve => {
             AssetManager.Create().then(() => {
                 this._onAssetLoading()
                 this.automata = new QuantumAutomata()
@@ -35,10 +50,10 @@ class AppController {
     }
 
     setPause() {
-		this.pauseMode =! this.pauseMode
+        this.pauseMode = !this.pauseMode
     }
 
-    ready() {
+    ready() {
         this.isReady = true
         this.show()
         console.log("ready for action.")
@@ -57,8 +72,8 @@ class AppController {
         if (!AppController.instance) {
             AppController.instance = this
         }
-        this.refreshRate = AppController.SPEED;
-        this.pauseMode = false;
+        this.refreshRate = AppController.SPEED
+        this.pauseMode = false
         return AppController.instance
     }
 }

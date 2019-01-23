@@ -10,10 +10,10 @@ const AssetManager = (function () {
         textures: {},
         json: {},
         achievements: {},
-        presets:{}
+        presets: {}
     }
     const baseDir = "assets/"
-    const presets = ["not","simple","majority"]
+    const presets = ["not", "simple", "majority"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {
@@ -111,17 +111,20 @@ const AssetManager = (function () {
         .catch(err => Promise.reject(Error(err.message))))
 
     // Preset loading
-
     presets.forEach(name => {
         promises.push(new Promise((resolve, reject) => {
             readJSON(name, "presets")
                 .then(() => {
                     instance.presets[name] = instance.json[name]
+                    delete instance.json[name]
                     resolve()
                 })
                 .catch(reject)
         }))
     })
+
+    // JSON Intros 
+    promises.push(readJSON("electronIntro"))
 
     // JSON achievement
     promises.push(new Promise((resolve, reject) => {
@@ -143,7 +146,7 @@ const AssetManager = (function () {
         readJSON("facts").then(() => {
             resolve()
         }).catch(reject)
-    }));
+    }))
 
     promises.push(waitTexture("default", ".png", "textures", "achievements"))
 
@@ -188,7 +191,7 @@ const AssetManager = (function () {
         })
     }
 
-    function readJSON(filename,dir="data") {
+    function readJSON(filename, dir = "data") {
         const path = baseDir + dir + "/" + filename + ".json"
         return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest()

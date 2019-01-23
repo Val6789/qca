@@ -1,7 +1,19 @@
-class InputBlock extends Block{
+/*
+    global
+    Block
+    ParticleSystem
+*/
+/*
+    exported InputBlock
+*/
 
-    get balance() { return this.polarity }
-    
+
+class InputBlock extends Block {
+
+    get balance() {
+        return this.polarity
+    }
+
     remove() {
         super.remove()
         if (this.polarity > 0) {
@@ -27,12 +39,14 @@ class InputBlock extends Block{
 
         this.type = "input"
 
+        this.object.visible = InputBlock._isVisible
+
         if (polarity > 0) {
-            InputBlock.positiveParticles.addAt(this.position)  
+            InputBlock.positiveParticles.addAt(this.position)
             InputBlock.positiveInstances.push(this)
             this.setColor(0x0000ff)
         } else {
-            InputBlock.negativeParticles.addAt(this.position)  
+            InputBlock.negativeParticles.addAt(this.position)
             InputBlock.negativeInstances.push(this)
             this.setColor(0xffff00)
         }
@@ -45,6 +59,7 @@ class InputBlock extends Block{
         InputBlock.positiveInstances = []
         InputBlock.negativeInstances = []
 
+        InputBlock._isVisible = true
         InputBlock.particlesNeedUpdate = 0
     }
 
@@ -56,5 +71,17 @@ class InputBlock extends Block{
             transparent: false,
             alphaTest: 0.1
         })
+    }
+
+    static get isVisible() {
+        return InputBlock._isVisible
+    }
+
+    static set isVisible(boolean) {
+        if (InputBlock._isVisible === boolean) return
+        InputBlock._isVisible = boolean
+        InputBlock.positiveInstances.forEach( qubit => qubit.object.visible = boolean)
+        InputBlock.negativeInstances.forEach( qubit => qubit.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
     }
 }
