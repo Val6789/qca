@@ -61,11 +61,11 @@ class IntroScene {
 
     async start() {
         this._setupScene()
-        //await this._welcomeScene()
+        await this._welcomeScene()
         this.doTutorial = await this._choiceScene()
         if (this.doTutorial) {
-            //await this._electronScene()
-            //await this._dotScene()
+            await this._electronScene()
+            await this._dotScene()
             await this._qubitScene()
         }
         this._deleteScene()
@@ -83,10 +83,11 @@ class IntroScene {
     }
 
     _welcomeScene() {
+        const speed = 1
         return new Promise((resolve) => {
             // Camera movement
             let camPos = this._camera.position
-            TweenLite.to(camPos, 5, {
+            TweenLite.to(camPos, 4 / speed, {
                 x: "+=4",
                 onUpdate: this.UPDATE_FUNCTION,
                 onComplete: resolve
@@ -94,10 +95,13 @@ class IntroScene {
 
             // Timeline
             let timeline = new TimelineLite()
+            this.timeline = timeline
+            timeline.timeScale(speed)
             const rotation = new THREE.Vector3(-4, 0, 0)
-            const TIMER_SPACE = 0.3
-            let timing = 1
+            const TIMER_SPACE = 0.2 / speed
+            let timing = 0.6
             let texts = []
+            this.texts = texts
             const lineDisplay = (startY, startZ, line) => {
                 line = line.split(" ")
                 let y = startY
@@ -112,26 +116,15 @@ class IntroScene {
                 }
             }
 
-            const clearTexts = () => {
-                timing += 1
-                timeline.to(texts[0].material, 1, {
-                    opacity: 0,
-                    onComplete: () => {
-                        for (let i = 0; i < texts.length; i++) {
-                            this._scene.remove(texts[i])
-                        }
-                    }
-                }, timing)
-            }
-
             // Fist two lines
-            lineDisplay(1.3, -0.35, "Hello")
-            lineDisplay(0.8, -0.85, "Welcome to")
-            lineDisplay(-0.9, -1.15, "QCA Simulator")
-            clearTexts()
-            timeline.eventCallback("onComplete", () => {
-                setTimeout(resolve, 1000)
-            })
+            lineDisplay(1.4, -0.35, "Hello")
+            lineDisplay(0.9, -0.85, "Welcome to")
+            lineDisplay(0.4, -1.15, "QCA Simulator")
+            timeline.to({}, 0, {
+                onComplete: () => {
+                    resolve()
+                }
+            }, 1.5)
 
         })
     }
@@ -140,7 +133,22 @@ class IntroScene {
         return new Promise(async (resolve) => {
             ToolboxControllerInstance.revealChoice()
             let choice = await ToolboxControllerInstance.choiceClick()
+
+            // Hide
             ToolboxControllerInstance.hideChoice()
+            
+            let texts = this.texts
+            TweenLite.to(texts[0].material, 0.4, {
+                opacity: 0,
+                onUpdate: this.UPDATE_FUNCTION,
+                onComplete: () => {
+                    for (let i = 0; i < texts.length; i++) {
+                        this._scene.remove(texts[i])
+                    }
+                    delete this.texts
+                }
+            })
+
             if (choice === "tutorial") {
                 resolve(true)
             } else if (choice === "sandbox") {
@@ -216,7 +224,7 @@ class IntroScene {
             // Clean
             this._electrons.clean()
             this._dots.clean()
-            
+
             // Text
             ToolboxControllerInstance.setInfoHolderTitle("Qubit")
             ToolboxControllerInstance.revealInfoHolder()
@@ -245,25 +253,25 @@ class IntroScene {
             // Text 2            
             const json2 = AssetManager.Get().json.qubitIntro2
             await this._displayJSON(json2)
-            
+
             // Display the 1
             qubit.polarity = 1
             this.UPDATE_FUNCTION()
             ToolboxControllerInstance.setInfoHolderTitle("State 1")
             await this._paragraphCallBack()
-            
-            
+
+
             // Display the 0
             qubit.polarity = -1
             this.UPDATE_FUNCTION()
             ToolboxControllerInstance.setInfoHolderTitle("State 0")
             await this._paragraphCallBack()
-            
+
             // Basic
             qubit.polarity = 0
             this.UPDATE_FUNCTION()
 
-            
+
             // Text 3
             ToolboxControllerInstance.setInfoHolderTitle("Qubit")
             const json3 = AssetManager.Get().json.qubitIntro3
