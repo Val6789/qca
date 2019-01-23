@@ -13,7 +13,7 @@ const AssetManager = (function () {
         presets: {}
     }
     const baseDir = "assets/"
-    const presets = ["not", "simple", "majority"]
+    const presets = ["simple", "not", "majority"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {

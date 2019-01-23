@@ -307,7 +307,6 @@ class ToolboxController {
                 this._setToolWithId("get-camera")
                 break
             case 9: // Tab
-                console.log(ToolboxController.buttonIdList.indexOf(this.currentToolSelected),this.currentToolSelected)
                 this._setToolWithId(ToolboxController.buttonIdList[(ToolboxController.buttonIdList.indexOf(this.currentToolSelected)+1)%ToolboxController.buttonIdList.length])
                 event.stopPropagation()
                 event.preventDefault()

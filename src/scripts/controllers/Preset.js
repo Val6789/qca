@@ -40,7 +40,6 @@ class Preset {
         while (i < this.presetDescription.length) {
             let qubitPosition = new THREE.Vector3(this.presetDescription[i].x, this.presetDescription[i].y, this.presetDescription[i].z)
             if (automata.getQubit(qubitPosition)) {
-                throw console.err("Not enough space for this preset")
                 return false
             }
             i++

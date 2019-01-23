@@ -1,12 +1,3 @@
-@font-face {
-    font-family: "generica";
-    src:url("../assets/fonts/Generica.otf");
-}
-@font-face {
-    font-family: "genericabold";
-    src:url("../assets/fonts/GenericaBold.otf");
-}
-
 /* Activities */
 .activities {
     position: relative;
@@ -42,7 +33,8 @@
     min-height: 8em;
     text-align: center;
 
-    font-family: genericabold;
+    font-family: arial;
+    font-weight:bold;
     text-transform: uppercase;
     cursor:pointer;
 
@@ -70,9 +62,6 @@
     transition: visibility 200ms, opacity 200ms;
 
     visibility: hidden;
-    opacity: 0;
-    
-    backdrop-filter: blur(5px); /* <- Works only on recent Chrome/Webkit */
     font-family: arial;
     position: fixed;
     top: 10vw;
@@ -144,7 +133,8 @@
 
 .drawer-header * {
     font-size: 1.7rem;
-    font-family:genericaBold;
+    font-family:arial;
+    font-weight:bold;
 }
 
 .drawer-main {
