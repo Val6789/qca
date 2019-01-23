@@ -1,3 +1,10 @@
+/*
+    global Qubit
+*/
+/*
+    exported OutputBlock
+*/
+
 class OutputBlock extends Qubit {
 
     remove() {

@@ -4,16 +4,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" type="image/png" href="assets/buttons/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="assets/buttons/favicon.png" />
 
     <title>QCA | Quantum Cellular Automata</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Styles -->
     <link rel="stylesheet" href="./styles/reset.css">
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/activities.css">
     <link rel="stylesheet" href="./styles/achievements.css">
     <link rel="stylesheet" href="./styles/control-strip.css">
+    <link rel="stylesheet" href="./styles/info-holder.css">
     <link rel="stylesheet" href="./styles/joystick-controls.css">
     <link rel="stylesheet" href="./styles/layer-selector.css">
     <link rel="stylesheet" href="./styles/time-control.css">
@@ -21,11 +23,16 @@
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
     <script type="text/javascript" src="./scripts/lib/OrbitControls.js"></script>
+
     <link rel="stylesheet" href="../node_modules/izitoast/dist/css/iziToast.min.css">
     <script type="text/javascript" src="../node_modules/izitoast/dist/js/iziToast.min.js"></script>
+    <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/TweenLite.js"></script>
+    <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/TimelineLite.js"></script>
+
 
 
     <!-- Scripts -->
+    <script src="./scripts/Utils.js"></script>
     <script src="./scripts/AchievementManager.js"></script>
     <script src="./scripts/Preset.js"></script>
     <script src="./scripts/AssetManager.js"></script>
@@ -38,6 +45,7 @@
     <script src="./scripts/ParticleSystem.js"></script>
     <script src="./scripts/Grid.js"></script>
     <script src="./scripts/Skybox.js"></script>
+    <script src="./scripts/IntroScene.js"></script>
     <script src="./scripts/Dot.js"></script>
     <script src="./scripts/Electron.js"></script>
     <script src="./scripts/Block.js"></script>
@@ -57,17 +65,19 @@
 
     <!-- LOADING SCREEN -->
     <div class="loading-overlay" id="loading-overlay">
-            <svg class="loading-spinner" width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <g id="Qubit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Group" transform="translate(23.763742, 23.616018) rotate(-17.000000) translate(-23.763742, -23.616018) translate(4.840665, 4.597150)" stroke="#FFFFFF" stroke-width="2">
-                        <rect id="Rectangle" x="6.46153846" y="6.33962264" width="24.9230769" height="24.4528302"></rect>
-                        <ellipse id="Oval" fill="#000000" cx="6.92307692" cy="6.79245283" rx="5.92307692" ry="5.79245283"></ellipse>
-                        <ellipse id="Oval-Copy-2" fill="#000000" cx="30.9230769" cy="6.79245283" rx="5.92307692" ry="5.79245283"></ellipse>
-                        <ellipse id="Oval-Copy" fill="#000000" cx="6.92307692" cy="31.245283" rx="5.92307692" ry="5.79245283"></ellipse>
-                        <ellipse id="Oval-Copy-3" fill="#000000" cx="30.9230769" cy="31.245283" rx="5.92307692" ry="5.79245283"></ellipse>
-                    </g>
+        <svg class="loading-spinner" width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="Qubit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Group" transform="translate(23.763742, 23.616018) rotate(-17.000000) translate(-23.763742, -23.616018) translate(4.840665, 4.597150)"
+                    stroke="#FFFFFF" stroke-width="2">
+                    <rect id="Rectangle" x="6.46153846" y="6.33962264" width="24.9230769" height="24.4528302"></rect>
+                    <ellipse id="Oval" fill="#000000" cx="6.92307692" cy="6.79245283" rx="5.92307692" ry="5.79245283"></ellipse>
+                    <ellipse id="Oval-Copy-2" fill="#000000" cx="30.9230769" cy="6.79245283" rx="5.92307692" ry="5.79245283"></ellipse>
+                    <ellipse id="Oval-Copy" fill="#000000" cx="6.92307692" cy="31.245283" rx="5.92307692" ry="5.79245283"></ellipse>
+                    <ellipse id="Oval-Copy-3" fill="#000000" cx="30.9230769" cy="31.245283" rx="5.92307692" ry="5.79245283"></ellipse>
                 </g>
-            </svg>
+            </g>
+        </svg>
         <div>
             Loading..
         </div>
@@ -117,6 +127,7 @@
     </nav>
 
 
+
     <header class="control-strip">
         <nav class="toolbox">
             <button class="tool active" alt="Control Camera" id="get-camera" title="Mode camera">
@@ -155,28 +166,45 @@
 
     <nav class="camera-controls">
 
-            <!-- camera controls -->
+        <!-- camera controls -->
         <input class="zoom-control" type="range" id="zoom-control" min="1" max="25">
         <button class="pan-control" id="joystick-control">
             <!-- Inline svg solves issue with selection on touch devices -->
-            <svg style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
-                 unselectable="on"
-                 onselectstart="return false;"
-                 width="128"
-                 height="128"
-                 xmlns="http://www.w3.org/2000/svg">
-                 <g fill="none" fill-rule="evenodd"><circle fill="#FFF" cx="64" cy="64" r="3"/><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M47.42 16.5L64 .5M80.58 16.5L64 .5"/></g><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M47.42 111.5l16.58 16M80.58 111.5L64 127.5"/></g><g stroke="#FFF" stroke-linecap="square" stroke-width="2"><path d="M111.5 47.42l16 16.58M111.5 80.58l16-16.58"/><g><path d="M16.5 47.42L.5 64M16.5 80.58L.5 64"/></g></g></g>
+            <svg style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"
+                unselectable="on" onselectstart="return false;" width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                    <circle fill="#FFF" cx="64" cy="64" r="3" />
+                    <g stroke="#FFF" stroke-linecap="square" stroke-width="2">
+                        <path d="M47.42 16.5L64 .5M80.58 16.5L64 .5" />
+                    </g>
+                    <g stroke="#FFF" stroke-linecap="square" stroke-width="2">
+                        <path d="M47.42 111.5l16.58 16M80.58 111.5L64 127.5" />
+                    </g>
+                    <g stroke="#FFF" stroke-linecap="square" stroke-width="2">
+                        <path d="M111.5 47.42l16 16.58M111.5 80.58l16-16.58" />
+                        <g>
+                            <path d="M16.5 47.42L.5 64M16.5 80.58L.5 64" />
+                        </g>
+                    </g>
+                </g>
             </svg>
         </button>
     </nav>
 
     <!-- 3D VIEWPORT -->
     <main id="viewport" class="viewport">
-		<div id="axis"></div>
+        <div id="axis"></div>
     </main>
     </header>
 
-    <aside class="activities active" id="activities">
+    <aside id="info-holder" class="info-holder-hidden">
+        <h4>Title of the info</h4>
+        <div id="info-holder-text"></div>
+        <span>Next</span>
+    </aside>
+
+    <aside class="
+        activities active" id="activities">
         <nav class="activity-tabs">
             <div id="selectors">
                 <button class="hide-activities" id="toggle-activity-tab">
@@ -198,10 +226,11 @@
 
                     <div class="drawer-header">
                         <h3>Demos</h3>
-                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
+                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
-						demos !
+                        demos !
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="btn">close</label>
@@ -213,7 +242,8 @@
                 <div id="drawer-tutorial" class="drawer">
                     <div class="drawer-header">
                         <h3>Tutorial</h3>
-                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
+                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                         <p>This is the main</p>
@@ -233,7 +263,8 @@
                 <div id="drawer-mission" class="drawer">
                     <div class="drawer-header">
                         <h3>Missions</h3>
-                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
+                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                         <p>This is the main</p>
@@ -253,7 +284,8 @@
                 <div id="drawer-achievement" class="drawer">
                     <div class="drawer-header">
                         <h3>Achievements</h3>
-                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
+                        <label for="no-drawer-check" class="btn drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                         <p>Try to complete all thoses achievements !</p>
@@ -269,7 +301,7 @@
                         <label for="no-drawer-check" class="btn">close</label>
                     </div>
                 </div>
-                
+
                 <input class="activity-check" type="radio" id="settings-check" name="tab" />
                 <div id="drawer-settings" class="drawer">
                     <div class="drawer-header">
@@ -289,4 +321,5 @@
         </nav>
     </aside>
 </body>
+
 </html>

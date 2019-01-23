@@ -1,3 +1,8 @@
+/*
+    exported 
+    Block
+*/
+
 /**
  * @class Block
  * 
@@ -5,7 +10,7 @@
  * A box with a label on it.
  * Super-class of Qubit and InputBlock
  */
-class Block {
+class Block {
     /**
      * @public @property @readonly
      * @brief Block position computed value
@@ -22,7 +27,7 @@ class Block {
     remove() {
         ThreeViewControllerInstance.removeObjectFromScene(this.object) // will call a render
     }
-    
+
     /**
      * @public @method
      * @brief Sets the text on the label floating above the box
@@ -35,7 +40,9 @@ class Block {
         // because we can't update an existing TextGeometry's text, we need to delete and create it again
         this.object.remove(this.object.getObjectByName("ValueText"))
 
-        var lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+        var lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff
+        })
 
         this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
             font: AssetManager.Get().fonts.optimer,
@@ -53,12 +60,14 @@ class Block {
         // calls render to show the new text
         ThreeViewControllerInstance.shouldRender()
     }
-    
+
     setSublabel(text) {
         // because we can't update an existing TextGeometry's text, we need to delete and create it again
         this.object.remove(this.object.getObjectByName("SubLabel"))
 
-        var lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+        var lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff
+        })
 
         this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
             font: AssetManager.Get().fonts.optimer,
@@ -82,7 +91,7 @@ class Block {
     }
 
     fixe() {
-        this.fixed = true;
+        this.fixed = true
     }
 
 
@@ -93,12 +102,14 @@ class Block {
      */
     constructor(position) {
         // defines box properties
-        var lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
-        
+        var lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff
+        })
+
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
-        this.fixed = false;
+        this.fixed = false
 
         // makes sure the position is an integer
         position.round()

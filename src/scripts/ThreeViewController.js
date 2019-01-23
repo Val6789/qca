@@ -3,6 +3,7 @@
     THREE
     Skybox
     Axis
+    IntroScene
  */
 /* 
     exported 
@@ -79,10 +80,11 @@ class ThreeViewController {
         this.shouldRender()
     }
 
-    addLayer(scene, camera) {
+    addLayer(name, scene, camera) {
         let layer = {
-            scene: scene,
-            camera: camera,
+            name,
+            scene,
+            camera,
             active: true
         }
         this._layers.push(layer)
@@ -120,16 +122,20 @@ class ThreeViewController {
 
         // init members
         this._createLayers()
-        this._setSkybox()
+
+        // Add common scene, camera and control
         this._setScene()
         this._setCamera()
-        this.addLayer(this._scene, this._camera)
+        this._setSkybox()
+        this._axis = new Axis(this._camera)
         this._setRenderer()
         this._setOrbit()
-        setLightmode(false)
+
+        this._setIntro()
+            .then(this._afterIntro())
 
         // add axes
-        this._axis = new Axis(this._camera)
+        GUIinstance.setLightmode(false)
     }
 
 
@@ -139,11 +145,11 @@ class ThreeViewController {
     _render() {
         this._onRenderObservers.forEach(callback => callback())
 
-        this._renderer.render(this._scene, this._camera)
-        this._axis.render(this._camera, this._orbit)
+        this._axis.update(this._camera, this._orbit)
+        this._axis.render()
 
         this._layers.forEach((l) => {
-            if (!l.active) 
+            if (!l.active)
                 return
             try {
                 this._renderer.render(l.scene, l.camera)
@@ -152,7 +158,6 @@ class ThreeViewController {
                 console.error(e)
             }
         })
-
 
     }
 
@@ -189,8 +194,8 @@ class ThreeViewController {
 
         this._camera = new THREE.PerspectiveCamera(fieldOfView, 1, nearField, farField)
 
-        this._camera.position.z = 5
-        this._camera.position.y = 8
+        this._camera.position.set(-8, 0, 0)
+        this._camera.lookAt(new THREE.Vector3(0, 0, 0))
 
         // update camera and render when user resizes the window
         window.addEventListener("resize", () => {
@@ -214,7 +219,9 @@ class ThreeViewController {
         const viewportElementId = "viewport"
 
         // set renderer
-        this._renderer = new THREE.WebGLRenderer({ antialias: true })
+        this._renderer = new THREE.WebGLRenderer({
+            antialias: true
+        })
         this._renderer.setPixelRatio(window.devicePixelRatio)
         this._renderer.autoClear = false
 
@@ -235,7 +242,7 @@ class ThreeViewController {
 
         // render on camera movements
         this._orbit.addEventListener("change", () => {
-            this._render()
+            this.shouldRender()
         })
     }
 
@@ -244,9 +251,49 @@ class ThreeViewController {
      */
     _setSkybox() {
         this._skybox = new Skybox()
-        this.addLayer(this._skybox.scene, this._skybox.camera)
+        this.addLayer("Skybox", this._skybox.scene, this._skybox.camera)
     }
 
+
+    /**
+     * @brief Create IntroScene
+     */
+    _setIntro() {
+        this._orbit.enabled = false
+        return new Promise((resolve) => {
+
+            let intro = new IntroScene(resolve)
+            intro.setCamera(this._camera)
+
+            let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
+            intro.setLayer(layer)
+
+            intro.start()
+        })
+    }
+
+    _afterIntro() {
+        return () => {
+
+            this._layers.pop()
+            this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
+            this.shouldRender()
+            let center = new THREE.Vector3(0, 0, 0)
+            TweenLite.to(this._camera.position, 1, {
+                x: -8,
+                y: 5,
+                z: -3,
+                onUpdate: () => {
+                    this._camera.lookAt(center)
+                    this._render()
+                },
+                onComplete: () => {
+                    this._orbit.enabled = true
+                    this._orbit.update()
+                }
+            })
+        }
+    }
 
     /**
      * @brief Singleton constructor
