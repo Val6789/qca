@@ -17,8 +17,9 @@
     <link rel="stylesheet" href="./styles/control-strip.css">
     <link rel="stylesheet" href="./styles/info-holder.css">
     <link rel="stylesheet" href="./styles/joystick-controls.css">
-    <link rel="stylesheet" href="./styles/layer-selector.css">
-    <link rel="stylesheet" href="./styles/time-control.css">
+    <!--<link rel="stylesheet" href="./styles/layer-selector.css">
+    <link rel="stylesheet" href="./styles/time-control.css">-->
+    <link rel="stylesheet" href="./styles/top-control-bar.css">
 
     <!-- Librairies -->
     <script type="text/javascript" src="../node_modules/three/build/three.js"></script>
@@ -86,46 +87,47 @@
     <!-- HEADER AND NAVBAR -->
     <h1 class="title">Quantum cellular automata simulator</h1>
 
-    <nav class="time-buttons">
-        <button class="time-button" alt="Slower" id="slow-button" title="slower">
-            <img src="assets/buttons/playx2.png" class="time-button-icon" id="slow-button-icon">
-            Slower
-        </button>
-        <button class="time-button" alt="Play/Pause simulation" id="play-button" title="play / pause">
-            <img src="assets/buttons/pause.png" class="time-button-icon" id="pause-button-icon">
-            <img src="assets/buttons/play.png" class="time-button-icon" id="play-button-icon">
-            Play
-        </button>
-        <button class="time-button" alt="Faster" id="fast-button" title="faster">
-            <img src="assets/buttons/playx3.png" class="time-button-icon" id="fast-button-icon">
-            Faster
-        </button>
-    </nav>
+    <div id="top-control-bar">
+        <nav class="control-bar-mini">
+            <button class="button-mini" alt="Slower" id="slow-button" title="slower">
+                <img src="assets/buttons/playx2.png" class="button-mini-icon" id="slow-button-icon">
+                Slower
+            </button>
+            <button class="button-mini" alt="Play/Pause simulation" id="play-button" title="play / pause">
+                <img src="assets/buttons/pause.png" class="button-mini-icon" id="pause-button-icon">
+                <img src="assets/buttons/play.png" class="button-mini-icon" id="play-button-icon">
+                Play
+            </button>
+            <button class="button-mini" alt="Faster" id="fast-button" title="faster">
+                <img src="assets/buttons/playx3.png" class="button-mini-icon" id="fast-button-icon">
+                Faster
+            </button>
+        </nav>
 
-    <nav class="history">
-        <button class="history-button" alt="Slower" id="undo-button" title="undo">
-            <img src="assets/buttons/undo.png" class="time-button-icon">
-        </button>
-        <button class="history-button" alt="Faster" id="redo-button" title="redo">
-            <img src="assets/buttons/redo.png" class="time-button-icon">
-        </button>
-    </nav>
+        <nav class="control-bar-mini">
+            <button class="button-mini" alt="Slower" id="undo-button" title="undo">
+                <img src="assets/buttons/undo.png" class="button-mini-icon">
+            </button>
+            <button class="button-mini" alt="Faster" id="redo-button" title="redo">
+                <img src="assets/buttons/redo.png" class="button-mini-icon">
+            </button>
+        </nav>
 
-    <nav class="layers">
-        <label class="layer-toggle">
-            <img class="layer-toggle-icon" alt="Qubit values" src="assets/buttons/qubit_layer.png">
-            <input class="layer-checkbox" type="checkbox" id="show-qubit" checked />
-        </label>
-        <label class="layer-toggle">
-            <img class="layer-toggle-icon" alt="Electrons" src="assets/buttons/electron_layer.png">
-            <input class="layer-checkbox" type="checkbox" id="show-electrons" checked />
-        </label>
-        <label class="layer-toggle">
-            <img class="layer-toggle-icon" alt="Charge Fields" src="assets/buttons/influence_layer.png">
-            <input class="layer-checkbox" type="checkbox" id="show-influence" checked />
-        </label>
-    </nav>
-
+        <nav class="control-bar-mini">
+            <label class="button-mini">
+                <img class="layer-toggle-icon button-mini-icon" alt="Qubit values" src="assets/buttons/qubit_layer.png">
+                <input class="layer-checkbox" type="checkbox" id="show-qubit" checked />
+            </label>
+            <label class="button-mini">
+                <img class="layer-toggle-icon button-mini-icon" alt="Electrons" src="assets/buttons/electron_layer.png">
+                <input class="layer-checkbox" type="checkbox" id="show-electrons" checked />
+            </label>
+            <label class="button-mini">
+                <img class="layer-toggle-icon button-mini-icon" alt="Charge Fields" src="assets/buttons/influence_layer.png">
+                <input class="layer-checkbox" type="checkbox" id="show-influence" checked />
+            </label>
+        </nav>
+    </div>
 
 
     <header class="control-strip">

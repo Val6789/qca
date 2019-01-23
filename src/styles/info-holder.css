@@ -43,7 +43,9 @@
 
 #info-holder-text p {
     animation: enter 200ms ease-in;
-    line-height:0.5em;
+    line-height:1.2em;
+    margin-top:2px;
+    margin-bottom:2px;
 }
 
 #info-holder span {
