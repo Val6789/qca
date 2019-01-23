@@ -65,14 +65,18 @@ class QuantumAutomata {
         // check if cell is set
         const hash = QuantumAutomata._positionHash(position)
         if(!this._qubitMap.has(hash)) return
+        const block = this._qubitMap.get(hash)
+
+        if (block instanceof InputBlock) return
+        if (block instanceof OutputBlock) return
 
         // check for pending bridge
         if (Bridge.pending)
-            Bridge.pending.setDestination(this._qubitMap.get(hash))
+            Bridge.pending.setDestination(block)
 
         // initiate bridge
         else
-            this._bridges.add(new Bridge(this._qubitMap.get(hash)))
+            this._bridges.add(new Bridge(block))
     }
 
 
