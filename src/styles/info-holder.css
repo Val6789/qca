@@ -1,7 +1,7 @@
 #info-holder {
     position: fixed;
-    top: 65vw;
-    bottom: 10vw;
+    top: 55vh;
+    bottom: 14vh;
     left: 10vw;
     right: 10vw;
 
@@ -22,6 +22,9 @@
     opacity: 1;
 
     transition: opacity 400ms ease-in-out;
+
+    font-family:arial;
+    z-index:2;
 }
 
 #info-holder.info-holder-hidden {
@@ -35,17 +38,20 @@
 
 #info-holder-text {
     flex-grow: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #info-holder-text p {
     animation: enter 200ms ease-in;
+    line-height:0.5em;
 }
 
 #info-holder span {
+    position:absolute;
+    bottom:5px;
+    right:5px;
     align-self: flex-end;
-    cursor: pointer;
-    text-decoration: underline;
+    margin:5px;
     order: 999;
 }
 
