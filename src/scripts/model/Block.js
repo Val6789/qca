@@ -22,12 +22,12 @@ class Block {
     remove() {
         ThreeViewControllerInstance.removeObjectFromScene(this.object) // will call a render
     }
-    
+
     /**
      * @public @method
      * @brief Sets the text on the label floating above the box
-     * @param {String} text 
-     * 
+     * @param {String} text
+     *
      * Expensive operation requiring destruction and reinstantiation of the label
      * Will ncall a render
      */
@@ -53,7 +53,7 @@ class Block {
         // calls render to show the new text
         ThreeViewControllerInstance.shouldRender()
     }
-    
+
     setSublabel(text) {
         // because we can't update an existing TextGeometry's text, we need to delete and create it again
         this.object.remove(this.object.getObjectByName("SubLabel"))
@@ -93,7 +93,16 @@ class Block {
      */
     constructor(position) {
         // defines box properties
-        var lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+        const boxmaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x000000,
+            transparent: true,
+            opacity: Block.QUBIT_OPACITY,
+            blendEquation: THREE.MultiplyBlending,
+            depthTest: true,
+            depthWrite: false,
+            depthFunc: THREE.NeverDepth
+        })
 
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
@@ -105,11 +114,10 @@ class Block {
 
         // creates the box
         this.object = new THREE.LineSegments(edgesGeometry, lineMaterial)
+        this.object.add(new THREE.Mesh(cubeGeometry, boxmaterial))
 
         // moves the box
-        this.object.translateX(position.x)
-        this.object.translateY(position.y)
-        this.object.translateZ(position.z)
+        this.object.position.copy(position)
 
         // adds box to position
         ThreeViewControllerInstance.addObjectToScene(this.object)
@@ -122,3 +130,4 @@ class Block {
  */
 Block.QUBIT_SIZE = 0.8
 Block.QUBIT_THICK = 0.3
+Block.QUBIT_OPACITY = 0.4

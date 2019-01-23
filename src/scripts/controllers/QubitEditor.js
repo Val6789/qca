@@ -76,6 +76,7 @@ class QubitEditor {
         this._yColumn.position.copy(this.cursor.position)
         this._yColumn.scale.y = Math.ceil(this.cursor.position.y - QubitEditor.CURSOR_HEIGHT / 2)
         this._yColumn.position.y = (this.cursor.position.y) / 2 - QubitEditor.CURSOR_HEIGHT / 2
+        this._yColumn.visible = this._yColumn.scale.y != 0
     }
 
     _wheelHandler(event) {
