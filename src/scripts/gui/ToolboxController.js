@@ -2,7 +2,6 @@
     global
     QubitEditor
     AppController
-    Qubit
     DragAndDropControls
     OverlaySelector
     JoystickCameraControls
@@ -14,6 +13,8 @@
 */
 
 class ToolboxController {
+    
+    
     // Tool buttons //
 
     // =================== Info Holder ===================
@@ -63,21 +64,27 @@ class ToolboxController {
         this.$infoHolder.children[2].onclick = callback
     }
 
-    // =================== Controls ===================
-    revealControls() {
-        if (!this.$controls)
-            this.$controls = document.querySelector("nav.camera-controls")
-
-        this.$controls.classList.remove("hidden")
+    // =================== UI ===================
+    revealUI() {
+        if (!this.$ui)
+            this.$ui = document.querySelectorAll(".ui")
+        this.$ui.forEach(ui => {
+            ui.classList.remove("hidden")            
+        })
     }
 
-    hideControls() {
-        if (!this.$controls)
-            this.$controls = document.querySelector("nav.camera-controls")
-
-        this.$controls.classList.add("hidden")
+    hideUI() {
+        if (!this.$ui)
+            this.$ui = document.querySelectorAll(".ui")
+        
+        this.$ui.forEach(ui => {
+            ui.classList.add("hidden")            
+        })
 
     }
+    
+    
+    // =================== OTHER ===================
 
     _setButton(id, callback) {
         var button = document.getElementById(id)

@@ -64,6 +64,9 @@
 
 .hidden {
     display: none;
+    visibility: hidden;
+    transition: all 0s linear;
+    opacity: 0;
 }
 
 .btn {

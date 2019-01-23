@@ -5,6 +5,7 @@
     ParticleSystem
     TweenLite
     TimelineLite
+    ToolboxControllerInstance
 */
 /* 
     exported 
@@ -30,21 +31,16 @@ class IntroScene {
             opacity: 1
 
         })
-        const size = 0.25
         this.TEXT_GEOMETRY_OPTIONS = {
             font: AssetManager.Get().fonts.optimer,
-            size: size,
+            size: 0.25,
             height: 0.1,
             curveSegments: 8,
             bevelEnabled: false
         }
-
         this.UPDATE_FUNCTION = () => {
             ThreeViewControllerInstance.shouldRender()
         }
-
-        // Update GUI
-        ToolboxControllerInstance.hideControls()
 
     }
 
@@ -61,10 +57,18 @@ class IntroScene {
     }
 
     async start() {
+        this._setupScene()
         await this._welcomeScene()
         await this._electronScene()
         this._deleteScene()
         this.callbackDone()
+    }
+    
+    _setupScene() {
+
+        // Update GUI
+        ToolboxControllerInstance.hideUI()
+        
     }
 
     _welcomeScene() {
@@ -178,7 +182,7 @@ class IntroScene {
     }
 
     _deleteScene() {
-        ToolboxControllerInstance.revealControls()
+        ToolboxControllerInstance.revealUI()
         ToolboxControllerInstance.hideInfoHolder()
         Utils.doDispose(this._scene)
         this._particles._destructor()
