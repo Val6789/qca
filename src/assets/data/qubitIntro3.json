@@ -1,0 +1,9 @@
+[
+    [
+        "Most of the time, the Qubit state is unstable, we don't know in which state it is until we take a look at it.",
+        "This is inherently due to the <b>spin property</b> of particles. We can't know in which direction they spin until we measure it. And once we measure it, we change the way it's spinning.",
+        "This phenomenon is way more complex, it's one of the basic principle of <b>Quantum physics</b>, but here we won't get into details.",
+        "What you need to remember is that we need to measure the system to stop it and know in which state qubits are.",
+        "For this, we will need an observer : an <b>Output Block</b>"
+    ]
+]

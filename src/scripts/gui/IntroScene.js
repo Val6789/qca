@@ -64,8 +64,9 @@ class IntroScene {
         //await this._welcomeScene()
         this.doTutorial = await this._choiceScene()
         if (this.doTutorial) {
-            await this._electronScene()
-            await this._dotScene()
+            //await this._electronScene()
+            //await this._dotScene()
+            await this._qubitScene()
         }
         this._deleteScene()
         this.callbackDone()
@@ -150,15 +151,17 @@ class IntroScene {
 
     _electronScene() {
         return new Promise(async (resolve) => {
-            
+
             // UI
             ToolboxControllerInstance.revealInfoHolder()
             ToolboxControllerInstance.setInfoHolderTitle("Electron")
             const json = AssetManager.Get().json.electronIntro
-            
+
             // Text
             await this._displayJSON(json)
+
             // Clear
+            this._electrons.clean()
             resolve()
         })
 
@@ -168,7 +171,6 @@ class IntroScene {
         return new Promise(async (resolve) => {
             // Creation
             ToolboxControllerInstance.hideInfoHolder()
-            this._electrons.clean()
             let pos = new THREE.Vector3(0, 0, 0)
             this._dots.addAt(pos)
             let camPos = this._camera.position
@@ -181,10 +183,95 @@ class IntroScene {
             })
             ToolboxControllerInstance.setInfoHolderTitle("Dot")
             ToolboxControllerInstance.revealInfoHolder()
-            const json = AssetManager.Get().json.dotIntro
 
-            // Texte
+            // Text
+            const json = AssetManager.Get().json.dotIntro
             await this._displayJSON(json)
+
+            // Add an electron
+            this._electrons.addAt(pos)
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 0.2, {
+                    x: "-=1",
+                    onUpdate: this.UPDATE_FUNCTION,
+                    onComplete: littleResolve
+                })
+            })
+
+            // Second text
+            const json2 = AssetManager.Get().json.dotIntro2
+            await this._displayJSON(json2)
+
+            // Clean and resolve
+            this._electrons.clean()
+            this._dots.clean()
+            this.UPDATE_FUNCTION()
+            resolve()
+
+        })
+    }
+
+    _qubitScene() {
+        return new Promise(async (resolve) => {
+            // Clean
+            this._electrons.clean()
+            this._dots.clean()
+            
+            // Text
+            ToolboxControllerInstance.setInfoHolderTitle("Qubit")
+            ToolboxControllerInstance.revealInfoHolder()
+            const json = AssetManager.Get().json.qubitIntro
+            await this._displayJSON(json)
+
+            // Creation
+            ToolboxControllerInstance.hideInfoHolder()
+            let pos = new THREE.Vector3(0, 0, 0)
+            let qubit = new Qubit()
+            let camPos = this._camera.position
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 2, {
+                    x: 0,
+                    y: 4,
+                    z: 6,
+                    onUpdate: () => {
+                        this._camera.lookAt(pos)
+                        this.UPDATE_FUNCTION()
+                    },
+                    onComplete: littleResolve
+                })
+            })
+            ToolboxControllerInstance.revealInfoHolder()
+
+            // Text 2            
+            const json2 = AssetManager.Get().json.qubitIntro2
+            await this._displayJSON(json2)
+            
+            // Display the 1
+            qubit.polarity = 1
+            this.UPDATE_FUNCTION()
+            ToolboxControllerInstance.setInfoHolderTitle("State 1")
+            await this._paragraphCallBack()
+            
+            
+            // Display the 0
+            qubit.polarity = -1
+            this.UPDATE_FUNCTION()
+            ToolboxControllerInstance.setInfoHolderTitle("State 0")
+            await this._paragraphCallBack()
+            
+            // Basic
+            qubit.polarity = 0
+            this.UPDATE_FUNCTION()
+
+            
+            // Text 3
+            ToolboxControllerInstance.setInfoHolderTitle("Qubit")
+            const json3 = AssetManager.Get().json.qubitIntro3
+            await this._displayJSON(json3)
+
+
+            // Clean and resolve
+            qubit.remove()
             resolve()
 
         })
@@ -244,12 +331,12 @@ class IntroScene {
 
     async _displayJSON(json) {
         if (!json)
-            return
+            throw Error("No json:" + json)
 
         // Variables
         let lineLatency = 1000,
             timeout, endline
-        
+
         // Add line
         const addLine = (text) => {
             return new Promise(littleResolve => {

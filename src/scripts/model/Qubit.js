@@ -115,6 +115,7 @@ class Qubit extends Block {
         const removed = Qubit.instances.splice(Qubit.instances.indexOf(this), 1)[0]
         removed.dots.forEach(dot => dot.remove())
         removed.electrons.forEach(electron => electron.remove())
+        return this
     }
 
     /**

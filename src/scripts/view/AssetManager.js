@@ -126,6 +126,10 @@ const AssetManager = (function () {
     // JSON Intros 
     promises.push(readJSON("electronIntro"))
     promises.push(readJSON("dotIntro"))
+    promises.push(readJSON("dotIntro2"))
+    promises.push(readJSON("qubitIntro"))
+    promises.push(readJSON("qubitIntro2"))
+    promises.push(readJSON("qubitIntro3"))
 
     // JSON achievement
     promises.push(new Promise((resolve, reject) => {

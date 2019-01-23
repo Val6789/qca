@@ -1,0 +1,15 @@
+[
+    [
+        "Here is it !",
+        "It's one Qubit, composed of <b>4 dots</b> and <b>2 electrons</b> tunneling between the dots.",
+        "That Qubit will be the basic unit of quantum information. It's the quantum version of the classical binary bit (0 or 1).",
+        "The qubit can have 6 different states, but remember : \"<b>Electrons don't want to stay close to each others</b>\". That's why there is only 2 stable states:",
+        "When the electrons are into 2 diagonal dots"
+    ],
+    [
+        "Quick Recap :",
+        " - Electrons : Negatively charged particules repulsing each others.",
+        " - Dot : Container for an electron.",
+        " - Qubit : A brick of <b>4 dots</b> and <b>2 electrons</b> with only 2 stable states."
+    ]
+]

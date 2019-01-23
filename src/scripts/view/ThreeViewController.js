@@ -124,7 +124,6 @@ class ThreeViewController {
         this._createLayers()
 
         // Add common scene, camera and control
-        this._setScene()
         this._setCamera()
         this._setSkybox()
         this._axis = new Axis(this._camera)
@@ -144,9 +143,11 @@ class ThreeViewController {
      */
     _render() {
         this._onRenderObservers.forEach(callback => callback())
-
-        this._axis.update(this._camera, this._orbit)
-        this._axis.render()
+        
+        if (this._axis) {
+            this._axis.update(this._camera, this._orbit)
+            this._axis.render()
+        }
 
         this._layers.forEach((l) => {
             if (!l.active)
@@ -307,6 +308,8 @@ class ThreeViewController {
 
                 let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
                 intro.setLayer(layer)
+                
+                this._scene = intro._scene
 
                 intro.start()
             })
@@ -318,13 +321,19 @@ class ThreeViewController {
             if ( this._layers.length > 1) {
                 delete this._layers[1]
             }
+            
+            // Creation
+            this._setScene()
+            QubitEditorInstance.init()
+            
+            // Create the main layer
             this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
             this.shouldRender()
             let center = new THREE.Vector3(0, 0, 0)
             TweenLite.to(this._camera.position, 1, {
-                x: -8,
-                y: 5,
-                z: -3,
+                x: 4,
+                y: 7,
+                z: 5,
                 onUpdate: () => {
                     this._camera.lookAt(center)
                     this._render()
