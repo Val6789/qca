@@ -193,7 +193,7 @@ class Qubit extends Block {
      * The instance is owned by the class inside Qubit.instances
      * A render will be called on the next frame
      */
-    constructor(position = new THREE.Vector3(), polarity = 0, enableParticles = true) {
+    constructor(position = new THREE.Vector3(0,0,0), polarity = 0, enableParticles = true) {
         // Creates the box with a label
         super(position) // haha
 

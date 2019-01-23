@@ -36,11 +36,6 @@ class QubitEditor {
     updateCursor(screenX, screenY, wheelDelta = 0) {
         if (!this.grid) return
 
-        if (wheelDelta != 0) {
-            const gridOffset = Math.ceil(wheelDelta / 10)
-            this.grid.object.translateY(gridOffset)
-        }
-
         // get mouse position
         this.mouse.x = (screenX / window.innerWidth) * 2 - 1
         this.mouse.y = -(screenY/ window.innerHeight) * 2 + 1
@@ -61,25 +56,32 @@ class QubitEditor {
         // for that intersection
         if (intersection[0]) {
             // move the cursor there
-            let translation = intersection[0].point.sub(this.cursor.position).round()
-            this.cursor.translateX(translation.x)
-            this.cursor.translateY(translation.y)
-            this.cursor.translateZ(translation.z)
+            let translation = intersection[0].point
+            translation.y += this.cursor.position.y + wheelDelta
+            translation.sub(this.cursor.position).round()
+            this.cursor.position.add(translation)
         }
 
         // if the cursor changed, call for a render
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
+            this._updateYColumn()
+
             ThreeViewControllerInstance.shouldRender()
             return true
         }
         return false
     }
 
+    _updateYColumn() {
+        this._yColumn.position.copy(this.cursor.position)
+        this._yColumn.scale.y = Math.ceil(this.cursor.position.y - QubitEditor.CURSOR_HEIGHT / 2)
+        this._yColumn.position.y = (this.cursor.position.y) / 2 - QubitEditor.CURSOR_HEIGHT / 2
+    }
+
     _wheelHandler(event) {
         if (!this._mousePosition || this.canEdit === QubitEditor.canEditEnumeration.NOTHING) return
-        this.updateCursor(this._mousePosition.clientX, this._mousePosition.clientY, event.deltaY)
+        this.updateCursor(this._mousePosition.clientX, this._mousePosition.clientY, Math.sign(event.deltaY))
         event.stopPropagation()
-        console.log(event)
     }
 
     _mousemoveHandler(event) {
@@ -104,6 +106,7 @@ class QubitEditor {
     _makeCursor() {
         // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_HEIGHT, QubitEditor.CURSOR_SIZE)
+        let yColumnGeometry = new THREE.BoxGeometry(QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_SIZE, QubitEditor.CURSOR_SIZE)
 
         // makes a flat color material
         let cursormaterial = new THREE.LineBasicMaterial({
@@ -112,6 +115,8 @@ class QubitEditor {
 
         // Creates a contour of the box with the white material: that's our the cursor
         this.cursor = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
+        this._yColumn = new THREE.LineSegments(new THREE.EdgesGeometry(yColumnGeometry), cursormaterial)
+        ThreeViewControllerInstance.addObjectToScene(this._yColumn)
         ThreeViewControllerInstance.addObjectToScene(this.cursor)
     }
 
@@ -148,6 +153,8 @@ class QubitEditor {
 
         this._makeCursor()
         this._makeGrid()
+
+        this._updateYColumn()
     }
 
     constructor() {

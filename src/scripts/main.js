@@ -5,4 +5,6 @@ if (AppControllerInstance.isReady) AppControllerInstance.show()
 AppControllerInstance.init().then(() => {
     AppControllerInstance.startUpdateLoop()
     AppControllerInstance.ready()
+    let test = new BridgeQubit(new THREE.Vector3(0,0,0), 1)
 })
+
