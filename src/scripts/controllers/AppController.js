@@ -31,6 +31,7 @@ class AppController {
         AchievementManager.Get().obtained("missionOne")
         QubitEditorInstance.init()
         ToolboxControllerInstance.init()
+        DrawerControllerInstance.init()
     }
 
     init() {
