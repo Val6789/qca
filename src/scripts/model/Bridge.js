@@ -1,8 +1,8 @@
 class Bridge {
-    set destination(qubit) {
+    setDestination(qubit) {
         this.end = qubit
-        this._updateCurve(qubit.position)
-        Bridge.pending = undefined
+        this._updateCurve(this.end.position)
+        Bridge.pending = null
     }
 
     _updateCurve(endPosition) {
@@ -11,15 +11,14 @@ class Bridge {
         ThreeViewControllerInstance.addObjectToScene(this._spline)
     }
 
-    constructor(start) {
-        this.start = start
+    constructor(qubit) {
+        if (Bridge.pending) throw console.error("Cannot create new bridge while another is pending")
+        this.start = qubit
         this.end = undefined
         Bridge.pending = this
-
         QubitEditorInstance.callbackOnCursorMove(newposition => {
             if (!this.end) this._updateCurve(newposition)
         })
-
         this._updateCurve(QubitEditorInstance.cursor.position)
     }
 

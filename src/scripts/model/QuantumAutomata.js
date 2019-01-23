@@ -1,5 +1,11 @@
 class QuantumAutomata {
 
+    getOccupiedPositions() {
+        var values = new Array()
+        this._qubitMap.forEach(value => values.push(value))
+        return values.map(block => block.position)
+    }
+
     /**
      * @public @method
      * @param {THREE.Vector3} position 
@@ -9,7 +15,6 @@ class QuantumAutomata {
         return this._qubitMap.get(QuantumAutomata._positionHash(position))
     }
 
-    
     /**
      * @public @method
      * @param {THREE.Vector3} position 
@@ -18,10 +23,10 @@ class QuantumAutomata {
         return this._addBlock(new Qubit(position))
     }
 
-    
+
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      * @param {Boolean} State
      * @param {Number} State 0 or 1
      */
@@ -42,6 +47,25 @@ class QuantumAutomata {
         }
         return false
     }
+
+     /**
+     * @public @method
+     * @param {THREE.Vector3} position
+     */
+    makeBridge(position) {
+        // check if cell is set
+        const hash = QuantumAutomata._positionHash(position)
+        if(!this._qubitMap.has(hash)) return
+
+        // check for pending bridge
+        if (Bridge.pending)
+            Bridge.pending.setDestination(this._qubitMap.get(hash))
+
+        // initiate bridge
+        else
+            new Bridge(this._qubitMap.get(hash))
+    }
+
 
     reset() {
         this._qubitMap.forEach(qubit=>{

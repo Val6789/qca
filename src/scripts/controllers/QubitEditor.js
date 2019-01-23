@@ -31,6 +31,8 @@ class QubitEditor {
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
                 case QubitEditor.canEditEnumeration.REMOVE:
                     return AppControllerInstance.automata.removeBlock(this.cursor.position)
+                case QubitEditor.canEditEnumeration.BRIDGE:
+                    return AppControllerInstance.automata.makeBridge(this.cursor.position)
             }
         } catch (exception) {
             console.info(exception)
@@ -63,8 +65,20 @@ class QubitEditor {
             let translation = intersection[0].point
             translation.y += this.cursor.position.y + wheelDelta
             translation.sub(this.cursor.position).round()
+
             this.cursor.position.add(translation)
             this.cursor.position.y = Math.max(-QubitEditor.MAX_STACKING, Math.min(this.cursor.position.y, QubitEditor.MAX_STACKING))
+        }
+
+
+        if (this.isMagnetic && wheelDelta == 0) {
+            var closestBlockPosition = AppControllerInstance.automata.getOccupiedPositions().reduce((best, current) => {
+                if (!best) return current
+                if (this.cursor.position.distanceToSquared(best) > this.cursor.position.distanceToSquared(current)) return current
+                return best
+            }, false)
+
+            if (closestBlockPosition) this.cursor.position.copy(closestBlockPosition)
         }
 
         // if the cursor changed, call for a render
@@ -157,6 +171,7 @@ class QubitEditor {
         this.camera = ThreeViewControllerInstance.camera
         this.canEdit = QubitEditor.canEditEnumeration.NOTHING
         this.cursorMoveCallbacks = new Array()
+        this.isMagnetic = false
 
         this._makeCursor()
         this._makeGrid()
@@ -188,5 +203,6 @@ QubitEditor.canEditEnumeration = {
     POSITIVE_INPUT: 2,
     NEGATIVE_INPUT: 3,
     OUTPUT: 4,
-    REMOVE: 5
+    REMOVE: 5,
+    BRIDGE: 6
 }
