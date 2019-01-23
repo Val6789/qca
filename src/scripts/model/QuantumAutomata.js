@@ -97,35 +97,42 @@ class QuantumAutomata {
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
 
-        // this._startProcessFrom(block)
-        // this._applyProcessing()
+        this._startProcessFrom(block)
+        this._applyProcessing()
     }
 
     /**
      * @public @method
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      * @returns {Array<Qubit>} Array of qubits near the position
      */
-    getQubitNeighborsAround(startingPosition) {
-        const getPositionNeighbors = position => {
-            return QuantumAutomata._NEIGHBOR_MAP.reduce((accumulator, neighborRelativePosition) => {
-                const neighborPosition = (new THREE.Vector3()).addVectors(position, neighborRelativePosition)
-                const hash = QuantumAutomata._positionHash(neighborPosition)
-                if (this._qubitMap.has(hash))
-                    accumulator.push(this._qubitMap.get(hash))
-                return accumulator
-            }, [])
-        }
-
-        var neighbors = getPositionNeighbors(startingPosition)
-        this._bridges.forEach( bridge => {
-            const bridgedBlock = bridge.traverseIfIsAnEnterPoint(startingPosition)
-            if(bridgedBlock) neighbors = neighbors.concat(getPositionNeighbors(bridgedBlock.startingPosition))
-        })
-
-        return neighbors
+    getQubitNeighborsAround(position) {
+        return QuantumAutomata._NEIGHBOR_MAP.reduce((accumulator, neighborRelativePosition) => {
+            const neighborPosition = (new THREE.Vector3()).addVectors(position, neighborRelativePosition)
+            const hash = QuantumAutomata._positionHash(neighborPosition)
+            if (this._qubitMap.has(hash))
+                accumulator.push(this._qubitMap.get(hash))
+            return accumulator
+        }, [])
     }
 
+
+    /**
+     * @param {Qubit}
+     * @returns {Array<Qubit>} entangled qubits
+     */
+    getEntangledBlocks(sourceBlock) {
+        var entangledBlocks = new Array()
+        sourceBlock._checkedForEntenglement = true
+        this._bridges.forEach(bridge => {
+            const end = bridge.traverseIfIsAnEnterPoint(sourceBlock)
+            if (end && !end._checkedForEntenglement) {
+                entangledBlocks.push(end)
+                entangledBlocks = entangledBlocks.concat(this.getEntangledBlocks(end))
+            }
+        })
+        return entangledBlocks
+    }
 
     /**
      * @public @method
@@ -146,9 +153,10 @@ class QuantumAutomata {
     _applyProcessing() {
         this._qubitMap.forEach(qubit => {
             if (qubit instanceof Qubit) qubit.applyPolarityBuffer()
+            qubit._checkedForEntenglement = false
         })
     }
-    
+
 
     /**
      * @private @method

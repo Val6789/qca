@@ -142,7 +142,14 @@ class Qubit extends Block {
         const GAMMA = 1 // electron tunneling potential
         var sigmaPj = 0 // Sum of neighbors influences
 
-        automata.getQubitNeighborsAround(this.position).forEach(neighbor => {
+        var entangled = automata.getEntangledBlocks(this)
+
+        var neighbors = automata.getQubitNeighborsAround(this.position)
+        entangled.forEach(block => {
+            neighbors = neighbors.concat(automata.getQubitNeighborsAround(block.position))
+        })
+
+        neighbors.forEach(neighbor => {
             const ADJACENT_KINK = 1
             const DIAGONAL_KINK = -0.2
 
@@ -161,6 +168,12 @@ class Qubit extends Block {
 
         // balance saved for debugging purposes
         this.balance = numerator / Math.hypot(numerator, 1)
+
+        entangled.forEach( block => {
+            block.balance = this.balance
+            block._visited = true
+        })
+
         return this.balance
     }
 
