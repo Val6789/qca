@@ -14,6 +14,10 @@
 
 class QubitEditor {
 
+    callbackOnCursorMove(callback) {
+        this.cursorMoveCallbacks.push(callback)
+    }
+
     edit() {
         try {
             switch (this.canEdit) {
@@ -65,7 +69,7 @@ class QubitEditor {
         // if the cursor changed, call for a render
         if (this.cursor.visible != wasVisible || !this.cursor.position.equals(previousPosition)) {
             this._updateYColumn()
-
+            this.cursorMoveCallbacks.forEach( callback => callback(this.cursor.position))
             ThreeViewControllerInstance.shouldRender()
             return true
         }
@@ -151,6 +155,7 @@ class QubitEditor {
         this.mouse = new THREE.Vector2()
         this.camera = ThreeViewControllerInstance.camera
         this.canEdit = QubitEditor.canEditEnumeration.NOTHING
+        this.cursorMoveCallbacks = new Array()
 
         this._makeCursor()
         this._makeGrid()
