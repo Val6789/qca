@@ -65,8 +65,11 @@
 .hidden {
     display: none;
     visibility: hidden;
-    transition: all 0s linear;
     opacity: 0;
+}
+
+.hidden.no-transition {
+    transition: all 0s linear;   
 }
 
 .btn {

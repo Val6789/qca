@@ -8,6 +8,8 @@
     flex-wrap: nowrap;
     justify-content: space-around;
     
+    transition: all 200ms ease-in-out;
+    
 }
 
 .card {

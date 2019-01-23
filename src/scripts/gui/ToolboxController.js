@@ -13,9 +13,47 @@
 */
 
 class ToolboxController {
-    
-    
+
+
     // Tool buttons //
+    // =================== Choice Holder ===================
+
+    revealChoice() {
+        if (!this.$choiceHolder)
+            this.$choiceHolder = document.getElementById("choice-holder")
+
+        this.$choiceHolder.classList.remove("hidden")
+    }
+    
+    hideChoice() {
+        if (!this.$choiceHolder)
+            this.$choiceHolder = document.getElementById("choice-holder")
+
+        this.$choiceHolder.classList.add("hidden")
+    }
+    
+    choiceClick() {
+        if (!this.$choiceHolder)
+            this.$choiceHolder = document.getElementById("choice-holder")
+        const $tutorial = this.$choiceHolder.children.namedItem("choice-tutorial")
+        const $sandbox = this.$choiceHolder.children.namedItem("choice-sandbox")
+        
+        console.log($tutorial)
+        
+        let promises = [
+            new Promise((resolve) => {
+                $tutorial.onclick = () => {
+                    resolve("tutorial")
+                }
+            }),
+            new Promise((resolve) => {
+                $sandbox.onclick = () => {
+                    resolve("sandbox")
+                }
+            })
+        ]
+        return Promise.race(promises)
+    }
 
     // =================== Info Holder ===================
     hideInfoHolder() {
@@ -69,21 +107,21 @@ class ToolboxController {
         if (!this.$ui)
             this.$ui = document.querySelectorAll(".ui")
         this.$ui.forEach(ui => {
-            ui.classList.remove("hidden")            
+            ui.classList.remove("hidden")
         })
     }
 
     hideUI() {
         if (!this.$ui)
             this.$ui = document.querySelectorAll(".ui")
-        
+
         this.$ui.forEach(ui => {
-            ui.classList.add("hidden")            
+            ui.classList.add("hidden")
         })
 
     }
-    
-    
+
+
     // =================== OTHER ===================
 
     _setButton(id, callback) {
@@ -314,7 +352,7 @@ class ToolboxController {
                 this._setToolWithId("get-camera")
                 break
             case 9: // Tab
-                this._setToolWithId(ToolboxController.buttonIdList[(ToolboxController.buttonIdList.indexOf(this.currentToolSelected)+1)%ToolboxController.buttonIdList.length])
+                this._setToolWithId(ToolboxController.buttonIdList[(ToolboxController.buttonIdList.indexOf(this.currentToolSelected) + 1) % ToolboxController.buttonIdList.length])
                 event.stopPropagation()
                 event.preventDefault()
                 break
@@ -387,4 +425,4 @@ class ToolboxController {
 }
 
 const ToolboxControllerInstance = new ToolboxController()
-ToolboxController.buttonIdList = ["get-camera","negative-input","place-qubits","place-output","eraser"]
+ToolboxController.buttonIdList = ["get-camera", "negative-input", "place-qubits", "place-output", "eraser"]

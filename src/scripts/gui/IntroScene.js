@@ -17,10 +17,13 @@ class IntroScene {
         this.callbackDone = callbackDone
         this._scene = new THREE.Scene()
 
-        let pos = new THREE.Vector3(0, 0, 0)
-        this._particles = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
-        this._particles.addAt(pos)
-        this._scene.add(this._particles._particlesGroup)
+        // Create the electron Particles system
+        this._electrons = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
+        this._scene.add(this._electrons._particlesGroup)
+
+        // Create the dot
+        this._dots = new ParticleSystem([Dot._getSolidMaterial()])
+        this._scene.add(this._dots._particlesGroup)
 
         let light = new THREE.PointLight(0xffffff, 1, 100)
         light.position.set(-5, 0, 0)
@@ -58,18 +61,24 @@ class IntroScene {
 
     async start() {
         this._setupScene()
-        await this._welcomeScene()
-        await this._choiceScene()
-        await this._electronScene()
+        //await this._welcomeScene()
+        this.doTutorial = await this._choiceScene()
+        if (this.doTutorial) {
+            //await this._electronScene()
+            await this._dotScene()
+        }
         this._deleteScene()
         this.callbackDone()
     }
-    
+
     _setupScene() {
 
         // Update GUI
         ToolboxControllerInstance.hideUI()
-        
+
+        // Create the electron
+        let pos = new THREE.Vector3(0, 0, 0)
+        this._electrons.addAt(pos)
     }
 
     _welcomeScene() {
@@ -125,10 +134,17 @@ class IntroScene {
 
         })
     }
-    
+
     _choiceScene() {
         return new Promise(async (resolve) => {
             ToolboxControllerInstance.revealChoice()
+            let choice = await ToolboxControllerInstance.choiceClick()
+            ToolboxControllerInstance.hideChoice()
+            if (choice === "tutorial") {
+                resolve(true)
+            } else if (choice === "sandbox") {
+                resolve(false)
+            }
         })
     }
 
@@ -188,12 +204,38 @@ class IntroScene {
 
     }
 
+    _dotScene() {
+        return new Promise(async (resolve) => {
+            // Creation
+            ToolboxControllerInstance.hideInfoHolder()
+            this._electrons.clean()
+            let pos = new THREE.Vector3(0, 0, 0)
+            this._dots.addAt(pos)
+            let camPos = this._camera.position
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 2, {
+                    x: "+=2",
+                    onUpdate: this.UPDATE_FUNCTION,
+                    onComplete: littleResolve
+                })
+            })
+            ToolboxControllerInstance.setInfoHolderTitle("Dot")
+            ToolboxControllerInstance.revealInfoHolder()
+
+            //resolve()
+
+        })
+    }
+
     _deleteScene() {
         ToolboxControllerInstance.revealUI()
         ToolboxControllerInstance.hideInfoHolder()
         Utils.doDispose(this._scene)
-        this._particles._destructor()
-        AchievementManager.Get().obtained("tutorial")
+        this._electrons._destructor()
+
+        if (this.doTutorial) {
+            AchievementManager.Get().obtained("tutorial")
+        }
     }
 
     _createTextMesh(text, x, y, z) {
