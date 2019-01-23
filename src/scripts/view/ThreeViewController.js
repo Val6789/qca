@@ -126,7 +126,7 @@ class ThreeViewController {
         this.addLayer(this._scene, this._camera)
         this._setRenderer()
         this._setOrbit()
-        this._mainAxis()
+        // this._mainAxis()
         setLightmode(false)
 
         // add axes
