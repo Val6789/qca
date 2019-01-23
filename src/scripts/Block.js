@@ -94,7 +94,7 @@ class Block {
     constructor(position) {
         // defines box properties
         var lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
-        
+
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
@@ -108,6 +108,7 @@ class Block {
 
         // moves the box
         this.object.translateX(position.x)
+        this.object.translateY(position.y)
         this.object.translateZ(position.z)
 
         // adds box to position
