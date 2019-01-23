@@ -59,6 +59,7 @@ class IntroScene {
     async start() {
         this._setupScene()
         await this._welcomeScene()
+        await this._choiceScene()
         await this._electronScene()
         this._deleteScene()
         this.callbackDone()
@@ -124,6 +125,12 @@ class IntroScene {
 
         })
     }
+    
+    _choiceScene() {
+        return new Promise(async (resolve) => {
+            ToolboxControllerInstance.revealChoice()
+        })
+    }
 
     _electronScene() {
         return new Promise(async (resolve) => {
@@ -186,6 +193,7 @@ class IntroScene {
         ToolboxControllerInstance.hideInfoHolder()
         Utils.doDispose(this._scene)
         this._particles._destructor()
+        AchievementManager.Get().obtained("tutorial")
     }
 
     _createTextMesh(text, x, y, z) {
