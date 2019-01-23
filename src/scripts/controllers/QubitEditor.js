@@ -64,6 +64,7 @@ class QubitEditor {
             translation.y += this.cursor.position.y + wheelDelta
             translation.sub(this.cursor.position).round()
             this.cursor.position.add(translation)
+            this.cursor.position.y = Math.max(-QubitEditor.MAX_STACKING, Math.min(this.cursor.position.y, QubitEditor.MAX_STACKING))
         }
 
         // if the cursor changed, call for a render
@@ -92,7 +93,7 @@ class QubitEditor {
     _mousemoveHandler(event) {
         this._mousePosition = event
         if (this.updateCursor(event.clientX, event.clientY)) {
-            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
+            if (this._rightClickDown && this.canEdit || this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.REMOVE)
                 AppControllerInstance.automata.removeBlock(this.cursor.position)
             else if (this._leftClickDown && this.canEdit == QubitEditor.canEditEnumeration.QUBIT)
                 AppControllerInstance.automata.addQubit(this.cursor.position)
@@ -179,6 +180,7 @@ const QubitEditorInstance = new QubitEditor()
 QubitEditor.CURSOR_SIZE = 1
 QubitEditor.CURSOR_HEIGHT = 0.3
 QubitEditor.CURSOR_COLOR = 0x999999
+QubitEditor.MAX_STACKING = 10
 
 QubitEditor.canEditEnumeration = {
     NOTHING: 0,
