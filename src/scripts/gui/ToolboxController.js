@@ -285,23 +285,66 @@ class ToolboxController {
     _keydownHandler(event) {
         switch (event.keyCode) {
             case 81: // Q -> qubit
-                this._setQubitButtonClick(document.getElementById("place-qubits"))
+            case 75: // K
+                this._setToolWithId("place-qubits")
                 break
             case 79: // O -> output
-                this._setOutputButtonClick(document.getElementById("place-output"))
+                this._setToolWithId("place-output")
                 break
             case 73: // I -> input
-                this._setNegativeInputButtonClick(document.getElementById("negative-input"))
+                this._setToolWithId("negative-input")
                 break
             case 77: // M -> move
-            case 67: // C -> move
-                this._setCameraButtonClick(document.getElementById("get-camera"))
+            case 67: // C
+                this._setToolWithId("get-camera")
                 break
             case 82: // R ->remove
+                this._setToolWithId("eraser")
+                break
+            case 16: // Maj
+            case 32: // Space
+                this.lastToolSelected = this.currentToolSelected
+                this._setToolWithId("get-camera")
+                break
+            case 9: // Tab
+                console.log(ToolboxController.buttonIdList.indexOf(this.currentToolSelected),this.currentToolSelected)
+                this._setToolWithId(ToolboxController.buttonIdList[(ToolboxController.buttonIdList.indexOf(this.currentToolSelected)+1)%ToolboxController.buttonIdList.length])
+                event.stopPropagation()
+                event.preventDefault()
+                break
+        }
+    }
+    _keyupHandler(event) {
+        switch (event.keyCode) {
+            case 16: // Maj
+            case 32: // Space
+                this._setToolWithId(this.lastToolSelected)
+                break
+        }
+
+    }
+
+    _setToolWithId(id) {
+        this.currentToolSelected = id
+        switch (id) {
+            case "place-qubits":
+                this._setQubitButtonClick(document.getElementById("place-qubits"))
+                break
+            case "place-output":
+                this._setOutputButtonClick(document.getElementById("place-output"))
+                break
+            case "negative-input":
+                this._setNegativeInputButtonClick(document.getElementById("negative-input"))
+                break
+            case "get-camera":
+                this._setCameraButtonClick(document.getElementById("get-camera"))
+                break
+            case "eraser":
                 this._setEraserButtonClick(document.getElementById("eraser"))
                 break
         }
     }
+
 
 
     init() {
@@ -321,7 +364,11 @@ class ToolboxController {
         this._setCameraJoystick()
         this._setOverlaySelector()
 
+        this.currentToolSelected = "get-camera"
+        this.lastToolSelected = ""
+
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
+        window.addEventListener("keyup", ev => this._keyupHandler(ev))
     }
 
     constructor() {
@@ -334,3 +381,4 @@ class ToolboxController {
 }
 
 const ToolboxControllerInstance = new ToolboxController()
+ToolboxController.buttonIdList = ["get-camera","negative-input","place-qubits","place-output","eraser"]

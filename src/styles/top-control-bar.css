@@ -29,13 +29,14 @@
     border-radius: 6px;
 }
 
+.button-mini {
+    cursor:pointer;
+}
+
 .button-mini.inactive {
     background-color:rgba(128,128,128,1.0);
     opacity:0.5;
     cursor:default;
-}
-
-.button-mini {
 }
 
 .control-bar-mini .button-mini.active {

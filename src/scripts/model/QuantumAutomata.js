@@ -128,7 +128,7 @@ class QuantumAutomata {
         if (this._qubitMap.has(hash)) {
             let exist = this.getQubit(block.position)
             if (exist.type == "input" && block.type == "input") {
-                History.add("change", block.type, block.position, block.polarity)
+                // History.add("change", block.type, block.position, block.polarity)
                 let value = exist.polarity
                 let position = exist.position
                 this.removeBlock(exist.position)

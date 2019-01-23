@@ -43,7 +43,7 @@ class HistoryClass {
                 }
                 break
             case "change":
-                /* À faire */
+                    AppControllerInstance.automata.addInput(action.position, action.value > 0)
                 break
         }
         this.historyAction = false
@@ -62,6 +62,11 @@ class HistoryClass {
             this.back.push(new Action(action, type, position, value))
         }
         ToolboxControllerInstance._updateHistoryButtons()
+    }
+    reset()
+    {
+        this.front = []
+        this.back = []
     }
     constructor() {
         if (!HistoryClass.instance) {
