@@ -45,6 +45,13 @@ class HistoryClass {
             case "change":
                     AppControllerInstance.automata.addInput(action.position, action.value > 0)
                 break
+            case "bridge":
+                AppControllerInstance.automata.removeBridgeWithPosition(action.position,action.value)
+                break
+            case "unbridge":
+                AppControllerInstance.automata.makeBridge(action.position)
+                AppControllerInstance.automata.makeBridge(action.value)
+                break
         }
         this.historyAction = false
         action.revert()
@@ -94,6 +101,12 @@ class Action {
 			case "remove":
 				this.act = "add"
 				break
+            case "bridge":
+                this.act = "unbridge"
+                break
+            case "unbridge":
+                this.act = "bridge"
+                break
 		}
 	}
 	debug()

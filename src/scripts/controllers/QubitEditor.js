@@ -1,8 +1,6 @@
 /*
     global
     Grid
-*/
-/*
     exported
     QubitEditor
     QubitEditorInstance
