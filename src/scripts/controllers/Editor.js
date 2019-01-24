@@ -91,6 +91,7 @@ class Editor {
         this.cursor = new Cursor()
     }
 
+    
     _wheelHandler(event) {
         if (this.canEdit === Editor.modes.NOTHING) return
         this.cursor.update(event.clientX, event.clientY, event.deltaY)

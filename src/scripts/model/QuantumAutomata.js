@@ -71,12 +71,21 @@ class QuantumAutomata {
         if (block instanceof OutputBlock) return
 
         // check for pending bridge
-        if (Bridge.pending)
+        if (Bridge.pending) {
+            History.add("bridge","",block.position,Bridge.pending.start.position);
             Bridge.pending.setDestination(block)
-
-        // initiate bridge
-        else
+        }
+        else { // initiate bridge
             this._bridges.add(new Bridge(block))
+        }
+    }
+    removeBridgeWithPosition(p1,p2) {
+        var bridgeToRemove = false;
+        this._bridges.forEach(bridge => {
+            if((bridge.start.position.equals(p1) && bridge.end.position.equals(p2)) || (bridge.start.position.equals(p2) && bridge.end.position.equals(p1)))
+                bridgeToRemove = bridge
+        })
+        if (bridgeToRemove) this._bridges.delete(bridgeToRemove.remove())
     }
 
     /**
@@ -105,7 +114,7 @@ class QuantumAutomata {
         const block = this._qubitMap.get(hash)
         if(block.fixed && !adminRemove) return
 
-        History.add('remove',block.type,position,block.type,block.polarity);
+        History.add('remove',block.type,position,block.polarity);
 
         this._bridges.forEach(bridge => {
             const bridgedBlock = bridge.traverseIfIsAnEnterPoint(block)
@@ -157,6 +166,7 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
+        this.clockTime = (this.clockTime+1)%QuantumAutomata.COLOR_CLOCK.length
         if (this._outputs.size === 0) return
         this._outputs.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
@@ -209,6 +219,8 @@ class QuantumAutomata {
         this._qubitMap = new Map()
         this._outputs =  new Set()
         this._bridges = new Set()
+
+        this.clockTime = 0
     }
 
 
@@ -237,4 +249,11 @@ QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(-1, 0, 1),  // up left
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0)  // left
+]
+
+QuantumAutomata.COLOR_CLOCK = [
+    "#0AA",
+    "#0C0",
+    "#F40",
+    "#C0D"
 ]

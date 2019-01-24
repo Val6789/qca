@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="../node_modules/izitoast/dist/css/iziToast.min.css">
     <script type="text/javascript" src="../node_modules/izitoast/dist/js/iziToast.min.js"></script>
     <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/TweenLite.js"></script>
+    <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/easing/EasePack.js"></script>
     <script type="text/javascript" src="../node_modules/gsap/src/uncompressed/TimelineLite.js"></script>
 
 
@@ -69,8 +70,7 @@
 
     <!-- LOADING SCREEN -->
     <div class="loading-overlay" id="loading-overlay">
-        <svg class="loading-spinner" width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg class="loading-spinner" width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <g id="Qubit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                 <g id="Group" transform="translate(23.763742, 23.616018) rotate(-17.000000) translate(-23.763742, -23.616018) translate(4.840665, 4.597150)"
                     stroke="#FFFFFF" stroke-width="2">
@@ -164,9 +164,16 @@
                 O
             </button>
             <div class="separator"></div>
-            <button class="tool" alt="Bridge" id="bridge" title="Brige Qubits">
+            <div id="clock-change-container">
+                <button class="tool" alt="Change Clock" id="clock-change" title="Change Clock">
+                    <img src="assets/buttons/clock.png" class="tool-icon clock-icon">
+                    C
+                </button>
+                <div id="clock-selector"></div>
+            </div>
+            <button class="tool" alt="Bridge" id="bridge" title="Bridge Qubits">
                 <img src="assets/buttons/Bridge.png" class="tool-icon bridge-icon">
-                E
+                B
             </button>
             <button class="tool" alt="Eraser" id="eraser" title="Erease">
                 <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
@@ -174,7 +181,7 @@
             </button>
         </nav>
     </header>
-    
+
     <section id="choice-holder" class="hidden">
         <div class="btn-card btn" id="choice-tutorial">
             <img src="assets/buttons/tuto-icon.png" alt="Tutorial logo">
@@ -223,6 +230,7 @@
         <h4>Title of the info</h4>
         <div id="info-holder-text"></div>
         <span class="btn">Next</span>
+        <span class="btn" id="info-holder-skip">Skip</span>
     </aside>
 
     <aside class="
@@ -266,12 +274,8 @@
                     </div>
                     <div class="drawer-main">
                         <p>This is the main</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
-                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
-                            beatae quae iste nesciunt minus facere.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
-                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
-                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate, beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate, beatae quae iste nesciunt minus facere.</p>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>
@@ -286,12 +290,8 @@
                     </div>
                     <div class="drawer-main">
                         <p>This is the main</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
-                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
-                            beatae quae iste nesciunt minus facere.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit
-                            nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate,
-                            beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate, beatae quae iste nesciunt minus facere.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate, beatae quae iste nesciunt minus facere.</p>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>

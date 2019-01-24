@@ -23,8 +23,8 @@
 
     transition: opacity 400ms ease-in-out;
 
-    font-family:arial;
-    z-index:2;
+    font-family: arial;
+    z-index: 2;
 }
 
 #info-holder.info-holder-hidden {
@@ -43,18 +43,26 @@
 
 #info-holder-text p {
     animation: enter 200ms ease-in;
-    line-height:1.2em;
-    margin-top:2px;
-    margin-bottom:2px;
+    line-height: 1.2em;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 #info-holder span {
-    position:absolute;
-    bottom:5px;
-    right:5px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
     align-self: flex-end;
-    margin:5px;
+    margin: 5px;
     order: 999;
+}
+
+span#info-holder-skip {
+    position: fixed;
+    background-color: transparent;
+    box-shadow: none;
+    color: #f74040;
+    text-decoration: underline;
 }
 
 #choice-holder {
@@ -65,32 +73,34 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-around;
-    
+
     transition: all 200ms ease-in-out;
-    
+
 }
+
 .btn-card {
-    text-align:center;
-    font-family:arial;
-    color:#DDD;
+    text-align: center;
+    font-family: arial;
+    color: #DDD;
     transform: scale(0.95);
-    transition:0.5s;
+    transition: 0.5s;
 }
 
 .btn-card:hover {
     transform: scale(1);
-    color:white;
+    color: white;
 
 }
+
 .btn-card img {
-    height:18vh;
-    padding:3vh;
+    height: 18vh;
+    padding: 3vh;
 }
-.btn-card h2
-{
+
+.btn-card h2 {
     text-transform: uppercase;
-    font-weight:bold;
-    margin:5px;
+    font-weight: bold;
+    margin: 5px;
 }
 
 @keyframes enter {

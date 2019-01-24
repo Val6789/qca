@@ -24,20 +24,20 @@ class ToolboxController {
 
         this.$choiceHolder.classList.remove("hidden")
     }
-    
+
     hideChoice() {
         if (!this.$choiceHolder)
             this.$choiceHolder = document.getElementById("choice-holder")
 
         this.$choiceHolder.classList.add("hidden")
     }
-    
+
     choiceClick() {
         if (!this.$choiceHolder)
             this.$choiceHolder = document.getElementById("choice-holder")
         const $tutorial = this.$choiceHolder.children.namedItem("choice-tutorial")
         const $sandbox = this.$choiceHolder.children.namedItem("choice-sandbox")
-        
+
         let promises = [
             new Promise((resolve) => {
                 $tutorial.onclick = () => {
@@ -93,13 +93,18 @@ class ToolboxController {
         while (node.firstChild) {
             node.removeChild(node.firstChild)
         }
-
     }
 
     setInfoHolderNextClickCallback(callback) {
         if (!this.$infoHolder)
             this.$infoHolder = document.getElementById("info-holder")
         this.$infoHolder.children[2].onclick = callback
+    }
+
+    infoHolderSkipClickCallback(callback) {
+        if (!this.$infoHolderSkip)
+            this.$infoHolderSkip = document.getElementById("info-holder-skip")
+        this.$infoHolderSkip.onclick = callback
     }
 
     // =================== UI ===================
@@ -277,7 +282,7 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
-            UxSaverInstance.add('dragAndDrop',targetElement.id)
+            UxSaverInstance.add('dragAndDrop', targetElement.id)
             switch (targetElement.id) {
                 case "get-camera":
                     return Editor.modes.NOTHING
@@ -325,12 +330,12 @@ class ToolboxController {
             if (AppControllerInstance.pauseMode) { // is app paused ?
                 AppControllerInstance.setRefreshRate(AppController.SPEED)
                 AppControllerInstance.pauseMode = false
-                this.parentNode.style.boxShadow=""
+                this.parentNode.style.boxShadow = ""
                 play.style.display = "none"
                 pause.style.display = "inline"
             } else {
                 AppControllerInstance.pauseMode = true
-                this.parentNode.style.boxShadow="0px 0px 10px 10px red"
+                this.parentNode.style.boxShadow = "0px 0px 10px 10px red"
 
                 play.style.display = "inline"
                 pause.style.display = "none"
@@ -374,6 +379,9 @@ class ToolboxController {
             case 82: // R ->remove
                 this._setToolWithId("eraser")
                 break
+            case 66: // R ->remove
+                this._setToolWithId("bridge")
+                break
             case 16: // Maj
             case 32: // Space
                 this.lastToolSelected = this.currentToolSelected
@@ -397,7 +405,7 @@ class ToolboxController {
     }
 
     _setToolWithId(id) {
-        UxSaverInstance.add('keyboardSetTool',id)
+        UxSaverInstance.add('keyboardSetTool', id)
         this.currentToolSelected = id
         switch (id) {
             case "place-qubits":
@@ -412,6 +420,9 @@ class ToolboxController {
             case "get-camera":
                 this._setCameraButtonClick(document.getElementById("get-camera"))
                 break
+            case "bridge":
+                this._setBridgeButtonClick(document.getElementById("bridge"))
+                break
             case "eraser":
                 this._setEraserButtonClick(document.getElementById("eraser"))
                 break
@@ -419,9 +430,30 @@ class ToolboxController {
     }
 
     _setDustbeenButton() {
-        document.getElementById('dustbeen-button').onclick = function() {
+        document.getElementById('dustbeen-button').onclick = function () {
             new AppController().automata.reset()
         }
+    }
+
+    _setClockButton()
+    {
+        var clockSelector = document.getElementById('clock-selector')
+        this.changeColorClock(0)
+        for(let colorId in QuantumAutomata.COLOR_CLOCK) {
+            let newDivColor = document.createElement('div')
+            newDivColor.classList.add('clock-color')
+            newDivColor.setAttribute('data-id',colorId)
+            newDivColor.style.backgroundColor = QuantumAutomata.COLOR_CLOCK[colorId]
+            newDivColor.onclick = function(){
+                ToolboxControllerInstance.changeColorClock(parseInt(this.getAttribute('data-id')))
+            }
+            clockSelector.append(newDivColor)
+        }
+    }
+
+    changeColorClock(id) {
+        document.getElementById('clock-change').style.backgroundColor = QuantumAutomata.COLOR_CLOCK[id]
+        this.currentClockValue = id;
     }
 
 
@@ -444,8 +476,12 @@ class ToolboxController {
         this._setOverlaySelector()
         this._setBridgeButton()
 
+        this._setClockButton()
+
         this.currentToolSelected = "get-camera"
         this.lastToolSelected = ""
+
+        this.currentClockValue = 0;
 
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
         window.addEventListener("keyup", ev => this._keyupHandler(ev))

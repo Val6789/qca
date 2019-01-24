@@ -13,6 +13,9 @@
 window.addEventListener("keyup", function (e) {
     const KEY_E = 69
     const KEY_U = 85
+    const KEY_Z = 90
+    const KEY_Y = 89
+
     switch (e.keyCode) {
         case KEY_E:
             Preset.exportQuantomAutomata(new AppController().automata)
@@ -20,5 +23,13 @@ window.addEventListener("keyup", function (e) {
         case KEY_U:
             UxSaverInstance.export()
             break
+        case KEY_Z:
+            History.undo()
+            ToolboxControllerInstance._updateHistoryButtons()
+            break;
+        case KEY_Y:
+            History.redo()
+            ToolboxControllerInstance._updateHistoryButtons()
+            break;
     }
 })

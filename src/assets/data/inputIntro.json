@@ -1,0 +1,11 @@
+[
+    [
+        "And the last element : the <b>Influencer</b>. This is going to be the input block in our simulation.",
+        "An influencer is a qubit, but with a <b>fixed state</b>. It can either be 0 or 1.",
+        "This allows us to give entrance signal in the circuit that will propagate throughout the qubit towards the <b>output block</b>"
+    ],
+    [
+        "Now we have all our basic blocks.",
+        "Let's create a circuit and let the fun begin !"
+    ]
+]
