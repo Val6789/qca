@@ -61,12 +61,14 @@ class IntroScene {
 
     async start() {
         this._setupScene()
-        await this._welcomeScene()
+        //await this._welcomeScene()
         this.doTutorial = await this._choiceScene()
         if (this.doTutorial) {
-            await this._electronScene()
-            await this._dotScene()
-            await this._qubitScene()
+            //await this._electronScene()
+            //await this._dotScene()
+            //await this._qubitScene()
+            //await this._outputScene()
+            await this._inputScene()
         }
         this._deleteScene()
         this.callbackDone()
@@ -136,18 +138,20 @@ class IntroScene {
 
             // Hide
             ToolboxControllerInstance.hideChoice()
-            
+
             let texts = this.texts
-            TweenLite.to(texts[0].material, 0.4, {
-                opacity: 0,
-                onUpdate: this.UPDATE_FUNCTION,
-                onComplete: () => {
-                    for (let i = 0; i < texts.length; i++) {
-                        this._scene.remove(texts[i])
+            if (texts) {
+                TweenLite.to(texts[0].material, 0.4, {
+                    opacity: 0,
+                    onUpdate: this.UPDATE_FUNCTION,
+                    onComplete: () => {
+                        for (let i = 0; i < texts.length; i++) {
+                            this._scene.remove(texts[i])
+                        }
+                        delete this.texts
                     }
-                    delete this.texts
-                }
-            })
+                })
+            }
 
             if (choice === "tutorial") {
                 resolve(true)
@@ -279,10 +283,110 @@ class IntroScene {
 
 
             // Clean and resolve
+            ToolboxControllerInstance.hideInfoHolder()
             qubit.remove()
             resolve()
-
         })
+    }
+
+    _outputScene() {
+        return new Promise(async (resolve) => {
+            // Clean
+            this._electrons.clean()
+            this._dots.clean()
+
+            // Creation
+            ToolboxControllerInstance.hideInfoHolder()
+            let pos = new THREE.Vector3(0, 0, 0)
+            let output = new OutputBlock(pos)
+            let camPos = this._camera.position
+            await new Promise(littleResolve => {
+                TweenLite.to(camPos, 1, {
+                    x: 0,
+                    y: 4,
+                    z: 3,
+                    onUpdate: () => {
+                        this._camera.lookAt(pos)
+                        this.UPDATE_FUNCTION()
+                    },
+                    onComplete: littleResolve
+                })
+            })
+
+            // Timeline
+            let timeline = new TimelineLite({
+                onComplete: () => {
+                    timeline.restart()
+                }
+            })
+            timeline.to(output, 1, {
+                polarity: 1,
+                ease: SteppedEase.config(1),
+                onUpdate: this.UPDATE_FUNCTION
+            })
+            timeline.to(output, 1, {
+                polarity: 0,
+                ease: SteppedEase.config(1),
+                onUpdate: this.UPDATE_FUNCTION
+            })
+            timeline.to(output, 1, {
+                polarity: -1,
+                ease: SteppedEase.config(1),
+                onUpdate: this.UPDATE_FUNCTION
+            })
+            timeline.to(output, 1, {
+                polarity: 0,
+                ease: SteppedEase.config(1),
+                onUpdate: this.UPDATE_FUNCTION
+            })
+
+
+            // Text
+            ToolboxControllerInstance.setInfoHolderTitle("Output Block")
+            ToolboxControllerInstance.revealInfoHolder()
+            const json = AssetManager.Get().json.outputIntro
+            await this._displayJSON(json)
+
+
+            // Clean and resolve
+            output.remove()
+            resolve()
+        })
+    }
+
+    _inputScene() {
+        return new Promise(async (resolve) => {
+
+            // Creation
+            ToolboxControllerInstance.hideInfoHolder()
+            let pos = new THREE.Vector3(0, 0, 0)
+            let inputPositive = new InputBlock(pos, 1)
+            let inputNegative = new InputBlock(pos, -1)
+            inputNegative.object.visible = false
+
+            // Timeline
+            let interval = setInterval(() => {
+                inputNegative.object.visible = !inputNegative.object.visible
+                inputPositive.object.visible = !inputPositive.object.visible
+                this.UPDATE_FUNCTION()
+            }, 1500)
+
+
+            // Text
+            ToolboxControllerInstance.setInfoHolderTitle("Influencer")
+            ToolboxControllerInstance.revealInfoHolder()
+            const json = AssetManager.Get().json.inputIntro
+            await this._displayJSON(json)
+
+
+            // Clean and resolve
+            clearInterval(interval)
+            inputPositive.remove()
+            inputNegative.remove()
+            resolve()
+        })
+
+
     }
 
     _deleteScene() {

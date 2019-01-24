@@ -1,0 +1,13 @@
+[
+    [
+        "This block is going to be our <b>output block</b>. It's going to measure the state of a logical circuit and know it's result.",
+        "We can use one or many output blocks to have different results, and create complex circuits.",
+        "The output block can have 2 differents results :",
+        " - <b>0 or 1</b> : If the qubits near are charged.",
+        " - <b>Undetermined</b> : If there is absolutely no influence."
+    ],
+    [
+        "Therefore, to complete our system, we need one last element. Right now, we can create <b>qubits</b>, holding information with electrons, and <b>output blocks</b>, to measure the circuit.",
+        "What we need is a block to give some entrance signal in a circuit. We will use an <b>influencer</b>."
+    ]
+]

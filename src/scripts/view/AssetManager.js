@@ -13,7 +13,7 @@ const AssetManager = (function () {
         presets: {}
     }
     const baseDir = "assets/"
-    const presets = ["simple_line", "NOT_gate", "majority_gate","five_majority_gate","funny_QCA"]
+    const presets = ["simple_line", "NOT_gate", "majority_gate", "five_majority_gate", "funny_QCA"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {
@@ -130,6 +130,8 @@ const AssetManager = (function () {
     promises.push(readJSON("qubitIntro"))
     promises.push(readJSON("qubitIntro2"))
     promises.push(readJSON("qubitIntro3"))
+    promises.push(readJSON("outputIntro"))
+    promises.push(readJSON("inputIntro"))
 
     // JSON achievement
     promises.push(new Promise((resolve, reject) => {
