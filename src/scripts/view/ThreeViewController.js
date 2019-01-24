@@ -143,7 +143,7 @@ class ThreeViewController {
      */
     _render() {
         this._onRenderObservers.forEach(callback => callback())
-        
+
         if (this._axis) {
             this._axis.update(this._camera, this._orbit)
             this._axis.render()
@@ -296,7 +296,7 @@ class ThreeViewController {
     _setIntro() {
         // DISPLAY ACHIEVEMENT
         AchievementManager.Get().achievements.tutorial.fullfilled = false
-        
+
         if (AchievementManager.Get().done("tutorial")) {
             return new Promise(resolve => resolve())
         } else {
@@ -308,7 +308,7 @@ class ThreeViewController {
 
                 let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
                 intro.setLayer(layer)
-                
+
                 this._scene = intro._scene
 
                 intro.start()
@@ -318,14 +318,17 @@ class ThreeViewController {
 
     _afterIntro() {
         return () => {
-            if ( this._layers.length > 1) {
+            if (this._layers.length > 1) {
                 delete this._layers[1]
             }
-            
+
             // Creation
             this._setScene()
             QubitEditorInstance.init()
-            
+            Electron.init()
+            Dot.init()
+            InputBlock.init()
+
             // Create the main layer
             this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
             this.shouldRender()
