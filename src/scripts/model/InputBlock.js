@@ -50,7 +50,7 @@ class InputBlock extends Block {
             InputBlock.negativeInstances.push(this)
             this.setColor(0xffff00)
         }
-        
+
         if(this.polarity == -1)
 			this.setLabel("0")
 		else if(this.polarity == 1)
@@ -64,7 +64,6 @@ class InputBlock extends Block {
         InputBlock.positiveInstances = []
         InputBlock.negativeInstances = []
 
-        InputBlock._isVisible = true
         InputBlock.particlesNeedUpdate = 0
     }
 
@@ -76,17 +75,5 @@ class InputBlock extends Block {
             transparent: false,
             alphaTest: 0.1
         })
-    }
-
-    static get isVisible() {
-        return InputBlock._isVisible
-    }
-
-    static set isVisible(boolean) {
-        if (InputBlock._isVisible === boolean) return
-        InputBlock._isVisible = boolean
-        InputBlock.positiveInstances.forEach( qubit => qubit.object.visible = boolean)
-        InputBlock.negativeInstances.forEach( qubit => qubit.object.visible = boolean)
-        ThreeViewControllerInstance.shouldRender()
     }
 }

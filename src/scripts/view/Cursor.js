@@ -109,7 +109,7 @@ class Cursor {
     _lineMaterial() {
         return new THREE.LineBasicMaterial({
             color: this.COLOR,
-            alpha: this.ALPHA,
+            opacity: this.ALPHA,
             transparent: this.ALPHA < 1
         })
     }

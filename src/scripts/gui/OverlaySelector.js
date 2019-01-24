@@ -2,29 +2,27 @@ class OverlaySelector {
     // Checkboxes //
 
     _toggleFamilyLayer(boolean) {
-        this.familiesCheckbox.parentElement.classList.toggle("active",this.familiesCheckbox.checked)
-        Block.areFamilyColorsVisible = boolean && this.familiesCheckbox.checked
+        this.familiesCheckbox.parentElement.classList.toggle("active",boolean)
+        Block.areFamilyColorsVisible = boolean
     }
 
     _setFamilyLayerSelector() {
         this.familiesCheckbox = document.getElementById(OverlaySelector.FAMILIES_SELECTOR_ID)
-        this.familiesCheckbox.addEventListener("change", () => this._toggleFamilyLayer(true))
+        this.familiesCheckbox.addEventListener("change", () => this._toggleFamilyLayer(this.familiesCheckbox.checked))
         this._toggleFamilyLayer()
     }
 
     _setQubitLayerSelector()  {
         this._setFamilyLayerSelector()
-        var checkbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
+        this.qubitLayerCheckbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
         var toggleQubits = () => {
-            Qubit.isVisible = checkbox.checked
-            InputBlock.isVisible = checkbox.checked
-            OutputBlock.isVisible = checkbox.checked
-            this._toggleFamilyLayer(checkbox.checked)
+            Block.areVisible = this.qubitLayerCheckbox.checked
+            this._toggleFamilyLayer(this.qubitLayerCheckbox.checked)
 
             // forces active css 
-            checkbox.parentElement.classList.toggle("active",checkbox.checked)
+            this.qubitLayerCheckbox.parentElement.classList.toggle("active",this.qubitLayerCheckbox.checked)
         }
-        checkbox.addEventListener("change", toggleQubits)
+        this.qubitLayerCheckbox.addEventListener("change", toggleQubits)
         toggleQubits()
     }
 
@@ -34,7 +32,6 @@ class OverlaySelector {
         function toggleElectrons() {
             Electron.particles.layers[Electron.TEXTURE_LAYER].visible = checkbox.checked
             Dot.particles.layers[0].visible = checkbox.checked
-
             // forces active css 
             checkbox.parentElement.classList.toggle("active",checkbox.checked)
             ThreeViewControllerInstance.shouldRender()

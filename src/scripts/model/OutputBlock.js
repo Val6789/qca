@@ -18,18 +18,6 @@ class OutputBlock extends Qubit {
         this.object.visible = OutputBlock._isVisible
         OutputBlock.instances.add(this)
     }
-
-    static get isVisible() {
-        return OutputBlock._isVisible
-    }
-
-    static set isVisible(boolean) {
-        if (OutputBlock._isVisible === boolean) return
-        OutputBlock._isVisible = boolean
-        OutputBlock.instances.forEach( block => block.object.visible = boolean)
-        ThreeViewControllerInstance.shouldRender()
-    }
 }
 
 OutputBlock.instances = new Set()
-OutputBlock._isVisible = true

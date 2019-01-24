@@ -328,6 +328,7 @@ class ThreeViewController {
             Electron.init()
             Dot.init()
             InputBlock.init()
+            ToolboxControllerInstance.init()
 
             // Create the main layer
             this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)

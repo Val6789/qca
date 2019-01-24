@@ -261,18 +261,6 @@ class Qubit extends Block {
             })
         }, Qubit.UNDETERMINED_REFRESH_RATE)
     }
-
-
-    static get isVisible() {
-        return Qubit._isVisible
-    }
-
-    static set isVisible(boolean) {
-        if (Qubit._isVisible === boolean) return
-        Qubit._isVisible = boolean
-        Qubit.instances.forEach(qubit => qubit.object.visible = boolean)
-        ThreeViewControllerInstance.shouldRender()
-    }
 }
 
 /**
@@ -296,5 +284,3 @@ Qubit.DOT_PLACEMENTS = [
  * @brief contains all the instances of Qubit
  * */
 Qubit.instances = []
-
-Qubit._isVisible = true

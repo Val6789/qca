@@ -138,8 +138,6 @@ class Block {
 
         // adds box to position
         ThreeViewControllerInstance.addObjectToScene(this.object)
-
-        if (Block.instances === undefined) Block.instances = new Set()
         Block.instances.add(this)
     }
 
@@ -165,6 +163,17 @@ class Block {
             block._showFamilyColor(boolean)
         })
     }
+
+    static get areVisible() {
+        return Block._areVisible
+    }
+
+    static set areVisible(boolean) {
+        if (Block._areVisible === boolean) return
+        Block._areVisible = boolean
+        if (Block.instances) Block.instances.forEach(block => block.object.visible = boolean)
+        ThreeViewControllerInstance.shouldRender()
+    }
 }
 
 /**
@@ -183,3 +192,6 @@ Block.FAMILY_COLORS = [
 ]
 
 Block.selectedClockId = 0
+Block._areVisible = true
+Block._areFamilyColorsVisible = true
+Block.instances = new Set()

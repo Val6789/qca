@@ -425,7 +425,6 @@ class IntroScene {
         this.toRemove.forEach(elt => {
             elt.remove()
         })
-        console.log(this.toRemove)
         this.toRemove = []
     }
 
