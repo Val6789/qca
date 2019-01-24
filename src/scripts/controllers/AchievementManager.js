@@ -50,6 +50,7 @@ const AchievementManager = (function () {
         if (DEBUG)
             console.trace("Achievement : " + name)
 
+        UxSaverInstance.add('obtainAchievement',name)
         // Now update this achievement
         achievement.fullfilled = true
         store()

@@ -7,9 +7,10 @@ class DrawerController {
 			htmlPresetElem.classList.add('inlinebtn')
 			htmlPresetElem.classList.add('btn')
 			htmlPresetElem.setAttribute('data-preset',presetId)
-			htmlPresetElem.innerHTML = presetId
+			htmlPresetElem.innerHTML = presetId.replace(/\_/gi,' ')
 			htmlPresetElem.onclick = function(){
 				let presetName = this.getAttribute('data-preset')
+				UxSaverInstance.add('loadPreset',presetName)
 				let constructedPreset = new Preset(presetName,AssetManager.Get().presets[presetName])
 				constructedPreset.addToAutomata(new AppController().automata)
 				document.getElementById('no-drawer-check').checked = true

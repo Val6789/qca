@@ -18,16 +18,22 @@ class QubitEditor {
         try {
             switch (this.canEdit) {
                 case QubitEditor.canEditEnumeration.QUBIT:
+                    UxSaverInstance.add('addQubit',this.cursor.position)
                     return AppControllerInstance.automata.addQubit(this.cursor.position)
                 case QubitEditor.canEditEnumeration.NEGATIVE_INPUT:
+                    UxSaverInstance.add('addNegativeInput',this.cursor.position)
                     return AppControllerInstance.automata.addInput(this.cursor.position, false)
                 case QubitEditor.canEditEnumeration.POSITIVE_INPUT:
+                    UxSaverInstance.add('addPositiveInput',this.cursor.position)
                     return AppControllerInstance.automata.addInput(this.cursor.position, true)
                 case QubitEditor.canEditEnumeration.OUTPUT:
+                    UxSaverInstance.add('addOutput',this.cursor.position)
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
                 case QubitEditor.canEditEnumeration.REMOVE:
+                    UxSaverInstance.add('remove',this.cursor.position)
                     return AppControllerInstance.automata.removeBlock(this.cursor.position)
                 case QubitEditor.canEditEnumeration.BRIDGE:
+                    UxSaverInstance.add('setBridge',this.cursor.position)
                     return AppControllerInstance.automata.makeBridge(this.cursor.position)
             }
         } catch (exception) {

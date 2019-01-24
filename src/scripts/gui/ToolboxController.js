@@ -41,11 +41,13 @@ class ToolboxController {
         let promises = [
             new Promise((resolve) => {
                 $tutorial.onclick = () => {
+                    UxSaverInstance.add('chooseTutorial')
                     resolve("tutorial")
                 }
             }),
             new Promise((resolve) => {
                 $sandbox.onclick = () => {
+                    UxSaverInstance.add('chooseSandbox')
                     resolve("sandbox")
                 }
             })
@@ -147,6 +149,7 @@ class ToolboxController {
         })
     }
     _setCameraButtonClick(target) {
+        UxSaverInstance.add('setCameraToolClick')
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = true
         ThreeViewControllerInstance.orbitControls.enablePan = true
@@ -164,6 +167,7 @@ class ToolboxController {
 
 
     _setQubitButtonClick(target) {
+        UxSaverInstance.add('setQbitToolClick')
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
@@ -180,6 +184,7 @@ class ToolboxController {
     }
 
     _setNegativeInputButtonClick(target) {
+        UxSaverInstance.add('setInputToolClick')
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
@@ -195,6 +200,7 @@ class ToolboxController {
         })
     }
     _setOutputButtonClick(target) {
+        UxSaverInstance.add('setOutbutToolClick')
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
@@ -210,6 +216,7 @@ class ToolboxController {
         })
     }
     _setEraserButtonClick(target) {
+        UxSaverInstance.add('setEraserToolClick')
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
@@ -219,6 +226,7 @@ class ToolboxController {
 
 
     _setBridgeButtonClick(element) {
+        UxSaverInstance.add('setBridgeToolClick')
         this._setActive(element)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
@@ -237,10 +245,12 @@ class ToolboxController {
         this._updateHistoryButtons()
         var self = this
         document.getElementById("undo-button").onclick = function () {
+            UxSaverInstance.add('undo')
             History.undo()
             self._updateHistoryButtons()
         }
         document.getElementById("redo-button").onclick = function () {
+            UxSaverInstance.add('redo')
             History.redo()
             self._updateHistoryButtons()
         }
@@ -261,6 +271,7 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
+            UxSaverInstance.add('dragAndDrop',targetElement.id)
             switch (targetElement.id) {
                 case "get-camera":
                     return QubitEditor.canEditEnumeration.NOTHING
@@ -304,6 +315,7 @@ class ToolboxController {
         pause.style.display = "inline"
         // ThreeViewControllerInstance.renderer.domElement
         button.onclick = function () {
+            UxSaverInstance.add('pauseBtn')
             if (AppControllerInstance.pauseMode) { // is app paused ?
                 AppControllerInstance.setRefreshRate(AppController.SPEED)
                 AppControllerInstance.pauseMode = false
@@ -323,6 +335,7 @@ class ToolboxController {
     _setSlowButton() {
         const button = document.getElementById("slow-button")
         button.onclick = function () {
+            UxSaverInstance.add('slowBtn')
             AppControllerInstance.pauseMode = false
             AppControllerInstance.setRefreshRate(AppController.SPEED_SLOW)
         }
@@ -331,6 +344,7 @@ class ToolboxController {
     _setFastButton() {
         const button = document.getElementById("fast-button")
         button.onclick = function () {
+            UxSaverInstance.add('fastBtn')
             AppControllerInstance.pauseMode = false
             AppControllerInstance.setRefreshRate(AppController.SPEED_FAST)
         }
@@ -377,6 +391,7 @@ class ToolboxController {
     }
 
     _setToolWithId(id) {
+        UxSaverInstance.add('keyboardSetTool',id)
         this.currentToolSelected = id
         switch (id) {
             case "place-qubits":
@@ -397,6 +412,11 @@ class ToolboxController {
         }
     }
 
+    _setDustbeenButton() {
+        document.getElementById('dustbeen-button').onclick = function() {
+            new AppController().automata.reset()
+        }
+    }
 
 
     init() {
@@ -412,6 +432,7 @@ class ToolboxController {
         this._setFastButton()
 
         this._setHistoryButtons()
+        this._setDustbeenButton();
 
         this._setCameraJoystick()
         this._setOverlaySelector()
@@ -434,4 +455,4 @@ class ToolboxController {
 }
 
 const ToolboxControllerInstance = new ToolboxController()
-ToolboxController.buttonIdList = ["get-camera", "negative-input", "place-qubits", "place-output", "eraser"]
+ToolboxController.buttonIdList = ["get-camera", "negative-input", "place-qubits", "place-output", "bridge", "eraser"]
