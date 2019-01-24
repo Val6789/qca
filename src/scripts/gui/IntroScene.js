@@ -25,6 +25,7 @@ class IntroScene {
         this._dots = new ParticleSystem([Dot._getSolidMaterial()])
         this._scene.add(this._dots._particlesGroup)
 
+        // One simple light
         let light = new THREE.PointLight(0xffffff, 1, 100)
         light.position.set(-5, 0, 0)
         this._scene.add(light)
@@ -45,6 +46,8 @@ class IntroScene {
             ThreeViewControllerInstance.shouldRender()
         }
 
+        this.toRemove = []
+
     }
 
     /**
@@ -61,13 +64,20 @@ class IntroScene {
 
     async start() {
         this._setupScene()
-        //await this._welcomeScene()
+        await this._welcomeScene()
         this.doTutorial = await this._choiceScene()
+        this.completed = false
         if (this.doTutorial) {
-            //await this._electronScene()
-            //await this._dotScene()
-            //await this._qubitScene()
-            //await this._outputScene()
+            ToolboxControllerInstance
+                .infoHolderSkipClickCallback(() => {
+                    this._deleteScene()
+                    this.callbackDone()
+                    this.completed = true
+                })
+            await this._electronScene()
+            await this._dotScene()
+            await this._qubitScene()
+            await this._outputScene()
             await this._inputScene()
         }
         this._deleteScene()
@@ -239,6 +249,7 @@ class IntroScene {
             ToolboxControllerInstance.hideInfoHolder()
             let pos = new THREE.Vector3(0, 0, 0)
             let qubit = new Qubit()
+            this.toRemove.push(qubit)
             let camPos = this._camera.position
             await new Promise(littleResolve => {
                 TweenLite.to(camPos, 2, {
@@ -284,7 +295,7 @@ class IntroScene {
 
             // Clean and resolve
             ToolboxControllerInstance.hideInfoHolder()
-            qubit.remove()
+            this._cleanToRemove()
             resolve()
         })
     }
@@ -299,6 +310,7 @@ class IntroScene {
             ToolboxControllerInstance.hideInfoHolder()
             let pos = new THREE.Vector3(0, 0, 0)
             let output = new OutputBlock(pos)
+            this.toRemove.push(output)
             let camPos = this._camera.position
             await new Promise(littleResolve => {
                 TweenLite.to(camPos, 1, {
@@ -349,7 +361,7 @@ class IntroScene {
 
 
             // Clean and resolve
-            output.remove()
+            this._cleanToRemove()
             resolve()
         })
     }
@@ -363,6 +375,9 @@ class IntroScene {
             let inputPositive = new InputBlock(pos, 1)
             let inputNegative = new InputBlock(pos, -1)
             inputNegative.object.visible = false
+
+            this.toRemove.push(inputNegative)
+            this.toRemove.push(inputPositive)
 
             // Timeline
             let interval = setInterval(() => {
@@ -381,8 +396,7 @@ class IntroScene {
 
             // Clean and resolve
             clearInterval(interval)
-            inputPositive.remove()
-            inputNegative.remove()
+            this._cleanToRemove()
             resolve()
         })
 
@@ -393,11 +407,26 @@ class IntroScene {
         ToolboxControllerInstance.revealUI()
         ToolboxControllerInstance.hideInfoHolder()
         Utils.doDispose(this._scene)
+
+        this._electrons.clean()
+        this._dots.clean()
+
         this._electrons._destructor()
+        this._dots._destructor()
+
+        this._cleanToRemove()
 
         if (this.doTutorial) {
             AchievementManager.Get().obtained("tutorial")
         }
+    }
+
+    _cleanToRemove() {
+        this.toRemove.forEach(elt => {
+            elt.remove()
+        })
+        console.log(this.toRemove)
+        this.toRemove = []
     }
 
     _createTextMesh(text, x, y, z) {
