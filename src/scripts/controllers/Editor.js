@@ -94,7 +94,11 @@ class Editor {
     
     _wheelHandler(event) {
         if (this.canEdit === Editor.modes.NOTHING) return
-        this.cursor.update(event.clientX, event.clientY, event.deltaY)
+        this.cursor.update(event.clientX, event.clientY, this._ignoreScroll ? 0 : event.deltaY)
+        if (event.deltaY != 0 && !this._ignoreScroll) {
+            this._ignoreScroll = true
+            setTimeout(() => this._ignoreScroll = false, 100)
+        }
         event.stopPropagation()
     }
 
