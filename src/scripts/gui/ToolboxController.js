@@ -24,20 +24,20 @@ class ToolboxController {
 
         this.$choiceHolder.classList.remove("hidden")
     }
-    
+
     hideChoice() {
         if (!this.$choiceHolder)
             this.$choiceHolder = document.getElementById("choice-holder")
 
         this.$choiceHolder.classList.add("hidden")
     }
-    
+
     choiceClick() {
         if (!this.$choiceHolder)
             this.$choiceHolder = document.getElementById("choice-holder")
         const $tutorial = this.$choiceHolder.children.namedItem("choice-tutorial")
         const $sandbox = this.$choiceHolder.children.namedItem("choice-sandbox")
-        
+
         let promises = [
             new Promise((resolve) => {
                 $tutorial.onclick = () => {
@@ -93,13 +93,18 @@ class ToolboxController {
         while (node.firstChild) {
             node.removeChild(node.firstChild)
         }
-
     }
 
     setInfoHolderNextClickCallback(callback) {
         if (!this.$infoHolder)
             this.$infoHolder = document.getElementById("info-holder")
         this.$infoHolder.children[2].onclick = callback
+    }
+
+    infoHolderSkipClickCallback(callback) {
+        if (!this.$infoHolderSkip)
+            this.$infoHolderSkip = document.getElementById("info-holder-skip")
+        this.$infoHolderSkip.onclick = callback
     }
 
     // =================== UI ===================
@@ -271,7 +276,7 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
-            UxSaverInstance.add('dragAndDrop',targetElement.id)
+            UxSaverInstance.add('dragAndDrop', targetElement.id)
             switch (targetElement.id) {
                 case "get-camera":
                     return QubitEditor.canEditEnumeration.NOTHING
@@ -319,12 +324,12 @@ class ToolboxController {
             if (AppControllerInstance.pauseMode) { // is app paused ?
                 AppControllerInstance.setRefreshRate(AppController.SPEED)
                 AppControllerInstance.pauseMode = false
-                this.parentNode.style.boxShadow=""
+                this.parentNode.style.boxShadow = ""
                 play.style.display = "none"
                 pause.style.display = "inline"
             } else {
                 AppControllerInstance.pauseMode = true
-                this.parentNode.style.boxShadow="0px 0px 10px 10px red"
+                this.parentNode.style.boxShadow = "0px 0px 10px 10px red"
 
                 play.style.display = "inline"
                 pause.style.display = "none"
@@ -394,7 +399,7 @@ class ToolboxController {
     }
 
     _setToolWithId(id) {
-        UxSaverInstance.add('keyboardSetTool',id)
+        UxSaverInstance.add('keyboardSetTool', id)
         this.currentToolSelected = id
         switch (id) {
             case "place-qubits":
@@ -419,7 +424,7 @@ class ToolboxController {
     }
 
     _setDustbeenButton() {
-        document.getElementById('dustbeen-button').onclick = function() {
+        document.getElementById('dustbeen-button').onclick = function () {
             new AppController().automata.reset()
         }
     }
