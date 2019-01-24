@@ -4,7 +4,7 @@
     Electron
     Qubit
     InputBlock
-    QubitEditor
+    Editor
     QuantumAutomata
 */
 /*
@@ -27,7 +27,6 @@ class AppController {
         Electron.init()
         InputBlock.init()
         Qubit.startDeterminationUpdateLoop()
-        new QubitEditor()
         AchievementManager.Get().obtained("missionOne")
         ToolboxControllerInstance.init()
         DrawerControllerInstance.init()

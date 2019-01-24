@@ -10,6 +10,7 @@ class Bridge {
         if(qubit === this.start) return
         this.end = qubit
         this._updateCurve(this.end.position)
+        this._updateCurve = () => {}
         Bridge.pending = null
     }
 
@@ -21,6 +22,7 @@ class Bridge {
 
     remove() {
         ThreeViewControllerInstance.removeObjectFromScene(this._spline)
+        this._updateCurve = () => {}
         if (Bridge.pending === this)
             Bridge.pending = undefined
         return this
@@ -31,10 +33,10 @@ class Bridge {
         this.start = qubit
         this.end = undefined
         Bridge.pending = this
-        QubitEditorInstance.callbackOnCursorMove(newposition => {
+        EditorInstance.cursor.callbackOnMove(newposition => {
             if (!this.end) this._updateCurve(newposition)
         })
-        this._updateCurve(QubitEditorInstance.cursor.position)
+        this._updateCurve(EditorInstance.cursor.position)
     }
 
     static _createCurve(from, to) {

@@ -153,8 +153,8 @@ class ToolboxController {
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = true
         ThreeViewControllerInstance.orbitControls.enablePan = true
-        QubitEditorInstance.isMagnetic = true
-        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NOTHING
+        EditorInstance.cursor.isMagnetic = true
+        EditorInstance.canEdit = Editor.modes.NOTHING
     }
 
     _setQubitButton() {
@@ -171,8 +171,8 @@ class ToolboxController {
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
-        QubitEditorInstance.isMagnetic = false
-        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.QUBIT
+        EditorInstance.cursor.isMagnetic = false
+        EditorInstance.canEdit = Editor.modes.QUBIT
     }
 
     _setInputButton() {
@@ -188,8 +188,8 @@ class ToolboxController {
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
-        QubitEditorInstance.isMagnetic = false
-        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.NEGATIVE_INPUT
+        EditorInstance.cursor.isMagnetic = false
+        EditorInstance.canEdit = Editor.modes.NEGATIVE_INPUT
     }
 
     _setOutputButton() {
@@ -204,8 +204,8 @@ class ToolboxController {
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
-        QubitEditorInstance.isMagnetic = false
-        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.OUTPUT
+        EditorInstance.cursor.isMagnetic = false
+        EditorInstance.canEdit = Editor.modes.OUTPUT
     }
 
     _setEraserButton() {
@@ -220,18 +220,24 @@ class ToolboxController {
         this._setActive(target)
         ThreeViewControllerInstance.orbitControls.enableRotate = false
         ThreeViewControllerInstance.orbitControls.enablePan = false
-        QubitEditorInstance.isMagnetic = false
-        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.REMOVE
+        EditorInstance.cursor.isMagnetic = false
+        EditorInstance.canEdit = Editor.modes.REMOVE
     }
 
 
     _setBridgeButtonClick(element) {
-        UxSaverInstance.add('setBridgeToolClick')
-        this._setActive(element)
-        ThreeViewControllerInstance.orbitControls.enableRotate = false
-        ThreeViewControllerInstance.orbitControls.enablePan = false
-        QubitEditorInstance.isMagnetic = true
-        QubitEditorInstance.canEdit = QubitEditor.canEditEnumeration.BRIDGE
+        console.log(Bridge.pending)
+        if (Bridge.pending) {
+            AppControllerInstance.automata.abortBridge()
+            this._setCameraButtonClick(element)
+        } else {
+            UxSaverInstance.add('setBridgeToolClick')
+            this._setActive(element)    
+            ThreeViewControllerInstance.orbitControls.enableRotate = false
+            ThreeViewControllerInstance.orbitControls.enablePan = false
+            EditorInstance.cursor.isMagnetic = true
+            EditorInstance.canEdit = Editor.modes.BRIDGE
+        }
     }
 
     _setBridgeButton() {
@@ -274,23 +280,23 @@ class ToolboxController {
             UxSaverInstance.add('dragAndDrop',targetElement.id)
             switch (targetElement.id) {
                 case "get-camera":
-                    return QubitEditor.canEditEnumeration.NOTHING
+                    return Editor.modes.NOTHING
                 case "place-qubits":
-                    return QubitEditor.canEditEnumeration.QUBIT
+                    return Editor.modes.QUBIT
                 case "positive-input":
-                    return QubitEditor.canEditEnumeration.POSITIVE_INPUT
+                    return Editor.modes.POSITIVE_INPUT
                 case "negative-input":
-                    return QubitEditor.canEditEnumeration.NEGATIVE_INPUT
+                    return Editor.modes.NEGATIVE_INPUT
                 case "place-output":
-                    return QubitEditor.canEditEnumeration.OUTPUT
+                    return Editor.modes.OUTPUT
                 case "eraser":
-                    return QubitEditor.canEditEnumeration.REMOVE
+                    return Editor.modes.REMOVE
             }
         })
 
         this._dragAndDropToolControls.onDropCallback(payload => {
-            QubitEditorInstance.canEdit = payload
-            QubitEditorInstance.edit()
+            EditorInstance.canEdit = payload
+            EditorInstance.edit()
         })
     }
 

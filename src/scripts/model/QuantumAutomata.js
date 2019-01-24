@@ -79,6 +79,13 @@ class QuantumAutomata {
             this._bridges.add(new Bridge(block))
     }
 
+    /**
+     * 
+     */
+    abortBridge() {
+        this._bridges.delete(Bridge.pending.remove())
+    }
+
 
     reset() {
         this._qubitMap.forEach(qubit => {

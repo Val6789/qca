@@ -52,7 +52,7 @@ class DragAndDropControls {
         else
             pointer = event
 
-        QubitEditorInstance.updateCursor(pointer.clientX, pointer.clientY)
+        EditorInstance.cursor.update(pointer.clientX, pointer.clientY)
         if (this._currentDragPlayload) this._currentDragPlayload.domElement.style.cssText = `
             position: fixed;
             z-index: 100000;

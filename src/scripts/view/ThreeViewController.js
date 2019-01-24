@@ -324,7 +324,7 @@ class ThreeViewController {
             
             // Creation
             this._setScene()
-            QubitEditorInstance.init()
+            EditorInstance.init()
             
             // Create the main layer
             this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
