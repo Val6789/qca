@@ -75,15 +75,26 @@
 .btn {
     color: white;
     cursor: pointer;
-    background-color: rgb(39, 39, 39);
+    background-color: rgba(0,0,0,0.6);
     padding: 1vw;
     border-radius: 4px;
-    text-transform: capitalize;
     font-size: 1.2rem;
+    box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
+    margin:1vh;
 }
 
 .btn:hover {
-    background-color: #050505;
+    background-color: #000;
+}
+
+.inlinebtn {
+    display:inline-block;
+    box-shadow:0px 0px 3px 3px rgba(0,0,0,0.1);
+    font-size: 1.0rem;
+    padding:10px;
+    min-width:70px;
+    text-align:center;
+    background-color: rgba(50,50,50,0.6);
 }
 
 button {
@@ -142,6 +153,7 @@ button:hover {
 
 .cross {
     height: 25px;
+    cursor:pointer;
 }
 
 @keyframes spinner {

@@ -57,6 +57,42 @@
     order: 999;
 }
 
+#choice-holder {
+    position: fixed;
+    top: 50vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    
+    transition: all 200ms ease-in-out;
+    
+}
+.btn-card {
+    text-align:center;
+    font-family:arial;
+    color:#DDD;
+    transform: scale(0.95);
+    transition:0.5s;
+}
+
+.btn-card:hover {
+    transform: scale(1);
+    color:white;
+
+}
+.btn-card img {
+    height:18vh;
+    padding:3vh;
+}
+.btn-card h2
+{
+    text-transform: uppercase;
+    font-weight:bold;
+    margin:5px;
+}
+
 @keyframes enter {
     from {
         opacity: 0;

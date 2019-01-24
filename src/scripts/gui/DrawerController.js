@@ -4,6 +4,7 @@ class DrawerController {
 		var container = document.getElementById('drawer-demos').getElementsByClassName('drawer-main')[0];
 		for(let presetId in AssetManager.Get().presets) {
 			let htmlPresetElem = document.createElement('button')
+			htmlPresetElem.classList.add('inlinebtn')
 			htmlPresetElem.classList.add('btn')
 			htmlPresetElem.setAttribute('data-preset',presetId)
 			htmlPresetElem.innerHTML = presetId
