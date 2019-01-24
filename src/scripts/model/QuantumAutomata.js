@@ -159,6 +159,7 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
+        this.clockTime = (this.clockTime+1)%QuantumAutomata.COLOR_CLOCK.length
         if (this._outputs.size === 0) return
         this._outputs.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
@@ -211,6 +212,8 @@ class QuantumAutomata {
         this._qubitMap = new Map()
         this._outputs =  new Set()
         this._bridges = new Set()
+
+        this.clockTime = 0
     }
 
 
@@ -239,4 +242,11 @@ QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(-1, 0, 1),  // up left
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0)  // left
+]
+
+QuantumAutomata.COLOR_CLOCK = [
+    "#0AA",
+    "#0C0",
+    "#F40",
+    "#C0D"
 ]

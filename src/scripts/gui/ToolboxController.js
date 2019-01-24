@@ -429,6 +429,27 @@ class ToolboxController {
         }
     }
 
+    _setClockButton()
+    {
+        var clockSelector = document.getElementById('clock-selector')
+        this.changeColorClock(0)
+        for(let colorId in QuantumAutomata.COLOR_CLOCK) {
+            let newDivColor = document.createElement('div')
+            newDivColor.classList.add('clock-color')
+            newDivColor.setAttribute('data-id',colorId)
+            newDivColor.style.backgroundColor = QuantumAutomata.COLOR_CLOCK[colorId]
+            newDivColor.onclick = function(){
+                ToolboxControllerInstance.changeColorClock(parseInt(this.getAttribute('data-id')))
+            }
+            clockSelector.append(newDivColor)
+        }
+    }
+
+    changeColorClock(id) {
+        document.getElementById('clock-change').style.backgroundColor = QuantumAutomata.COLOR_CLOCK[id]
+        this.currentClockValue = id;
+    }
+
 
     init() {
         this._setCameraButton()
@@ -449,8 +470,12 @@ class ToolboxController {
         this._setOverlaySelector()
         this._setBridgeButton()
 
+        this._setClockButton()
+
         this.currentToolSelected = "get-camera"
         this.lastToolSelected = ""
+
+        this.currentClockValue = 0;
 
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
         window.addEventListener("keyup", ev => this._keyupHandler(ev))
