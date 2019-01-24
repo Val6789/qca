@@ -71,12 +71,21 @@ class QuantumAutomata {
         if (block instanceof OutputBlock) return
 
         // check for pending bridge
-        if (Bridge.pending)
+        if (Bridge.pending) {
+            History.add("bridge","",block.position,Bridge.pending.start.position);
             Bridge.pending.setDestination(block)
-
-        // initiate bridge
-        else
+        }
+        else { // initiate bridge
             this._bridges.add(new Bridge(block))
+        }
+    }
+    removeBridgeWithPosition(p1,p2) {
+        var bridgeToRemove = false;
+        this._bridges.forEach(bridge => {
+            if((bridge.start.position.equals(p1) && bridge.end.position.equals(p2)) || (bridge.start.position.equals(p2) && bridge.end.position.equals(p1)))
+                bridgeToRemove = bridge
+        })
+        if (bridgeToRemove) this._bridges.delete(bridgeToRemove.remove())
     }
 
 
@@ -98,7 +107,7 @@ class QuantumAutomata {
         const block = this._qubitMap.get(hash)
         if(block.fixed && !adminRemove) return
 
-        History.add('remove',block.type,position,block.type,block.polarity);
+        History.add('remove',block.type,position,block.polarity);
 
         this._bridges.forEach(bridge => {
             const bridgedBlock = bridge.traverseIfIsAnEnterPoint(block)

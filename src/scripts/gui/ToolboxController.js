@@ -368,6 +368,9 @@ class ToolboxController {
             case 82: // R ->remove
                 this._setToolWithId("eraser")
                 break
+            case 66: // R ->remove
+                this._setToolWithId("bridge")
+                break
             case 16: // Maj
             case 32: // Space
                 this.lastToolSelected = this.currentToolSelected
@@ -405,6 +408,9 @@ class ToolboxController {
                 break
             case "get-camera":
                 this._setCameraButtonClick(document.getElementById("get-camera"))
+                break
+            case "bridge":
+                this._setBridgeButtonClick(document.getElementById("bridge"))
                 break
             case "eraser":
                 this._setEraserButtonClick(document.getElementById("eraser"))
