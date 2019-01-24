@@ -4,7 +4,13 @@ class Cursor {
      * @brief Cursor position getter, returns the cursor position in 3D space based on the THREE object's position
      */
     get position() {
-        return this._selectionBox.position
+        if (this._selectionBox.visible)
+            return this._selectionBox.position
+        return false
+    }
+
+    get isVisible() {
+        return this._selectionBox.visible
     }
 
     /**
@@ -16,27 +22,27 @@ class Cursor {
     update(screenX, screenY, wheelDelta = 0) {
         // save previous cursor state
         const wasVisible = this._selectionBox.visible
-        const previousPosition = this._selectionBox.position.clone
+        const previousPosition = this._selectionBox.position.clone()
 
         // get the new wanted position
         var newPosition = this._castRayFromMousePosition(screenX, screenY)
-
         // set the cursor to visible if the new position exists
         this._selectionBox.visible = newPosition != false
 
         if (newPosition) {
+            // replace the height value with the current heigth value offseted by the wheelDelta
+            newPosition.y = previousPosition.y + Math.sign(wheelDelta)
+
             // if on magnetic mode, replace the new position with the closest block position
             if (this.isMagnetic && wheelDelta == 0) {
                 var closestBlockPosition = AppControllerInstance.automata.getOccupiedPositions().reduce((best, current) => {
                     if (!best) return current
-                    if (previousPosition.distanceToSquared(best) > previousPosition.distanceToSquared(current)) return current
+                    if (newPosition.distanceToSquared(best) > newPosition.distanceToSquared(current)) return current
                     return best
                 }, false)
                 newPosition = closestBlockPosition || newPosition
             }
 
-            // replace the height value with the current heigth value offseted by the wheelDelta
-            newPosition.y = previousPosition.y + Math.sign(wheelDelta)
             newPosition.round()
         }
 

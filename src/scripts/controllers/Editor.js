@@ -8,7 +8,16 @@
     EditorInstance
 */
 
+/**
+ * @class Editor
+ * @brief interprets mouse positions and calls edits on the Automata with the help of a cursor
+ */
 class Editor {
+
+    /**
+     * @brief calls action mapped to the Editor's current mode
+     * spits out any thrown error in console
+     */
     edit() {
         try {
             switch (this.canEdit) {
@@ -36,6 +45,36 @@ class Editor {
         }
     }
 
+    /**
+     * @brief Removes or cancels operations
+     * Meant ot be called for dragging movements or on secondary clicks
+     */
+    quickErase() {
+        if (this.canEdit == Editor.modes.BRIDGE) {
+            //UxSaverInstance.add('abortBridge',this.cursor.position)
+            AppControllerInstance.automata.abortBridge(this.cursor.position)
+        }
+        else if (this.canEdit != Editor.modes.NOTHING) {
+            UxSaverInstance.add('remove',this.cursor.position)
+            AppControllerInstance.automata.removeBlock(this.cursor.position)
+        }
+    }
+
+    /**
+     * @brief adds common elements in the automata
+     * Meant ot be called for dragging movements or on secondary clicks in default build mode
+     */
+    quickEdit() {
+        UxSaverInstance.add('addQubit',this.cursor.position)
+        AppControllerInstance.automata.addQubit(this.cursor.position)
+    }
+
+
+    /**
+     * @method init
+     * @brief initialize the editor, sets all the event listeners
+     * @requires ThreeViewControllerInstance to be set
+     */
     init() {
         this._mouseState = new Object()
         this._firstLeftMove = new THREE.Vector3()
@@ -53,41 +92,37 @@ class Editor {
     }
 
     _wheelHandler(event) {
-        if (!this._mousePosition || this.canEdit === Editor.modes.NOTHING) return
-        this.cursor.update(this._mousePosition.clientX, this._mousePosition.clientY, Math.sign(event.deltaY))
+        if (this.canEdit === Editor.modes.NOTHING) return
+        this.cursor.update(event.clientX, event.clientY, event.deltaY)
         event.stopPropagation()
     }
 
-    _mouseUpHandler(event) {
-        if (this._leftClickDown) this._leftClickDown = false
-        if (this._rightClickDown) this._rightClickDown = false
-        if (event.button == 0)
-            this.edit()
-        else if (event.button == 2 && this.canEdit)
-            return AppControllerInstance.automata.removeBlock(this.cursor.position)
+    _mouseUpHandler() {
+        if (this._mouseState.left && !this._mouseState.dragging) this.edit()
+        if (this._mouseState.right) this.quickErase()
+        this._mouseState = {left: false, right: false, dragging: false}
     }
 
-
     _mousedownHandler(event) {
-        if (event.button == 0) {
-            this._leftClickDown = true
-            this._firstLeftMove.copy(this.cursor.position)
-        } else if (event.button == 2) {
-            this._rightClickDown = true
+        this._mouseState = {
+            left: event.button == 0,
+            right: event.button == 2,
         }
     }
 
     _mousemoveHandler(event) {
-        this._mousePosition = event
-        if (this.cursor.update(event.clientX, event.clientY)) {
-            if (this._rightClickDown) {
-                AppControllerInstance.automata.abortBridge()
-                if (this.canEdit || this._leftClickDown && this.canEdit == Editor.modes.REMOVE)
-                    AppControllerInstance.automata.removeBlock(this.cursor.position)
-            } else if (this._leftClickDown && this.canEdit == Editor.modes.QUBIT) {
-                AppControllerInstance.automata.addQubit(this.cursor.position)
-            }
-        }
+        const cursorMoved = this.cursor.update(event.clientX, event.clientY)
+        if (!cursorMoved) return
+        this._mouseState.dragging = true
+
+        if (this._mouseState.right)
+            this.quickErase()
+
+        if (this._mouseState.left && this.canEdit == Editor.modes.REMOVE)
+            this.quickErase()
+
+        if (this._mouseState.left && this.canEdit == Editor.modes.QUBIT)
+            this.quickEdit()
     }
 
     constructor() {
