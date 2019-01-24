@@ -250,10 +250,3 @@ QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0)  // left
 ]
-
-QuantumAutomata.COLOR_CLOCK = [
-    "#0AA",
-    "#0C0",
-    "#F40",
-    "#C0D"
-]

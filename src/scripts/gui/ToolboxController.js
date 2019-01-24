@@ -439,11 +439,11 @@ class ToolboxController {
     {
         var clockSelector = document.getElementById('clock-selector')
         this.changeColorClock(0)
-        for(let colorId in QuantumAutomata.COLOR_CLOCK) {
+        for(let colorId in Block.FAMILY_COLORS) {
             let newDivColor = document.createElement('div')
             newDivColor.classList.add('clock-color')
             newDivColor.setAttribute('data-id',colorId)
-            newDivColor.style.backgroundColor = QuantumAutomata.COLOR_CLOCK[colorId]
+            newDivColor.style.backgroundColor = Block.FAMILY_COLORS[colorId]
             newDivColor.onclick = function(){
                 ToolboxControllerInstance.changeColorClock(parseInt(this.getAttribute('data-id')))
             }
@@ -452,8 +452,8 @@ class ToolboxController {
     }
 
     changeColorClock(id) {
-        document.getElementById('clock-change').style.backgroundColor = QuantumAutomata.COLOR_CLOCK[id]
-        this.currentClockValue = id;
+        document.getElementById('clock-change').style.backgroundColor = Block.FAMILY_COLORS[id]
+        Block.selectedClockId = id;
     }
 
 

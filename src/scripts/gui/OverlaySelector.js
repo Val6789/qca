@@ -1,12 +1,25 @@
 class OverlaySelector {
     // Checkboxes //
 
+    _toggleFamilyLayer(boolean) {
+        this.familiesCheckbox.parentElement.classList.toggle("active",this.familiesCheckbox.checked)
+        Block.areFamilyColorsVisible = boolean && this.familiesCheckbox.checked
+    }
+
+    _setFamilyLayerSelector() {
+        this.familiesCheckbox = document.getElementById(OverlaySelector.FAMILIES_SELECTOR_ID)
+        this.familiesCheckbox.addEventListener("change", () => this._toggleFamilyLayer(true))
+        this._toggleFamilyLayer()
+    }
+
     _setQubitLayerSelector()  {
+        this._setFamilyLayerSelector()
         var checkbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
-        function toggleQubits() {
+        var toggleQubits = () => {
             Qubit.isVisible = checkbox.checked
             InputBlock.isVisible = checkbox.checked
             OutputBlock.isVisible = checkbox.checked
+            this._toggleFamilyLayer(checkbox.checked)
 
             // forces active css 
             checkbox.parentElement.classList.toggle("active",checkbox.checked)
@@ -51,6 +64,7 @@ class OverlaySelector {
     }
 }
 
+OverlaySelector.FAMILIES_SELECTOR_ID = "show-families"
 OverlaySelector.INFLUENCE_SELECTOR_ID = "show-influence"
 OverlaySelector.ELECTRON_SELECTOR_ID = "show-electrons"
 OverlaySelector.QUBIT_SELECTOR_ID = "show-qubit"
