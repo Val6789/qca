@@ -34,15 +34,20 @@ class Preset {
 
     }
 
-    addToAutomata(automata) {
+    addToAutomata(automata,reset=false) {
         // var notPr = new Preset('not',AssetManager.Get().presets['not']); notPr.addToAutomata(new AppController().automata)
-        var i = 0
-        while (i < this.presetDescription.length) {
-            let qubitPosition = new THREE.Vector3(this.presetDescription[i].x, this.presetDescription[i].y, this.presetDescription[i].z)
-            if (automata.getQubit(qubitPosition)) {
-                return false
+        if(reset) {
+            automata.reset()
+        }
+        else {
+            var i = 0
+            while (i < this.presetDescription.length) {
+                let qubitPosition = new THREE.Vector3(this.presetDescription[i].x, this.presetDescription[i].y, this.presetDescription[i].z)
+                if (automata.getQubit(qubitPosition)) {
+                    return false
+                }
+                i++
             }
-            i++
         }
 
         var blockPosition

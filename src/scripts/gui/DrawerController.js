@@ -12,7 +12,7 @@ class DrawerController {
 				let presetName = this.getAttribute('data-preset')
 				UxSaverInstance.add('loadPreset',presetName)
 				let constructedPreset = new Preset(presetName,AssetManager.Get().presets[presetName])
-				constructedPreset.addToAutomata(new AppController().automata)
+				constructedPreset.addToAutomata(new AppController().automata,true)
 				document.getElementById('no-drawer-check').checked = true
 			}
 			container.appendChild(htmlPresetElem)
