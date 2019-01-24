@@ -302,16 +302,17 @@ class ToolboxController {
         // unpaused by default
         play.style.display = "none"
         pause.style.display = "inline"
-
+        // ThreeViewControllerInstance.renderer.domElement
         button.onclick = function () {
             if (AppControllerInstance.pauseMode) { // is app paused ?
                 AppControllerInstance.setRefreshRate(AppController.SPEED)
                 AppControllerInstance.pauseMode = false
-
+                this.parentNode.style.boxShadow=""
                 play.style.display = "none"
                 pause.style.display = "inline"
             } else {
                 AppControllerInstance.pauseMode = true
+                this.parentNode.style.boxShadow="0px 0px 10px 10px red"
 
                 play.style.display = "inline"
                 pause.style.display = "none"

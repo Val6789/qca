@@ -50,7 +50,7 @@ class ParticleSystem {
         Utils.doDispose(this._particlesGroup)
     }
 
-    constructor(materials = [], maximumParticlesCount = 1000, attributeSize = 3) {
+    constructor(materials = [], maximumParticlesCount = 10000, attributeSize = 3) {
         this.MAX_POINTS = maximumParticlesCount
         this.ATTRIBUTE_SIZE = attributeSize
 

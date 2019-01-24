@@ -153,3 +153,6 @@ button:hover {
         transform: rotateZ(360deg);
     }
 }
+.stopped {
+    border:1px solid red;
+}
