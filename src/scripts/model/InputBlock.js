@@ -50,6 +50,11 @@ class InputBlock extends Block {
             InputBlock.negativeInstances.push(this)
             this.setColor(0xffff00)
         }
+        
+        if(this.polarity == -1)
+			this.setLabel("0")
+		else if(this.polarity == 1)
+			this.setLabel("1")
     }
 
     static init() {
