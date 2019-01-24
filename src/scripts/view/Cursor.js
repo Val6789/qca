@@ -19,7 +19,7 @@ class Cursor {
      * @param {Number} screenY pixel coordinates of the user pointing device
      * @param {Number} wheelDelta value representing the mouse wheel movement
      */
-    update(screenX, screenY, wheelDelta = 0) {
+    update(screenX = null, screenY = null, wheelDelta = 0) {
         // save previous cursor state
         const wasVisible = this._selectionBox.visible
         const previousPosition = this._selectionBox.position.clone()
@@ -75,10 +75,14 @@ class Cursor {
         if (!this.grid) return false
 
         // get mouse position as a floating point value between -1 and 1
-        const pointer = new THREE.Vector2(
-            (x / window.innerWidth) * 2 - 1,
-            -(y / window.innerHeight) * 2 + 1
-        );
+        var pointer
+        if (x && y)
+            pointer = new THREE.Vector2(
+                (x / window.innerWidth) * 2 - 1,
+                -(y / window.innerHeight) * 2 + 1
+            );
+        else
+            pointer = new THREE.Vector2(0,0)
 
         // cast ray from the camera, through the cursor
         this._raycaster.setFromCamera(pointer, ThreeViewControllerInstance.camera)
@@ -146,6 +150,7 @@ class Cursor {
         this._makeSelectionBox()
         this._makeDepthColumn()
         this._makeGrid()
+        this.update()
     }
 }
 
