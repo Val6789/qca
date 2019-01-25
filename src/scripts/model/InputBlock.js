@@ -39,8 +39,6 @@ class InputBlock extends Block {
 
         this.type = "input"
 
-        this.object.visible = InputBlock._isVisible
-
         if (polarity > 0) {
             InputBlock.positiveParticles.addAt(this.position)
             InputBlock.positiveInstances.push(this)
@@ -62,7 +60,7 @@ class InputBlock extends Block {
     static init() {
         InputBlock.positiveParticles = new ParticleSystem(this._getSolidMaterial("positive_input"))
         InputBlock.negativeParticles = new ParticleSystem(this._getSolidMaterial("negative_input"))
-        
+
         ThreeViewControllerInstance.addObjectToScene(InputBlock.positiveParticles.object)
         ThreeViewControllerInstance.addObjectToScene(InputBlock.negativeParticles.object)
 

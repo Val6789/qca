@@ -128,6 +128,7 @@ class Block {
 
         // moves the box
         this.object.position.copy(position)
+        this.object.visible = Block._areVisible
 
         // adds box to position
         ThreeViewControllerInstance.addObjectToScene(this.object)
