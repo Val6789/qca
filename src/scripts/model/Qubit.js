@@ -159,7 +159,8 @@ class Qubit extends Block {
 
 
             const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
-            const kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
+            var kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
+            kink *= relativePosition.y != 0 ? -1 : 1
 
             neighbor.processNeighboorsInfluences(automata)
             sigmaPj += neighbor.balance * neighbor.charge * kink
