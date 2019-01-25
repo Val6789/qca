@@ -152,22 +152,19 @@
                 <img src="assets/buttons/Input.png" class="tool-icon electron-icon">
                 -
             </button>
-            <button class="tool draggable" alt="Qubit" id="qubit-tool" title="Add Qubit">
-                <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
-                B
-            </button>
-            <button class="tool draggable" alt="Qubit" id="output-tool" title="Add output">
+            <div id="clock-change-container">
+                <button class="tool draggable" alt="Qubit" id="qubit-tool" title="Add Qubit">
+                    <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
+                    B
+                    <div id="clock-indicator" class="pill"></div>
+                </button>
+                <div id="clock-selector"></div>
+            </div>
+            <button class="tool draggable" alt="Output" id="output-tool" title="Add output">
                 <img src="assets/buttons/Output.png" class="tool-icon output-icon">
                 O
             </button>
             <div class="separator"></div>
-            <div id="clock-change-container">
-                <button class="tool" alt="Change Clock" id="clock-change" title="Change Clock">
-                    <img src="assets/buttons/clock.png" class="tool-icon clock-icon">
-                    C
-                </button>
-                <div id="clock-selector"></div>
-            </div>
             <button class="tool" alt="Bridge" id="bridge-tool" title="Bridge Qubits">
                 <img src="assets/buttons/Bridge.png" class="tool-icon bridge-icon">
                 B

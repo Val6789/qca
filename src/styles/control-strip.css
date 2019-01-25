@@ -27,9 +27,21 @@
 }
 
 .tool {
+    position: relative;
     font-size: 0;
     margin: 0.5rem;
     padding: 0.5rem;
+}
+
+.tool .pill {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 100rem;
+    transition: 200ms;
 }
 
 .tool-icon {
@@ -78,7 +90,7 @@
     height: 0px;
     transition:100ms;
     overflow: hidden;
-    transition-delay:200ms;
+    transition-delay:500ms;
 }
 
 #clock-change-container:hover #clock-selector, #clock-selector:hover{
