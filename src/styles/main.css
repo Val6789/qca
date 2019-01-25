@@ -80,11 +80,12 @@
     border-radius: 4px;
     font-size: 1.2rem;
     box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-    margin:1vh;
+    margin:1.3vh;
 }
 
 .btn:hover {
     background-color: #000;
+    color:#FFF;
 }
 
 .inlinebtn {
@@ -92,9 +93,12 @@
     box-shadow:0px 0px 3px 3px rgba(0,0,0,0.1);
     font-size: 1.0rem;
     padding:10px;
-    min-width:70px;
+    min-width:200px;
+    color:#AAA;
     text-align:center;
     background-color: rgba(50,50,50,0.6);
+    text-transform: capitalize;
+    font-weight:bold;
 }
 
 button {
@@ -152,7 +156,8 @@ button:hover {
 }
 
 .cross {
-    height: 25px;
+    margin:5px;
+    height: 20px;
     cursor:pointer;
 }
 
@@ -167,4 +172,8 @@ button:hover {
 }
 .stopped {
     border:1px solid red;
+}
+
+.activity-tab-button.tutorial-tab, .activity-tab-button.missions-tab, .activity-tab-button.achievement-tab, .activity-tab-button.settings-tab {
+    display:none;
 }
