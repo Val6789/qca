@@ -29,12 +29,12 @@ window.addEventListener("keyup", function (e) {
         case KEY_Z:
             UxSaverInstance.add('keyZ')
             History.undo()
-            ToolboxControllerInstance._updateHistoryButtons()
+            UIControllerInstance._updateHistoryButtons()
             break;
         case KEY_Y:
             UxSaverInstance.add('keyY')
             History.redo()
-            ToolboxControllerInstance._updateHistoryButtons()
+            UIControllerInstance._updateHistoryButtons()
             break;
         case KEY_F:
             UxSaverInstance.add('keyF')

@@ -68,7 +68,7 @@ class HistoryClass {
             this.front = []
             this.back.push(new Action(action, type, position, value))
         }
-        ToolboxControllerInstance._updateHistoryButtons()
+        UIControllerInstance._updateHistoryButtons()
     }
     reset()
     {

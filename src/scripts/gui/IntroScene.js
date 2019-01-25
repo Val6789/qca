@@ -5,7 +5,7 @@
     ParticleSystem
     TweenLite
     TimelineLite
-    ToolboxControllerInstance
+    UIControllerInstance
 */
 /* 
     exported 
@@ -68,7 +68,7 @@ class IntroScene {
         this.doTutorial = await this._choiceScene()
         this.completed = false
         if (this.doTutorial) {
-            ToolboxControllerInstance
+            UIControllerInstance
                 .infoHolderSkipClickCallback(() => {
                     this._deleteScene()
                     this.callbackDone()
@@ -87,7 +87,7 @@ class IntroScene {
     _setupScene() {
 
         // Update GUI
-        ToolboxControllerInstance.hideUI()
+        UIControllerInstance.hideUI()
 
         // Create the electron
         let pos = new THREE.Vector3(0, 0, 0)
@@ -143,11 +143,11 @@ class IntroScene {
 
     _choiceScene() {
         return new Promise(async (resolve) => {
-            ToolboxControllerInstance.revealChoice()
-            let choice = await ToolboxControllerInstance.choiceClick()
+            UIControllerInstance.revealChoice()
+            let choice = await UIControllerInstance.choiceClick()
 
             // Hide
-            ToolboxControllerInstance.hideChoice()
+            UIControllerInstance.hideChoice()
 
             let texts = this.texts
             if (texts) {
@@ -175,8 +175,8 @@ class IntroScene {
         return new Promise(async (resolve) => {
 
             // UI
-            ToolboxControllerInstance.revealInfoHolder()
-            ToolboxControllerInstance.setInfoHolderTitle("Electron")
+            UIControllerInstance.revealInfoHolder()
+            UIControllerInstance.setInfoHolderTitle("Electron")
             const json = AssetManager.Get().json.electronIntro
 
             // Text
@@ -192,7 +192,7 @@ class IntroScene {
     _dotScene() {
         return new Promise(async (resolve) => {
             // Creation
-            ToolboxControllerInstance.hideInfoHolder()
+            UIControllerInstance.hideInfoHolder()
             let pos = new THREE.Vector3(0, 0, 0)
             this._dots.addAt(pos)
             let camPos = this._camera.position
@@ -203,8 +203,8 @@ class IntroScene {
                     onComplete: littleResolve
                 })
             })
-            ToolboxControllerInstance.setInfoHolderTitle("Dot")
-            ToolboxControllerInstance.revealInfoHolder()
+            UIControllerInstance.setInfoHolderTitle("Dot")
+            UIControllerInstance.revealInfoHolder()
 
             // Text
             const json = AssetManager.Get().json.dotIntro
@@ -240,13 +240,13 @@ class IntroScene {
             this._dots.clean()
 
             // Text
-            ToolboxControllerInstance.setInfoHolderTitle("Qubit")
-            ToolboxControllerInstance.revealInfoHolder()
+            UIControllerInstance.setInfoHolderTitle("Qubit")
+            UIControllerInstance.revealInfoHolder()
             const json = AssetManager.Get().json.qubitIntro
             await this._displayJSON(json)
 
             // Creation
-            ToolboxControllerInstance.hideInfoHolder()
+            UIControllerInstance.hideInfoHolder()
             let pos = new THREE.Vector3(0, 0, 0)
             let qubit = new Qubit()
             this.toRemove.push(qubit)
@@ -263,7 +263,7 @@ class IntroScene {
                     onComplete: littleResolve
                 })
             })
-            ToolboxControllerInstance.revealInfoHolder()
+            UIControllerInstance.revealInfoHolder()
 
             // Text 2            
             const json2 = AssetManager.Get().json.qubitIntro2
@@ -272,14 +272,14 @@ class IntroScene {
             // Display the 1
             qubit.polarity = 1
             this.UPDATE_FUNCTION()
-            ToolboxControllerInstance.setInfoHolderTitle("State 1")
+            UIControllerInstance.setInfoHolderTitle("State 1")
             await this._paragraphCallBack()
 
 
             // Display the 0
             qubit.polarity = -1
             this.UPDATE_FUNCTION()
-            ToolboxControllerInstance.setInfoHolderTitle("State 0")
+            UIControllerInstance.setInfoHolderTitle("State 0")
             await this._paragraphCallBack()
 
             // Basic
@@ -288,13 +288,13 @@ class IntroScene {
 
 
             // Text 3
-            ToolboxControllerInstance.setInfoHolderTitle("Qubit")
+            UIControllerInstance.setInfoHolderTitle("Qubit")
             const json3 = AssetManager.Get().json.qubitIntro3
             await this._displayJSON(json3)
 
 
             // Clean and resolve
-            ToolboxControllerInstance.hideInfoHolder()
+            UIControllerInstance.hideInfoHolder()
             this._cleanToRemove()
             resolve()
         })
@@ -307,7 +307,7 @@ class IntroScene {
             this._dots.clean()
 
             // Creation
-            ToolboxControllerInstance.hideInfoHolder()
+            UIControllerInstance.hideInfoHolder()
             let pos = new THREE.Vector3(0, 0, 0)
             let output = new OutputBlock(pos)
             this.toRemove.push(output)
@@ -354,8 +354,8 @@ class IntroScene {
 
 
             // Text
-            ToolboxControllerInstance.setInfoHolderTitle("Output Block")
-            ToolboxControllerInstance.revealInfoHolder()
+            UIControllerInstance.setInfoHolderTitle("Output Block")
+            UIControllerInstance.revealInfoHolder()
             const json = AssetManager.Get().json.outputIntro
             await this._displayJSON(json)
 
@@ -370,7 +370,7 @@ class IntroScene {
         return new Promise(async (resolve) => {
 
             // Creation
-            ToolboxControllerInstance.hideInfoHolder()
+            UIControllerInstance.hideInfoHolder()
             let pos = new THREE.Vector3(0, 0, 0)
             let inputPositive = new InputBlock(pos, 1)
             let inputNegative = new InputBlock(pos, -1)
@@ -388,8 +388,8 @@ class IntroScene {
 
 
             // Text
-            ToolboxControllerInstance.setInfoHolderTitle("Influencer")
-            ToolboxControllerInstance.revealInfoHolder()
+            UIControllerInstance.setInfoHolderTitle("Influencer")
+            UIControllerInstance.revealInfoHolder()
             const json = AssetManager.Get().json.inputIntro
             await this._displayJSON(json)
 
@@ -404,8 +404,8 @@ class IntroScene {
     }
 
     _deleteScene() {
-        ToolboxControllerInstance.revealUI()
-        ToolboxControllerInstance.hideInfoHolder()
+        UIControllerInstance.revealUI()
+        UIControllerInstance.hideInfoHolder()
         Utils.doDispose(this._scene)
 
         this._electrons.clean()
@@ -462,7 +462,7 @@ class IntroScene {
 
     _paragraphCallBack() {
         return new Promise(resolve => {
-            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+            UIControllerInstance.setInfoHolderNextClickCallback(() => {
                 resolve()
             })
         })
@@ -481,7 +481,7 @@ class IntroScene {
         const addLine = (text) => {
             return new Promise(littleResolve => {
                 endline = () => {
-                    ToolboxControllerInstance.addInfoHolderText(text)
+                    UIControllerInstance.addInfoHolderText(text)
                     // Letter per second
                     const avgReadingSpeed = 25.25
                     lineLatency = avgReadingSpeed * text.length
@@ -497,7 +497,7 @@ class IntroScene {
             const paragraph = json[i]
 
             // Force the next line
-            ToolboxControllerInstance.setInfoHolderNextClickCallback(() => {
+            UIControllerInstance.setInfoHolderNextClickCallback(() => {
                 this._lineCallback(endline, timeout)
             })
 
@@ -509,7 +509,7 @@ class IntroScene {
 
             // Paragraph finished
             await this._paragraphCallBack()
-            ToolboxControllerInstance.clearInfoHolder()
+            UIControllerInstance.clearInfoHolder()
             lineLatency = 0
         }
     }
