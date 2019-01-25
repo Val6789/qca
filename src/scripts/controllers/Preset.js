@@ -68,7 +68,6 @@ class Preset {
                     newBlock = automata.addOutput(blockPosition)
                     break
             }
-            console.log(newBlock)
             if (block.fixed) newBlock.toogleFixe()
             if (block.clock) newBlock.setClock(parseInt(block.clock))
             console.assert(newBlock)
