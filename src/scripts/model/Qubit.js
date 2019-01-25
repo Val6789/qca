@@ -260,7 +260,6 @@ class Qubit extends Block {
         this.setLabel("?")
 
         // Adds object to the scene, calling the render on the next frame
-        this.object.visible = Qubit._isVisible
         ThreeViewControllerInstance.addObjectToScene(this.object)
 
         // Saves the instance into the Class static collection
@@ -317,7 +316,6 @@ Qubit.FAMILY_COLORS = [
 ]
 
 Qubit.selectedClockId = 0
-Qubit._areVisible = true
 Qubit._areFamilyColorsVisible = true
 
 /**
