@@ -15,6 +15,7 @@ class OutputBlock extends Qubit {
     constructor(position) {
         super(position, 0, false)
         this.type = "output"
+        this.setLabel("?")
         this.object.visible = OutputBlock._isVisible
         OutputBlock.instances.add(this)
     }

@@ -112,6 +112,12 @@ class QuantumAutomata {
             this.removeBlock(qubit.position, true)
         })
     }
+    fixeBlock(position) {
+        const hash = QuantumAutomata._positionHash(position)
+        if (!this._qubitMap.has(hash)) return
+        const block = this._qubitMap.get(hash)
+        block.toogleFixe()
+    }
 
     /**
      * @public @method
