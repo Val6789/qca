@@ -179,6 +179,24 @@ class ToolboxController {
     }
 
 
+    _populateClockSelector(id)
+    {
+        var clockSelector = document.getElementById(id)
+        Qubit.FAMILY_COLORS.forEach((color, id) => {
+            let colorPill = document.createElement("DIV")
+            colorPill.addEventListener("click", () => {
+                document.getElementById("clock-indicator").style.backgroundColor = color
+                Qubit.selectedClockId = id;
+            })
+            colorPill.classList.add("clock-color")
+            colorPill.style.backgroundColor = color
+            clockSelector.append(colorPill)
+        })
+
+        document.getElementById("clock-indicator").style.backgroundColor = Qubit.FAMILY_COLORS[Qubit.selectedClockId]
+    }
+
+
     /**
      * @constructor
      * @param {String} toolClassName css class name identifing tools
@@ -199,6 +217,7 @@ class ToolboxController {
             if (mappedId) this.select(mappedId)
         })
 
+        this._populateClockSelector("clock-selector")
         this.select("camera-tool")
     }
 }

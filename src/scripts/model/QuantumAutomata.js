@@ -29,12 +29,9 @@ class QuantumAutomata {
      * @param {THREE.Vector3} position
      */
     addQubit(position) {
-        let block = this._addBlock(new Qubit(position))
-        /*if(useClock) {
-            block.setClock(UIControllerInstance.currentClockValue)
-            this.qcaUseClock()
-        }*/
-        return block
+        let block = new Qubit(position)
+        if(this._addBlock(block)) return block
+        return false
     }
 
     qcaUseClock() {
@@ -51,7 +48,9 @@ class QuantumAutomata {
      * @param {Number} State 0 or 1
      */
     addInput(position, value) {
-        return this._addBlock(new InputBlock(position, value ? 1 : -1))
+        let block = new InputBlock(position, value ? 1 : -1)
+        if(this._addBlock(block)) return block
+        return false
     }
 
 
@@ -63,7 +62,7 @@ class QuantumAutomata {
         const newBlock = new OutputBlock(position)
         if (this._addBlock(newBlock)) {
             this._outputs.add(newBlock)
-            return true
+            return newBlock
         }
         return false
     }
@@ -212,6 +211,7 @@ class QuantumAutomata {
         const hash = QuantumAutomata._positionHash(block.position)
         if (this._qubitMap.has(hash)) {
             let exist = this.getQubit(block.position)
+            if(exist.fixed) return false
             if (exist.type == "input" && block.type == "input") {
                 // History.add("change", block.type, block.position, block.polarity)
                 let value = exist.polarity
