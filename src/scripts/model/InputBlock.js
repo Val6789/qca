@@ -51,15 +51,20 @@ class InputBlock extends Block {
             this.setColor(0xffff00)
         }
 
+		/* This is not needed
         if(this.polarity == -1)
 			this.setLabel("0")
 		else if(this.polarity == 1)
 			this.setLabel("1")
+		*/
     }
 
     static init() {
         InputBlock.positiveParticles = new ParticleSystem(this._getSolidMaterial("positive_input"))
         InputBlock.negativeParticles = new ParticleSystem(this._getSolidMaterial("negative_input"))
+        
+        ThreeViewControllerInstance.addObjectToScene(InputBlock.positiveParticles.object)
+        ThreeViewControllerInstance.addObjectToScene(InputBlock.negativeParticles.object)
 
         InputBlock.positiveInstances = []
         InputBlock.negativeInstances = []
@@ -69,7 +74,7 @@ class InputBlock extends Block {
 
     static _getSolidMaterial(textureName) {
         return new THREE.PointsMaterial({
-            size: 0.7,
+            size: 0.5,
             sizeAttenuation: true,
             map: AssetManager.Get().textures[textureName],
             transparent: false,
