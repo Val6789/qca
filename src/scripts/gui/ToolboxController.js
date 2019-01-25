@@ -50,11 +50,17 @@ class ToolboxController {
             ThreeViewControllerInstance.orbitControls.enablePan = true
             break
 
-            default:
+            case "qubit-tool":
+            case "input-tool":
+            case "output-tool":
+            case "remove-tool":
+            case "bridge-tool":
             if(ToolboxController.CONSOLE_OUTPUT) console.log("Locked camera")
             ThreeViewControllerInstance.orbitControls.enableRotate = false
             ThreeViewControllerInstance.orbitControls.enablePan = false
             break
+
+            default: break
         }
     }
 
@@ -70,10 +76,15 @@ class ToolboxController {
             EditorInstance.cursor.isMagnetic = false
             break
 
-            default:
+            case "qubit-tool":
+            case "input-tool":
+            case "output-tool":
+            case "remove-tool":
             if(ToolboxController.CONSOLE_OUTPUT) console.log("Disabled Magnetic cursor")
             EditorInstance.cursor.isMagnetic = false
             break
+
+            default: break
         }
     }
 
@@ -108,10 +119,11 @@ class ToolboxController {
             EditorInstance.canEdit = Editor.modes.BRIDGE
             break
 
-            default:
+            case "camera-tool":
             UxSaverInstance.add('setCameraToolClick')
             EditorInstance.canEdit = Editor.modes.NOTHING
-            break
+            
+            default: break
         }
         if(ToolboxController.CONSOLE_OUTPUT) console.log("tool:", toolID, EditorInstance.canEdit)
     }
