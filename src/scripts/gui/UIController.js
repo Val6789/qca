@@ -261,6 +261,9 @@ class UIController {
         else if (!History.canRedo() && !redoBtn.classList.contains("inactive")) redoBtn.classList.add("inactive")
     }
 
+    _setToolbox() {
+        this.toolbox = new ToolboxController()
+    }
 
     _setDraggableTools() {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
@@ -442,13 +445,6 @@ class UIController {
 
 
     init() {
-        this._setCameraButton()
-        this._setQubitButton()
-        this._setInputButton()
-        this._setOutputButton()
-        this._setEraserButton()
-        this._setDraggableTools()
-
         this._setPauseButton()
         this._setSlowButton()
         this._setFastButton()
@@ -458,14 +454,11 @@ class UIController {
 
         this._setCameraJoystick()
         this._setOverlaySelector()
-        this._setBridgeButton()
-
-        this._setClockButton()
+        this._setToolbox()
 
         this.currentToolSelected = "get-camera"
         this.lastToolSelected = ""
 
-        this.currentClockValue = 0;
 
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
         window.addEventListener("keyup", ev => this._keyupHandler(ev))

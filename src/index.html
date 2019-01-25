@@ -143,28 +143,20 @@
 
     <header class="control-strip ui">
         <nav class="toolbox">
-            <button class="tool active" alt="Control Camera" id="get-camera" title="Mode camera">
+            <button class="tool active" alt="Control Camera" id="camera-tool" title="Mode camera">
                 <img src="assets/buttons/Camera.png" class="tool-icon camera-icon">
                 Q
             </button>
             <div class="separator"></div>
-            <!--<button class="tool draggable" alt="Positively charged influencer" id="positive-input">
-                <img src="assets/buttons/True.png" class="tool-icon positron-icon">
-                +
-            </button>
-            <button class="tool draggable" alt="Negatively charged influencer" id="negative-input">
-                <img src="assets/buttons/False.png" class="tool-icon electron-icon">
-                -
-            </button>-->
-            <button class="tool draggable" alt="Negatively charged influencer" id="negative-input" title="Add input">
+            <button class="tool draggable" alt="Negatively charged influencer" id="input-tool" title="Add input">
                 <img src="assets/buttons/Input.png" class="tool-icon electron-icon">
                 -
             </button>
-            <button class="tool draggable" alt="Qubit" id="place-qubits" title="Add Qubit">
+            <button class="tool draggable" alt="Qubit" id="qubit-tool" title="Add Qubit">
                 <img src="assets/buttons/Qubit.png" class="tool-icon qubit-icon">
                 B
             </button>
-            <button class="tool draggable" alt="Qubit" id="place-output" title="Add output">
+            <button class="tool draggable" alt="Qubit" id="output-tool" title="Add output">
                 <img src="assets/buttons/Output.png" class="tool-icon output-icon">
                 O
             </button>
@@ -176,11 +168,11 @@
                 </button>
                 <div id="clock-selector"></div>
             </div>
-            <button class="tool" alt="Bridge" id="bridge" title="Bridge Qubits">
+            <button class="tool" alt="Bridge" id="bridge-tool" title="Bridge Qubits">
                 <img src="assets/buttons/Bridge.png" class="tool-icon bridge-icon">
                 B
             </button>
-            <button class="tool" alt="Eraser" id="eraser" title="Erease">
+            <button class="tool" alt="Eraser" id="remove-tool" title="Erase">
                 <img src="assets/buttons/Delete.png" class="tool-icon delete-icon">
                 E
             </button>

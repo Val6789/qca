@@ -24,12 +24,9 @@ class Editor {
                 case Editor.modes.QUBIT:
                     UxSaverInstance.add('addQubit',this.cursor.position)
                     return AppControllerInstance.automata.addQubit(this.cursor.position)
-                case Editor.modes.NEGATIVE_INPUT:
+                case Editor.modes.INPUT:
                     UxSaverInstance.add('addNegativeInput',this.cursor.position)
                     return AppControllerInstance.automata.addInput(this.cursor.position, false)
-                case Editor.modes.POSITIVE_INPUT:
-                    UxSaverInstance.add('addPositiveInput',this.cursor.position)
-                    return AppControllerInstance.automata.addInput(this.cursor.position, true)
                 case Editor.modes.OUTPUT:
                     UxSaverInstance.add('addOutput',this.cursor.position)
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
@@ -144,9 +141,9 @@ const EditorInstance = new Editor()
 Editor.modes = {
     NOTHING: 0,
     QUBIT: 1,
-    POSITIVE_INPUT: 2,
-    NEGATIVE_INPUT: 3,
+    INPUT: 3,
     OUTPUT: 4,
     REMOVE: 5,
     BRIDGE: 6
 }
+Object.freeze(Editor.modes)
