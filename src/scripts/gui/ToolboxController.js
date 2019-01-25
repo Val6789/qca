@@ -439,11 +439,11 @@ class ToolboxController {
     {
         var clockSelector = document.getElementById('clock-selector')
         this.changeColorClock(0)
-        for(let colorId in Block.FAMILY_COLORS) {
+        for(let colorId in Qubit.FAMILY_COLORS) {
             let newDivColor = document.createElement('div')
             newDivColor.classList.add('clock-color')
             newDivColor.setAttribute('data-id',colorId)
-            newDivColor.style.backgroundColor = Block.FAMILY_COLORS[colorId]
+            newDivColor.style.backgroundColor = Qubit.FAMILY_COLORS[colorId]
             newDivColor.onclick = function(){
                 ToolboxControllerInstance.changeColorClock(parseInt(this.getAttribute('data-id')))
             }
@@ -452,8 +452,8 @@ class ToolboxController {
     }
 
     changeColorClock(id) {
-        document.getElementById('clock-change').style.backgroundColor = Block.FAMILY_COLORS[id]
-        Block.selectedClockId = id;
+        document.getElementById('clock-change').style.backgroundColor = Qubit.FAMILY_COLORS[id]
+        Qubit.selectedClockId = id;
     }
 
 

@@ -19,15 +19,6 @@ class Block {
         return this.object.position
     }
 
-    get clockId() {
-        return this._clockId
-    }
-
-    set clockId(newId) {
-        this._clockId = newId
-        this._showFamilyColor(Block.areFamilyColorsVisible)
-    }
-
     /**
      * @public @method
      * @brief Removes the block from the scene
@@ -104,7 +95,7 @@ class Block {
     }
 
     _showFamilyColor(bool) {
-        const color = bool ? Block.FAMILY_COLORS[this._clockId] : "#000"
+        const color = bool ? Qubit.FAMILY_COLORS[this._clockId] : "#000"
         this.family.material = Block._boxMaterial(color)
         ThreeViewControllerInstance.shouldRender()
     }
@@ -134,8 +125,6 @@ class Block {
         // moves the box
         this.object.position.copy(position)
 
-        this.clockId = Block.selectedClockId
-
         // adds box to position
         ThreeViewControllerInstance.addObjectToScene(this.object)
         Block.instances.add(this)
@@ -150,17 +139,6 @@ class Block {
             depthTest: true,
             depthWrite: false,
             depthFunc: THREE.NeverDepth
-        })
-    }
-
-    static get areFamilyColorsVisible() {
-        return Block._areFamilyColorsVisible
-    }
-
-    static set areFamilyColorsVisible(boolean) {
-        Block._areFamilyColorsVisible = true
-        if (Block.instances) Block.instances.forEach( block => {
-            block._showFamilyColor(boolean)
         })
     }
 
@@ -184,14 +162,4 @@ Block.QUBIT_SIZE = 0.8
 Block.QUBIT_OPACITY = 0.4
 Block.QUBIT_THICK = 0.3
 
-Block.FAMILY_COLORS = [
-    "#0AA",
-    "#0C0",
-    "#F40",
-    "#C0D"
-]
-
-Block.selectedClockId = 0
-Block._areVisible = true
-Block._areFamilyColorsVisible = true
 Block.instances = new Set()

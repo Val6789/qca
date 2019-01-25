@@ -177,7 +177,7 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
-        this.clockTime = (this.clockTime+1)%Block.FAMILY_COLORS.length
+        this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
         this._outputs.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
