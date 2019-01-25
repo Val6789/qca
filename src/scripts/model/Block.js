@@ -95,7 +95,7 @@ class Block {
     }
 
     toogleFixe() {
-        this.fixed = !this.fixed;
+       this.fixed = !this.fixed;
     }
 
     _showFamilyColor(bool) {
