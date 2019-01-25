@@ -1,0 +1,11 @@
+[
+    [
+        "As our electrons are volatile we will need a <b>super strong container</b> to hold it.",
+        "Let's meet the <b>Dot</b>.",
+        "In our simulation, the dot will be a simple circle, in which you can find electrons.",
+        "These quantum dots are sites in which electons are able to tunnel between them but cannot leave the cell."
+    ],
+    [
+        "For real experiments, creating a dot is very complicated, but we are lucky, here it's just a simulation."
+    ]
+]

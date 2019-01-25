@@ -34,6 +34,14 @@
         "THREE": true,
         "AssetManager": true,
         "AchievementManager": true,
-        "iziToast": true
+        "iziToast": true,
+        "AppControllerInstance": true,
+        "ThreeViewControllerInstance": true,
+        "EditorInstance": true,
+        "ToolboxControllerInstance": true,
+        "GUIinstance": true,
+        "TweenLite": true,
+        "TimelineLite": true,
+        "Utils": true
     }
 }

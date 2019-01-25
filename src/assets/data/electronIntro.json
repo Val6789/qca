@@ -1,0 +1,16 @@
+[
+    [
+        "So this is an <b>electron</b>.",
+        "An electron is something that exist in the <b>real world</b>.",
+        "The real world is the place where most humans live.",
+        "But you already know that.",
+        "What you don't know is : <b>What's an electron ?</b>"
+    ],
+    [
+        "In our simulation, the electron is one of the key elements.",
+        "Electron are negatively charged, and that's why they don't want to stay close to each others",
+        "We will create <b>a lot</b> of electrons, they will react and interact together thanks to their charge, and the whole system will create a gigantic circuit with awesome properties.",
+        "But for now it's just a single electron...",
+        "When you are ready, click next to give him a friend."
+    ]
+]
