@@ -66,7 +66,7 @@ class Bridge {
     static set areVisible(boolean) {
         Bridge._areVisible = boolean
         Bridge.instances.forEach(bridge => {
-            bridge.curve.visible = boolean
+            bridge._spline.visible = boolean
         })
     }
 
