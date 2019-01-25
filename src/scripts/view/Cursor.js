@@ -54,7 +54,7 @@ class Cursor {
                 }
                 else {
                     ThreeViewControllerInstance.renderer.domElement.style.cursor = "crosshair"
-                    this._selectionBox.material = this._lineMaterial(this.color);
+                    this._selectionBox.material = this._lineMaterial(this.COLOR);
                 }
             }
             else {
@@ -142,7 +142,7 @@ class Cursor {
     // depth column constructor
     _makeDepthColumn() {
         let yColumnGeometry = new THREE.BoxGeometry(this.SIZE, this.SIZE, this.SIZE)
-        let cursormaterial = this._lineMaterial(this.color)
+        let cursormaterial = this._lineMaterial(this.COLOR)
         this._depthColumn = new THREE.LineSegments(new THREE.EdgesGeometry(yColumnGeometry), cursormaterial)
         ThreeViewControllerInstance.addObjectToScene(this._depthColumn)
     }
@@ -150,7 +150,7 @@ class Cursor {
     // selection Box constructor
     _makeSelectionBox() {   // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(this.SIZE, this.HEIGHT, this.SIZE)
-        let cursormaterial = this._lineMaterial(this.color)
+        let cursormaterial = this._lineMaterial(this.COLOR)
         this._selectionBox = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
         ThreeViewControllerInstance.addObjectToScene(this._selectionBox)
     }
