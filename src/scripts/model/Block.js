@@ -52,8 +52,12 @@ class Block {
             bevelEnabled: false
         }), lineMaterial)
         this.valueText.name = "ValueText"
-        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2) // center text on box (values adjusted for optimer font)
+        if(this.type && this.type == "output") {
+            this.valueText.geometry.scale(1.5,1.5,1.5)
+        }
+        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2+0.01) // center text on box (values adjusted for optimer font)
         this.valueText.geometry.rotateX(-Math.PI / 2)
+
 
         this.object.add(this.valueText)
 
@@ -90,8 +94,8 @@ class Block {
         this.object.material.color = new THREE.Color(color)
     }
 
-    fixe() {
-        this.fixed = true
+    toogleFixe() {
+        this.fixed = !this.fixed;
     }
 
     _showFamilyColor(bool) {
@@ -108,7 +112,7 @@ class Block {
      */
     constructor(position) {
         // defines box properties
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: Block.BORDER_WIDTH })
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
@@ -163,3 +167,4 @@ Block.QUBIT_OPACITY = 0.4
 Block.QUBIT_THICK = 0.3
 
 Block.instances = new Set()
+Block.BORDER_WIDTH = 2

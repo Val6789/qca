@@ -13,11 +13,11 @@ class Preset {
                 y: qPosition.y,
                 z: qPosition.z,
                 type: qubit.type,
-                fixed: qubit.fixed
+                fixed: qubit.fixed,
+                clock:false
             }
-            if (qubit.type == "input") {
-                exportQubit.type += qubit.polarity
-            }
+            if (qubit.type == "input") exportQubit.type += qubit.polarity
+            if(qubit.clockId) exportQubit.clock = qbit.clockId
             quantomExport.push(exportQubit)
         })
         this.downloadPreset(JSON.stringify(quantomExport))
@@ -68,9 +68,8 @@ class Preset {
                     newBlock = automata.addOutput(blockPosition)
                     break
             }
-            if (block.fixed) {
-                block.fixe()
-            }
+            if (block.fixed) block.fixe()
+            if (block.clock) block.setClock(parseInt(block.clock))
             console.assert(newBlock)
         }
         return true

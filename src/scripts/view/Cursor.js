@@ -44,7 +44,24 @@ class Cursor {
             }
 
             newPosition.round()
+
+            var currentBlock = AppControllerInstance.automata.getQubit(newPosition)
+
+            if(EditorInstance.canEdit != Editor.modes.NOTHING) {
+                if(currentBlock && currentBlock.fixed) {
+                    ThreeViewControllerInstance.renderer.domElement.style.cursor = "not-allowed"
+                    this._selectionBox.material = this._lineMaterial(Cursor.FIXED_COLOR)
+                }
+                else {
+                    ThreeViewControllerInstance.renderer.domElement.style.cursor = "crosshair"
+                    this._selectionBox.material = this._lineMaterial(this.color);
+                }
+            }
+            else {
+                this._selectionBox.visible = false
+            }
         }
+        else return false
 
         // if the cursor changed, call for a render
         if (this._selectionBox.visible == wasVisible && newPosition.equals(previousPosition)) return false
@@ -53,6 +70,7 @@ class Cursor {
         this._updateDepthColumn()
 
         this._cursorMoveCallbacks.forEach( callback => callback(newPosition))
+
         ThreeViewControllerInstance.shouldRender()
         return true
     }
@@ -106,9 +124,10 @@ class Cursor {
         this._depthColumn.visible = this._depthColumn.scale.y != 0
     }
 
-    _lineMaterial() {
+    _lineMaterial(color) {
         return new THREE.LineBasicMaterial({
-            color: this.COLOR,
+            color: color,
+            linewidth: Cursor.BORDER_WIDTH,
             opacity: this.ALPHA,
             transparent: this.ALPHA < 1
         })
@@ -123,7 +142,7 @@ class Cursor {
     // depth column constructor
     _makeDepthColumn() {
         let yColumnGeometry = new THREE.BoxGeometry(this.SIZE, this.SIZE, this.SIZE)
-        let cursormaterial = this._lineMaterial()
+        let cursormaterial = this._lineMaterial(this.color)
         this._depthColumn = new THREE.LineSegments(new THREE.EdgesGeometry(yColumnGeometry), cursormaterial)
         ThreeViewControllerInstance.addObjectToScene(this._depthColumn)
     }
@@ -131,7 +150,7 @@ class Cursor {
     // selection Box constructor
     _makeSelectionBox() {   // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(this.SIZE, this.HEIGHT, this.SIZE)
-        let cursormaterial = this._lineMaterial()
+        let cursormaterial = this._lineMaterial(this.color)
         this._selectionBox = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
         ThreeViewControllerInstance.addObjectToScene(this._selectionBox)
     }
@@ -153,6 +172,9 @@ class Cursor {
         this.update()
     }
 }
+
+Cursor.FIXED_COLOR = 0x990000
+Cursor.BORDER_WIDTH = 1.2
 
 
 
