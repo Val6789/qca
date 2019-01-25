@@ -101,6 +101,16 @@ class Qubit extends Block {
         return this.electrons.reduce((accumulator, electron) => (accumulator + electron.charge), 0) / this.electrons.length
     }
 
+
+    get clockId() {
+        return this._clockId
+    }
+
+    set clockId(newId) {
+        this._clockId = newId
+        this._showFamilyColor(Block.areFamilyColorsVisible)
+    }
+
     /**
      * @public @method
      * @brief Removes qubit from the world
@@ -241,7 +251,8 @@ class Qubit extends Block {
         this.polarity = polarity
         this.balance = 0
 
-        this.clock = 0
+        this.clockId = Qubit.selectedClockId
+        this._showFamilyColor(Qubit._areFamilyColorsVisible)
 
         // tells the recursive processor if the polarity was updated
         this._visited = false
@@ -268,6 +279,18 @@ class Qubit extends Block {
             })
         }, Qubit.UNDETERMINED_REFRESH_RATE)
     }
+
+
+    static get areFamilyColorsVisible() {
+        return Qubit._areFamilyColorsVisible
+    }
+
+    static set areFamilyColorsVisible(boolean) {
+        Qubit._areFamilyColorsVisible = true
+        if (Qubit.instances) Qubit.instances.forEach( qubit => {
+            qubit._showFamilyColor(boolean)
+        })
+    }
 }
 
 /**
@@ -285,6 +308,17 @@ Qubit.DOT_PLACEMENTS = [
     new THREE.Vector3(-0.2, 0, 0.2),
     new THREE.Vector3(-0.2, 0, -0.2)
 ]
+
+Qubit.FAMILY_COLORS = [
+    "#0AA",
+    "#0C0",
+    "#F40",
+    "#C0D"
+]
+
+Qubit.selectedClockId = 0
+Qubit._areVisible = true
+Qubit._areFamilyColorsVisible = true
 
 /**
  * @static @private

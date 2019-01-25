@@ -25,6 +25,8 @@ class Bridge {
         this._updateCurve = () => {}
         if (Bridge.pending === this)
             Bridge.pending = undefined
+
+        Bridge.instances.delete(this)
         return this
     }
 
@@ -37,6 +39,7 @@ class Bridge {
             if (!this.end) this._updateCurve(newposition)
         })
         this._updateCurve(EditorInstance.cursor.position)
+        Bridge.instances.add(this)
     }
 
     static _createCurve(from, to) {
@@ -59,8 +62,22 @@ class Bridge {
         // Create the final object to add to the scene
         return new THREE.Line( geometry, material )
     }
+
+    static set areVisible(boolean) {
+        Bridge._areVisible = boolean
+        Bridge.instances.forEach(bridge => {
+            bridge.curve.visible = boolean
+        })
+    }
+
+    static get areVisible() {
+        return Bridge._areVisible
+    }
 }
 
 Bridge.SPLINE_CURVATURE = 2
 Bridge.SPLINE_WIDTH = 3
 Bridge.SPLINE_COLOR = 0xFF5555
+
+Bridge.instances = new Set()
+Bridge._areVisible = true
