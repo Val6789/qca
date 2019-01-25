@@ -29,7 +29,18 @@ class QuantumAutomata {
      * @param {THREE.Vector3} position
      */
     addQubit(position) {
-        return this._addBlock(new Qubit(position))
+        let block = this._addBlock(new Qubit(position))
+        /*if(useClock) {
+            block.setClock(ToolboxControllerInstance.currentClockValue)
+            this.qcaUseClock()
+        }*/
+        return block
+    }
+
+    qcaUseClock() {
+        if(!this.atLeastOneUseClock) {
+            this.atLeastOneUseClock = true
+        }
     }
 
 
@@ -166,7 +177,7 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
-        this.clockTime = (this.clockTime+1)%QuantumAutomata.COLOR_CLOCK.length
+        this.clockTime = (this.clockTime+1)%Block.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
         this._outputs.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
@@ -175,7 +186,7 @@ class QuantumAutomata {
 
     _startProcessFrom(qubit) {
         qubit._visited = false
-        qubit.processNeighboorsInfluences(this)
+        qubit.processNeighboorsInfluences(this, this.atLeastOneUseClock)
     }
 
 
@@ -221,6 +232,7 @@ class QuantumAutomata {
         this._bridges = new Set()
 
         this.clockTime = 0
+        this.atLeastOneUseClock = false;
     }
 
 

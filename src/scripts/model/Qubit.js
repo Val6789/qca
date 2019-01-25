@@ -143,7 +143,7 @@ class Qubit extends Block {
      * @param {QuantumAutomata} automata
      */
     processNeighboorsInfluences(automata) {
-        if (this._visited) return this._polarityBuffer
+        if (this._visited || (automata.atLeastOneUseClock && automata.clockTime == this.clock)) return this._polarityBuffer
         this._visited = true
 
         const EKIJ = 1 // Kink energy between cells
@@ -200,6 +200,10 @@ class Qubit extends Block {
         })
     }
 
+    setClock(clockValue) {
+        this.clock = clockValue
+    }
+
 
     /**
      * @constructor of Qubit
@@ -235,6 +239,8 @@ class Qubit extends Block {
         // sets the polarity, makes sure the dots are in the right place
         this.polarity = polarity
         this.balance = 0
+
+        this.clock = 0
 
         // tells the recursive processor if the polarity was updated
         this._visited = false
