@@ -103,6 +103,8 @@ class Editor {
         if (this._mouseState.left && !this._mouseState.dragging) this.edit()
         if (this._mouseState.right) this.quickErase()
         this._mouseState = {left: false, right: false, dragging: false}
+        if (this.canEdit == Editor.modes.NOTHING)
+            ThreeViewControllerInstance.renderer.domElement.style.cursor = "grab"
     }
 
     _mousedownHandler(event) {
@@ -110,6 +112,8 @@ class Editor {
             left: event.button == 0,
             right: event.button == 2,
         }
+        if (this.canEdit == Editor.modes.NOTHING)
+            ThreeViewControllerInstance.renderer.domElement.style.cursor = "grabbing"
     }
 
     _mousemoveHandler(event) {
@@ -140,6 +144,7 @@ const EditorInstance = new Editor()
 
 Editor.modes = {
     NOTHING: 0,
+    CAMERA: 0,
     QUBIT: 1,
     INPUT: 3,
     OUTPUT: 4,

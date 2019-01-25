@@ -36,6 +36,7 @@ class ToolboxController {
         this._toggleCameraControl(toolID)
         this._toggleMagneticCursor(toolID)
         this._selectEditorMode(toolID)
+        this._setMouseCursor(toolID)
     }
 
     /**
@@ -126,6 +127,27 @@ class ToolboxController {
             default: break
         }
         if(ToolboxController.CONSOLE_OUTPUT) console.log("tool:", toolID, EditorInstance.canEdit)
+    }
+
+
+    _setMouseCursor(toolID) {
+        var cursor
+        switch (toolID) {
+            case "qubit-tool":
+            case "input-tool":
+            case "output-tool":
+            case "remove-tool":
+            case "bridge-tool":
+            cursor = "crosshair"
+            break
+
+            case "camera-tool":
+            cursor = "grab"
+
+            default: break
+        }
+
+        ThreeViewControllerInstance.renderer.domElement.style.cursor = cursor
     }
 
 
