@@ -25,11 +25,11 @@ window.addEventListener("keyup", function (e) {
             break
         case KEY_Z:
             History.undo()
-            ToolboxControllerInstance._updateHistoryButtons()
+            UIControllerInstance._updateHistoryButtons()
             break;
         case KEY_Y:
             History.redo()
-            ToolboxControllerInstance._updateHistoryButtons()
+            UIControllerInstance._updateHistoryButtons()
             break;
     }
 })
