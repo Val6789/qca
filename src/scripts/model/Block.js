@@ -52,10 +52,10 @@ class Block {
             bevelEnabled: false
         }), lineMaterial)
         this.valueText.name = "ValueText"
+        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2+0.01) // center text on box (values adjusted for optimer font)
         if(this.type && this.type == "output") {
             this.valueText.geometry.scale(1.5,1.5,1.5)
         }
-        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2+0.01) // center text on box (values adjusted for optimer font)
         this.valueText.geometry.rotateX(-Math.PI / 2)
 
 
