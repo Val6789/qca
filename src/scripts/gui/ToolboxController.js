@@ -73,7 +73,7 @@ class ToolboxController {
             case "bridge-tool":
             case "camera-tool":
             if(ToolboxController.CONSOLE_OUTPUT) console.log("Enabled Magnetic cursor")
-            EditorInstance.cursor.isMagnetic = false
+            EditorInstance.cursor.isMagnetic = true
             break
 
             case "qubit-tool":
@@ -131,8 +131,6 @@ class ToolboxController {
 
     _mapKeyboardCodeWithToolId(Keycode) {
         switch (Keycode) {
-            case 16: // Maj
-            case 32: // Space
             case 77: // M
             case 67: // C
             return "camera-tool"
@@ -152,6 +150,9 @@ class ToolboxController {
 
             case 66: // B
             return "bridge-tool"
+
+            default:
+            return false
         }
     }
 
@@ -169,8 +170,14 @@ class ToolboxController {
         })
 
         document.addEventListener("keydown", event => {
-            this.select(this._mapKeyboardCodeWithToolId(event.keyCode))
+            if (event.keyCode === 16 || event.keyCode === 32) {
+                return this.select(this.previousTool)
+            }
+            const mappedId = this._mapKeyboardCodeWithToolId(event.keyCode)
+            if (mappedId) this.select(mappedId)
         })
+
+        this.select("camera-tool")
     }
 }
 
