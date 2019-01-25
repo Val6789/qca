@@ -12,8 +12,16 @@
     ToolboxController
     ToolboxControllerInstance
 */
-class ToolboxController {
 
+/**
+ * @warning THIS IS NOT YOUR TOOLBOX CONTROLLER. WHAT USED TO BE TOOLBOX CONTROLLER IS NOW UICONTROLLER!
+ * @class ToolBoxController
+ */
+class ToolboxController {
+    /**
+     * @brief set the editor to use the tool matching given element id
+     * @param {String} toolID id of the tool dom Element
+     */
     select(toolID) {
         // save tool states
         this.previousTool = this.activeTool
@@ -30,6 +38,10 @@ class ToolboxController {
         this._selectEditorMode(toolID)
     }
 
+    /**
+     * @brief toggles camera movement
+     * @param {String} toolID button id
+     */
     _toggleCameraControl(toolID){
         switch (toolID) {
             case "camera-tool":
@@ -46,6 +58,10 @@ class ToolboxController {
         }
     }
 
+    /**
+     * @brief toggles the editor cursor magnetism (jumping to the closest block)
+     * @param {String} toolID button id
+     */
     _toggleMagneticCursor(toolID){
         switch (toolID) {
             case "bridge-tool":
@@ -61,6 +77,10 @@ class ToolboxController {
         }
     }
 
+    /**
+     * @brief matches button to editor mode
+     * @param {String} toolID button id
+     */
     _selectEditorMode(toolID){
         switch (toolID) {
             case "qubit-tool":
@@ -96,6 +116,10 @@ class ToolboxController {
         if(ToolboxController.CONSOLE_OUTPUT) console.log("tool:", toolID, EditorInstance.canEdit)
     }
 
+    /**
+     * @constructor
+     * @param {String} toolClassName css class name identifing tools
+     */
     constructor(toolClassName = "tool") {
         this.toolsDomElements = document.querySelectorAll(`.${toolClassName}`)
         this.toolsDomElements.forEach(element => {
@@ -106,4 +130,5 @@ class ToolboxController {
     }
 }
 
+// toggles console logging of tool configurations 
 ToolboxController.CONSOLE_OUTPUT = true
