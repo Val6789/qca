@@ -196,6 +196,19 @@ class ToolboxController {
         document.getElementById("clock-indicator").style.backgroundColor = Qubit.FAMILY_COLORS[Qubit.selectedClockId]
     }
 
+    _setDraggableTools() {
+        this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
+
+        this._dragAndDropToolControls.onDragCallback(targetElement => {
+            return targetElement.id
+        })
+
+        this._dragAndDropToolControls.onDropCallback(payload => {
+            this.select(payload)
+            EditorInstance.edit()
+        })
+    }
+
 
     /**
      * @constructor
@@ -219,6 +232,8 @@ class ToolboxController {
 
         this._populateClockSelector("clock-selector")
         this.select("camera-tool")
+        this._setDraggableTools()
+
     }
 }
 
