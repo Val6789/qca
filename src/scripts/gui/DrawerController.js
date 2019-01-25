@@ -19,8 +19,24 @@ class DrawerController {
 		}
 	}
 
+	_initDrawerEvents() {
+		var drawers = document.getElementsByClassName('drawer')
+		for(let d of drawers) {
+			d.addEventListener('click',function(event){
+				event.stopPropagation()
+			})
+			d.addEventListener('mousemove',function(event){
+				event.stopPropagation()
+			})
+			d.addEventListener('wheel',function(event){
+				event.stopPropagation()
+			})
+		}
+	}
+
     init() {
     	this._initPresetLoading()
+    	this._initDrawerEvents()
     }
 
     constructor() {
