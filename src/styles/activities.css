@@ -64,11 +64,13 @@
     visibility: hidden;
     font-family: arial;
     position: fixed;
-    top: 10vw;
-    bottom: 15vw;
+    top: 10vh;
+    bottom: 15vh;
     left: 10vw;
     right: 10vw;
 
+    max-width:40vw;
+    margin:auto;
     
     border-radius: 4px;
 
