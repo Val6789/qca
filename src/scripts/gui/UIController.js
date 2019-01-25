@@ -241,8 +241,8 @@ class UIController {
         }
     }
 
-    _setDustbeenButton() {
-        document.getElementById('dustbeen-button').onclick = function () {
+    _setDustbinButton() {
+        document.getElementById('dustbin-button').onclick = function () {
             AppControllerInstance.automata.reset()
         }
     }
@@ -275,7 +275,7 @@ class UIController {
         this._setFastButton()
 
         this._setHistoryButtons()
-        this._setDustbeenButton();
+        this._setDustbinButton()
 
         this._setCameraJoystick()
         this._setOverlaySelector()
