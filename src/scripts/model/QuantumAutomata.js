@@ -31,7 +31,7 @@ class QuantumAutomata {
     addQubit(position) {
         let block = this._addBlock(new Qubit(position))
         /*if(useClock) {
-            block.setClock(ToolboxControllerInstance.currentClockValue)
+            block.setClock(UIControllerInstance.currentClockValue)
             this.qcaUseClock()
         }*/
         return block
