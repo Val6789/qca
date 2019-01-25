@@ -122,11 +122,39 @@ class ToolboxController {
             case "camera-tool":
             UxSaverInstance.add('setCameraToolClick')
             EditorInstance.canEdit = Editor.modes.NOTHING
-            
+
             default: break
         }
         if(ToolboxController.CONSOLE_OUTPUT) console.log("tool:", toolID, EditorInstance.canEdit)
     }
+
+
+    _mapKeyboardCodeWithToolId(Keycode) {
+        switch (Keycode) {
+            case 16: // Maj
+            case 32: // Space
+            case 77: // M
+            case 67: // C
+            return "camera-tool"
+
+            case 73: // I
+            return "input-tool"
+
+            case 81: // Q
+            case 75: // K
+            return "qubit-tool"
+
+            case 79: // O
+            return "output-tool"
+
+            case 82: // R
+            return "remove-tool"
+
+            case 66: // B
+            return "bridge-tool"
+        }
+    }
+
 
     /**
      * @constructor
@@ -138,6 +166,10 @@ class ToolboxController {
             element.addEventListener("click", event => {
                 this.select(event.currentTarget.id)
             })
+        })
+
+        document.addEventListener("keydown", event => {
+            this.select(this._mapKeyboardCodeWithToolId(event.keyCode))
         })
     }
 }
