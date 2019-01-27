@@ -22,14 +22,14 @@ class UIController {
         if (!this.$choiceHolder)
             this.$choiceHolder = document.getElementById("choice-holder")
 
-        this.$choiceHolder.classList.remove("hidden")
+        this.$choiceHolder.classList.add("revealed")
     }
 
     hideChoice() {
         if (!this.$choiceHolder)
             this.$choiceHolder = document.getElementById("choice-holder")
 
-        this.$choiceHolder.classList.add("hidden")
+        this.$choiceHolder.classList.remove("revealed")
     }
 
     choiceClick() {
@@ -204,7 +204,7 @@ class UIController {
         // unpaused by default
         play.style.display = "none"
         pause.style.display = "inline"
-        // ThreeViewControllerInstance.renderer.domElement
+        // AppControllerInstance.view.renderer.domElement
         button.onclick = function () {
             UxSaverInstance.add('pauseBtn')
             if (AppControllerInstance.pauseMode) { // is app paused ?
@@ -264,8 +264,10 @@ class UIController {
         this.lastToolSelected = ""
 
 
+        /*
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
         window.addEventListener("keyup", ev => this._keyupHandler(ev))
+        */
     }
 
     constructor() {

@@ -10,7 +10,7 @@ class ParticleSystem {
 
         this._setPositionBuffer(position.toArray(), this._particulesCount * this.ATTRIBUTE_SIZE)
     }
-    
+
     clean() {
         this.positions = []
     }
@@ -81,7 +81,7 @@ class ParticleSystem {
             this._particlesGroup.add(particles)
         })
 
-        ThreeViewControllerInstance.callbackOnRender(() => {
+        AppControllerInstance.view.callbackOnRender(() => {
             if (this._updateBuffer) this._reloadPositions(this._updateBuffer)
             this._updateBuffer = null
         })

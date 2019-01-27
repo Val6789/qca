@@ -47,21 +47,20 @@ class Cursor {
 
             var currentBlock = AppControllerInstance.automata.getQubit(newPosition)
 
-            if(EditorInstance.canEdit != Editor.modes.NOTHING) {
-                if(currentBlock && currentBlock.fixed) {
-                    ThreeViewControllerInstance.renderer.domElement.style.cursor = "not-allowed"
+            if (EditorInstance.canEdit != Editor.modes.NOTHING) {
+                if (currentBlock && currentBlock.fixed) {
+                    AppControllerInstance.view
+                        .renderer.domElement.style.cursor = "not-allowed"
                     this._selectionBox.material = this._lineMaterial(Cursor.FIXED_COLOR)
-                }
-                else {
-                    ThreeViewControllerInstance.renderer.domElement.style.cursor = "crosshair"
+                } else {
+                    AppControllerInstance.view
+                        .renderer.domElement.style.cursor = "crosshair"
                     this._selectionBox.material = this._lineMaterial(this.COLOR);
                 }
-            }
-            else {
+            } else {
                 this._selectionBox.visible = false
             }
-        }
-        else return false
+        } else return false
 
         // if the cursor changed, call for a render
         if (this._selectionBox.visible == wasVisible && newPosition.equals(previousPosition)) return false
@@ -69,9 +68,9 @@ class Cursor {
         this._selectionBox.position.copy(newPosition)
         this._updateDepthColumn()
 
-        this._cursorMoveCallbacks.forEach( callback => callback(newPosition))
+        this._cursorMoveCallbacks.forEach(callback => callback(newPosition))
 
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
         return true
     }
 
@@ -89,21 +88,20 @@ class Cursor {
      * @param {Number} x pixel cursor position
      * @param {Number} y pixel cursor position
      */
-    _castRayFromMousePosition(x,y) {
+    _castRayFromMousePosition(x, y) {
         if (!this.grid) return false
 
         // get mouse position as a floating point value between -1 and 1
         var pointer
         if (x && y)
             pointer = new THREE.Vector2(
-                (x / window.innerWidth) * 2 - 1,
-                -(y / window.innerHeight) * 2 + 1
+                (x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1
             );
         else
-            pointer = new THREE.Vector2(0,0)
+            pointer = new THREE.Vector2(0, 0)
 
         // cast ray from the camera, through the cursor
-        this._raycaster.setFromCamera(pointer, ThreeViewControllerInstance.camera)
+        this._raycaster.setFromCamera(pointer, AppControllerInstance.view.camera)
 
         // collect detected intersections
         let intersection = this._raycaster.intersectObject(this.grid.hitzone)
@@ -136,7 +134,7 @@ class Cursor {
     // grid constructor
     _makeGrid() {
         this.grid = new Grid(AssetManager.Get().fonts.optimer, -this.HEIGHT / 2)
-        ThreeViewControllerInstance.addObjectToScene(this.grid.object)
+        AppControllerInstance.view.addObjectToScene(this.grid.object)
     }
 
     // depth column constructor
@@ -144,15 +142,15 @@ class Cursor {
         let yColumnGeometry = new THREE.BoxGeometry(this.SIZE, this.SIZE, this.SIZE)
         let cursormaterial = this._lineMaterial(this.COLOR)
         this._depthColumn = new THREE.LineSegments(new THREE.EdgesGeometry(yColumnGeometry), cursormaterial)
-        ThreeViewControllerInstance.addObjectToScene(this._depthColumn)
+        AppControllerInstance.view.addObjectToScene(this._depthColumn)
     }
 
     // selection Box constructor
-    _makeSelectionBox() {   // makes a box with parameters width, height, length
+    _makeSelectionBox() { // makes a box with parameters width, height, length
         let cursorgeometry = new THREE.BoxGeometry(this.SIZE, this.HEIGHT, this.SIZE)
         let cursormaterial = this._lineMaterial(this.COLOR)
         this._selectionBox = new THREE.LineSegments(new THREE.EdgesGeometry(cursorgeometry), cursormaterial)
-        ThreeViewControllerInstance.addObjectToScene(this._selectionBox)
+        AppControllerInstance.view.addObjectToScene(this._selectionBox)
     }
 
     constructor(color = 0x999999, alpha = 1) {
@@ -175,7 +173,3 @@ class Cursor {
 
 Cursor.FIXED_COLOR = 0x990000
 Cursor.BORDER_WIDTH = 1.2
-
-
-
-

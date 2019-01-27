@@ -1,6 +1,6 @@
 /* 
     global 
-    ThreeViewControllerInstance
+    AppControllerInstance
     Electron
     ParticleSystem
     TweenLite
@@ -43,7 +43,7 @@ class IntroScene {
             bevelEnabled: false
         }
         this.UPDATE_FUNCTION = () => {
-            ThreeViewControllerInstance.shouldRender()
+            AppControllerInstance.view.shouldRender()
         }
 
         this.toRemove = []
@@ -66,13 +66,11 @@ class IntroScene {
         this._setupScene()
         await this._welcomeScene()
         this.doTutorial = await this._choiceScene()
-        this.completed = false
         if (this.doTutorial) {
             UIControllerInstance
                 .infoHolderSkipClickCallback(() => {
                     this._deleteScene()
                     this.callbackDone()
-                    this.completed = true
                 })
             await this._electronScene()
             await this._dotScene()
@@ -136,7 +134,7 @@ class IntroScene {
                 onComplete: () => {
                     resolve()
                 }
-            }, 1.5)
+            }, 0.5)
 
         })
     }
@@ -404,9 +402,9 @@ class IntroScene {
     }
 
     _deleteScene() {
+
         UIControllerInstance.revealUI()
         UIControllerInstance.hideInfoHolder()
-        Utils.doDispose(this._scene)
 
         this._electrons.clean()
         this._dots.clean()
@@ -415,6 +413,9 @@ class IntroScene {
         this._dots._destructor()
 
         this._cleanToRemove()
+        Utils.doDispose(this._scene)
+        this.layer.active = false
+        AppControllerInstance.view._render()
 
         if (this.doTutorial) {
             AchievementManager.Get().obtained("tutorial")

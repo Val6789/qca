@@ -33,14 +33,14 @@
 
 
     <!-- Scripts -->
-    <script src="./scripts/view/ThreeViewController.js"></script>
     <script src="./scripts/view/AssetManager.js"></script>
+    <script src="./scripts/controllers/AchievementManager.js"></script>
     <script src="./scripts/view/Axis.js"></script>
     <script src="./scripts/view/ParticleSystem.js"></script>
     <script src="./scripts/view/Skybox.js"></script>
+    <script src="./scripts/view/ThreeViewController.js"></script>
     <script src="./scripts/view/Grid.js"></script>
     <script src="./scripts/view/Cursor.js"></script>
-    <script src="./scripts/controllers/AchievementManager.js"></script>
     <script src="./scripts/controllers/Editor.js"></script>
     <script src="./scripts/controllers/Preset.js"></script>
     <script src="./scripts/controllers/AppController.js"></script>
@@ -176,7 +176,7 @@
         </nav>
     </header>
 
-    <section id="choice-holder" class="hidden">
+    <section id="choice-holder">
         <div class="btn-card btn" id="choice-tutorial">
             <img src="assets/buttons/tuto-icon.png" alt="Tutorial logo">
             <h2>Tutorial</h2>
@@ -283,34 +283,34 @@
                     </div>
                     <div class="drawer-main">
                         <h4>- 1 -</h4>
-						<p>Welcome to the world of Quantum Cellular Automata!</p>
-						
-						<p>In this tutorial, you will learn how to build interesting circuits using Qubits.</p>
-						
-						<p>First, here are the three main</p>
-						<ul>
-						<li>Influencer: sets the adjacent qubits to its value (0 or 1)</li>
-						<li>Qubit: stores and transmits quantum information, can be in an undeterminate state (?) or determinate state (0 or 1) when measured</li>
-						<li>Output: allow to measure the value of one qubit</li>
-						</ul>
-						
-						<p>To begin, build the following circuit:</p>
-						[schéma ou bouton pour le faire apparaitre]
-						
-						<h4>- 2 -</h4>
-						<p>Negative influence</p>
-						
-						<p>Since electrons repel each other, it is possible to invert the polarity of qubits as such:</p>
-						
-						poser un influenceur, une ligne de qubits brisé diagonal, une sortie
-						
-						<h4>- 3 -</h4>
-						<p>One output, many inputs</p>
-						
-						<p>Let's build a more complex logic gate. By having many inputs joined into one output, a majority gate can be built. The output corresponds to the value of the major input.</p>
-						
-						<h4>- 4 -</h4>
-						<p>More complex logic gates</p>
+                        <p>Welcome to the world of Quantum Cellular Automata!</p>
+
+                        <p>In this tutorial, you will learn how to build interesting circuits using Qubits.</p>
+
+                        <p>First, here are the three main</p>
+                        <ul>
+                            <li>Influencer: sets the adjacent qubits to its value (0 or 1)</li>
+                            <li>Qubit: stores and transmits quantum information, can be in an undeterminate state (?) or determinate state (0 or 1) when measured</li>
+                            <li>Output: allow to measure the value of one qubit</li>
+                        </ul>
+
+                        <p>To begin, build the following circuit:</p>
+                        [schéma ou bouton pour le faire apparaitre]
+
+                        <h4>- 2 -</h4>
+                        <p>Negative influence</p>
+
+                        <p>Since electrons repel each other, it is possible to invert the polarity of qubits as such:</p>
+
+                        poser un influenceur, une ligne de qubits brisé diagonal, une sortie
+
+                        <h4>- 3 -</h4>
+                        <p>One output, many inputs</p>
+
+                        <p>Let's build a more complex logic gate. By having many inputs joined into one output, a majority gate can be built. The output corresponds to the value of the major input.</p>
+
+                        <h4>- 4 -</h4>
+                        <p>More complex logic gates</p>
 
                     </div>
                     <div class="drawer-action">

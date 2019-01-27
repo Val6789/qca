@@ -22,19 +22,19 @@ class Editor {
         try {
             switch (this.canEdit) {
                 case Editor.modes.QUBIT:
-                    UxSaverInstance.add('addQubit',this.cursor.position)
+                    UxSaverInstance.add('addQubit', this.cursor.position)
                     return AppControllerInstance.automata.addQubit(this.cursor.position)
                 case Editor.modes.INPUT:
-                    UxSaverInstance.add('addNegativeInput',this.cursor.position)
+                    UxSaverInstance.add('addNegativeInput', this.cursor.position)
                     return AppControllerInstance.automata.addInput(this.cursor.position, false)
                 case Editor.modes.OUTPUT:
-                    UxSaverInstance.add('addOutput',this.cursor.position)
+                    UxSaverInstance.add('addOutput', this.cursor.position)
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
                 case Editor.modes.REMOVE:
-                    UxSaverInstance.add('remove',this.cursor.position)
+                    UxSaverInstance.add('remove', this.cursor.position)
                     return AppControllerInstance.automata.removeBlock(this.cursor.position)
                 case Editor.modes.BRIDGE:
-                    UxSaverInstance.add('setBridge',this.cursor.position)
+                    UxSaverInstance.add('setBridge', this.cursor.position)
                     return AppControllerInstance.automata.makeBridge(this.cursor.position)
             }
         } catch (exception) {
@@ -50,9 +50,8 @@ class Editor {
         if (this.canEdit == Editor.modes.BRIDGE) {
             //UxSaverInstance.add('abortBridge',this.cursor.position)
             AppControllerInstance.automata.abortBridge(this.cursor.position)
-        }
-        else if (this.canEdit != Editor.modes.NOTHING) {
-            UxSaverInstance.add('remove',this.cursor.position)
+        } else if (this.canEdit != Editor.modes.NOTHING) {
+            UxSaverInstance.add('remove', this.cursor.position)
             AppControllerInstance.automata.removeBlock(this.cursor.position)
         }
     }
@@ -62,15 +61,16 @@ class Editor {
      * Meant ot be called for dragging movements or on secondary clicks in default build mode
      */
     quickEdit() {
-        UxSaverInstance.add('addQubit',this.cursor.position)
-        AppControllerInstance.automata.addQubit(this.cursor.position)
+        UxSaverInstance.add('addQubit', this.cursor.position)
+        AppControllerInstance.automata
+            .addQubit(this.cursor.position)
     }
 
 
     /**
      * @method init
      * @brief initialize the editor, sets all the event listeners
-     * @requires ThreeViewControllerInstance to be set
+     * @requires AppControllerInstance.view to be set
      */
     init() {
         this._mouseState = new Object()
@@ -78,7 +78,7 @@ class Editor {
 
         this.canEdit = Editor.modes.NOTHING
 
-        const domViewportElement = ThreeViewControllerInstance.renderer.domElement
+        const domViewportElement = AppControllerInstance.view.renderer.domElement
         domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
         domViewportElement.addEventListener("mouseup", ev => this._mouseUpHandler(ev))
         domViewportElement.addEventListener("mousedown", ev => this._mousedownHandler(ev))
@@ -88,7 +88,7 @@ class Editor {
         this.cursor = new Cursor()
     }
 
-    
+
     _wheelHandler(event) {
         if (this.canEdit === Editor.modes.NOTHING) return
         this.cursor.update(event.clientX, event.clientY, this._ignoreScroll ? 0 : event.deltaY)
@@ -102,9 +102,13 @@ class Editor {
     _mouseUpHandler() {
         if (this._mouseState.left && !this._mouseState.dragging) this.edit()
         if (this._mouseState.right) this.quickErase()
-        this._mouseState = {left: false, right: false, dragging: false}
+        this._mouseState = {
+            left: false,
+            right: false,
+            dragging: false
+        }
         if (this.canEdit == Editor.modes.NOTHING)
-            ThreeViewControllerInstance.renderer.domElement.style.cursor = "grab"
+            AppControllerInstance.view.renderer.domElement.style.cursor = "grab"
     }
 
     _mousedownHandler(event) {
@@ -113,7 +117,7 @@ class Editor {
             right: event.button == 2,
         }
         if (this.canEdit == Editor.modes.NOTHING)
-            ThreeViewControllerInstance.renderer.domElement.style.cursor = "grabbing"
+            AppControllerInstance.view.renderer.domElement.style.cursor = "grabbing"
     }
 
     _mousemoveHandler(event) {
