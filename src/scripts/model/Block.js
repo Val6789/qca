@@ -25,7 +25,7 @@ class Block {
      */
     remove() {
         Block.instances.delete(this)
-        ThreeViewControllerInstance.removeObjectFromScene(this.object) // will call a render
+        AppControllerInstance.view.removeObjectFromScene(this.object) // will call a render
     }
 
     /**
@@ -52,9 +52,9 @@ class Block {
             bevelEnabled: false
         }), lineMaterial)
         this.valueText.name = "ValueText"
-        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2+0.01) // center text on box (values adjusted for optimer font)
-        if(this.type && this.type == "output") {
-            this.valueText.geometry.scale(1.5,1.5,1.5)
+        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2 + 0.01) // center text on box (values adjusted for optimer font)
+        if (this.type && this.type == "output") {
+            this.valueText.geometry.scale(1.5, 1.5, 1.5)
         }
         this.valueText.geometry.rotateX(-Math.PI / 2)
 
@@ -62,7 +62,7 @@ class Block {
         this.object.add(this.valueText)
 
         // calls render to show the new text
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
     }
 
     setSublabel(text) {
@@ -87,7 +87,7 @@ class Block {
         this.object.add(this.valueText)
 
         // calls render to show the new text
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
     }
 
     setColor(color) {
@@ -95,13 +95,13 @@ class Block {
     }
 
     toogleFixe() {
-       this.fixed = !this.fixed;
+        this.fixed = !this.fixed;
     }
 
     _showFamilyColor(bool) {
         const color = bool ? Qubit.FAMILY_COLORS[this._clockId] : "#000"
         this.family.material = Block._boxMaterial(color)
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
     }
 
 
@@ -112,7 +112,10 @@ class Block {
      */
     constructor(position) {
         // defines box properties
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: Block.BORDER_WIDTH })
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            linewidth: Block.BORDER_WIDTH
+        })
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
 
@@ -128,14 +131,15 @@ class Block {
 
         // moves the box
         this.object.position.copy(position)
+        this.object.visible = Block._areVisible
 
         // adds box to position
-        ThreeViewControllerInstance.addObjectToScene(this.object)
+        AppControllerInstance.view.addObjectToScene(this.object)
         Block.instances.add(this)
     }
 
     static _boxMaterial(color = "#000") {
-        return new THREE.MeshBasicMaterial({ 
+        return new THREE.MeshBasicMaterial({
             color: new THREE.Color(color),
             transparent: true,
             opacity: Block.QUBIT_OPACITY,
@@ -154,7 +158,7 @@ class Block {
         if (Block._areVisible === boolean) return
         Block._areVisible = boolean
         if (Block.instances) Block.instances.forEach(block => block.object.visible = boolean)
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
     }
 }
 

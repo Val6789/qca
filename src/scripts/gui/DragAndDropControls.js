@@ -1,4 +1,3 @@
-
 /**
  * @class Drag and Drop Controls
  * @brief Creates drag and drop interactions for touch and mouse
@@ -11,15 +10,19 @@ class DragAndDropControls {
      * @param {(domElement) => payload} callback handles the begining of the drag
      * @returns payload
      */
-    onDragCallback(callback) { this.onDrag = callback }
+    onDragCallback(callback) {
+        this.onDrag = callback
+    }
 
-    
+
     /**
      * @public @method
      * @brief callback called on drop, with payload passed in parameter
      * @param {(payload) => void} callback handling the dropped payload
      */
-    onDropCallback(callback) { this.onDrop = callback }
+    onDropCallback(callback) {
+        this.onDrop = callback
+    }
 
 
     /**
@@ -28,8 +31,8 @@ class DragAndDropControls {
      * @param {Event} event 
      */
     _initiateDrag(event) {
-        ThreeViewControllerInstance.orbitControls.enableRotate = false
-        ThreeViewControllerInstance.orbitControls.enablePan = false
+        AppControllerInstance.view.orbitControls.enableRotate = false
+        AppControllerInstance.view.orbitControls.enablePan = false
         if (this._currentDragPlayload) document.body.removeChild(this._currentDragPlayload.domElement)
 
         var item = this.onDrag(event.currentTarget)
@@ -69,8 +72,8 @@ class DragAndDropControls {
      * @brief destroys the floating element and calls the drop callback. then destroys the payload
      */
     _executeDrop() {
-        ThreeViewControllerInstance.orbitControls.enableRotate = true
-        ThreeViewControllerInstance.orbitControls.enablePan = true
+        AppControllerInstance.view.orbitControls.enableRotate = true
+        AppControllerInstance.view.orbitControls.enablePan = true
         if (this._currentDragPlayload) {
             if (this.onDrop) this.onDrop(this._currentDragPlayload.item)
             document.body.removeChild(this._currentDragPlayload.domElement)
@@ -88,7 +91,7 @@ class DragAndDropControls {
     constructor(cssClassSelector, mouse = true) {
         const tools = document.querySelectorAll(cssClassSelector)
 
-        tools.forEach( tool => {
+        tools.forEach(tool => {
             tool.addEventListener("touchstart", event => this._initiateDrag(event))
             tool.addEventListener("touchmove", event => this._updateDrag(event))
             tool.addEventListener("touchend", event => this._executeDrop(event))

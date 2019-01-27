@@ -12,6 +12,7 @@
     display: block;
     width: 5rem;
     height: 5rem;
+    padding: 0.8rem;
     transform: translate(-50%,-50%);
     border-radius: 100rem;
     border: solid 2px #fff;

@@ -6,8 +6,8 @@ class Grid {
         this.object = new THREE.GridHelper(size, divisions)
         this.object.position.set(-0.5, offset, -0.5)
 
-        this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size,size))
-        this.hitzone.lookAt(0,1,0)
+        this.hitzone = new THREE.Mesh(new THREE.PlaneGeometry(size, size))
+        this.hitzone.lookAt(0, 1, 0)
         this.hitzone.material.visible = false
         this.object.add(this.hitzone)
 
@@ -18,5 +18,8 @@ class Grid {
         })
 
         this.object.material = material
+
+
+        console.trace()
     }
 }

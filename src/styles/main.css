@@ -68,33 +68,41 @@
     opacity: 0;
 }
 
+.hidden-transition {
+    opacity: 0;
+}
+
 .hidden.no-transition {
-    transition: all 0s linear;   
+    transition: all 0s linear;
 }
 
 .btn {
     color: white;
     cursor: pointer;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 1vw;
     border-radius: 4px;
     font-size: 1.2rem;
-    box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-    margin:1vh;
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+    margin: 1.3vh;
 }
 
 .btn:hover {
     background-color: #000;
+    color: #FFF;
 }
 
 .inlinebtn {
-    display:inline-block;
-    box-shadow:0px 0px 3px 3px rgba(0,0,0,0.1);
+    display: inline-block;
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
     font-size: 1.0rem;
-    padding:10px;
-    min-width:70px;
-    text-align:center;
-    background-color: rgba(50,50,50,0.6);
+    padding: 10px;
+    min-width: 200px;
+    color: #AAA;
+    text-align: center;
+    background-color: rgba(50, 50, 50, 0.6);
+    text-transform: capitalize;
+    font-weight: bold;
 }
 
 button {
@@ -119,6 +127,7 @@ button:hover {
 }
 
 /* Spinner */
+
 .loading-overlay {
     position: fixed;
     width: 100vw;
@@ -152,8 +161,9 @@ button:hover {
 }
 
 .cross {
-    height: 25px;
-    cursor:pointer;
+    margin: 5px;
+    height: 20px;
+    cursor: pointer;
 }
 
 @keyframes spinner {
@@ -165,6 +175,14 @@ button:hover {
         transform: rotateZ(360deg);
     }
 }
+
 .stopped {
-    border:1px solid red;
+    border: 1px solid red;
+}
+
+.activity-tab-button.tutorial-tab,
+.activity-tab-button.missions-tab,
+.activity-tab-button.achievement-tab,
+.activity-tab-button.settings-tab {
+    display: none;
 }

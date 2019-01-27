@@ -21,14 +21,28 @@ class AppController {
         }, this.refreshRate)
     }
 
+    get view() {
+        return this.currentView
+    }
+
     _onAssetLoading() {
-        ThreeViewControllerInstance.init()
-        Dot.init()
-        Electron.init()
-        InputBlock.init()
-        Qubit.startDeterminationUpdateLoop()
+        this.currentView = new ThreeViewController()
+        this.currentView.setModeIntro()
+            .then(() => {
+                // DESTROY THE OLD VIEW
+                this.currentView._destructor()
+
+                // Create the new
+                this.automata = new QuantumAutomata()
+                this.setRefreshRate(AppController.SPEED)
+                this.startUpdateLoop()
+                this.currentView = new ThreeViewController()
+                this.currentView.setModeSandbox()
+                console.log(this)
+            })
+
         AchievementManager.Get().obtained("missionOne")
-        
+
         DrawerControllerInstance.init()
     }
 
@@ -73,6 +87,7 @@ class AppController {
         }
         this.refreshRate = AppController.SPEED
         this.pauseMode = false
+        this.currentView
         return AppController.instance
     }
 }

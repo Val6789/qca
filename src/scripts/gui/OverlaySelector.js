@@ -2,7 +2,7 @@ class OverlaySelector {
     // Checkboxes //
 
     _toggleFamilyLayer(boolean) {
-        this.familiesCheckbox.parentElement.classList.toggle("active",boolean)
+        this.familiesCheckbox.parentElement.classList.toggle("active", boolean)
         Qubit.areFamilyColorsVisible = boolean
     }
 
@@ -12,7 +12,7 @@ class OverlaySelector {
         this._toggleFamilyLayer()
     }
 
-    _setQubitLayerSelector()  {
+    _setQubitLayerSelector() {
         this._setFamilyLayerSelector()
         this.qubitLayerCheckbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
         var toggleQubits = () => {
@@ -21,7 +21,7 @@ class OverlaySelector {
             this._toggleFamilyLayer(this.qubitLayerCheckbox.checked)
 
             // forces active css
-            this.qubitLayerCheckbox.parentElement.classList.toggle("active",this.qubitLayerCheckbox.checked)
+            this.qubitLayerCheckbox.parentElement.classList.toggle("active", this.qubitLayerCheckbox.checked)
         }
         this.qubitLayerCheckbox.addEventListener("change", toggleQubits)
         toggleQubits()
@@ -30,12 +30,13 @@ class OverlaySelector {
 
     _setInfluenceLayerSelector() {
         var checkbox = document.getElementById(OverlaySelector.ELECTRON_SELECTOR_ID)
+
         function toggleElectrons() {
             Electron.particles.layers[Electron.TEXTURE_LAYER].visible = checkbox.checked
             Dot.particles.layers[0].visible = checkbox.checked
             // forces active css 
-            checkbox.parentElement.classList.toggle("active",checkbox.checked)
-            ThreeViewControllerInstance.shouldRender()
+            checkbox.parentElement.classList.toggle("active", checkbox.checked)
+            AppControllerInstance.view.shouldRender()
         }
         checkbox.addEventListener("change", toggleElectrons)
         toggleElectrons()
@@ -44,12 +45,13 @@ class OverlaySelector {
 
     _setElectronLayerSelector() {
         var checkbox = document.getElementById(OverlaySelector.INFLUENCE_SELECTOR_ID)
+
         function toggleInfluences() {
             Electron.particles.layers[Electron.INFLUENCE_LAYER].visible = checkbox.checked
 
             // forces active css 
-            checkbox.parentElement.classList.toggle("active",checkbox.checked)
-            ThreeViewControllerInstance.shouldRender()
+            checkbox.parentElement.classList.toggle("active", checkbox.checked)
+            AppControllerInstance.view.shouldRender()
         }
         checkbox.addEventListener("change", toggleInfluences)
         toggleInfluences()
