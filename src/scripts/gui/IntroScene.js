@@ -93,6 +93,7 @@ class IntroScene {
     }
 
     _welcomeScene() {
+        return new Promise(true)
         const speed = 1
         return new Promise((resolve) => {
             // Camera movement
