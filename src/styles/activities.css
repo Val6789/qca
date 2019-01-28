@@ -200,13 +200,18 @@
         left: 4rem;
     }
     #selectors .activity-tab-button-wrapper {
+        position: absolute;
         transform-origin: top left;
         transform: scale(0);
+        opacity: 0;
         transition: 200ms ease-out;
+        left: calc(-8rem + -100%);
     }
     #selectors:hover .activity-tab-button-wrapper{
         transform: scale(1);
         transition: 200ms ease-in;
+        opacity: 1;
+        left: 0;
     }
 
     .drawer {

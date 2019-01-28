@@ -87,10 +87,13 @@
     height: 0px;
     transition:100ms;
     overflow: hidden;
-    transition-delay:500ms;
+    transition-delay:300ms;
 }
 
-#clock-change-container:hover #clock-selector, #clock-selector:hover{
+#clock-change-container:active :not(.locked) + #clock-selector,
+#clock-change-container:hover :not(.locked) + #clock-selector,
+#clock-change-container .show:not(.locked) + #clock-selector,
+:not(.locked) + #clock-selector:hover{
     height: 14rem;
 }
 

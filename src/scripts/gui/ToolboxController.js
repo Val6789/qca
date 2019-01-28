@@ -211,12 +211,20 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
+            targetElement.classList.toggle("locked")
             this.select(targetElement.id)
-            return targetElement.id
+            return targetElement
         })
 
         this._dragAndDropToolControls.onDropCallback(payload => {
             EditorInstance.edit()
+            payload.classList.toggle("locked", false)
+        })
+
+        this._dragAndDropToolControls.onCancelCallback(payload => {
+            setTimeout(() => payload.classList.toggle("show", false), 2000)
+            payload.classList.toggle("locked", false)
+            payload.classList.toggle("show", true)
         })
     }
 

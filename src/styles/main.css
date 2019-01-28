@@ -1,6 +1,7 @@
 * {
     overflow: visible;
     color: white;
+    touch-action: manipulation;
 }
 
 .wrapper {
