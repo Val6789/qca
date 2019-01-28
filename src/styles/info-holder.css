@@ -142,3 +142,15 @@ span#info-holder-skip {
         transform: translateY(-10px);
     }
 }
+
+
+@media (max-width:500px) {
+    .btn-card img {
+        height: 12vh;
+        padding: 1.5vh;
+    }
+    #choice-holder {
+        position: fixed;
+        top: 62vh;
+    }
+}

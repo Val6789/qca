@@ -7,7 +7,6 @@
     max-width: calc(100vw - 1rem);
     text-align:center;
     padding: 0.5rem;
-    border-top: #111 1px solid;
     border-radius: 0.5rem;
     background-color:rgba(0,0,0,0.6);
     box-shadow:0px 0px 20px 20px rgba(0,0,0,0.1);
@@ -16,14 +15,6 @@
 
 #fast-button-icon, #slow-button-icon {
     height:1rem;
-}
-@media (max-width: 600px) {
-	.time-button-icon {
-		height: 3rem;
-	}
-	#fast-button-icon, #slow-button-icon {
-		height: 2rem;
-	}
 }
 
 .tool {
@@ -71,11 +62,6 @@
     border-left: solid 1px #bbb;
     margin: 1rem;
 }
-@media (max-width: 600px) {
-	.separator {
-		margin: 0;
-	}
-}
 
 #clock-change {
     position: relative;
@@ -110,4 +96,22 @@
 .clock-color:hover {
     border:1px solid yellow;
 }
+@media (max-width: 600px) {
+    .separator {
+        margin: 0;
+    }
+    .tool-icon {
+        height: 2rem;
+    }
+}
 
+@media (max-width:450px) {
+    .control-strip {
+        margin: 0rem;
+        border-radius: 0rem;
+        left: 0%;
+        right:0%;
+        transform: translateX(0%);
+
+    }
+}
