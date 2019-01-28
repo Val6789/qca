@@ -189,13 +189,13 @@
         </div>
     </section>
 
-    <nav class="camera-controls ui">
+    <nav class="camera-controls ui" id="camera-touch-controls">
 
         <!-- camera controls -->
         <input class="zoom-control" type="range" id="zoom-control" min="1" max="25">
         <button class="pan-control" id="joystick-control">
             <!-- Inline svg solves issue with selection on touch devices -->
-            <svg style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"
+            <svg viewBox="0 0 128 128" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"
                 unselectable="on" onselectstart="return false;" width="128" height="128" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fill-rule="evenodd">
                     <circle fill="#FFF" cx="64" cy="64" r="3" />
@@ -239,11 +239,13 @@
                     <img class="hide-activities-icon ifinactive" src="assets/buttons/inactive_sidebar.png" alt="show activities tab">
                     <img class="hide-activities-icon ifactive" src="assets/buttons/active_sidebar.png" alt="show activities tab">
                 </button>
-                <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
-                <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
-                <label class="activity-tab-button missions-tab" for="mission-check">Missions</label>
-                <label class="activity-tab-button achievement-tab" for="achievement-check">Achievements</label>
-                <label class="activity-tab-button settings-tab" for="settings-check">Settings</label>
+                <div class="activity-tab-button-wrapper">
+                    <label class="activity-tab-button demos-tab" for="demos-check">Demos</label>
+                    <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
+                    <label class="activity-tab-button missions-tab" for="mission-check">Missions</label>
+                    <label class="activity-tab-button achievement-tab" for="achievement-check">Achievements</label>
+                    <label class="activity-tab-button settings-tab" for="settings-check">Settings</label>
+                </div>
             </div>
             <div id="drawers">
                 <input class="activity-check" type="radio" id="no-drawer-check" name="tab" />

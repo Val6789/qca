@@ -22,6 +22,17 @@
     font-size: 0;
     margin: 0.5rem;
     padding: 0.5rem;
+    border: solid 1px transparent;
+}
+
+.tool.active {
+    animation: shine 500ms
+}
+
+@keyframes shine {
+    0% {}
+    33% {border-color: #FE0}
+    100% {}
 }
 
 .tool .pill {
@@ -76,10 +87,13 @@
     height: 0px;
     transition:100ms;
     overflow: hidden;
-    transition-delay:500ms;
+    transition-delay:300ms;
 }
 
-#clock-change-container:hover #clock-selector, #clock-selector:hover{
+#clock-change-container:active :not(.locked) + #clock-selector,
+#clock-change-container:hover :not(.locked) + #clock-selector,
+#clock-change-container .show:not(.locked) + #clock-selector,
+:not(.locked) + #clock-selector:hover{
     height: 14rem;
 }
 
@@ -94,7 +108,7 @@
     transition:100ms;
 }
 .clock-color:hover {
-    border:1px solid yellow;
+    border:1px solid #FE0;
 }
 @media (max-width: 600px) {
     .separator {
@@ -112,6 +126,17 @@
         left: 0%;
         right:0%;
         transform: translateX(0%);
+        padding: 0.5rem calc(2.5vw/6);
+        min-width: 100vw;
+        justify-content: space-around;
 
+    }
+    .tool-icon {
+        min-height: calc(62.5vw / 6);
+    }
+
+    .tool {
+        padding: calc(2.5vw/6);
+        margin: calc(2.5vw/6);
     }
 }

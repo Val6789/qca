@@ -25,7 +25,7 @@ class WaitingBlock extends OutputBlock {
 
     applyPolarityBuffer() {
         super.applyPolarityBuffer()
-
+        console.trace()
         if (this.complete) {
             WaitingBlock.checkCompletion()
             this.setColor("rgb(" + 0 + "," + 255 + "," + 0 + ")")
