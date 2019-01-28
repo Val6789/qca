@@ -231,6 +231,7 @@ class ThreeViewController {
      *  @brief Private method. Informs the renderer of aspect ratio changes
      */
     _resetViewport() {
+        if (! this._renderer) return
         const parent = this._renderer.domElement.parentElement
         const width = parent.clientWidth
         const height = parent.clientHeight

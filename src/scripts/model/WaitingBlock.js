@@ -15,6 +15,7 @@ class WaitingBlock extends OutputBlock {
         AppControllerInstance.setPause()
         setTimeout(() => {
             AppControllerInstance.automata.reset()
+            AppControllerInstance.setPause()
         }, 1000)
     }
 

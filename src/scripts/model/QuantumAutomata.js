@@ -110,33 +110,58 @@ class QuantumAutomata {
             this._bridges.add(new Bridge(block))
         }
     }
-    removeBridgeWithPosition(p1, p2) {
-        var bridgeToRemove = false;
+
+
+    /**
+     * @brief deletes a bridge matching the start/end position
+     * @param {THREE.Vector3} end
+     * @param {THREE.Vector3} start
+     */
+    removeBridgeWithPosition(start, end) {
+        var bridgeToRemove = false
         this._bridges.forEach(bridge => {
-            if ((bridge.start.position.equals(p1) && bridge.end.position.equals(p2)) ||  (bridge.start.position.equals(p2) && bridge.end.position.equals(p1)))
+            if ((bridge.start.position.equals(start) && bridge.end.position.equals(end)) || (bridge.start.position.equals(end) && bridge.end.position.equals(start)))
                 bridgeToRemove = bridge
         })
         if (bridgeToRemove) this._bridges.delete(bridgeToRemove.remove())
     }
 
+
     /**
-     * 
+     * @brief Cancels bridge construction and destroys the pending bridge
      */
     abortBridge() {
         this._bridges.delete(Bridge.pending.remove())
     }
 
 
+    /**
+     * @brief clears the qubit map
+     */
     reset() {
         this._qubitMap.forEach(qubit => {
             this.removeBlock(qubit.position, true)
         })
     }
-    fixeBlock(position) {
+
+    /**
+     * @brief disallows editing of a block
+     * @param {THREE.Vector3} position of the target block
+     */
+    lockBlock(position) {
         const hash = QuantumAutomata._positionHash(position)
         if (!this._qubitMap.has(hash)) return
         const block = this._qubitMap.get(hash)
         block.toogleFixe()
+    }
+
+    /**
+     * throws in console the target block
+     * @param {THREE.Vector3} position of the target block
+     */
+    logBlock(position) {
+        const hash = QuantumAutomata._positionHash(position)
+        console.info(this._qubitMap.get(hash))
     }
 
     /**
