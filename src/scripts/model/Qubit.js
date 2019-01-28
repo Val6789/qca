@@ -289,7 +289,7 @@ class Qubit extends Block {
     }
 
     static set areFamilyColorsVisible(boolean) {
-        Qubit._areFamilyColorsVisible = true
+        Qubit._areFamilyColorsVisible = boolean
         if (Qubit.instances) Qubit.instances.forEach(qubit => {
             qubit._showFamilyColor(boolean)
         })
