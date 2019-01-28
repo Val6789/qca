@@ -13,7 +13,7 @@ const AssetManager = (function () {
         presets: {}
     }
     const baseDir = "assets/"
-    const presets = ["simple_line", "NOT_gate", "majority_gate", "five_majority_gate", "security_majority_gate", "funny_QCA","mission_line"]
+    const presets = ["simple_line", "NOT_gate", "majority_gate", "AND_gate", "OR_gate", "five_majority_gate", "NAND_gate", "security_majority_gate", "funny_QCA","mission_line"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {
