@@ -38,7 +38,7 @@ class QuantumAutomata {
     qcaUseClock() {
         if (!this.atLeastOneUseClock) {
             this.atLeastOneUseClock = true
-            Qubit.areFamilyColorsVisible = true
+            UIControllerInstance.overlaySelector.toggleFamilyLayer(true)
         }
     }
 
