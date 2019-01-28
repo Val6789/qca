@@ -30,12 +30,12 @@ class QuantumAutomata {
      */
     addQubit(position) {
         let block = new Qubit(position)
-        if(this._addBlock(block)) return block
+        if (this._addBlock(block)) return block
         return false
     }
 
     qcaUseClock() {
-        if(!this.atLeastOneUseClock) {
+        if (!this.atLeastOneUseClock) {
             this.atLeastOneUseClock = true
         }
     }
@@ -49,7 +49,7 @@ class QuantumAutomata {
      */
     addInput(position, value) {
         let block = new InputBlock(position, value ? 1 : -1)
-        if(this._addBlock(block)) return block
+        if (this._addBlock(block)) return block
         return false
     }
 
@@ -67,14 +67,36 @@ class QuantumAutomata {
         return false
     }
 
-     /**
+
+    addWaiting(position, value = undefined) {
+        const hash = QuantumAutomata._positionHash(position)
+
+        if (this._qubitMap.has(hash)) {
+            const block = this._qubitMap.get(hash)
+            if (!(block instanceof OutputBlock))
+                return
+            else
+                this.removeBlock(position)
+        }
+
+        if (!value)
+            value = Number(prompt("Value of the waiting block ?", 0))
+        const newBlock = new WaitingBlock(position, value)
+        if (this._addBlock(newBlock)) {
+            this._outputs.add(newBlock)
+            return newBlock
+        }
+        return false
+    }
+
+    /**
      * @public @method
      * @param {THREE.Vector3} position
      */
     makeBridge(position) {
         // check if cell is set
         const hash = QuantumAutomata._positionHash(position)
-        if(!this._qubitMap.has(hash)) return
+        if (!this._qubitMap.has(hash)) return
         const block = this._qubitMap.get(hash)
 
         if (block instanceof InputBlock) return
@@ -82,17 +104,16 @@ class QuantumAutomata {
 
         // check for pending bridge
         if (Bridge.pending) {
-            History.add("bridge","",block.position,Bridge.pending.start.position);
+            History.add("bridge", "", block.position, Bridge.pending.start.position);
             Bridge.pending.setDestination(block)
-        }
-        else { // initiate bridge
+        } else { // initiate bridge
             this._bridges.add(new Bridge(block))
         }
     }
-    removeBridgeWithPosition(p1,p2) {
+    removeBridgeWithPosition(p1, p2) {
         var bridgeToRemove = false;
         this._bridges.forEach(bridge => {
-            if((bridge.start.position.equals(p1) && bridge.end.position.equals(p2)) || (bridge.start.position.equals(p2) && bridge.end.position.equals(p1)))
+            if ((bridge.start.position.equals(p1) && bridge.end.position.equals(p2)) ||  (bridge.start.position.equals(p2) && bridge.end.position.equals(p1)))
                 bridgeToRemove = bridge
         })
         if (bridgeToRemove) this._bridges.delete(bridgeToRemove.remove())
@@ -128,9 +149,9 @@ class QuantumAutomata {
         if (!this._qubitMap.has(hash)) return
 
         const block = this._qubitMap.get(hash)
-        if(block.fixed && !adminRemove) return
+        if (block.fixed && !adminRemove) return
 
-        History.add('remove',block.type,position,block.polarity);
+        History.add('remove', block.type, position, block.polarity);
 
         this._bridges.forEach(bridge => {
             const bridgedBlock = bridge.traverseIfIsAnEnterPoint(block)
@@ -233,7 +254,7 @@ class QuantumAutomata {
      */
     constructor() {
         this._qubitMap = new Map()
-        this._outputs =  new Set()
+        this._outputs = new Set()
         this._bridges = new Set()
 
         this.clockTime = 0
@@ -263,7 +284,7 @@ QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(0, 0, -1), // down
     new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(-1, 0, 0), // left
-    new THREE.Vector3(-1, 0, 1),  // up left
+    new THREE.Vector3(-1, 0, 1), // up left
     new THREE.Vector3(0, 1, 0), // top
-    new THREE.Vector3(0, -1, 0)  // left
+    new THREE.Vector3(0, -1, 0) // left
 ]

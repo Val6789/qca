@@ -12,10 +12,11 @@
 
 window.addEventListener("keyup", function (e) {
     const KEY_E = 69
-    const KEY_U = 85
-    const KEY_Z = 90
-    const KEY_Y = 89
     const KEY_F = 70
+    const KEY_U = 85
+    const KEY_W = 87
+    const KEY_Y = 89
+    const KEY_Z = 90
 
     switch (e.keyCode) {
         case KEY_E:
@@ -40,5 +41,8 @@ window.addEventListener("keyup", function (e) {
             UxSaverInstance.add('keyF')
             new AppController().automata.fixeBlock(EditorInstance.cursor.position)
             break;
+        case KEY_W:
+            UxSaverInstance.add('keyW')
+            new AppController().automata.addWaiting(EditorInstance.cursor.position)
     }
 })

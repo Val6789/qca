@@ -99,7 +99,7 @@ class JoystickCameraControls {
             // disables orbital camera controls in front of the slider
             button.addEventListener("mousedown", ev => ev.stopPropagation())
         } else if (window.matchMedia("(pointer: fine)").matches) {
-            console.log("zoom slider disabled")
+            //console.log("zoom slider disabled")
             button.style.visibility = "hidden"
         }
 
@@ -137,7 +137,7 @@ class JoystickCameraControls {
                 event.stopPropagation()
             })
         } else if (window.matchMedia("(pointer: fine)").matches) {
-            console.log("joystick disabled")
+            //console.log("joystick disabled")
             button.style.visibility = "hidden"
         }
 

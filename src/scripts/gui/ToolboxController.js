@@ -242,4 +242,4 @@ class ToolboxController {
 }
 
 // toggles console logging of tool configurations 
-ToolboxController.CONSOLE_OUTPUT = true
+ToolboxController.CONSOLE_OUTPUT = false

@@ -40,7 +40,7 @@ class AppController {
                 this.currentView.setModeSandbox()
             })
 
-        AchievementManager.Get().obtained("missionOne")
+        AchievementManager.Get()
         MissionManager.Get()
 
         DrawerControllerInstance.init()

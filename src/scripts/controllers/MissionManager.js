@@ -15,12 +15,13 @@
 
 const MissionManager = (function () {
 
-    const DEBUG = true
+    const DEBUG = false
     let instance
     let observers = {
         ready: [],
         update: []
     }
+    let currentMission
     var LOCAL_STORAGE_KEY = "missions"
 
     /* ================== PUBLIC ================== */
@@ -56,43 +57,48 @@ const MissionManager = (function () {
         let presetName = mission.preset
         let presetJson = AssetManager.Get().presets[presetName]
 
+        UxSaverInstance.add('startMission', name)
         console.assert(presetJson, "No preset " + presetName + " in AssetManager")
 
         let constructedPreset = new Preset(presetName, presetJson)
 
         constructedPreset.addToAutomata(new AppController().automata, true)
 
+        currentMission = name
+
     }
-    const obtained = (name) => {
+    const obtained = () => {
 
-        /*
-        let achievement = instance.achievements[name]
-        console.assert(achievement)
-        if (achievement.fullfilled)
-            return
+        let mission = instance.missions[currentMission]
+        if (!mission) return
         if (DEBUG)
-            console.trace("Achievement : " + name)
+            console.trace("Mission Complete : " + currentMission)
 
-        // Now update this achievement
-        achievement.fullfilled = true
+        UxSaverInstance.add('obtainMission', name)
+
+        // Now update this mission
+        mission.fullfilled = true
         store()
 
         let iziToastOptions = {
-            title: achievement.fullname,
-            message: achievement.message,
+            title: mission.fullname,
+            message: mission.message,
             position: "bottomCenter",
             layout: 2,
             image: "assets/textures/achievements/default.png"
         }
-        if (achievement.image) {
-            iziToastOptions.image = "assets/textures/achievements/" + achievement.image + achievement.imageExtension
+        if (mission.image) {
+            iziToastOptions.image = "assets/textures/missions/" + mission.image + mission.imageExtension
         }
         iziToast.success(iziToastOptions)
-        */
 
         observers.update.forEach((callback) => {
-            callback(achievement, name)
+            callback(mission, currentMission)
         })
+
+        if (currentMission == "one")
+            AchievementManager.Get().obtained("missionOne")
+        currentMission = undefined
 
     }
 

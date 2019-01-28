@@ -14,10 +14,11 @@ class Preset {
                 z: qPosition.z,
                 type: qubit.type,
                 fixed: qubit.fixed,
-                clock:false
+                clock: false
             }
             if (qubit.type == "input") exportQubit.type += qubit.polarity
-            if(qubit.clockId) exportQubit.clock = qbit.clockId
+            if (qubit.clockId) exportQubit.clock = qubit.clockId
+            if (qubit.type == "waiting") exportQubit.value = qubit.value
             quantomExport.push(exportQubit)
         })
         this.downloadPreset(JSON.stringify(quantomExport))
@@ -34,12 +35,11 @@ class Preset {
 
     }
 
-    addToAutomata(automata,reset=false) {
+    addToAutomata(automata, reset = false) {
         // var notPr = new Preset('not',AssetManager.Get().presets['not']); notPr.addToAutomata(new AppController().automata)
-        if(reset) {
+        if (reset) {
             automata.reset()
-        }
-        else {
+        } else {
             var i = 0
             while (i < this.presetDescription.length) {
                 let qubitPosition = new THREE.Vector3(this.presetDescription[i].x, this.presetDescription[i].y, this.presetDescription[i].z)
@@ -67,6 +67,8 @@ class Preset {
                 case "output":
                     newBlock = automata.addOutput(blockPosition)
                     break
+                case "waiting":
+                    newBlock = automata.addWaiting(blockPosition, block.value)
             }
             if (block.fixed) newBlock.toogleFixe()
             if (block.clock) newBlock.setClock(parseInt(block.clock))
