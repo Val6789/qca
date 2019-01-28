@@ -173,7 +173,3 @@ button:hover {
 .stopped {
     border:1px solid red;
 }
-
-.activity-tab-button.tutorial-tab, .activity-tab-button.missions-tab, .activity-tab-button.achievement-tab, .activity-tab-button.settings-tab {
-    display:none;
-}
