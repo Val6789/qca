@@ -125,4 +125,12 @@
         transform: translateX(0%);
 
     }
+    .tool-icon {
+        height: calc(55vw / 6);
+    }
+
+    .tool {
+        padding: calc(5vh/6);
+        margin: calc(5vh/6);
+    }
 }

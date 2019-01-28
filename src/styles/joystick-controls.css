@@ -15,18 +15,18 @@
     padding: 0.8rem;
     transform: translate(-50%,-50%);
     border-radius: 100rem;
-    border: solid 2px #fff;
+    border: solid 1px #fff;
     background: rgba(0,0,0,0.6);
     box-shadow:0px 0px 20px 20px rgba(0,0,0,0.1);
 }
 
 .camera-controls .zoom-control {
     position: absolute;
-    left: 0;
+    left: 0rem;
     bottom: 7rem;
     width: 7rem;
     height: 0;
-    transform: translate(-50%,-50%) rotateZ(-90deg);
+    transform: translate(-50%,-50%) rotateZ(-90deg) scale(0.8);
 }
 
 .camera-controls .pan-control img, .camera-controls .pan-control svg {
@@ -36,21 +36,21 @@
 
 @media (pointer: coarse) {
     .camera-controls {
-        bottom: 6rem;
-        right: 6rem;
+        bottom: 9rem;
+        right: 4rem;
     }
     .camera-controls:not(:active) {
         opacity: 0.3;
     }
 
     .camera-controls .pan-control {
-        width: 10rem;
-        height: 10rem;
+        width: 6rem;
+        height: 6rem;
     }
 
     .camera-controls .zoom-control {
-        bottom: 15rem;
-        width: 15rem;
+        bottom: 8rem;
+        width: 12rem;
     }
 }
 
