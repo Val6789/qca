@@ -192,3 +192,15 @@ button:hover {
         width: 100%;
     }
 }
+
+
+.debug-info {
+    position: fixed;
+    right:0;
+    text-align: right;
+    opacity: 0.4;
+    font-size: 0.4rem;
+    font-family: sans-serif;
+    font-weight: lighter;
+    padding: 0.2rem;
+}

@@ -111,6 +111,7 @@ class QuantumAutomata {
         } else { // initiate bridge
             this._bridges.add(new Bridge(block))
         }
+        this._updateInfos()
     }
 
 
@@ -134,6 +135,7 @@ class QuantumAutomata {
      */
     abortBridge() {
         this._bridges.delete(Bridge.pending.remove())
+        this._updateInfos()
     }
 
 
@@ -191,6 +193,7 @@ class QuantumAutomata {
 
         // this._startProcessFrom(block)
         // this._applyProcessing()
+        this._updateInfos()
     }
 
     /**
@@ -267,14 +270,22 @@ class QuantumAutomata {
                 this.addInput(position, (value < 0))
             }
             block.remove()
+            this._updateInfos()
             return false
         } else {
             History.add("add", block.type, block.position, block.polarity)
             this._qubitMap.set(hash, block)
+            this._updateInfos()
             return true
         }
     }
 
+
+    _updateInfos() {
+        const element = document.getElementById("automata-info")
+        console.log(this._qubitMap)
+        element.innerHTML = `qubits: ${this._qubitMap.size}<br>outputs: ${this._outputs.size}<br>bridges: ${this._bridges.size}`
+    }
 
     /**
      * @constructor QuantumAutomata

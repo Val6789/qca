@@ -37,6 +37,8 @@ class ToolboxController {
         this._toggleMagneticCursor(toolID)
         this._selectEditorMode(toolID)
         this._setMouseCursor(toolID)
+
+        document.getElementById("tool-info").textContent = `select: ${toolID}`
     }
 
     /**
