@@ -22,6 +22,17 @@
     font-size: 0;
     margin: 0.5rem;
     padding: 0.5rem;
+    border: solid 1px transparent;
+}
+
+.tool.active {
+    animation: shine 500ms
+}
+
+@keyframes shine {
+    0% {}
+    33% {border-color: #FE0}
+    100% {}
 }
 
 .tool .pill {
@@ -94,7 +105,7 @@
     transition:100ms;
 }
 .clock-color:hover {
-    border:1px solid yellow;
+    border:1px solid #FE0;
 }
 @media (max-width: 600px) {
     .separator {
