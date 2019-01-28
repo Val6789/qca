@@ -30,6 +30,7 @@ class QuantumAutomata {
      */
     addQubit(position) {
         let block = new Qubit(position)
+        if(Qubit.selectedClockId != 0) this.qcaUseClock()
         if (this._addBlock(block)) return block
         return false
     }
@@ -187,8 +188,8 @@ class QuantumAutomata {
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
 
-        this._startProcessFrom(block)
-        this._applyProcessing()
+        // this._startProcessFrom(block)
+        // this._applyProcessing()
     }
 
     /**
@@ -237,7 +238,7 @@ class QuantumAutomata {
 
     _startProcessFrom(qubit) {
         qubit._visited = false
-        qubit.processNeighboorsInfluences(this, this.atLeastOneUseClock)
+        qubit.processNeighboorsInfluences(this)
     }
 
 

@@ -40,8 +40,7 @@ window.addEventListener("keyup", function (e) {
             break
         case KEY_F:
             UxSaverInstance.add('keyF')
-            AppController().automata
-                .lockBlock(EditorInstance.cursor.position)
+            AppControllerInstance.automata.lockBlock(EditorInstance.cursor.position)
             break
         case KEY_W:
             UxSaverInstance.add('keyW')
