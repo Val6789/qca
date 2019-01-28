@@ -23,7 +23,7 @@ class OutputBlock extends Qubit {
         this.family.material.opacity = 0.95
 
         this.DEFAULT_COLOR = "#333"
-        this._showFamilyColor(Qubit._areFamilyColorsVisible)
+        this._showFamilyColor(Qubit.areFamilyColorsVisible)
     }
 }
 

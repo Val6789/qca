@@ -2,6 +2,7 @@ class OverlaySelector {
     // Checkboxes //
 
     _toggleFamilyLayer(boolean) {
+        console.log(boolean)
         this.familiesCheckbox.parentElement.classList.toggle("active", boolean)
         Qubit.areFamilyColorsVisible = boolean
     }
@@ -9,7 +10,7 @@ class OverlaySelector {
     _setFamilyLayerSelector() {
         this.familiesCheckbox = document.getElementById(OverlaySelector.FAMILIES_SELECTOR_ID)
         this.familiesCheckbox.addEventListener("change", () => this._toggleFamilyLayer(this.familiesCheckbox.checked))
-        this._toggleFamilyLayer()
+        this._toggleFamilyLayer(this.familiesCheckbox.checked)
     }
 
     _setQubitLayerSelector() {
@@ -18,7 +19,8 @@ class OverlaySelector {
         var toggleQubits = () => {
             Block.areVisible = this.qubitLayerCheckbox.checked
             Bridge.areVisible = this.qubitLayerCheckbox.checked
-            this._toggleFamilyLayer(this.qubitLayerCheckbox.checked)
+            if (this.qubitLayerCheckbox.checked == false)
+                this._toggleFamilyLayer(false)
 
             // forces active css
             this.qubitLayerCheckbox.parentElement.classList.toggle("active", this.qubitLayerCheckbox.checked)
@@ -34,7 +36,7 @@ class OverlaySelector {
         function toggleElectrons() {
             Electron.particles.layers[Electron.TEXTURE_LAYER].visible = checkbox.checked
             Dot.particles.layers[0].visible = checkbox.checked
-            // forces active css 
+            // forces active css
             checkbox.parentElement.classList.toggle("active", checkbox.checked)
             AppControllerInstance.view.shouldRender()
         }

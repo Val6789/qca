@@ -320,7 +320,7 @@ Qubit.FAMILY_COLORS = [
 ]
 
 Qubit.selectedClockId = 0
-Qubit._areFamilyColorsVisible = true
+Qubit._areFamilyColorsVisible = false
 
 /**
  * @static @private
