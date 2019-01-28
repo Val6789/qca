@@ -135,6 +135,8 @@ class Qubit extends Block {
         if (!this._visited) this.balance = 0
         this._visited = false
         this.polarity = Math.sign(this.balance)
+
+        // compute border color
         let yellow = 255
         let blue = 255
         if (this.balance > 0) {
@@ -185,6 +187,7 @@ class Qubit extends Block {
 
         entangled.forEach(block => {
             block.balance = balance
+            block._visited = true
         })
 
         return balance
