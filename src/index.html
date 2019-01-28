@@ -310,19 +310,105 @@
                         <p>Let's build a more complex logic gate. By having many inputs joined into one output, a majority gate can be built. The output corresponds to the value of the major input.</p>
 
                         <h4>- 4 -</h4>
-                        <p>More complex logic gates</p>
+                        <p>More complex logic gates: AND gate</p>
 						
-						<p>and</p>
+						<p>Let's now build another logic gate: the AND gate. The AND gate takes two inputs, A and B and one output, Z.</p>
+						
+						<p>The output Z's value is 1 when both of the input A and B's values are 1. Otherwise, the output Z's value is 0.</p>
+						
+						<p>The truth table for the AND logic gate is:</p>
+						
+						<table>
+						<tr>
+						<td>A</td>
+						<td>B</td>
+						<td>Z</td></tr>
+						<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td></tr>
+						<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td></tr>
+						<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td></tr>
+						<tr>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td></tr></table>
 						
 						<h4>- 5 -</h4>
-						<p>More complex logic gates</p>
+						<p>More complex logic gates: XOR gate</p>
 						
-						<p>xor</p>
+						<p>Another logic gate is the eXclusive-OR, or XOR gate. The output Z's value is 1 when only one of the two inputs is 1 and the other is 0.</p>
+						
+						<table>
+						<tr>
+						<td>A</td>
+						<td>B</td>
+						<td>Z</td></tr>
+						<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td></tr>
+						<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>1</td></tr>
+						<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td></tr>
+						<tr>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td></tr></table>
 						
 						<h4>- 6 -</h4>
-						<p>Combining circuits</p>
+						<p>Combining circuits: a binary half-adder</p>
 						
-						<p>half adder https://en.wikipedia.org/wiki/Adder_(electronics)#Half_adder</p>
+						<p>By combining logic gates, we can build more complex and interesting circuits. If we combine the AND and XOR logic gate, we can build an half-adder, which computes the binary sum of its two inputs, A and B.</p>
+						
+						<p>An half-adder has two outputs: S, the sum of A and B, and C, the carry (or overflow of the sum into the next digit, if we were to build a more complex adder).</p>
+						
+						<p>The truth table is:</p>
+						
+						<table>
+						<tr>
+						<th colspan="2">Inputs</th>
+						<th colspan="2">Outputs</th></tr>
+						<tr>
+						<th><i>A</i></th>
+						<th><i>B</i></th>
+						<th><i>C</i></th>
+						<th><i>S</i></th></tr>
+						<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td></tr>
+						<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td></tr>
+						<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+						<td>1</td></tr>
+						<tr>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>0</td></tr></table>
+						
+						<p>By looking at the truth table, we can see that C = A AND B, and S = A XOR B. Thus, we can easily build an half-adder out of the AND and XOR we build in the two previous missions.</p>
+						
+						<p>The logical structure is widely used in computer processors to compute the sum of two binary numbers.</p>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>
@@ -357,9 +443,6 @@
                         <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
                     </div>
                     <div class="drawer-main">
-                        <!--<p>Display mode :</p>
-                        <button onclick="setLightmode(true)" class="inlinebtn btn">Light mode</button>
-                        <button onclick="setLightmode(false)" class="inlinebtn btn">Dark mode</button>-->
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>
