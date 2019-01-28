@@ -43,7 +43,8 @@ class DragAndDropControls {
 
         this._currentDragPlayload = {
             item: item,
-            domElement: document.body.appendChild(event.currentTarget.cloneNode(true))
+            domElement: document.body.appendChild(event.currentTarget.cloneNode(true)),
+            isValidDrag: false
         }
 
         if (event instanceof TouchEvent)
@@ -86,6 +87,8 @@ class DragAndDropControls {
             border: solid 3px yellow;
             left: ${pointer.clientX}px;
             top: ${pointer.clientY}px;`
+
+            this._currentDragPlayload.domElement.style.display =  (this._currentDragPlayload.isValidDrag)? "block" : "none"
         }
     }
 
