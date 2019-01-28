@@ -126,14 +126,17 @@
         left: 0%;
         right:0%;
         transform: translateX(0%);
+        padding: 0.5rem calc(2.5vw/6);
+        min-width: 100vw;
+        justify-content: space-around;
 
     }
     .tool-icon {
-        height: calc(55vw / 6);
+        min-height: calc(62.5vw / 6);
     }
 
     .tool {
-        padding: calc(5vh/6);
-        margin: calc(5vh/6);
+        padding: calc(2.5vw/6);
+        margin: calc(2.5vw/6);
     }
 }
