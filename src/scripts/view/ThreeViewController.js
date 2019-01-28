@@ -8,7 +8,6 @@
 /* 
     exported 
     ThreeViewController
-    ThreeViewControllerInstance
  */
 
 /**
@@ -106,35 +105,66 @@ class ThreeViewController {
         this._willRender = true
     }
 
+    setModeSandbox() {
+        this.mode = "sandbox"
 
-    /**
-     * @brief class initializer, to be called after DOM and Asset loading 
-     */
-    init() {
-        // Members
-        this._camera
-        this._orbit
-        this._scene
-        this._renderer
-        this._willRender = false
-        this._onRenderObservers = []
-        this._skybox
-
-        // init members
-        this._createLayers()
 
         // Add common scene, camera and control
         this._setCamera()
-        this._setSkybox()
-        this._axis = new Axis(this._camera)
-        this._setRenderer()
         this._setOrbit()
+        this._setRenderer()
+        this._axis = new Axis(this._camera)
+        this._setSkybox()
+        this._scene = new THREE.Scene()
 
-        this._setIntro()
-            .then(this._afterIntro())
+        this._initParticles()
+        EditorInstance.init()
+        UIControllerInstance.init()
 
-        // add axes
-        GUIinstance.setLightmode(false)
+        this.addLayer("Main Layer", this._scene, this._camera)
+        this.shouldRender()
+
+        let center = new THREE.Vector3(0, 0, 0)
+
+        TweenLite.to(this._camera.position, 1, {
+            x: 4,
+            y: 7,
+            z: 5,
+            onUpdate: () => {
+                this._camera.lookAt(center)
+                this._render()
+            },
+            onComplete: () => {
+                this._orbit.enabled = true
+                this._orbit.update()
+            }
+        })
+
+        Qubit.startDeterminationUpdateLoop()
+    }
+
+    setModeIntro(callback) {
+        this.mode = "intro"
+
+        // init members
+        this._setCamera()
+        this._setSkybox()
+        this._setRenderer()
+
+        return new Promise((resolve) => {
+            let intro = new IntroScene(resolve)
+            intro.setCamera(this._camera)
+
+            let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
+            intro.setLayer(layer)
+
+            this._scene = intro._scene
+            this._initParticles()
+            Qubit.startDeterminationUpdateLoop()
+
+            intro.start()
+        })
+
     }
 
 
@@ -213,11 +243,6 @@ class ThreeViewController {
         this.shouldRender()
     }
 
-    _createLayers() {
-        this._layers = []
-    }
-
-
     /**
      * @brief Camera initializer
      */
@@ -240,14 +265,6 @@ class ThreeViewController {
 
 
     /**
-     * @brief Scene initialize
-     */
-    _setScene() {
-        // doesn't do much really
-        this._scene = new THREE.Scene()
-    }
-
-    /**
      * @brief Renderer initializer
      */
     _setRenderer() {
@@ -261,7 +278,8 @@ class ThreeViewController {
         this._renderer.autoClear = false
 
         // insert in DOM
-        document.getElementById(viewportElementId).appendChild(this._renderer.domElement)
+        document.getElementById(viewportElementId)
+            .appendChild(this._renderer.domElement)
         this._resetViewport()
     }
 
@@ -289,77 +307,47 @@ class ThreeViewController {
         this.addLayer("Skybox", this._skybox.scene, this._skybox.camera)
     }
 
+    _initParticles() {
 
-    /**
-     * @brief Create IntroScene
-     */
-    _setIntro() {
-        // DISPLAY ACHIEVEMENT
-        AchievementManager.Get().achievements.tutorial.fullfilled = false
-
-        if (AchievementManager.Get().done("tutorial")) {
-            return new Promise(resolve => resolve())
-        } else {
-            this._orbit.enabled = false
-            return new Promise((resolve) => {
-
-                let intro = new IntroScene(resolve)
-                intro.setCamera(this._camera)
-
-                let layer = this.addLayer("IntroScene", intro._scene, intro._camera)
-                intro.setLayer(layer)
-
-                this._scene = intro._scene
-
-                intro.start()
-            })
-        }
-    }
-
-    _afterIntro() {
-        return () => {
-            if (this._layers.length > 1) {
-                delete this._layers[1]
-            }
-
-            // Creation
-            this._setScene()
-            EditorInstance.init()
-            Electron.init()
-            Dot.init()
-            InputBlock.init()
-            UIControllerInstance.init()
-
-            // Create the main layer
-            this.mainLayer = this.addLayer("Main Layer", this._scene, this._camera)
-            this.shouldRender()
-            let center = new THREE.Vector3(0, 0, 0)
-            TweenLite.to(this._camera.position, 1, {
-                x: 4,
-                y: 7,
-                z: 5,
-                onUpdate: () => {
-                    this._camera.lookAt(center)
-                    this._render()
-                },
-                onComplete: () => {
-                    this._orbit.enabled = true
-                    this._orbit.update()
-                }
-            })
-        }
+        // Re init particles
+        Dot.init()
+        Electron.init()
+        InputBlock.init()
     }
 
     /**
      * @brief Singleton constructor
      */
     constructor() {
-        if (!ThreeViewController.instance) {
-            ThreeViewController.instance = this
-        }
+        this.mode = "default"
 
-        return ThreeViewController.instance
+        // Members
+        this._camera
+        this._orbit
+        this._scene
+        this._renderer
+        this._willRender = false
+        this._skybox
+        this._onRenderObservers = []
+        this._layers = []
+    }
+
+    _destructor() {
+        this.mode = "destroyed"
+
+        this._renderer.domElement.parentNode
+            .removeChild(this._renderer.domElement)
+
+        this._onRenderObservers = []
+        this._layers = []
+
+        this._camera = undefined
+        this._orbit = undefined
+        this._renderer = undefined
+        this._skybox = undefined
+
+        Utils.doDispose(this._scene)
+        this._scene = undefined
+
     }
 }
-
-const ThreeViewControllerInstance = new ThreeViewController()

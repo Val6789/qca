@@ -18,7 +18,7 @@ class Dot {
         if (!this.isVisible) return
         Dot.visibleInstances.splice(Dot.visibleInstances.indexOf(this), 1)
         Dot.particles.positions = Dot.visibleInstances.map(dot => dot.position)
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
     }
 
     constructor(relativePosition, qubit, visible = false) {
@@ -41,7 +41,8 @@ class Dot {
 
         // create particle system
         Dot.particles = new ParticleSystem(Dot._getSolidMaterial())
-        ThreeViewControllerInstance.addObjectToScene(Dot.particles.object)
+        AppControllerInstance.view
+            .addObjectToScene(Dot.particles.object)
     }
 
     static _getSolidMaterial() {

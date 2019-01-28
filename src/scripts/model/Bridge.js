@@ -7,7 +7,7 @@ class Bridge {
     }
 
     setDestination(qubit) {
-        if(qubit === this.start) return
+        if (qubit === this.start) return
         this.end = qubit
         this._updateCurve(this.end.position)
         this._updateCurve = () => {}
@@ -15,13 +15,13 @@ class Bridge {
     }
 
     _updateCurve(endPosition) {
-        ThreeViewControllerInstance.removeObjectFromScene(this._spline)
+        AppControllerInstance.view.removeObjectFromScene(this._spline)
         this._spline = Bridge._createCurve(this.start.position, endPosition)
-        ThreeViewControllerInstance.addObjectToScene(this._spline)
+        AppControllerInstance.view.addObjectToScene(this._spline)
     }
 
     remove() {
-        ThreeViewControllerInstance.removeObjectFromScene(this._spline)
+        AppControllerInstance.view.removeObjectFromScene(this._spline)
         this._updateCurve = () => {}
         if (Bridge.pending === this)
             Bridge.pending = undefined
@@ -51,16 +51,16 @@ class Bridge {
         curve.v1.y += Bridge.SPLINE_CURVATURE
         curve.v2.y += Bridge.SPLINE_CURVATURE
 
-        var points = curve.getPoints( 50 );
-        var geometry = new THREE.BufferGeometry().setFromPoints( points );
+        var points = curve.getPoints(50);
+        var geometry = new THREE.BufferGeometry().setFromPoints(points);
 
         var material = new THREE.LineBasicMaterial({
-            color : Bridge.SPLINE_COLOR
+            color: Bridge.SPLINE_COLOR
         })
         material.linewidth = Bridge.SPLINE_WIDTH
 
         // Create the final object to add to the scene
-        return new THREE.Line( geometry, material )
+        return new THREE.Line(geometry, material)
     }
 
     static set areVisible(boolean) {

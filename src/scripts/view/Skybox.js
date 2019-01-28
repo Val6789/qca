@@ -1,6 +1,6 @@
 /* 
     global 
-    ThreeViewControllerInstance
+    AppControllerInstance
 */
 
 class Skybox {
@@ -8,7 +8,7 @@ class Skybox {
     setStyle(style) {
         if (this.style != style) {
             this.style = style
-            ThreeViewControllerInstance.shouldRender()
+            AppControllerInstance.view.shouldRender()
             if (style == Skybox.styles.DARK)
                 this.material = Skybox._getSkyboxMaterial("Dark")
             else
@@ -38,9 +38,9 @@ class Skybox {
 
         // Add to scenes
         this.scene.add(this.mesh)
-
-        ThreeViewControllerInstance.callbackOnRender(() => {
-            let q = ThreeViewControllerInstance.camera.quaternion
+        console.log(AppControllerInstance.view)
+        AppControllerInstance.view.callbackOnRender(() => {
+            let q = AppControllerInstance.view.camera.quaternion
             this.camera.quaternion.set(q.x, q.y, q.z, q.w)
         })
     }

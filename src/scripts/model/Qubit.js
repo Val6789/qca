@@ -137,12 +137,11 @@ class Qubit extends Block {
         let yellow = 255
         let blue = 255
         if (this.balance > 0) {
-            yellow = 64-Math.round(64*Math.abs(this.balance))
-            blue = Math.round(Math.max(128 + 128*Math.abs(this.balance),255))
-        }
-        else if (this.balance < 0) {
-            blue = 64-Math.round(64*Math.abs(this.balance))
-            yellow = Math.round(Math.min(128 + 128*Math.abs(this.balance),255))
+            yellow = 64 - Math.round(64 * Math.abs(this.balance))
+            blue = Math.round(Math.max(128 + 128 * Math.abs(this.balance), 255))
+        } else if (this.balance < 0) {
+            blue = 64 - Math.round(64 * Math.abs(this.balance))
+            yellow = Math.round(Math.min(128 + 128 * Math.abs(this.balance), 255))
         }
         this.setColor("rgb(" + yellow + "," + yellow + "," + blue + ")")
     }
@@ -153,7 +152,7 @@ class Qubit extends Block {
      * @param {QuantumAutomata} automata
      */
     processNeighboorsInfluences(automata) {
-        if (this._visited || (automata.atLeastOneUseClock && automata.clockTime == this.clock)) return this._polarityBuffer
+        if (this._visited ||  (automata.atLeastOneUseClock && automata.clockTime == this.clock)) return this._polarityBuffer
         this._visited = true
 
         const EKIJ = 1 // Kink energy between cells
@@ -164,19 +163,19 @@ class Qubit extends Block {
 
         entangled.forEach(block => {
             automata.getQubitNeighborsAround(block.position).forEach(neighbor => {
-            const ADJACENT_KINK = 1
-            const DIAGONAL_KINK = -0.2
+                const ADJACENT_KINK = 1
+                const DIAGONAL_KINK = -0.2
 
 
-            const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
-            var kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
-            kink *= relativePosition.y != 0 ? -1 : 1
+                const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
+                var kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
+                kink *= relativePosition.y != 0 ? -1 : 1
 
-            neighbor.processNeighboorsInfluences(automata)
-            sigmaPj += neighbor.balance * neighbor.charge * kink
+                neighbor.processNeighboorsInfluences(automata)
+                sigmaPj += neighbor.balance * neighbor.charge * kink
 
-            if (Number.isNaN(sigmaPj))
-                throw console.error("Compute error.")
+                if (Number.isNaN(sigmaPj))
+                    throw console.error("Compute error.")
 
             })
         })
@@ -186,7 +185,7 @@ class Qubit extends Block {
         // balance saved for debugging purposes
         this.balance = numerator / Math.hypot(numerator, 1)
 
-        entangled.forEach( block => {
+        entangled.forEach(block => {
             block.balance = this.balance
             // block._visited = true
         })
@@ -227,7 +226,7 @@ class Qubit extends Block {
      * The instance is owned by the class inside Qubit.instances
      * A render will be called on the next frame
      */
-    constructor(position = new THREE.Vector3(0,0,0), polarity = 0, enableParticles = true) {
+    constructor(position = new THREE.Vector3(0, 0, 0), polarity = 0, enableParticles = true) {
         // Creates the box with a label
         super(position) // haha
 
@@ -260,7 +259,7 @@ class Qubit extends Block {
         this.setLabel("?")
 
         // Adds object to the scene, calling the render on the next frame
-        ThreeViewControllerInstance.addObjectToScene(this.object)
+        AppControllerInstance.view.addObjectToScene(this.object)
 
         // Saves the instance into the Class static collection
         Qubit.instances.push(this)
@@ -286,7 +285,7 @@ class Qubit extends Block {
 
     static set areFamilyColorsVisible(boolean) {
         Qubit._areFamilyColorsVisible = true
-        if (Qubit.instances) Qubit.instances.forEach( qubit => {
+        if (Qubit.instances) Qubit.instances.forEach(qubit => {
             qubit._showFamilyColor(boolean)
         })
     }

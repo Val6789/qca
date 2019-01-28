@@ -44,12 +44,13 @@ class Electron {
         // init the instances object
         Electron.visibleInstances = []
         Electron.particles = new ParticleSystem([Electron._getSolidMaterial(), Electron._getInfluenceMaterial()])
-        ThreeViewControllerInstance.addObjectToScene(Electron.particles.object)
+        AppControllerInstance.view
+            .addObjectToScene(Electron.particles.object)
     }
 
     static _updateParticles() {
         Electron.particles.positions = Electron.visibleInstances.map(electron => electron.position)
-        ThreeViewControllerInstance.shouldRender()
+        AppControllerInstance.view.shouldRender()
     }
 
     static _getInfluenceMaterial() {
@@ -77,8 +78,8 @@ class Electron {
         })
 
         // update uniform on render
-        ThreeViewControllerInstance.callbackOnRender(() => {
-            shader.uniforms.viewportHeight.value = ThreeViewControllerInstance.renderer.getSize().height
+        AppControllerInstance.view.callbackOnRender(() => {
+            shader.uniforms.viewportHeight.value = AppControllerInstance.view.renderer.getSize().height
         })
 
         return shader

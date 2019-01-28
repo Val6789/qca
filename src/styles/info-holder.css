@@ -74,9 +74,42 @@ span#info-holder-skip {
     flex-wrap: nowrap;
     justify-content: space-around;
 
-    transition: all 200ms ease-in-out;
+    opacity: 0;
 
+    transition: all 200ms ease-in-out;
+    animation-fill-mode: both;
+    animation-name: fade-out;
+    animation-duration: 1000ms;
+    animation-timing-function: ease-out;
 }
+
+#choice-holder.revealed {
+    animation-name: fade-in;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+    to {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+        visibility: visible;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
 
 .btn-card {
     text-align: center;
