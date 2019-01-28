@@ -41,6 +41,8 @@ class DragAndDropControls {
             item: item,
             domElement: document.body.appendChild(event.currentTarget.cloneNode(true))
         }
+
+        this._updateDrag(event)
     }
 
     /**

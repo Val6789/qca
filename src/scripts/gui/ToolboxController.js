@@ -211,11 +211,11 @@ class ToolboxController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
+            this.select(targetElement.id)
             return targetElement.id
         })
 
         this._dragAndDropToolControls.onDropCallback(payload => {
-            this.select(payload)
             EditorInstance.edit()
         })
     }
