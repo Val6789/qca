@@ -16,6 +16,7 @@ window.addEventListener("keyup", function (e) {
     const KEY_Z = 90
     const KEY_Y = 89
     const KEY_F = 70
+    const KEY_P = 80
 
     switch (e.keyCode) {
         case KEY_E:
@@ -30,15 +31,19 @@ window.addEventListener("keyup", function (e) {
             UxSaverInstance.add('keyZ')
             History.undo()
             UIControllerInstance._updateHistoryButtons()
-            break;
+            break
         case KEY_Y:
             UxSaverInstance.add('keyY')
             History.redo()
             UIControllerInstance._updateHistoryButtons()
-            break;
+            break
         case KEY_F:
             UxSaverInstance.add('keyF')
-            new AppController().automata.fixeBlock(EditorInstance.cursor.position)
-            break;
+            new AppController().automata.lockBlock(EditorInstance.cursor.position)
+            break
+        case KEY_P:
+            UxSaverInstance.add('keyP')
+            new AppController().automata.logBlock(EditorInstance.cursor.position)
+            break
     }
 })

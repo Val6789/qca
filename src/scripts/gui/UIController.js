@@ -1,4 +1,4 @@
-/* 
+/*
     global
     QubitEditor
     AppController
@@ -6,8 +6,8 @@
     OverlaySelector
     JoystickCameraControls
 */
-/* 
-    exported 
+/*
+    exported
     UIController
     UIControllerInstance
 */
