@@ -38,7 +38,6 @@ class Skybox {
 
         // Add to scenes
         this.scene.add(this.mesh)
-        console.log(AppControllerInstance.view)
         AppControllerInstance.view.callbackOnRender(() => {
             let q = AppControllerInstance.view.camera.quaternion
             this.camera.quaternion.set(q.x, q.y, q.z, q.w)

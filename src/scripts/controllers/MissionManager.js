@@ -15,11 +15,22 @@
 
 const MissionManager = (function () {
 
-    const DEBUG = false
+    const DEBUG = true
     let instance
-    let observers = []
+    let observers = {
+        ready: [],
+        update: []
+    }
+    var LOCAL_STORAGE_KEY = "missions"
 
     /* ================== PUBLIC ================== */
+    const store = () => {
+        console.assert(instance.missions, "No missions in store")
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY,
+            JSON.stringify(instance.missions)
+        )
+    }
     const load = () => {
         let item = localStorage.getItem(LOCAL_STORAGE_KEY)
         if (!item) {
@@ -31,19 +42,29 @@ const MissionManager = (function () {
         }
         verifyJSON()
     }
-    const store = () => {
-        console.assert(instance.missions, "No missions in store")
-        localStorage.setItem(
-            LOCAL_STORAGE_KEY,
-            JSON.stringify(instance.missions)
-        )
-    }
     const wipe = () => {
         localStorage.removeItem(LOCAL_STORAGE_KEY)
         instance.missions = undefined
     }
+    const start = (name) => {
+        let mission = instance.missions[name]
+        console.assert(mission)
+
+        if (DEBUG)
+            console.trace("Mission : " + name)
+
+        let presetName = mission.preset
+        let presetJson = AssetManager.Get().presets[presetName]
+
+        console.assert(presetJson, "No preset " + presetName + " in AssetManager")
+
+        let constructedPreset = new Preset(presetName, presetJson)
+
+        constructedPreset.addToAutomata(new AppController().automata, true)
+
+    }
     const obtained = (name) => {
-        
+
         /*
         let achievement = instance.achievements[name]
         console.assert(achievement)
@@ -69,27 +90,34 @@ const MissionManager = (function () {
         iziToast.success(iziToastOptions)
         */
 
+        observers.update.forEach((callback) => {
+            callback(achievement, name)
+        })
+
     }
 
     return {
-        Get: () => {
+        Get() {
             if (!instance)
                 return create()
             else return instance
         },
         OnReady: (callback) => {
-            observers.push(callback)
+            observers.ready.push(callback)
+        },
+        OnUpdate: (callback) => {
+            observers.update.push(callback)
         }
     }
 
     /* ================== PRIVATE ================== */
-    var LOCAL_STORAGE_KEY = "missions"
 
     function create() {
         instance = {}
         instance.load = load
         instance.store = store
         instance.wipe = wipe
+        instance.start = start
         instance.obtained = obtained
         load()
 
@@ -98,13 +126,14 @@ const MissionManager = (function () {
             console.info("In order, to load new missions from the 'mission.json file, you need to manually call MissionManager.Get().wipe() then MissionManager.Get().load() or reload the page.\nIf you don't wipe, data are loaded from the localStorage and ignore the json file")
         }
 
-        observers.forEach((callback) => {
+        observers.ready.forEach((callback) => {
             callback()
         })
 
 
         return instance
     }
+
     function verifyJSON() {
         console.assert(instance.missions, "No missions in store")
 

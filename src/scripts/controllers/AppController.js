@@ -38,10 +38,10 @@ class AppController {
                 this.startUpdateLoop()
                 this.currentView = new ThreeViewController()
                 this.currentView.setModeSandbox()
-                console.log(this)
             })
 
         AchievementManager.Get().obtained("missionOne")
+        MissionManager.Get()
 
         DrawerControllerInstance.init()
     }

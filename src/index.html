@@ -34,6 +34,7 @@
 
     <!-- Scripts -->
     <script src="./scripts/view/AssetManager.js"></script>
+    <script src="./scripts/controllers/MissionManager.js"></script>
     <script src="./scripts/controllers/AchievementManager.js"></script>
     <script src="./scripts/view/Axis.js"></script>
     <script src="./scripts/view/ParticleSystem.js"></script>
@@ -266,22 +267,6 @@
                         <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross" /></label>
                     </div>
                     <div class="drawer-main">
-                        <p>This is the main</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate, beatae quae iste nesciunt minus facere.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eos error odio reprehenderit nisi deleniti illo placeat, voluptatibus corrupti esse numquam natus tenetur cupiditate, beatae quae iste nesciunt minus facere.</p>
-                    </div>
-                    <div class="drawer-action">
-                        <label for="no-drawer-check" class="inlinebtn btn">close</label>
-                    </div>
-                </div>
-
-                <input class="activity-check" type="radio" id="mission-check" name="tab" />
-                <div id="drawer-mission" class="drawer">
-                    <div class="drawer-header">
-                        <h3>Missions</h3>
-                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross" /></label>
-                    </div>
-                    <div class="drawer-main">
                         <h4>- 1 -</h4>
                         <p>Welcome to the world of Quantum Cellular Automata!</p>
 
@@ -311,18 +296,39 @@
 
                         <h4>- 4 -</h4>
                         <p>More complex logic gates</p>
-						
-						<p>and</p>
-						
-						<h4>- 5 -</h4>
-						<p>More complex logic gates</p>
-						
-						<p>xor</p>
-						
-						<h4>- 6 -</h4>
-						<p>Combining circuits</p>
-						
-						<p>half adder https://en.wikipedia.org/wiki/Adder_(electronics)#Half_adder</p>
+
+                        <p>and</p>
+
+                        <h4>- 5 -</h4>
+                        <p>More complex logic gates</p>
+
+                        <p>xor</p>
+
+                        <h4>- 6 -</h4>
+                        <p>Combining circuits</p>
+
+                        <p>half adder https://en.wikipedia.org/wiki/Adder_(electronics)#Half_adder</p>
+                    </div>
+                    <div class="drawer-action">
+                        <label for="no-drawer-check" class="inlinebtn btn">close</label>
+                    </div>
+                </div>
+
+                <input class="activity-check" type="radio" id="mission-check" name="tab" />
+                <div id="drawer-mission" class="drawer">
+                    <div class="drawer-header">
+                        <h3>Missions</h3>
+                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross" /></label>
+                    </div>
+                    <div class="drawer-main">
+                        <p>Here's all the missions:</p>
+                        <div id="missions-holder">
+                            <div id="template-mission" class="mission">
+                                <img src="assets/textures/missions/default.png" alt="default">
+                                <h4>$fullname</h4>
+                                <p>$Description</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>

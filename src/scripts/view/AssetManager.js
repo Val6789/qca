@@ -10,10 +10,11 @@ const AssetManager = (function () {
         textures: {},
         json: {},
         achievements: {},
+        missions: {},
         presets: {}
     }
     const baseDir = "assets/"
-    const presets = ["simple_line", "NOT_gate", "majority_gate", "five_majority_gate", "security_majority_gate", "funny_QCA","mission_line"]
+    const presets = ["simple_line", "NOT_gate", "majority_gate", "five_majority_gate", "security_majority_gate", "funny_QCA", "mission_line"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {
@@ -147,6 +148,24 @@ const AssetManager = (function () {
             })
             .catch(reject)
     }))
+    promises.push(waitTexture("default", ".png", "textures", "achievements"))
+
+    // JSON missions
+    promises.push(new Promise((resolve, reject) => {
+        readJSON("missions")
+            .then(() => {
+                // Load all the images
+                for (let key in instance.json.missions) {
+                    let mission = instance.json.missions[key]
+                    if (mission.image && mission.imageExtension)
+                        promises.push(waitTexture(mission.image, mission.imageExtension, "textures", "missions"))
+                }
+                resolve()
+            })
+            .catch(reject)
+    }))
+    promises.push(waitTexture("default", ".png", "textures", "missions"))
+
 
     // JSON facts
     promises.push(new Promise((resolve, reject) => {
@@ -155,7 +174,6 @@ const AssetManager = (function () {
         }).catch(reject)
     }))
 
-    promises.push(waitTexture("default", ".png", "textures", "achievements"))
 
     // Return value
     Promise.all(promises)

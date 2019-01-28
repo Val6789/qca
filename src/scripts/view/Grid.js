@@ -18,8 +18,5 @@ class Grid {
         })
 
         this.object.material = material
-
-
-        console.trace()
     }
 }

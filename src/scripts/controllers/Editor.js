@@ -22,6 +22,8 @@ class Editor {
         try {
             switch (this.canEdit) {
                 case Editor.modes.QUBIT:
+                    AchievementManager.Get()
+                        .obtained("firstStep")
                     UxSaverInstance.add('addQubit', this.cursor.position)
                     return AppControllerInstance.automata.addQubit(this.cursor.position)
                 case Editor.modes.INPUT:

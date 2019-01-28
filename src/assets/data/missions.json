@@ -1,0 +1,11 @@
+{
+    "one": {
+        "fullname": "One simple line",
+        "fullfilled": false,
+        "description": "Familiarize yourself with Qubit placement in this mission",
+        "message": "Congratulation, you completed the first mission ! On the road to being a great Quantumist",
+        "image": "plasma-ball",
+        "imageExtension": ".jpg",
+        "preset": "mission_line"
+    }
+}

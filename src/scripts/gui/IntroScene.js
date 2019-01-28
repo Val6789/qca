@@ -127,9 +127,9 @@ class IntroScene {
             }
 
             // Fist two lines
-            lineDisplay(1.4, -0.35, "Hello")
-            lineDisplay(0.9, -0.85, "Welcome to")
-            lineDisplay(0.4, -1.15, "QCA Simulator")
+            lineDisplay(1.4, -0.85, "Welcome to")
+            lineDisplay(0.9, -1.25, "Quantum Cellular")
+            lineDisplay(0.4, -1.45, "Automata Simulator")
             timeline.to({}, 0, {
                 onComplete: () => {
                     resolve()

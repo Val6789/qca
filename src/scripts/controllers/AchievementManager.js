@@ -17,9 +17,20 @@ const AchievementManager = (function () {
 
     const DEBUG = false
     let instance
-    let observers = []
+    let observers = {
+        ready: [],
+        update: []
+    }
+    var LOCAL_STORAGE_KEY = "achievements"
 
     /* ================== PUBLIC ================== */
+    const store = () => {
+        console.assert(instance.achievements, "No achievements in store")
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY,
+            JSON.stringify(instance.achievements)
+        )
+    }
     const load = () => {
         let item = localStorage.getItem(LOCAL_STORAGE_KEY)
         if (!item) {
@@ -30,13 +41,6 @@ const AchievementManager = (function () {
             instance.achievements = item
         }
         verifyJSON()
-    }
-    const store = () => {
-        console.assert(instance.achievements, "No achievements in store")
-        localStorage.setItem(
-            LOCAL_STORAGE_KEY,
-            JSON.stringify(instance.achievements)
-        )
     }
     const wipe = () => {
         localStorage.removeItem(LOCAL_STORAGE_KEY)
@@ -50,7 +54,7 @@ const AchievementManager = (function () {
         if (DEBUG)
             console.trace("Achievement : " + name)
 
-        UxSaverInstance.add('obtainAchievement',name)
+        UxSaverInstance.add('obtainAchievement', name)
         // Now update this achievement
         achievement.fullfilled = true
         store()
@@ -67,8 +71,12 @@ const AchievementManager = (function () {
         }
         iziToast.success(iziToastOptions)
 
+        observers.update.forEach((callback) => {
+            callback(achievement, name)
+        })
+
     }
-    
+
     const done = (achievement) => instance.achievements[achievement].fullfilled
 
     return {
@@ -78,12 +86,14 @@ const AchievementManager = (function () {
             else return instance
         },
         OnReady: (callback) => {
-            observers.push(callback)
+            observers.ready.push(callback)
+        },
+        OnUpdate: (callback) => {
+            observers.update.push(callback)
         }
     }
 
     /* ================== PRIVATE ================== */
-    var LOCAL_STORAGE_KEY = "achievements"
 
     function create() {
         instance = {}
@@ -99,7 +109,7 @@ const AchievementManager = (function () {
             console.info("In order, to load new achievements from the 'achievement.json file, you need to manually call AchivementManager.Get().wipe() then AchivementManager.Get().load() or reload the page.\nIf you don't wipe, data are loaded from the localStorage and ignore the json file")
         }
 
-        observers.forEach((callback) => {
+        observers.ready.forEach((callback) => {
             callback()
         })
 
