@@ -155,41 +155,50 @@ class Qubit extends Block {
      * @param {QuantumAutomata} automata
      */
     processNeighboorsInfluences(automata) {
+        // recursive end conditions
         if (this._visited) return this.balance
         if (automata.atLeastOneUseClock && automata.clockTime == this.clock) return this.balance
-        this._visited = true
 
+        // Get this block and all its entangled counterparts in an array
+        const entangled = [this].concat(automata.getEntangledBlocks(this))
+        entangled.forEach(block => block._visited = true)
+
+        // Equation constants
         const EKIJ = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
+        const ADJACENT_KINK = 1
+        const DIAGONAL_KINK = -0.2
+
+
+        // Equation variable
         var sigmaPj = 0 // Sum of neighbors influences
 
-        const entangled = [this].concat(automata.getEntangledBlocks(this))
+        for (const currentBlock of entangled) {
+            // fetch neighbors around each block
+            const neighbors = automata.getQubitNeighborsAround(currentBlock.position)
 
-        entangled.forEach(block => {
-            const neighbors = automata.getQubitNeighborsAround(block.position)
-            neighbors.forEach(neighbor => {
-                const ADJACENT_KINK = 1
-                const DIAGONAL_KINK = -0.2
+            for (const neighbor of neighbors) {
+                // get the position vector of the neighbor relative to the current block
+                const relativePosition = (new THREE.Vector3()).subVectors(currentBlock.position, neighbor.position)
 
-                const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
-                var kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
+                // Compute the qubit equation
+                let kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
                 kink *= relativePosition.y != 0 ? -1 : 1
 
+                // recursive call
                 neighbor.processNeighboorsInfluences(automata)
                 sigmaPj += neighbor.balance * neighbor.charge * kink
-            })
-        })
+            }
+        }
 
+        // final equation
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-
-        // balance saved for debugging purposes
         const balance = numerator / Math.hypot(numerator, 1)
 
-        entangled.forEach(block => {
-            block.balance = balance
-            block._visited = true
-        })
+        // Apply results to all entangled blocks
+        entangled.forEach(block => block.balance = balance)
 
+        // return result
         return balance
     }
 
