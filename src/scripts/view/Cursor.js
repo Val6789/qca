@@ -65,6 +65,12 @@ class Cursor {
         // if the cursor changed, call for a render
         if (this._selectionBox.visible == wasVisible && newPosition.equals(previousPosition)) return false
 
+        // show position in info box
+        if (this._selectionBox.visible)
+            document.getElementById("cursor-info").textContent = `cursor(x:${newPosition.x},y:${newPosition.y},z:${newPosition.z})`
+        else
+            document.getElementById("cursor-info").textContent = ""
+
         this._selectionBox.position.copy(newPosition)
         this._updateDepthColumn()
 

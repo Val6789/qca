@@ -132,7 +132,7 @@ class Qubit extends Block {
      * @brief updates polarity value after the recursive processing
      */
     applyPolarityBuffer() {
-        if (!this._visited) this.balance = 0
+        //if (!this._visited) this.balance = 0
         this._visited = false
         this.polarity = Math.sign(this.balance)
 
@@ -157,7 +157,7 @@ class Qubit extends Block {
     processNeighboorsInfluences(automata) {
         // recursive end conditions
         if (this._visited) return this.balance
-        if (automata.atLeastOneUseClock && automata.clockTime == this.clock) return this.balance
+        if (automata.atLeastOneUseClock && automata.clockTime == this.clockId) return this.balance
 
         // Get this block and all its entangled counterparts in an array
         const entangled = [this].concat(automata.getEntangledBlocks(this))
@@ -199,7 +199,7 @@ class Qubit extends Block {
         entangled.forEach(block => block.balance = balance)
 
         // return result
-        return balance
+        return this.balance
     }
 
 
@@ -217,10 +217,6 @@ class Qubit extends Block {
             // moves electron to a random empty dot
             electron.dot = emptyDots[Math.round(Math.random())]
         })
-    }
-
-    setClock(clockValue) {
-        this.clock = clockValue
     }
 
 
@@ -293,7 +289,7 @@ class Qubit extends Block {
     }
 
     static set areFamilyColorsVisible(boolean) {
-        Qubit._areFamilyColorsVisible = true
+        Qubit._areFamilyColorsVisible = boolean
         if (Qubit.instances) Qubit.instances.forEach(qubit => {
             qubit._showFamilyColor(boolean)
         })
@@ -317,14 +313,14 @@ Qubit.DOT_PLACEMENTS = [
 ]
 
 Qubit.FAMILY_COLORS = [
-    "#0AA",
     "#0C0",
-    "#F40",
-    "#C0D"
+    "#C0D",
+    "#0AA",
+    "#F40"
 ]
 
 Qubit.selectedClockId = 0
-Qubit._areFamilyColorsVisible = true
+Qubit._areFamilyColorsVisible = false
 
 /**
  * @static @private

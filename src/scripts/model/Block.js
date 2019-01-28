@@ -52,10 +52,11 @@ class Block {
             bevelEnabled: false
         }), lineMaterial)
         this.valueText.name = "ValueText"
-        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2 + 0.01) // center text on box (values adjusted for optimer font)
         if (this.type && this.type == "output") {
             this.valueText.geometry.scale(1.5, 1.5, 1.5)
+            this.valueText.geometry.translate(-0.05, -0.1, 0)
         }
+        this.valueText.geometry.translate(-0.1, -0.1, Block.QUBIT_THICK / 2 + 0.01) // center text on box (values adjusted for optimer font)
         this.valueText.geometry.rotateX(-Math.PI / 2)
 
 
@@ -75,13 +76,13 @@ class Block {
 
         this.valueText = new THREE.Mesh(new THREE.TextGeometry(text, {
             font: AssetManager.Get().fonts.optimer,
-            size: 0.1,
+            size: 0.12,
             height: 0,
             curveSegments: 4,
             bevelEnabled: false
         }), lineMaterial)
         this.valueText.name = "SubLabel"
-        this.valueText.geometry.translate(-0.35, 0.3, Block.QUBIT_THICK / 2) // adjust text on box (values adjusted for optimer font)
+        this.valueText.geometry.translate(-0.35, 0.25, Block.QUBIT_THICK / 2 + 0.01) // adjust text on box (values adjusted for optimer font)
         this.valueText.geometry.rotateX(-Math.PI / 2)
 
         this.object.add(this.valueText)
@@ -99,15 +100,15 @@ class Block {
     }
 
     _showFamilyColor(bool) {
-        const color = bool ? Qubit.FAMILY_COLORS[this._clockId] : "#000"
-        this.family.material = Block._boxMaterial(color)
+        const color = bool ? Qubit.FAMILY_COLORS[this._clockId] : this.DEFAULT_COLOR
+        this.family.material = Block._boxMaterial(color, this.family.material.opacity)
         AppControllerInstance.view.shouldRender()
     }
 
 
     /**
      * @constructor Block
-     * @param {THREE.Vector3} position 
+     * @param {THREE.Vector3} position
      * Creates object and add it to the scene
      */
     constructor(position) {
@@ -118,6 +119,8 @@ class Block {
         })
         const cubeGeometry = new THREE.BoxGeometry(Block.QUBIT_SIZE, Block.QUBIT_THICK, Block.QUBIT_SIZE)
         const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry)
+
+        this.DEFAULT_COLOR = "#000"
 
         this.fixed = false
 
@@ -138,11 +141,11 @@ class Block {
         Block.instances.add(this)
     }
 
-    static _boxMaterial(color = "#000") {
+    static _boxMaterial(color, opacity = Block.QUBIT_OPACITY) {
         return new THREE.MeshBasicMaterial({
             color: new THREE.Color(color),
             transparent: true,
-            opacity: Block.QUBIT_OPACITY,
+            opacity: opacity,
             blendEquation: THREE.MultiplyBlending,
             depthTest: true,
             depthWrite: false,

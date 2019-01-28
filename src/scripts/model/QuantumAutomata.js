@@ -30,6 +30,7 @@ class QuantumAutomata {
      */
     addQubit(position) {
         let block = new Qubit(position)
+        if(Qubit.selectedClockId != 0) this.qcaUseClock()
         if (this._addBlock(block)) return block
         return false
     }
@@ -37,6 +38,7 @@ class QuantumAutomata {
     qcaUseClock() {
         if (!this.atLeastOneUseClock) {
             this.atLeastOneUseClock = true
+            UIControllerInstance.overlaySelector.toggleFamilyLayer(true)
         }
     }
 
@@ -109,6 +111,7 @@ class QuantumAutomata {
         } else { // initiate bridge
             this._bridges.add(new Bridge(block))
         }
+        this._updateInfos()
     }
 
 
@@ -132,6 +135,7 @@ class QuantumAutomata {
      */
     abortBridge() {
         this._bridges.delete(Bridge.pending.remove())
+        this._updateInfos()
     }
 
 
@@ -187,8 +191,9 @@ class QuantumAutomata {
         this._outputs.delete(block)
         this._qubitMap.delete(hash)
 
-        this._startProcessFrom(block)
-        this._applyProcessing()
+        // this._startProcessFrom(block)
+        // this._applyProcessing()
+        this._updateInfos()
     }
 
     /**
@@ -237,7 +242,7 @@ class QuantumAutomata {
 
     _startProcessFrom(qubit) {
         qubit._visited = false
-        qubit.processNeighboorsInfluences(this, this.atLeastOneUseClock)
+        qubit.processNeighboorsInfluences(this)
     }
 
 
@@ -265,14 +270,22 @@ class QuantumAutomata {
                 this.addInput(position, (value < 0))
             }
             block.remove()
+            this._updateInfos()
             return false
         } else {
             History.add("add", block.type, block.position, block.polarity)
             this._qubitMap.set(hash, block)
+            this._updateInfos()
             return true
         }
     }
 
+
+    _updateInfos() {
+        const element = document.getElementById("automata-info")
+        console.log(this._qubitMap)
+        element.innerHTML = `qubits: ${this._qubitMap.size}<br>outputs: ${this._outputs.size}<br>bridges: ${this._bridges.size}`
+    }
 
     /**
      * @constructor QuantumAutomata

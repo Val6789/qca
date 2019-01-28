@@ -1,6 +1,7 @@
 * {
     overflow: visible;
     color: white;
+    touch-action: manipulation;
 }
 
 .wrapper {
@@ -190,4 +191,16 @@ button:hover {
         margin-bottom: 5px;
         width: 100%;
     }
+}
+
+
+.debug-info {
+    position: fixed;
+    right:0;
+    text-align: right;
+    opacity: 0.4;
+    font-size: 0.4rem;
+    font-family: sans-serif;
+    font-weight: lighter;
+    padding: 0.2rem;
 }

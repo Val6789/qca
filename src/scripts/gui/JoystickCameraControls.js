@@ -91,10 +91,16 @@ class JoystickCameraControls {
     _setZoomSlider(zoomSliderId, enableMouse = true) {
         const button = document.getElementById(zoomSliderId);
 
+        // prevent render loop to update the slider, clonflicting with the user input
+        var isZoomAutoUpdateAllowed = true;
+
+
+        button.addEventListener("touchstart", () => isZoomAutoUpdateAllowed = true)
+        button.addEventListener("touchend", () => isZoomAutoUpdateAllowed = false)
 
         button.addEventListener("touchmove", this._onSliderChange)
 
-        if (enableMouse)  {
+        if (enableMouse) {
             button.addEventListener("mousemove", this._onSliderChange)
             // disables orbital camera controls in front of the slider
             button.addEventListener("mousedown", ev => ev.stopPropagation())
@@ -105,6 +111,7 @@ class JoystickCameraControls {
 
 
         AppControllerInstance.view.callbackOnRender(() => {
+            if(isZoomAutoUpdateAllowed) return
             const currentzoom = AppControllerInstance.view.camera.position.distanceTo(AppControllerInstance.view.orbitControls.target)
             button.value = currentzoom
         })
@@ -167,5 +174,18 @@ class JoystickCameraControls {
 
         this._setJoystick(joystickID, enableMouse)
         this._setZoomSlider(zoomSliderId, enableMouse)
+
+        AppControllerInstance.view.orbitControls.addEventListener("change", () => {
+            const target = AppControllerInstance.view.orbitControls.target
+
+            const camera = AppControllerInstance.view.camera.position
+            const direction = (new THREE.Vector3()).subVectors(camera, target).normalize()
+
+            const north = Math.abs(direction.x) > 0.5 ? (direction.x < 0 ? "NORTH" : "SOUTH") : ""
+            const east = Math.abs(direction.z) > 0.5 ? (direction.z < 0 ? "WEST" : "EAST") : ""
+            const up = Math.abs(direction.y) > 0.5 ? (direction.y < 0 ? "UP" : "DOWN") : ""
+
+            document.getElementById("camera-info").innerHTML = `looking: ${up} ${north} ${east}<br>position(x:${target.x.toPrecision(2)},z:${target.z.toPrecision(2)})`
+        })
     }
 }

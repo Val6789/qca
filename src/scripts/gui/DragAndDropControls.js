@@ -24,6 +24,10 @@ class DragAndDropControls {
         this.onDrop = callback
     }
 
+    onCancelCallback(callback) {
+        this.onCancel = callback
+    }
+
 
     /**
      * @private @method
@@ -39,8 +43,16 @@ class DragAndDropControls {
 
         this._currentDragPlayload = {
             item: item,
-            domElement: document.body.appendChild(event.currentTarget.cloneNode(true))
+            domElement: document.body.appendChild(event.currentTarget.cloneNode(true)),
+            isValidDrag: false
         }
+
+        if (event instanceof TouchEvent)
+            this._currentDragPlayload.startPosition = event.touches.item(0)
+        else
+            this._currentDragPlayload.startPosition = event
+
+        this._updateDrag(event)
     }
 
     /**
@@ -56,7 +68,18 @@ class DragAndDropControls {
             pointer = event
 
         EditorInstance.cursor.update(pointer.clientX, pointer.clientY)
-        if (this._currentDragPlayload) this._currentDragPlayload.domElement.style.cssText = `
+        if (this._currentDragPlayload) {
+            // set validity flag to false if the finger has not left the button bounds
+            const elementRadius = Math.hypot(
+                this._currentDragPlayload.domElement.clientWidth,
+                this._currentDragPlayload.domElement.clientHeight)
+            const movementDistance = Math.hypot(
+                this._currentDragPlayload.startPosition.clientX - pointer.clientX,
+                this._currentDragPlayload.startPosition.clientY - pointer.clientY)
+
+            this._currentDragPlayload.isValidDrag = elementRadius * 0.8 < movementDistance
+
+            this._currentDragPlayload.domElement.style.cssText = `
             position: fixed;
             z-index: 100000;
             transform: translate(-50%, -50%) scale(1.2);
@@ -64,6 +87,9 @@ class DragAndDropControls {
             border: solid 3px yellow;
             left: ${pointer.clientX}px;
             top: ${pointer.clientY}px;`
+
+            this._currentDragPlayload.domElement.style.display =  (this._currentDragPlayload.isValidDrag)? "block" : "none"
+        }
     }
 
 
@@ -75,7 +101,11 @@ class DragAndDropControls {
         AppControllerInstance.view.orbitControls.enableRotate = true
         AppControllerInstance.view.orbitControls.enablePan = true
         if (this._currentDragPlayload) {
-            if (this.onDrop) this.onDrop(this._currentDragPlayload.item)
+            if (this._currentDragPlayload.isValidDrag) {
+                if (this.onDrop) this.onDrop(this._currentDragPlayload.item)
+            } else {
+                if (this.onCancel) this.onCancel(this._currentDragPlayload.item)
+            }
             document.body.removeChild(this._currentDragPlayload.domElement)
         }
         this._currentDragPlayload = null;
