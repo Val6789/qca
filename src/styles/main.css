@@ -179,3 +179,14 @@ button:hover {
 .stopped {
     border: 1px solid red;
 }
+
+@media (max-width:600px) {
+    .inlinebtn {
+        display:block;
+        margin:auto;
+        padding: 20px;
+        margin-top:5px;
+        margin-bottom:5px;
+        width:100%;
+    }
+}
