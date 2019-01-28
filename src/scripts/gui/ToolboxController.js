@@ -44,11 +44,13 @@ class ToolboxController {
      * @param {String} toolID button id
      */
     _toggleCameraControl(toolID) {
+        var hideCamerTouchControls;
         switch (toolID) {
             case "camera-tool":
                 if (ToolboxController.CONSOLE_OUTPUT) console.log("Free camera")
                 AppControllerInstance.view.orbitControls.enableRotate = true
                 AppControllerInstance.view.orbitControls.enablePan = true
+                hideCamerTouchControls = false
                 break
 
             case "qubit-tool":
@@ -59,11 +61,16 @@ class ToolboxController {
                 if (ToolboxController.CONSOLE_OUTPUT) console.log("Locked camera")
                 AppControllerInstance.view.orbitControls.enableRotate = false
                 AppControllerInstance.view.orbitControls.enablePan = false
+                hideCamerTouchControls = true
                 break
 
             default:
                 break
         }
+
+        // find camera controls element and hide it with css
+        const elementId = "camera-touch-controls"
+        document.getElementById(elementId).classList.toggle("hidden", hideCamerTouchControls)
     }
 
     /**
