@@ -152,20 +152,20 @@ class Qubit extends Block {
      * @param {QuantumAutomata} automata
      */
     processNeighboorsInfluences(automata) {
-        if (this._visited ||  (automata.atLeastOneUseClock && automata.clockTime == this.clock)) return this._polarityBuffer
+        if (this._visited || (automata.atLeastOneUseClock && automata.clockTime == this.clock)) return this.balance
         this._visited = true
 
         const EKIJ = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
         var sigmaPj = 0 // Sum of neighbors influences
 
-        var entangled = [this].concat(automata.getEntangledBlocks(this))
+        const entangled = [this].concat(automata.getEntangledBlocks(this))
 
         entangled.forEach(block => {
-            automata.getQubitNeighborsAround(block.position).forEach(neighbor => {
+            const neighbors = automata.getQubitNeighborsAround(block.position)
+            neighbors.forEach(neighbor => {
                 const ADJACENT_KINK = 1
                 const DIAGONAL_KINK = -0.2
-
 
                 const relativePosition = (new THREE.Vector3()).subVectors(block.position, neighbor.position)
                 var kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
@@ -173,24 +173,19 @@ class Qubit extends Block {
 
                 neighbor.processNeighboorsInfluences(automata)
                 sigmaPj += neighbor.balance * neighbor.charge * kink
-
-                if (Number.isNaN(sigmaPj))
-                    throw console.error("Compute error.")
-
             })
         })
 
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
 
         // balance saved for debugging purposes
-        this.balance = numerator / Math.hypot(numerator, 1)
+        const balance = numerator / Math.hypot(numerator, 1)
 
         entangled.forEach(block => {
-            block.balance = this.balance
-            // block._visited = true
+            block.balance = balance
         })
 
-        return this.balance
+        return balance
     }
 
 
