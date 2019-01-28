@@ -246,6 +246,13 @@ class UIController {
             AppControllerInstance.automata.reset()
         }
     }
+    
+    _setResetButton() {
+        document.getElementById('settings-reset').onclick = function () {
+            localStorage.clear()
+            location.reload()
+        }
+    }
 
 
     init() {
@@ -259,6 +266,8 @@ class UIController {
         this._setCameraJoystick()
         this._setOverlaySelector()
         this._setToolbox()
+        
+        this._setResetButton()
 
         this.currentToolSelected = "get-camera"
         this.lastToolSelected = ""
