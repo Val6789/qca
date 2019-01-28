@@ -132,6 +132,7 @@ class Qubit extends Block {
      * @brief updates polarity value after the recursive processing
      */
     applyPolarityBuffer() {
+        if (!this._visited) this.balance = 0
         this._visited = false
         this.polarity = Math.sign(this.balance)
         let yellow = 255
@@ -152,7 +153,8 @@ class Qubit extends Block {
      * @param {QuantumAutomata} automata
      */
     processNeighboorsInfluences(automata) {
-        if (this._visited || (automata.atLeastOneUseClock && automata.clockTime == this.clock)) return this.balance
+        if (this._visited) return this.balance
+        if (automata.atLeastOneUseClock && automata.clockTime == this.clock) return this.balance
         this._visited = true
 
         const EKIJ = 1 // Kink energy between cells
