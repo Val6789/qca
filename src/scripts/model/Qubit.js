@@ -183,7 +183,7 @@ class Qubit extends Block {
 
                 // Compute the qubit equation
                 let kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
-                kink *= relativePosition.y != 0 ? -0.2 : 1
+                kink *= relativePosition.y != 0 ? -1 : 1
 
                 // recursive call
                 neighbor.processNeighboorsInfluences(automata)
@@ -193,7 +193,7 @@ class Qubit extends Block {
 
         // final equation
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        const balance = numerator / Math.hypot(numerator, 1)
+        const balance = numerator / Math.hypot(numerator, 1) /* TODO to resolve MODEL : Mettre un Math.sign() ICI et reset chaque Qubit à 0 à chaque changement ***********************************/
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)
