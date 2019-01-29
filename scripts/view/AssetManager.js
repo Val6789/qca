@@ -259,7 +259,7 @@ const AssetManager = (function () {
         var loader = new THREE.OBJLoader(manager)
 
         return new Promise((resolve, reject) => {
-            loader.load("./assets/models/"+name+".obj",function(obj){
+            loader.load("./assets/models/"+name+".obj.model",function(obj){
                 instance.models[name] = obj
                 resolve(obj)
             },()=>{},reject)

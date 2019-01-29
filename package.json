@@ -2,10 +2,12 @@
   "name": "qcabien",
   "version": "1.0.0",
   "description": "Qca of the imac",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "serve": "node ./node_modules/browser-sync/dist/bin.js start --server . --startPath src --files src --port 8080",
-    "lint": "node ./node_modules/eslint/bin/eslint.js ./src/**/*.js"
+    "serve": "node ./node_modules/browser-sync/dist/bin.js start --server . --startPath . --files src --port 8080",
+    "lint": "node ./node_modules/eslint/bin/eslint.js ./**/*.js",
+    "build": "node ./node_modules/electron-packager/cli.js . \"QCA Simulator\" --out ./build --overwrite --all",
+    "build-host": "node ./node_modules/electron-packager/cli.js . \"QCA Simulator\" --out ./build --overwrite"
   },
   "dependencies": {
     "gsap": "^2.0.2",
@@ -14,6 +16,8 @@
   },
   "devDependencies": {
     "browser-sync": "^2.26.3",
+    "electron": "^4.0.2",
+    "electron-packager": "^13.0.1",
     "eslint": "^5.12.0"
   },
   "author": "",
