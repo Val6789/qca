@@ -20,7 +20,15 @@ class OutputBlock extends Qubit {
         //
         // SET KITTEN STATE
         //
-        console.log("cat is alive", newValue)
+
+        AppControllerInstance.view.removeObjectFromScene(this.kitten)
+        if(newValue < 0) {
+            this.kitten = this.kittenDead
+        }
+        else {
+            this.kitten = this.kittenAlive
+        }
+        AppControllerInstance.view.addObjectToScene(this.kitten)
 
         return true
     }
@@ -35,20 +43,33 @@ class OutputBlock extends Qubit {
         this.object.scale.copy(InputBlock.BLOCK_SCALING)
         this.family.material.opacity = 0.95
 
-        this.kitten = OutputBlock._cuteKittyQuantumCat()
-        this.kitten.position.copy((new THREE.Vector3()).addVectors(position, position.clone().add(new THREE.Vector3(-0.001,0,-0.001)).setLength(2)))
-        this.kitten.lookAt(0,position.y,0)
-        this.kitten.visible = OutputBlock._areKittensVisible
+        this.kittenAlive = OutputBlock._cuteKittyQuantumCatAlive()
+        this.kittenAlive.position.copy((new THREE.Vector3()).addVectors(position, position.clone().add(new THREE.Vector3(-0.001,0,-0.001)).setLength(2)))
+        this.kittenAlive.lookAt(0,position.y,0)
+        this.kittenAlive.visible = OutputBlock._areKittensVisible
+
+        this.kittenDead = OutputBlock._cuteKittyQuantumCatDead()
+        this.kittenDead.position.copy((new THREE.Vector3()).addVectors(position, position.clone().add(new THREE.Vector3(-0.001,0,-0.001)).setLength(2)))
+        this.kittenDead.lookAt(0,position.y,0)
+        this.kittenDead.visible = OutputBlock._areKittensVisible
+
+        this.kitten = this.kittenAlive
+
         AppControllerInstance.view.addObjectToScene(this.kitten)
 
         this.DEFAULT_COLOR = "#333"
         this._showFamilyColor(Qubit.areFamilyColorsVisible)
     }
 
-    static _cuteKittyQuantumCat() {
-        const geometry = new THREE.BoxGeometry(2,3,2)
-        //material ...
-        return new THREE.Mesh(geometry)
+    static _cuteKittyQuantumCatAlive() {
+        var newCuteKittyCat = new THREE.Group()
+        newCuteKittyCat = AssetManager.Get().models["alivecat"].clone()
+        return newCuteKittyCat
+    }
+    static _cuteKittyQuantumCatDead() {
+        var newCuteKittyCat = new THREE.Group()
+        newCuteKittyCat = AssetManager.Get().models["deadcat"].clone()
+        return newCuteKittyCat
     }
 
     static get areKittensVisible() {
