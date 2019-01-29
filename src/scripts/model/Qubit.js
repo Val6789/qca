@@ -183,7 +183,7 @@ class Qubit extends Block {
 
                 // Compute the qubit equation
                 let kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
-                kink *= relativePosition.y != 0 ? -0.2 : 1
+                kink *= relativePosition.y != 0 ? -1 : 1
 
                 // recursive call
                 neighbor.processNeighboorsInfluences(automata)
