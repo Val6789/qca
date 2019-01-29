@@ -191,7 +191,7 @@ class UIController {
 
 
     _setOverlaySelector() {
-        this._overlaySelector = new OverlaySelector()
+        this.overlaySelector = new OverlaySelector()
     }
 
     // Speed buttons //

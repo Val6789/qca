@@ -183,7 +183,7 @@ class Qubit extends Block {
 
                 // Compute the qubit equation
                 let kink = relativePosition.length() > 1 ? DIAGONAL_KINK : ADJACENT_KINK
-                kink *= relativePosition.y != 0 ? -1 : 1
+                kink *= relativePosition.y != 0 ? -0.2 : 1
 
                 // recursive call
                 neighbor.processNeighboorsInfluences(automata)
@@ -197,7 +197,8 @@ class Qubit extends Block {
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)
-
+        
+        //this.balance = Math.sign(this.balance)
         // return result
         return this.balance
     }
@@ -289,7 +290,7 @@ class Qubit extends Block {
     }
 
     static set areFamilyColorsVisible(boolean) {
-        Qubit._areFamilyColorsVisible = true
+        Qubit._areFamilyColorsVisible = boolean
         if (Qubit.instances) Qubit.instances.forEach(qubit => {
             qubit._showFamilyColor(boolean)
         })
@@ -320,7 +321,7 @@ Qubit.FAMILY_COLORS = [
 ]
 
 Qubit.selectedClockId = 0
-Qubit._areFamilyColorsVisible = true
+Qubit._areFamilyColorsVisible = false
 
 /**
  * @static @private

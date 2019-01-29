@@ -120,6 +120,12 @@ class Editor {
         }
         if (this.canEdit == Editor.modes.NOTHING)
             AppControllerInstance.view.renderer.domElement.style.cursor = "grabbing"
+
+        if (this._mouseState.right)
+            this.quickErase()
+
+        if (this._mouseState.left && this.canEdit == Editor.modes.REMOVE)
+            this.quickErase()
     }
 
     _mousemoveHandler(event) {
