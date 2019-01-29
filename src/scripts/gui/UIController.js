@@ -196,57 +196,12 @@ class UIController {
 
     // Speed buttons //
 
-    _setPauseButton() {
-        var button = document.getElementById("play-button")
-        var pause = document.getElementById("pause-button-icon")
-        var play = document.getElementById("play-button-icon")
-
-        // unpaused by default
-        play.style.display = "none"
-        pause.style.display = "inline"
-        // AppControllerInstance.view.renderer.domElement
-        button.onclick = function () {
-            UxSaverInstance.add('pauseBtn')
-            if (AppControllerInstance.pauseMode) { // is app paused ?
-                AppControllerInstance.setRefreshRate(AppController.SPEED)
-                AppControllerInstance.pauseMode = false
-                this.parentNode.style.boxShadow = ""
-                play.style.display = "none"
-                pause.style.display = "inline"
-            } else {
-                AppControllerInstance.pauseMode = true
-                this.parentNode.style.boxShadow = "0px 0px 10px 10px red"
-
-                play.style.display = "inline"
-                pause.style.display = "none"
-            }
-        }
-    }
-
-    _setSlowButton() {
-        const button = document.getElementById("slow-button")
-        button.onclick = function () {
-            UxSaverInstance.add('slowBtn')
-            AppControllerInstance.pauseMode = false
-            AppControllerInstance.setRefreshRate(AppController.SPEED_SLOW)
-        }
-    }
-
-    _setFastButton() {
-        const button = document.getElementById("fast-button")
-        button.onclick = function () {
-            UxSaverInstance.add('fastBtn')
-            AppControllerInstance.pauseMode = false
-            AppControllerInstance.setRefreshRate(AppController.SPEED_FAST)
-        }
-    }
-
     _setDustbinButton() {
         document.getElementById('dustbin-button').onclick = function () {
             AppControllerInstance.automata.reset()
         }
     }
-    
+
     _setResetButton() {
         document.getElementById('settings-reset').onclick = function () {
             localStorage.clear()
@@ -255,23 +210,22 @@ class UIController {
     }
 
 
-    init() {
-        this._setPauseButton()
-        this._setSlowButton()
-        this._setFastButton()
+    _setTimeControl() {
+        this._timeControls = new TimeControls()
+    }
 
+
+    init() {
         this._setHistoryButtons()
         this._setDustbinButton()
-
         this._setCameraJoystick()
         this._setOverlaySelector()
         this._setToolbox()
-        
+        this._setTimeControl()
         this._setResetButton()
 
         this.currentToolSelected = "get-camera"
         this.lastToolSelected = ""
-
 
         /*
         window.addEventListener("keydown", ev => this._keydownHandler(ev))

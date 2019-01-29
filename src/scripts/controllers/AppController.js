@@ -16,13 +16,27 @@
 class AppController {
 
     startUpdateLoop() {
-        this.interval = setInterval(() => {
-            if (!this.pauseMode) this.automata.process()
-        }, this.refreshRate)
+        clearInterval(this.interval)
+        if (this._refreshRate > 0) {
+            this.interval = setInterval(() => {
+                this.automata.process()
+                Qubit.updateAllQubitDetermination()
+            }, this._refreshRate)
+        }
     }
 
     get view() {
         return this.currentView
+    }
+
+    get refreshRate() {
+        return this._refreshRate
+    }
+
+    set refreshRate(rate) {
+        if (this._refreshRate === rate) return
+        this._refreshRate = rate
+        this.startUpdateLoop()
     }
 
     _onAssetLoading() {
@@ -34,7 +48,7 @@ class AppController {
 
                 // Create the new
                 this.automata = new QuantumAutomata()
-                this.setRefreshRate(AppController.SPEED)
+                this.refreshRate = AppController.SPEED
                 this.startUpdateLoop()
                 this.currentView = new ThreeViewController()
                 this.currentView.setModeSandbox()
@@ -54,16 +68,6 @@ class AppController {
                 resolve()
             })
         })
-    }
-
-    setRefreshRate(rate) {
-        this.refreshRate = rate
-        clearInterval(this.interval)
-        this.startUpdateLoop()
-    }
-
-    setPause() {
-        this.pauseMode = !this.pauseMode
     }
 
     ready() {
@@ -94,6 +98,7 @@ class AppController {
 
 const AppControllerInstance = new AppController()
 
-AppController.SPEED = 20
+AppController.PAUSE = 0
+AppController.SPEED = 75
 AppController.SPEED_SLOW = 150
 AppController.SPEED_FAST = 1

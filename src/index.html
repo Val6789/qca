@@ -61,6 +61,7 @@
     <script src="./scripts/gui/JoystickCameraControls.js"></script>
     <script src="./scripts/gui/DragAndDropControls.js"></script>
     <script src="./scripts/gui/KeyBoardController.js"></script>
+    <script src="./scripts/gui/TimeControls.js"></script>
     <script src="./scripts/gui/GUI.js" defer></script>
     <script src="./scripts/gui/OverlaySelector.js"></script>
     <script src="./scripts/Utils.js"></script>
@@ -108,16 +109,16 @@
             </button>
         </nav>
         <nav class="control-bar-mini">
-            <button class="button-mini" alt="Slower" id="slow-button" title="slower">
+            <button class="button-mini time-control" alt="Slower" id="slow-button" title="slower">
                 <img src="assets/buttons/playx2.png" class="button-mini-icon" id="slow-button-icon">
                 Slower
             </button>
-            <button class="button-mini" alt="Play/Pause simulation" id="play-button" title="play / pause">
+            <button class="button-mini time-control" alt="Play/Pause simulation" id="play-button" title="play / pause">
                 <img src="assets/buttons/pause.png" class="button-mini-icon" id="pause-button-icon">
                 <img src="assets/buttons/play.png" class="button-mini-icon" id="play-button-icon">
                 Play
             </button>
-            <button class="button-mini" alt="Faster" id="fast-button" title="faster">
+            <button class="button-mini time-control" alt="Faster" id="fast-button" title="faster">
                 <img src="assets/buttons/playx3.png" class="button-mini-icon" id="fast-button-icon">
                 Faster
             </button>
@@ -249,7 +250,7 @@
                     <label class="activity-tab-button tutorial-tab" for="tutorial-check">Tutorial</label>
                     <label class="activity-tab-button missions-tab" for="mission-check">Missions</label>
                     <label class="activity-tab-button achievement-tab" for="achievement-check">Achievements</label>
-                    <label class="activity-tab-button settings-tab" for="settings-check">Settings</label>
+                    <label class="activity-tab-button settings-tab" for="settings-check">About</label>
                 </div>
             </div>
             <div id="drawers">
@@ -474,11 +475,15 @@
                 <input class="activity-check" type="radio" id="settings-check" name="tab" />
                 <div id="drawer-settings" class="drawer">
                     <div class="drawer-header">
-                        <h3>Settings</h3>
+                        <h3>About</h3>
                         <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
                     </div>
                     <div class="drawer-main">
-						<button id="settings-reset">Reset application</button>
+						<h4>The QCA simulator team</h4>
+						<p>Team Schrödinger: Valérian Daul, Pierre Gabory, Baptiste Mantovani, Maximilien Pluchard</p>
+						<p>Tutoring: Alain Lioret</p>
+						<p>Project made at <a href="https://www.ingenieur-imac.fr/">IMAC</a> engineering school in 2019.</p>
+						<button id="settings-reset" class="btn inlinebtn">Reset application</button>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>
