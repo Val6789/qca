@@ -276,12 +276,10 @@ class Qubit extends Block {
      * @brief sets the interval loop shaking the superposed Qubit
      * calls _showUndetermination regularly
      */
-    static startDeterminationUpdateLoop() {
-        setInterval(() => {
-            Qubit.instances.forEach(qubit => {
-                qubit._showUndetermination()
-            })
-        }, Qubit.UNDETERMINED_REFRESH_RATE)
+    static updateAllQubitDetermination() {
+        Qubit.instances.forEach(qubit => {
+            qubit._showUndetermination()
+        })
     }
 
 

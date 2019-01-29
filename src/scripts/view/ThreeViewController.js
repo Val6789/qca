@@ -139,8 +139,6 @@ class ThreeViewController {
                 this._orbit.update()
             }
         })
-
-        Qubit.startDeterminationUpdateLoop()
     }
 
     setModeIntro(callback) {
@@ -160,7 +158,6 @@ class ThreeViewController {
 
             this._scene = intro._scene
             this._initParticles()
-            Qubit.startDeterminationUpdateLoop()
 
             intro.start()
         })
