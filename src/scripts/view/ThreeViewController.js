@@ -126,6 +126,18 @@ class ThreeViewController {
 
         let center = new THREE.Vector3(0, 0, 0)
 
+
+
+        this.lights = {
+            main: new THREE.PointLight(0xffffff, 1),
+            ambient: new THREE.AmbientLight(0xffffff, 0.5)
+        }
+
+        this.lights.main.position.set(0, 6, 0)
+        this._scene.add(this.lights.main)
+        this._scene.add(this.lights.ambient)
+
+
         TweenLite.to(this._camera.position, 1, {
             x: 4,
             y: 7,
