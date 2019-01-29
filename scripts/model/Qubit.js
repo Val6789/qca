@@ -226,6 +226,13 @@ class Qubit extends Block {
 
             return true
     }
+    
+    resetPolarity() {
+        this.balance = 0
+        this._setPolarity(0)
+        this.applyPolarityBuffer()
+        return true
+    }
 
     /**
      * @constructor of Qubit
@@ -275,11 +282,6 @@ class Qubit extends Block {
 
         // Saves the instance into the Class static collection
         Qubit.instances.push(this)
-    }
-    resetPolarity() {
-        this.balance = 0
-        this._setPolarity(0)
-        return true
     }
 
     /**

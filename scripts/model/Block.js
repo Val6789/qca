@@ -84,7 +84,7 @@ class Block {
         this.valueText.name = "SubLabel"
         this.valueText.geometry.translate(-0.35, 0.25, Block.QUBIT_THICK / 2 + 0.01) // adjust text on box (values adjusted for optimer font)
         this.valueText.geometry.rotateX(-Math.PI / 2)
-
+    
         this.object.add(this.valueText)
 
         // calls render to show the new text

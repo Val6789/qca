@@ -30,8 +30,8 @@ class OutputBlock extends Qubit {
         // meow
         this.kittenDead.visible = OutputBlock._areKittensVisible && this.polarity <= 0
         this.kittenAlive.visible = OutputBlock._areKittensVisible && this.polarity >= 0
-        this.kittenAlive.material.opacity = (this.polarity == 0) ? 0.5 : 1
-        this.kittenDead.material.opacity = (this.polarity == 0) ? 0.5 : 1
+        this.kittenAlive.material.opacity = (this.polarity == 0) ? 0.4 : 1
+        this.kittenDead.material.opacity = (this.polarity == 0) ? 0.4 : 1
     }
 
     constructor(position) {
@@ -100,7 +100,7 @@ class OutputBlock extends Qubit {
         // meow meow meow meow meow meow meow meow
         return (new THREE.Vector3()).addVectors(
             position,
-            position.clone().add(new THREE.Vector3(-0.001,0,-0.001)).setLength(2)
+            position.clone().add(new THREE.Vector3(-0.001,0,-0.001)).setLength(1.5)
         )
     }
 
