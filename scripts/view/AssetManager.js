@@ -15,7 +15,7 @@ const AssetManager = (function () {
         models: {}
     }
     const baseDir = "assets/"
-    const presets = ["simple_line", "NOT_gate", "majority_gate", "AND_gate", "OR_gate", "five_majority_gate", "NAND_gate", "security_majority_gate", "funny_QCA", "mission_line", "mission_one", "basic_tests", "XOR_gate"]
+    const presets = ["simple_line", "NOT_gate", "majority_gate", "AND_gate", "OR_gate", "five_majority_gate", "NAND_gate", "security_majority_gate", "funny_QCA", "mission_line", "mission_one", "basic_tests"]
 
     // Font loading
     promises.push(new Promise((resolve, reject) => {
@@ -125,7 +125,7 @@ const AssetManager = (function () {
         }))
     })
 
-    // JSON Intros 
+    // JSON Intros
     promises.push(readJSON("electronIntro"))
     promises.push(readJSON("dotIntro"))
     promises.push(readJSON("dotIntro2"))
@@ -259,7 +259,7 @@ const AssetManager = (function () {
         var loader = new THREE.OBJLoader(manager)
 
         return new Promise((resolve, reject) => {
-            loader.load("./assets/models/"+name+".obj",function(obj){
+            loader.load("./assets/models/"+name+".obj.model",function(obj){
                 instance.models[name] = obj
                 resolve(obj)
             },()=>{},reject)
