@@ -53,47 +53,7 @@ class Qubit extends Block {
      * @param {Number} newValue -1, 0 or 1
      */
     set polarity(newValue) {
-        // if newValue is already set no need do the following expensive steps
-        if (newValue === this.polarity) return
-
-        var label // will save the text displayed on the qubit
-
-        switch (newValue) {
-            case 1:
-                // move electrons to the right dots
-                this.electrons[0].dot = this.dots[0]
-                this.electrons[1].dot = this.dots[3]
-
-                // is not in superposition
-                this.isDetermined = true
-
-                // define text label
-                label = "1"
-                break
-
-                // more of the same
-            case -1:
-                this.electrons[0].dot = this.dots[1]
-                this.electrons[1].dot = this.dots[2]
-                this.isDetermined = true
-                label = "0"
-                break
-
-            case 0:
-                // is determined false. The electrons will switch places freneticly
-                this.isDetermined = false
-                label = "?"
-                break
-
-            default:
-                throw console.error("Unexpected polarity value :", newValue)
-        }
-
-        if (newValue != this.polarity)
-            console.error("Failed to set the polarity")
-
-        // updates the text floating on the box
-        this.setLabel(label)
+        this._setPolarity(newValue)
     }
 
 
@@ -219,6 +179,50 @@ class Qubit extends Block {
         })
     }
 
+
+    _setPolarity(newValue) {
+            // if newValue is already set no need do the following expensive steps
+            if (newValue === this.polarity) return
+
+            var label // will save the text displayed on the qubit
+    
+            switch (newValue) {
+                case 1:
+                    // move electrons to the right dots
+                    this.electrons[0].dot = this.dots[0]
+                    this.electrons[1].dot = this.dots[3]
+    
+                    // is not in superposition
+                    this.isDetermined = true
+    
+                    // define text label
+                    label = "1"
+                    break
+    
+                    // more of the same
+                case -1:
+                    this.electrons[0].dot = this.dots[1]
+                    this.electrons[1].dot = this.dots[2]
+                    this.isDetermined = true
+                    label = "0"
+                    break
+    
+                case 0:
+                    // is determined false. The electrons will switch places freneticly
+                    this.isDetermined = false
+                    label = "?"
+                    break
+    
+                default:
+                    throw console.error("Unexpected polarity value :", newValue)
+            }
+    
+            if (newValue != this.polarity)
+                console.error("Failed to set the polarity")
+    
+            // updates the text floating on the box
+            this.setLabel(label)
+    }
 
     /**
      * @constructor of Qubit

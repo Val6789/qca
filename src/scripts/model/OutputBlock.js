@@ -9,7 +9,17 @@ class OutputBlock extends Qubit {
 
     remove() {
         OutputBlock.instances.delete(this)
+        AppControllerInstance.view.removeObjectFromScene(this.kitten)
         super.remove()
+    }
+
+    _setPolarity(newValue) {
+        super._setPolarity(newValue)
+
+        //
+        // SET KITTEN STATE
+        //
+
     }
 
     constructor(position) {
@@ -22,9 +32,9 @@ class OutputBlock extends Qubit {
         this.object.scale.copy(InputBlock.BLOCK_SCALING)
         this.family.material.opacity = 0.95
 
-        this.kitten = OutputBlock._cuteKittyCat()
-        this.kitten.position.copy((new THREE.Vector3()).addVectors(position, position.clone().setLength(2)))
-        this.kitten.lookAt(0,0,0)
+        this.kitten = OutputBlock._cuteKittyQuantumCat()
+        this.kitten.position.copy((new THREE.Vector3()).addVectors(position, position.clone().add(new THREE.Vector3(-0.001,0,-0.001)).setLength(2)))
+        this.kitten.lookAt(0,position.y,0)
         this.kitten.visible = OutputBlock._areKittensVisible
         AppControllerInstance.view.addObjectToScene(this.kitten)
 
@@ -32,11 +42,10 @@ class OutputBlock extends Qubit {
         this._showFamilyColor(Qubit.areFamilyColorsVisible)
     }
 
-    static _cuteKittyCat() {
+    static _cuteKittyQuantumCat() {
         const geometry = new THREE.BoxGeometry(2,3,2)
         //material ...
         return new THREE.Mesh(geometry)
-
     }
 
     static get areKittensVisible() {
@@ -53,4 +62,4 @@ class OutputBlock extends Qubit {
 
 OutputBlock.instances = new Set()
 OutputBlock.BLOCK_SCALING = new THREE.Vector3(1.2,2,1.2)
-OutputBlock._areKittensVisible = true
+OutputBlock._areKittensVisible = false
