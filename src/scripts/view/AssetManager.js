@@ -11,7 +11,8 @@ const AssetManager = (function () {
         json: {},
         achievements: {},
         missions: {},
-        presets: {}
+        presets: {},
+        models: {}
     }
     const baseDir = "assets/"
     const presets = ["simple_line", "NOT_gate", "majority_gate", "AND_gate", "OR_gate", "five_majority_gate", "NAND_gate", "security_majority_gate", "funny_QCA", "mission_line", "mission_one", "basic_tests"]
@@ -174,6 +175,19 @@ const AssetManager = (function () {
         }).catch(reject)
     }))
 
+    // Load OBJ
+    var allObj = ["alivecat","deadcat"]
+
+    allObj.forEach(name => {
+        promises.push(new Promise((resolve, reject) => {
+            loadObj(name).then(()=>{
+                resolve()
+            }).catch(reject)
+        }))
+    })
+
+
+
 
     // Return value
     Promise.all(promises)
@@ -237,6 +251,18 @@ const AssetManager = (function () {
                 }
             }
             xhr.send()
+        })
+    }
+
+    function loadObj(name) {
+        var manager = new THREE.LoadingManager();
+        var loader = new THREE.OBJLoader(manager)
+
+        return new Promise((resolve, reject) => {
+            loader.load("./assets/models/"+name+".obj",function(obj){
+                instance.models[name] = obj
+                resolve(obj)
+            },()=>{},reject)
         })
     }
 })()
