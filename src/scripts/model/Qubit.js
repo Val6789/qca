@@ -183,7 +183,7 @@ class Qubit extends Block {
 
     _setPolarity(newValue) {
             // if newValue is already set no need do the following expensive steps
-            if (newValue === this.polarity) return
+            if (newValue === this.polarity) return false
 
             var label // will save the text displayed on the qubit
     
@@ -223,6 +223,8 @@ class Qubit extends Block {
     
             // updates the text floating on the box
             this.setLabel(label)
+
+            return true
     }
 
     /**

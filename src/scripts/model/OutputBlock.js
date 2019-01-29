@@ -14,12 +14,15 @@ class OutputBlock extends Qubit {
     }
 
     _setPolarity(newValue) {
-        super._setPolarity(newValue)
+        // returns true if polarity changed
+        if (!super._setPolarity(newValue)) return false
 
         //
         // SET KITTEN STATE
         //
+        console.log("cat is alive", newValue)
 
+        return true
     }
 
     constructor(position) {
