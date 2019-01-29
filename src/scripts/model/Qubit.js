@@ -153,11 +153,12 @@ class Qubit extends Block {
 
         // final equation
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        const balance = numerator / Math.hypot(numerator, 1)
+        const balance = numerator / Math.hypot(numerator, 1) /* TODO to resolve MODEL : Mettre un Math.sign() ICI et reset chaque Qubit à 0 à chaque changement ***********************************/
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)
-
+        
+        //this.balance = Math.sign(this.balance)
         // return result
         return this.balance
     }
