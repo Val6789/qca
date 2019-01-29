@@ -33,6 +33,13 @@ class OutputBlock extends Qubit {
         return true
     }
 
+
+    resetPolarity() {
+        this.balance = 0
+        this._setPolarity(0)
+        return true
+    }
+
     constructor(position) {
         super(position, 0, false)
         this.type = "output"

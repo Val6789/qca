@@ -105,6 +105,10 @@ class Block {
         AppControllerInstance.view.shouldRender()
     }
 
+    resetPolarity() {
+        return false
+    }
+
 
     /**
      * @constructor Block

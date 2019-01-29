@@ -29,6 +29,7 @@ class QuantumAutomata {
      * @param {THREE.Vector3} position
      */
     addQubit(position) {
+        this.shouldResetPolarity()
         let block = new Qubit(position)
         if(Qubit.selectedClockId != 0) this.qcaUseClock()
         if (this._addBlock(block)) return block
@@ -50,6 +51,7 @@ class QuantumAutomata {
      * @param {Number} State 0 or 1
      */
     addInput(position, value) {
+        this.shouldResetPolarity()
         let block = new InputBlock(position, value ? 1 : -1)
         if (this._addBlock(block)) return block
         return false
@@ -64,6 +66,7 @@ class QuantumAutomata {
         const newBlock = new OutputBlock(position)
         if (this._addBlock(newBlock)) {
             this._outputs.add(newBlock)
+            this.shouldResetPolarity()
             return newBlock
         }
         return false
@@ -108,6 +111,7 @@ class QuantumAutomata {
         if (Bridge.pending) {
             History.add("bridge", "", block.position, Bridge.pending.start.position);
             Bridge.pending.setDestination(block)
+            this.shouldResetPolarity()
         } else { // initiate bridge
             this._bridges.add(new Bridge(block))
         }
@@ -121,6 +125,7 @@ class QuantumAutomata {
      * @param {THREE.Vector3} start
      */
     removeBridgeWithPosition(start, end) {
+        this.shouldResetPolarity()
         var bridgeToRemove = false
         this._bridges.forEach(bridge => {
             if ((bridge.start.position.equals(start) && bridge.end.position.equals(end)) || (bridge.start.position.equals(end) && bridge.end.position.equals(start)))
@@ -174,6 +179,7 @@ class QuantumAutomata {
      * @param {bool} adminRemove To remove fixed blocks (fixed blocks are ones wich can't be modified in missions) 
      */
     removeBlock(position, adminRemove = false) {
+        this.shouldResetPolarity()
         const hash = QuantumAutomata._positionHash(position)
         if (!this._qubitMap.has(hash)) return
 
@@ -194,6 +200,13 @@ class QuantumAutomata {
         // this._startProcessFrom(block)
         // this._applyProcessing()
         this._updateInfos()
+    }
+
+    _resetAllBlocksPolarity() {
+        this.shouldResetTrigger = false
+        this._qubitMap.forEach(qubit => {
+            qubit.resetPolarity()
+        })
     }
 
     /**
@@ -233,6 +246,7 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
+        if(this.shouldResetTrigger) this._resetAllBlocksPolarity()
         this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
         this._outputs.forEach(output => this._startProcessFrom(output))
@@ -286,6 +300,10 @@ class QuantumAutomata {
         element.innerHTML = `qubits: ${this._qubitMap.size}<br>outputs: ${this._outputs.size}<br>bridges: ${this._bridges.size}`
     }
 
+    shouldResetPolarity() {
+        this.shouldResetTrigger = true
+    }
+
     /**
      * @constructor QuantumAutomata
      */
@@ -295,7 +313,9 @@ class QuantumAutomata {
         this._bridges = new Set()
 
         this.clockTime = 0
-        this.atLeastOneUseClock = false;
+        this.atLeastOneUseClock = false
+
+        this.shouldResetTrigger = false
     }
 
 
@@ -315,12 +335,12 @@ class QuantumAutomata {
  */
 QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(0, 0, 1), // up
-    new THREE.Vector3(1, 0, 1), // up right
     new THREE.Vector3(1, 0, 0), // right
-    new THREE.Vector3(1, 0, -1), // right down
     new THREE.Vector3(0, 0, -1), // down
-    new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(-1, 0, 0), // left
+    new THREE.Vector3(1, 0, 1), // up right
+    new THREE.Vector3(1, 0, -1), // right down
+    new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(-1, 0, 1), // up left
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0) // left
