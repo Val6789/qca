@@ -117,7 +117,7 @@ class Qubit extends Block {
     processNeighboorsInfluences(automata) {
         // recursive end conditions
         if (this._visited) return this.balance
-        if (automata.atLeastOneUseClock && automata.clockTime == this.clockId) return this.balance
+        if (automata.atLeastOneUseClock && automata.clockTime != this.clockId) return this.balance
 
         // Get this block and all its entangled counterparts in an array
         const entangled = [this].concat(automata.getEntangledBlocks(this))

@@ -179,12 +179,12 @@ class QuantumAutomata {
      * @param {bool} adminRemove To remove fixed blocks (fixed blocks are ones wich can't be modified in missions) 
      */
     removeBlock(position, adminRemove = false) {
-        this.shouldResetPolarity()
         const hash = QuantumAutomata._positionHash(position)
         if (!this._qubitMap.has(hash)) return
 
         const block = this._qubitMap.get(hash)
         if (block.fixed && !adminRemove) return
+        this.shouldResetPolarity()
 
         History.add('remove', block.type, position, block.polarity);
 
@@ -203,10 +203,12 @@ class QuantumAutomata {
     }
 
     _resetAllBlocksPolarity() {
-        this.shouldResetTrigger = false
-        this._qubitMap.forEach(qubit => {
-            qubit.resetPolarity()
-        })
+        if(this.shouldResetTrigger) {
+            this.shouldResetTrigger = false
+            this._qubitMap.forEach(qubit => {
+                qubit.resetPolarity()
+            })
+        }
     }
 
     /**
@@ -246,10 +248,11 @@ class QuantumAutomata {
      * @public @method
      */
     process() {
-        if(this.shouldResetTrigger) this._resetAllBlocksPolarity()
+        this._resetAllBlocksPolarity()
         this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
-        this._outputs.forEach(output => this._startProcessFrom(output))
+        // this._outputs.forEach(output => this._startProcessFrom(output))
+        this._qubitMap.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
     }
 
@@ -339,9 +342,9 @@ QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(0, 0, -1), // down
     new THREE.Vector3(-1, 0, 0), // left
     new THREE.Vector3(1, 0, 1), // up right
-    new THREE.Vector3(1, 0, -1), // right down
-    new THREE.Vector3(-1, 0, -1), // down left
+    new THREE.Vector3(1, 0, -1), // down right
     new THREE.Vector3(-1, 0, 1), // up left
+    new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0) // left
 ]

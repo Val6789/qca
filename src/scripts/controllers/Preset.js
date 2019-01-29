@@ -71,7 +71,7 @@ class Preset {
                     newBlock = automata.addWaiting(blockPosition, block.value)
             }
             if (block.fixed) newBlock.toogleFixe()
-            if (block.clock) newBlock.setClock(parseInt(block.clock))
+            if (block.clock) newBlock.clockId = parseInt(block.clock)
             console.assert(newBlock)
         }
         return true
