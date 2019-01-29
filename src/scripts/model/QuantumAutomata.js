@@ -283,7 +283,6 @@ class QuantumAutomata {
 
     _updateInfos() {
         const element = document.getElementById("automata-info")
-        console.log(this._qubitMap)
         element.innerHTML = `qubits: ${this._qubitMap.size}<br>outputs: ${this._outputs.size}<br>bridges: ${this._bridges.size}`
     }
 
