@@ -248,6 +248,7 @@ class QuantumAutomata {
 
     _resetAllBlocksPolarity() {
         if(this.shouldResetTrigger) {
+            this.clockTime = 0
             this.shouldResetTrigger = false
             this._qubitMap.forEach(qubit => {
                 qubit.resetPolarity()
