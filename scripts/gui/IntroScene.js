@@ -88,8 +88,8 @@ class IntroScene {
         UIControllerInstance.hideUI()
 
         // Create the electron
-        let pos = new THREE.Vector3(0, 0, 0)
-        this._electrons.addAt(pos)
+        //let pos = new THREE.Vector3(0, 0, 0)
+        //this._electrons.addAt(pos)
     }
 
     _welcomeScene() {
