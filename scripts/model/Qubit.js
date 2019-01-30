@@ -117,7 +117,7 @@ class Qubit extends Block {
     processNeighboorsInfluences(automata) {
         // recursive end conditions
         if (this._visited) return this.balance
-        // if (automata.atLeastOneUseClock && automata.clockTime != this.clockId) return this.balance
+        if (automata.atLeastOneUseClock && automata.clockTime != this.clockId && this.type != "output") return this.balance
 
         // Get this block and all its entangled counterparts in an array
         const entangled = [this].concat(automata.getEntangledBlocks(this))
@@ -146,7 +146,7 @@ class Qubit extends Block {
                 kink *= relativePosition.y != 0 ? -1 : 1
 
                 // recursive call
-                neighbor.processNeighboorsInfluences(automata) // Par ici**************************************** <------------------------------
+                neighbor.processNeighboorsInfluences(automata)
                 sigmaPj += neighbor.balance * neighbor.charge * kink
             }
         }
