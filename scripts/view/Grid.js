@@ -1,8 +1,10 @@
-/* global THREE:true, */
-/* exported Grid */
+/* 
+    exported Grid
+ */
 
+// eslint-disable-next-line no-unused-vars
 class Grid {
-    constructor(font, offset = 0, size = 300, divisions = 300) {
+    constructor(offset = 0, size = 300, divisions = 300) {
         this.object = new THREE.GridHelper(size, divisions)
         this.object.position.set(-0.5, offset, -0.5)
 
