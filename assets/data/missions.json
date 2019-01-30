@@ -68,15 +68,15 @@
         "imageExtension": ".jpg",
         "preset": "Mission4",
         "tools": {
-            "input-tool": false,
-            "qubit-tool": true,
+            "input-tool": true,
+            "qubit-tool": false,
             "output-tool": false,
             "bridge-tool": false,
-            "remove-tool": true
+            "remove-tool": false
         },
         "grid": {
-            "size": 10,
-            "division": 10
+            "size": 8,
+            "division": 8
         }
     }
 }
