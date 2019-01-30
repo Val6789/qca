@@ -21,6 +21,7 @@ Created by 4 students at IMAC.
   npm install
   npm run build-host
   cd ./build
+  ./QCA\ simulator
   ```
   An executable for your current architecture will be created in the build folder.
   To build for all available architecture, run `npm run build`

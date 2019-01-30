@@ -1,12 +1,10 @@
 /*
     global
-    Skybox
 */
 /*
     exported
     GUI
     GUIinstance
-
 */
 
 // Activity selection handling
@@ -120,7 +118,7 @@ class GUI {
                     node.onclick = () => {
                         MissionManager.Get().start(key)
 
-                        document.getElementById('no-drawer-check').checked = true
+                        document.getElementById("no-drawer-check").checked = true
                     }
 
                     MissionManager.OnUpdate((ac, k) => {
@@ -161,4 +159,5 @@ class GUI {
 
 }
 
+// eslint-disable-next-line no-unused-vars
 const GUIinstance = new GUI()

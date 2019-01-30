@@ -11,12 +11,14 @@ class WaitingBlock extends OutputBlock {
         if (WaitingBlock.instances.length == 0) return
         let arr = [...(WaitingBlock.instances)]
         let completed = !arr.some(block => !block.complete)
-        MissionManager.Get().obtained()
-        AppControllerInstance.setPause()
-        setTimeout(() => {
-            AppControllerInstance.automata.reset()
-            AppControllerInstance.setPause()
-        }, 1000)
+        if (completed) {
+            MissionManager.Get().obtained()
+            AppControllerInstance.refreshRate = 0
+            setTimeout(() => {
+                AppControllerInstance.automata.reset()
+                AppControllerInstance.refreshRate = AppController.SPEED
+            }, 1000)
+        }
     }
 
     get complete() {
@@ -25,7 +27,6 @@ class WaitingBlock extends OutputBlock {
 
     applyPolarityBuffer() {
         super.applyPolarityBuffer()
-        console.trace()
         if (this.complete) {
             WaitingBlock.checkCompletion()
             this.setColor("rgb(" + 0 + "," + 255 + "," + 0 + ")")
