@@ -6,6 +6,13 @@
         "message": "Congratulation, you completed the first mission ! On the road to being a great Quantumist",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
-        "preset": "mission_one"
+        "preset": "mission_one",
+        "tools": {
+            "input-tool": false,
+            "qubit-tool": true,
+            "output-tool": false,
+            "bridge-tool": false,
+            "remove-tool": true
+        }
     }
 }

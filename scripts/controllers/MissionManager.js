@@ -1,8 +1,14 @@
+/* eslint-disable no-unused-vars */
 /*
     exported
     MissionManager
 */
-
+/*
+    global
+    Preset
+    AppController
+    UIControllerInstance
+*/
 
 /*
 
@@ -13,6 +19,7 @@
 
 */
 
+// eslint-disable-next-line no-unused-vars
 const MissionManager = (function () {
 
     const DEBUG = false
@@ -57,15 +64,18 @@ const MissionManager = (function () {
         let presetName = mission.preset
         let presetJson = AssetManager.Get().presets[presetName]
 
-        UxSaverInstance.add('startMission', name)
+        UxSaverInstance.add("startMission", name)
         console.assert(presetJson, "No preset " + presetName + " in AssetManager")
 
         let constructedPreset = new Preset(presetName, presetJson)
 
-        constructedPreset.addToAutomata(new AppController().automata, true)
+        constructedPreset.addToAutomata(AppControllerInstance.automata, true)
 
         currentMission = name
 
+        // Disable some GUI tools
+        UIControllerInstance.toolsVisibility(mission.tools)
+        UIControllerInstance.revealControlMission()
     }
     const obtained = () => {
 
@@ -74,7 +84,7 @@ const MissionManager = (function () {
         if (DEBUG)
             console.trace("Mission Complete : " + currentMission)
 
-        UxSaverInstance.add('obtainMission', name)
+        UxSaverInstance.add("obtainMission", name)
 
         // Now update this mission
         mission.fullfilled = true
@@ -96,11 +106,49 @@ const MissionManager = (function () {
             callback(mission, currentMission)
         })
 
+        // Disable some GUI tools
+        UIControllerInstance.toolsVisibility(true)
+        UIControllerInstance.hideControlMission()
+
         if (currentMission == "one")
             AchievementManager.Get().obtained("missionOne")
         currentMission = undefined
 
     }
+    const stop = () => {
+        if (missionRunning()) {
+            AppControllerInstance.automata.reset()
+            currentMission = undefined
+            // Disable some GUI tools
+            UIControllerInstance.toolsVisibility(true)
+            UIControllerInstance.hideControlMission()
+        }
+
+    }
+    const restart = () => {
+        if (missionRunning)
+            start(currentMission)
+    }
+    const missionRunning = () => {
+        return !!instance.missions[currentMission]
+    }
+    const keyAvailable = (k) => {
+
+        const KEY_E = 69
+        const KEY_F = 70
+        const KEY_P = 80
+        const KEY_U = 85
+        const KEY_W = 87
+        const KEY_Y = 89
+        const KEY_Z = 90
+
+        if (missionRunning()) {
+            return k == KEY_Z || k == KEY_Y || k == KEY_P
+        } else {
+            return true
+        }
+    }
+
 
     return {
         Get() {
@@ -125,6 +173,10 @@ const MissionManager = (function () {
         instance.wipe = wipe
         instance.start = start
         instance.obtained = obtained
+        instance.stop = stop
+        instance.missionRunning = missionRunning
+        instance.restart = restart
+        instance.keyAvailable = keyAvailable
         load()
 
         if (DEBUG) {
@@ -160,6 +212,11 @@ const MissionManager = (function () {
             // message
             console.assert(typeof mission["message"] == "string", key + "[message] is not a string")
             console.assert(mission["message"].length, key + "[message] is empty")
+
+
+            // preset
+            console.assert(typeof mission["preset"] == "string", key + "[preset] is not a string")
+            console.assert(mission["preset"].length, key + "[preset] is empty")
         }
 
     }

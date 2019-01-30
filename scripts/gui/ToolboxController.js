@@ -1,11 +1,9 @@
 /*
     global
-    QubitEditor
     AppController
     DragAndDropControls
-    OverlaySelector
-    JoystickCameraControls
-    UIControllerInstance
+    Editor
+    Qubit
 */
 /*
     exported
@@ -46,7 +44,7 @@ class ToolboxController {
      * @param {String} toolID button id
      */
     _toggleCameraControl(toolID) {
-        var hideCamerTouchControls;
+        var hideCamerTouchControls
         switch (toolID) {
             case "camera-tool":
                 if (ToolboxController.CONSOLE_OUTPUT) console.log("Free camera")
@@ -107,33 +105,34 @@ class ToolboxController {
     _selectEditorMode(toolID) {
         switch (toolID) {
             case "qubit-tool":
-                UxSaverInstance.add('setQbitToolClick')
+                UxSaverInstance.add("setQbitToolClick")
                 EditorInstance.canEdit = Editor.modes.QUBIT
                 break
 
             case "input-tool":
-                UxSaverInstance.add('setInputToolClick')
+                UxSaverInstance.add("setInputToolClick")
                 EditorInstance.canEdit = Editor.modes.INPUT
                 break
 
             case "output-tool":
-                UxSaverInstance.add('setOutbutToolClick')
+                UxSaverInstance.add("setOutbutToolClick")
                 EditorInstance.canEdit = Editor.modes.OUTPUT
                 break
 
             case "remove-tool":
-                UxSaverInstance.add('setEraserToolClick')
+                UxSaverInstance.add("setEraserToolClick")
                 EditorInstance.canEdit = Editor.modes.REMOVE
                 break
 
             case "bridge-tool":
-                UxSaverInstance.add('setBridgeToolClick')
+                UxSaverInstance.add("setBridgeToolClick")
                 EditorInstance.canEdit = Editor.modes.BRIDGE
                 break
 
             case "camera-tool":
-                UxSaverInstance.add('setCameraToolClick')
+                UxSaverInstance.add("setCameraToolClick")
                 EditorInstance.canEdit = Editor.modes.NOTHING
+                break
 
             default:
                 break
@@ -155,6 +154,7 @@ class ToolboxController {
 
             case "camera-tool":
                 cursor = "grab"
+                break
 
             default:
                 break
@@ -199,7 +199,7 @@ class ToolboxController {
             let colorPill = document.createElement("DIV")
             colorPill.addEventListener("click", () => {
                 document.getElementById("clock-indicator").style.backgroundColor = color
-                Qubit.selectedClockId = id;
+                Qubit.selectedClockId = id
             })
             colorPill.classList.add("clock-color")
             colorPill.style.backgroundColor = color

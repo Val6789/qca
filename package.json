@@ -4,7 +4,7 @@
   "description": "Qca of the imac",
   "main": "main.js",
   "scripts": {
-    "serve": "node ./node_modules/browser-sync/dist/bin.js start --server . --startPath . --files src --port 8080",
+    "serve": "node ./node_modules/browser-sync/dist/bin.js start --server . --startPath . --files scripts --port 8080",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./**/*.js",
     "build": "node ./node_modules/electron-packager/cli.js . \"QCA Simulator\" --out ./build --overwrite --all",
     "build-host": "node ./node_modules/electron-packager/cli.js . \"QCA Simulator\" --out ./build --overwrite"

@@ -3,6 +3,7 @@
     Preset
  */
 
+// eslint-disable-next-line no-unused-vars
 class Preset {
     static exportQuantomAutomata(quantomAutomata) {
         var quantomExport = []

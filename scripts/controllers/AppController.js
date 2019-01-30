@@ -1,11 +1,9 @@
 /*
     global
-    Dot
-    Electron
     Qubit
-    InputBlock
-    Editor
     QuantumAutomata
+    DrawerControllerInstance
+    ThreeViewController
 */
 /*
     exported
@@ -96,6 +94,7 @@ class AppController {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 const AppControllerInstance = new AppController()
 
 AppController.PAUSE = 0
