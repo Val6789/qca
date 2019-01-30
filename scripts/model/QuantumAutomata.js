@@ -251,8 +251,8 @@ class QuantumAutomata {
         this._resetAllBlocksPolarity()
         this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
-        this._outputs.forEach(output => this._startProcessFrom(output))
-        // this._qubitMap.forEach(output => this._startProcessFrom(output))
+        //this._outputs.forEach(output => this._startProcessFrom(output))
+        this._qubitMap.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
     }
 

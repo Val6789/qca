@@ -146,7 +146,7 @@ class Qubit extends Block {
                 kink *= relativePosition.y != 0 ? -1 : 1
 
                 // recursive call
-                neighbor.processNeighboorsInfluences(automata)
+                neighbor.processNeighboorsInfluences(automata) // Par ici**************************************** <------------------------------
                 sigmaPj += neighbor.balance * neighbor.charge * kink
             }
         }

@@ -84,7 +84,6 @@ class Editor {
         domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
         domViewportElement.addEventListener("mouseup", ev => this._mouseUpHandler(ev))
         domViewportElement.addEventListener("mousedown", ev => this._mousedownHandler(ev))
-        domViewportElement.addEventListener("mousemove", ev => this._mousemoveHandler(ev))
         domViewportElement.addEventListener("wheel", ev => this._wheelHandler(ev))
 
         this.cursor = new Cursor()
@@ -126,6 +125,9 @@ class Editor {
 
         if (this._mouseState.left && this.canEdit == Editor.modes.REMOVE)
             this.quickErase()
+        
+        if (this._mouseState.left && this.canEdit == Editor.modes.QUBIT)
+            this.quickEdit()
     }
 
     _mousemoveHandler(event) {
