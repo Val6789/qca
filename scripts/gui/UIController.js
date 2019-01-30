@@ -1,10 +1,12 @@
 /*
     global
-    QubitEditor
     AppController
     DragAndDropControls
     OverlaySelector
     JoystickCameraControls
+    TimeControls
+    ToolboxController
+    Editor
 */
 /*
     exported
@@ -16,6 +18,48 @@ class UIController {
 
 
     // Tool buttons //
+    // =================== Display and Hide Tools ===================
+
+    hideControlMission() {
+        if (!this.$controlMission)
+            this.$controlMission = document.getElementById("control-mission")
+
+        this.$controlMission.classList.remove("revealed")
+    }
+
+    revealControlMission() {
+        if (!this.$controlMission)
+            this.$controlMission = document.getElementById("control-mission")
+
+        this.$controlMission.classList.add("revealed")
+    }
+
+    toolsVisibility(options = true) {
+
+        if (options === true) {
+            for (let key in this.$tools) {
+                this.$tools[key].classList.remove("hidden")
+            }
+
+        } else if (typeof options == "object") {
+            for (let key in options) {
+                const available = options[key]
+
+                if (!this.$tools[key])
+                    this.$tools[key] = document.getElementById(key)
+
+                if (available)
+                    this.$tools[key].classList.remove("hidden")
+                else
+                    this.$tools[key].classList.add("hidden")
+            }
+        } else {
+            console.trace()
+            throw new Error("Error with option : " + options)
+        }
+    }
+
+
     // =================== Choice Holder ===================
 
     revealChoice() {
@@ -41,13 +85,13 @@ class UIController {
         let promises = [
             new Promise((resolve) => {
                 $tutorial.onclick = () => {
-                    UxSaverInstance.add('chooseTutorial')
+                    UxSaverInstance.add("chooseTutorial")
                     resolve("tutorial")
                 }
             }),
             new Promise((resolve) => {
                 $sandbox.onclick = () => {
-                    UxSaverInstance.add('chooseSandbox')
+                    UxSaverInstance.add("chooseSandbox")
                     resolve("sandbox")
                 }
             })
@@ -129,16 +173,31 @@ class UIController {
 
     // =================== OTHER ===================
 
+    _setControlMissionButtons() {
+        if (!this.$controlMission)
+            this.$controlMission = document.getElementById("control-mission")
+
+        const $quit = this.$controlMission.children[0]
+        const $restart = this.$controlMission.children[1]
+
+        $quit.onclick = () => {
+            MissionManager.Get().stop()
+        }
+        $restart.onclick = () => {
+            MissionManager.Get().restart()
+        }
+    }
+
     _setHistoryButtons() {
         this._updateHistoryButtons()
         var self = this
         document.getElementById("undo-button").onclick = function () {
-            UxSaverInstance.add('undo')
+            UxSaverInstance.add("undo")
             History.undo()
             self._updateHistoryButtons()
         }
         document.getElementById("redo-button").onclick = function () {
-            UxSaverInstance.add('redo')
+            UxSaverInstance.add("redo")
             History.redo()
             self._updateHistoryButtons()
         }
@@ -162,7 +221,7 @@ class UIController {
         this._dragAndDropToolControls = new DragAndDropControls(".draggable.tool", false)
 
         this._dragAndDropToolControls.onDragCallback(targetElement => {
-            UxSaverInstance.add('dragAndDrop', targetElement.id)
+            UxSaverInstance.add("dragAndDrop", targetElement.id)
             switch (targetElement.id) {
                 case "get-camera":
                     return Editor.modes.NOTHING
@@ -197,13 +256,13 @@ class UIController {
     // Speed buttons //
 
     _setDustbinButton() {
-        document.getElementById('dustbin-button').onclick = function () {
+        document.getElementById("dustbin-button").onclick = function () {
             AppControllerInstance.automata.reset()
         }
     }
 
     _setResetButton() {
-        document.getElementById('settings-reset').onclick = function () {
+        document.getElementById("settings-reset").onclick = function () {
             localStorage.clear()
             location.reload()
         }
@@ -216,6 +275,7 @@ class UIController {
 
 
     init() {
+        this._setControlMissionButtons()
         this._setHistoryButtons()
         this._setDustbinButton()
         this._setCameraJoystick()
@@ -226,6 +286,7 @@ class UIController {
 
         this.currentToolSelected = "get-camera"
         this.lastToolSelected = ""
+        this.$tools = {}
 
         /*
         window.addEventListener("keydown", ev => this._keydownHandler(ev))
@@ -242,5 +303,6 @@ class UIController {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 const UIControllerInstance = new UIController()
 UIController.buttonIdList = ["get-camera", "negative-input", "place-qubits", "place-output", "bridge", "eraser"]

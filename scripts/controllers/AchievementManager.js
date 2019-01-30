@@ -13,6 +13,7 @@
 
 */
 
+// eslint-disable-next-line no-unused-vars
 const AchievementManager = (function () {
 
     const DEBUG = false
@@ -54,7 +55,7 @@ const AchievementManager = (function () {
         if (DEBUG)
             console.trace("Achievement : " + name)
 
-        UxSaverInstance.add('obtainAchievement', name)
+        UxSaverInstance.add("obtainAchievement", name)
         // Now update this achievement
         achievement.fullfilled = true
         store()

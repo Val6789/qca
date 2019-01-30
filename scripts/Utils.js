@@ -22,6 +22,6 @@ const Utils = {
                 obj.material = undefined
             }
         }
-        obj = undefined;
+        obj = undefined
     }
 }

@@ -34,15 +34,19 @@
 
 
     <!-- Scripts -->
+    <!-- Loaders -->
     <script src="./scripts/view/AssetManager.js"></script>
     <script src="./scripts/controllers/MissionManager.js"></script>
     <script src="./scripts/controllers/AchievementManager.js"></script>
+
+    <!-- Logic -->
     <script src="./scripts/view/Axis.js"></script>
     <script src="./scripts/view/ParticleSystem.js"></script>
     <script src="./scripts/view/Skybox.js"></script>
     <script src="./scripts/view/ThreeViewController.js"></script>
     <script src="./scripts/view/Grid.js"></script>
     <script src="./scripts/view/Cursor.js"></script>
+    <script src="./scripts/view/UxSaver.js"></script>
     <script src="./scripts/controllers/Editor.js"></script>
     <script src="./scripts/controllers/Preset.js"></script>
     <script src="./scripts/controllers/AppController.js"></script>
@@ -64,10 +68,9 @@
     <script src="./scripts/gui/TimeControls.js"></script>
     <script src="./scripts/gui/GUI.js" defer></script>
     <script src="./scripts/gui/OverlaySelector.js"></script>
-    <script src="./scripts/Utils.js"></script>
     <script src="./scripts/gui/IntroScene.js"></script>
     <script src="./scripts/gui/DrawerController.js"></script>
-    <script src="./scripts/view/UxSaver.js"></script>
+    <script src="./scripts/Utils.js"></script>
     <script src="./scripts/main.js" defer></script>
 </head>
 
@@ -75,7 +78,8 @@
 
     <!-- LOADING SCREEN -->
     <div class="loading-overlay" id="loading-overlay">
-        <svg class="loading-spinner" width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg class="loading-spinner" width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
             <g id="Qubit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                 <g id="Group" transform="translate(23.763742, 23.616018) rotate(-17.000000) translate(-23.763742, -23.616018) translate(4.840665, 4.597150)"
                     stroke="#FFFFFF" stroke-width="2">
@@ -123,7 +127,6 @@
                 Faster
             </button>
         </nav>
-
         <nav class="control-bar-mini">
             <label class="button-mini">
                 <img class="layer-toggle-icon button-mini-icon" alt="Qubit values" src="assets/buttons/qubit_layer.png">
@@ -131,7 +134,7 @@
             </label>
             <label class="button-mini">
                 <img class="layer-toggle-icon button-mini-icon" alt="Families" src="assets/buttons/family_layer.png">
-                <input class="layer-checkbox" type="checkbox" id="show-families"/>
+                <input class="layer-checkbox" type="checkbox" id="show-families" />
             </label>
             <label class="button-mini">
                 <img class="layer-toggle-icon button-mini-icon" alt="Electrons" src="assets/buttons/electron_layer.png">
@@ -145,6 +148,15 @@
                 <img class="layer-toggle-icon button-mini-icon" alt="Kittens" src="assets/buttons/kitten_layer.png">
                 <input class="layer-checkbox" type="checkbox" id="show-kittens" />
             </label>
+        </nav>
+
+        <nav id="control-mission" class="control-bar-mini">
+            <button class="button-mini button-text">
+                Quit
+            </button>
+            <button class="button-mini button-text">
+                Restart
+            </button>
         </nav>
     </div>
 
@@ -260,7 +272,8 @@
 
                     <div class="drawer-header">
                         <h3>Demos</h3>
-                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
+                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                     </div>
@@ -274,7 +287,8 @@
                 <div id="drawer-tutorial" class="drawer">
                     <div class="drawer-header">
                         <h3>Tutorial</h3>
-                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross" /></label>
+                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                         <h4>- 1 -</h4>
@@ -285,7 +299,8 @@
                         <p>First, here are the three main</p>
                         <ul>
                             <li>Influencer: sets the adjacent qubits to its value (0 or 1)</li>
-                            <li>Qubit: stores and transmits quantum information, can be in an undeterminate state (?) or determinate state (0 or 1) when measured</li>
+                            <li>Qubit: stores and transmits quantum information, can be in an undeterminate state (?)
+                                or determinate state (0 or 1) when measured</li>
                             <li>Output: allow to measure the value of one qubit</li>
                         </ul>
 
@@ -302,15 +317,18 @@
                         <h4>- 3 -</h4>
                         <p>One output, many inputs</p>
 
-                        <p>Let's build a more complex logic gate. By having many inputs joined into one output, a majority gate can be built. The output corresponds to the value of the major input.</p>
+                        <p>Let's build a more complex logic gate. By having many inputs joined into one output, a
+                            majority gate can be built. The output corresponds to the value of the major input.</p>
 
                         <h4>- 4 -</h4>
 
                         <p>More complex logic gates: AND gate</p>
 
-                        <p>Let's now build another logic gate: the AND gate. The AND gate takes two inputs, A and B and one output, Z.</p>
+                        <p>Let's now build another logic gate: the AND gate. The AND gate takes two inputs, A and B and
+                            one output, Z.</p>
 
-                        <p>The output Z's value is 1 when both of the input A and B's values are 1. Otherwise, the output Z's value is 0.</p>
+                        <p>The output Z's value is 1 when both of the input A and B's values are 1. Otherwise, the
+                            output Z's value is 0.</p>
 
                         <p>The truth table for the AND logic gate is:</p>
 
@@ -345,7 +363,8 @@
                         <h4>- 5 -</h4>
                         <p>More complex logic gates: XOR gate</p>
 
-                        <p>Another logic gate is the eXclusive-OR, or XOR gate. The output Z's value is 1 when only one of the two inputs is 1 and the other is 0.</p>
+                        <p>Another logic gate is the eXclusive-OR, or XOR gate. The output Z's value is 1 when only one
+                            of the two inputs is 1 and the other is 0.</p>
 
                         <table>
                             <tr>
@@ -378,9 +397,12 @@
                         <h4>- 6 -</h4>
                         <p>Combining circuits: a binary half-adder</p>
 
-                        <p>By combining logic gates, we can build more complex and interesting circuits. If we combine the AND and XOR logic gate, we can build an half-adder, which computes the binary sum of its two inputs, A and B.</p>
+                        <p>By combining logic gates, we can build more complex and interesting circuits. If we combine
+                            the AND and XOR logic gate, we can build an half-adder, which computes the binary sum of
+                            its two inputs, A and B.</p>
 
-                        <p>An half-adder has two outputs: S, the sum of A and B, and C, the carry (or overflow of the sum into the next digit, if we were to build a more complex adder).</p>
+                        <p>An half-adder has two outputs: S, the sum of A and B, and C, the carry (or overflow of the
+                            sum into the next digit, if we were to build a more complex adder).</p>
 
                         <p>The truth table is:</p>
 
@@ -421,9 +443,11 @@
                             </tr>
                         </table>
 
-                        <p>By looking at the truth table, we can see that C = A AND B, and S = A XOR B. Thus, we can easily build an half-adder out of the AND and XOR we build in the two previous missions.</p>
+                        <p>By looking at the truth table, we can see that C = A AND B, and S = A XOR B. Thus, we can
+                            easily build an half-adder out of the AND and XOR we build in the two previous missions.</p>
 
-                        <p>The logical structure is widely used in computer processors to compute the sum of two binary numbers.</p>
+                        <p>The logical structure is widely used in computer processors to compute the sum of two binary
+                            numbers.</p>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>
@@ -434,7 +458,8 @@
                 <div id="drawer-mission" class="drawer">
                     <div class="drawer-header">
                         <h3>Missions</h3>
-                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross" /></label>
+                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                         <p>Here's all the missions:</p>
@@ -455,7 +480,8 @@
                 <div id="drawer-achievement" class="drawer">
                     <div class="drawer-header">
                         <h3>Achievements</h3>
-                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross" /></label>
+                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
                         <p>Try to complete all thoses achievements !</p>
@@ -476,14 +502,16 @@
                 <div id="drawer-settings" class="drawer">
                     <div class="drawer-header">
                         <h3>About</h3>
-                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close" class="cross"/></label>
+                        <label for="no-drawer-check" class="drawer-close"><img src="assets/buttons/cross.png" alt="close"
+                                class="cross" /></label>
                     </div>
                     <div class="drawer-main">
-						<h4>The QCA simulator team</h4>
-						<p>Team Schrödinger: Valérian Daul, Pierre Gabory, Baptiste Mantovani, Maximilien Pluchard</p>
-						<p>Tutoring: Alain Lioret</p>
-						<p>Project made at <a href="https://www.ingenieur-imac.fr/">IMAC</a> engineering school in 2019.</p>
-						<button id="settings-reset" class="btn inlinebtn">Reset application</button>
+                        <h4>The QCA simulator team</h4>
+                        <p>Team Schrödinger: Valérian Daul, Pierre Gabory, Baptiste Mantovani, Maximilien Pluchard</p>
+                        <p>Tutoring: Alain Lioret</p>
+                        <p>Project made at <a href="https://www.ingenieur-imac.fr/">IMAC</a> engineering school in
+                            2019.</p>
+                        <button id="settings-reset" class="btn inlinebtn">Reset application</button>
                     </div>
                     <div class="drawer-action">
                         <label for="no-drawer-check" class="inlinebtn btn">close</label>
