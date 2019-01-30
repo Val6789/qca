@@ -6,13 +6,40 @@
         "message": "Congratulation, you completed the first mission ! On the road to being a great Quantumist",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
-        "preset": "mission_one",
         "tools": {
             "input-tool": false,
             "qubit-tool": true,
             "output-tool": false,
             "bridge-tool": false,
             "remove-tool": true
-        }
+        },
+        "preset": "Mission1"
+    },
+    "two": {
+        "fullname": "Two simple line",
+        "fullfilled": false,
+        "description": "Test2",
+        "message": "Test2",
+        "image": "plasma-ball",
+        "imageExtension": ".jpg",
+        "preset": "Mission2"
+    },
+    "three": {
+        "fullname": "Three simple line",
+        "fullfilled": false,
+        "description": "Test3",
+        "message": "Test3",
+        "image": "plasma-ball",
+        "imageExtension": ".jpg",
+        "preset": "Mission3"
+    },
+    "four": {
+        "fullname": "Four simple line",
+        "fullfilled": false,
+        "description": "Test4",
+        "message": "Test4",
+        "image": "plasma-ball",
+        "imageExtension": ".jpg",
+        "preset": "Mission4"
     }
 }
