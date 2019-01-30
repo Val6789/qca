@@ -4,6 +4,10 @@
     Skybox
     Axis
     IntroScene
+    UIControllerInstance
+    Dot
+    Electron
+    InputBlock
  */
 /* 
     exported 
@@ -18,6 +22,7 @@
  *   and to listen to the next render
  * @warning never call _render directly, use shouldRender
  */
+// eslint-disable-next-line no-unused-vars
 class ThreeViewController {
 
     /**
@@ -153,7 +158,7 @@ class ThreeViewController {
         })
     }
 
-    setModeIntro(callback) {
+    setModeIntro() {
         this.mode = "intro"
 
         // init members
@@ -240,7 +245,7 @@ class ThreeViewController {
      *  @brief Private method. Informs the renderer of aspect ratio changes
      */
     _resetViewport() {
-        if (! this._renderer) return
+        if (!this._renderer) return
         const parent = this._renderer.domElement.parentElement
         const width = parent.clientWidth
         const height = parent.clientHeight

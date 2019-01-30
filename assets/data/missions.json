@@ -13,7 +13,11 @@
             "bridge-tool": false,
             "remove-tool": true
         },
-        "preset": "Mission1"
+        "preset": "Mission1",
+        "grid": {
+            "size": 10,
+            "division": 10
+        }
     },
     "two": {
         "fullname": "Two simple line",
