@@ -1,0 +1,110 @@
+#top-control-bar {
+    position: fixed;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+
+.control-bar-mini {
+    padding: 0.3rem;
+    margin: 0.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    font-size: 0;
+    display: flex;
+}
+
+.control-bar-mini .button-mini {
+    box-sizing: border-box;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.125rem;
+    margin: 0.25rem;
+    background: #222;
+    border: solid 1px #333;
+    border-radius: 6px;
+}
+
+#control-mission {
+    display: none;
+}
+
+#control-mission.revealed {
+    display: flex;
+}
+
+.control-bar-mini .button-mini.button-text {
+    font-size: 18px;
+    width: auto;
+    padding: 0 8px;
+}
+
+
+.button-mini {
+    cursor: pointer;
+}
+
+.button-mini.inactive {
+    background-color: rgba(128, 128, 128, 1.0);
+    opacity: 0.5;
+    cursor: default;
+}
+
+.control-bar-mini .button-mini.active {
+    background: #333;
+    border-color: #FE0;
+}
+
+.control-bar-mini .button-mini .button-mini-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#fast-button-icon,
+#slow-button-icon {
+    height: 1rem;
+}
+
+.layer-checkbox {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    #top-control-bar {
+        position: fixed;
+        top: 3.5rem;
+        left: 0;
+        padding: 0.25rem;
+        justify-content: right;
+        display: flex;
+        flex-direction: column;
+        width: auto;
+    }
+
+    .control-bar-mini {
+        padding: 0.3rem;
+        margin: 0.25rem;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 0.5rem;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        font-size: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .control-bar-mini .button-mini {
+        box-sizing: border-box;
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        padding: 0.125rem;
+        margin: 0.25rem;
+        background: #222;
+        border: solid 1px #333;
+        border-radius: 6px;
+    }
+
+}

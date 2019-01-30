@@ -1,109 +1,35 @@
-# Quantum cellular automata
-
-<!-- ![Logo of the project](https://raw.githubusercontent.com/jehna/readme-best-practices/master/sample-logo.png) -->
+# Quantum Cellular Automata Simulator
 
 > Physics simulation with Quantum Cellular Automata or Q-Dots
 
-In this project we aim to simulate and showcase how QCA dots works, and what we can do with them.
-Created by 4 students at IMAC
+![Screenshot](screenshot.png)
+
+In this project we aim to simulate and showcase how Quantum Cellular Automata works, and what can be done with them.
+Created by 4 students at IMAC.
 
 ## Installing / Getting started
 
-Minimal setup for serving the project:
+* To start QCA Simulator, download the [archive](archive/PROD.zip), and run in a terminal:
+  ```shell
+  npm install
+  npm run serve
+  ```
+  A web browser windows will open with the QCA simulation running. If it doesn't, navigate to http://127.0.0.1:8080/.
 
-```shell
-npm install
-npm run serve
-```
-
-The browser should open on localhost:8080 with the QCA simulation runnin.
-
-## Developing
-
-TODO
-
-<!-- 
-Here's a brief intro about what a developer must do in order to start developing
-the project further:
-
-```shell
-git clone https://github.com/your/awesome-project.git
-cd awesome-project/
-packagemanager install
-```
-
-And state what happens step-by-step. -->
+* To build the QCA Simulator as an electron app executable, download the [archive](archive/PROD.zip), and run in a terminal:
+  ```shell
+  npm install
+  npm run build-host
+  cd ./build
+  ./QCA\ simulator
+  ```
+  An executable for your current architecture will be created in the build folder.
+  To build for all available architecture, run `npm run build`
 
 ## Features
 
-TODO
-
-<!-- What's all the bells and whistles this project can perform?
-* What's the main functionality
-* You can also do another thing
-* If you get really randy, you can even do this -->
-
-## Configuration
-
-TODO
-
-<!-- Here you should write what are all of the configurations a user can enter when
-using the project.
-
-#### Argument 1
-Type: `String`  
-Default: `'default value'`
-
-State what an argument does and how you can use it. If needed, you can provide
-an example below.
-
-Example:
-```bash
-awesome-project "Some other value"  # Prints "You're nailing this readme!"
-```
-
-#### Argument 2
-Type: `Number|Boolean`  
-Default: 100
-
-Copy-paste as many of these as you need.
--->
-
-## Contributing
-
-TODO
-
-<!-- When you publish something open source, one of the greatest motivations is that
-anyone can just jump in and start contributing to your project.
-
-These paragraphs are meant to welcome those kind souls to feel that they are
-needed. You should state something like:
-
-"If you'd like to contribute, please fork the repository and use a feature
-branch. Pull requests are warmly welcome."
-
-If there's anything else the developer needs to know (e.g. the code style
-guide), you should link it here. If there's a lot of things to take into
-consideration, it is common to separate this section to its own file called
-`CONTRIBUTING.md` (or similar). If so, you should say that it exists here. -->
-
-## Links
-
-- Project homepage: https://github.com/Val6789/qca
-- Repository: https://github.com/Val6789/qca
-- Issue tracker: https://github.com/Val6789/qca/issues
-  - In case of sensitive bugs like security vulnerabilities, please contact
-    my@email.com directly instead of using issue tracker. We value your effort
-    to improve the security and privacy of this project!
-- Related projects:
-  - Your other project: https://github.com/your/other-project/
-  - Someone else's project: https://github.com/someones/awesome-project/
-
-
-## Licensing
-
-One really important part: Give your project a proper license. Here you should
-state what the license is and how to find the text version of the license.
-Something like:
-
-"The code in this project is licensed under MIT license."
+* Simulates Quantum Cellular Automata Circuits
+* Supports three-dimensionnal (3D) circuits and quantum entanglement
+* Includes a tutorial, demos and missions to learn Quantum Cellular Automata
+* Works on computers, tablets and mobile phones
+* Has cats

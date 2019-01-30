@@ -1,0 +1,142 @@
+.control-strip {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 20rem;
+    max-width: calc(100vw - 1rem);
+    text-align:center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color:rgba(0,0,0,0.6);
+    box-shadow:0px 0px 20px 20px rgba(0,0,0,0.1);
+    margin: 0.5rem;
+}
+
+#fast-button-icon, #slow-button-icon {
+    height:1rem;
+}
+
+.tool {
+    position: relative;
+    font-size: 0;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px transparent;
+}
+
+.tool.active {
+    animation: shine 500ms
+}
+
+@keyframes shine {
+    0% {}
+    33% {border-color: #FE0}
+    100% {}
+}
+
+.tool .pill {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    border-radius: 100rem;
+    transition: 200ms;
+}
+
+.tool-icon {
+    height: 2.5rem;
+}
+
+.hide-activities {
+    font-size: 0;
+    display:none;
+}
+
+.hide-activities-icon {
+    height: 24px;
+}
+
+.toolbox
+{
+    display: flex;
+    margin:auto;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.separator {
+    display: block;
+    height: 2rem;
+    border-left: solid 1px #bbb;
+    margin: 1rem;
+}
+
+#clock-change {
+    position: relative;
+}
+
+#clock-selector {
+    box-sizing: border-box;
+    background-color:rgba(0,0,0,0.6);
+    position: absolute;
+    border-radius:4px 4px 0px 0px;
+    bottom: 100%;
+    height: 0px;
+    transition:100ms;
+    overflow: hidden;
+    transition-delay:300ms;
+}
+
+#clock-change-container:active :not(.locked) + #clock-selector,
+#clock-change-container:hover :not(.locked) + #clock-selector,
+#clock-change-container .show:not(.locked) + #clock-selector,
+:not(.locked) + #clock-selector:hover{
+    height: 14rem;
+}
+
+.clock-color {
+    width:3rem;
+    height:3rem;
+    margin:5px;
+    border-radius:2px;
+    cursor:pointer;
+    box-sizing:border-box;
+    z-index:5;
+    transition:100ms;
+}
+.clock-color:hover {
+    border:1px solid #FE0;
+}
+@media (max-width: 600px) {
+    .separator {
+        margin: 0;
+    }
+    .tool-icon {
+        height: 2rem;
+    }
+}
+
+@media (max-width:450px) {
+    .control-strip {
+        margin: 0rem;
+        border-radius: 0rem;
+        left: 0%;
+        right:0%;
+        transform: translateX(0%);
+        padding: 0.5rem calc(2.5vw/6);
+        min-width: 100vw;
+        justify-content: space-around;
+
+    }
+    .tool-icon {
+        min-height: calc(62.5vw / 6);
+    }
+
+    .tool {
+        padding: calc(2.5vw/6);
+        margin: calc(2.5vw/6);
+    }
+}
