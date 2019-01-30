@@ -76,6 +76,9 @@ const MissionManager = (function () {
         // Disable some GUI tools
         UIControllerInstance.toolsVisibility(mission.tools)
         UIControllerInstance.revealControlMission()
+        if (mission.grid) {
+            EditorInstance.cursor._changeGrid(mission.grid.size, mission.grid.division)
+        }
     }
     const obtained = () => {
 
@@ -106,22 +109,21 @@ const MissionManager = (function () {
             callback(mission, currentMission)
         })
 
-        // Disable some GUI tools
-        UIControllerInstance.toolsVisibility(true)
-        UIControllerInstance.hideControlMission()
-
         if (currentMission == "one")
             AchievementManager.Get().obtained("missionOne")
-        currentMission = undefined
+
+        stop(false)
 
     }
-    const stop = () => {
+    const stop = (shouldReset = true) => {
         if (missionRunning()) {
-            AppControllerInstance.automata.reset()
+            if (shouldReset)
+                AppControllerInstance.automata.reset()
             currentMission = undefined
             // Disable some GUI tools
             UIControllerInstance.toolsVisibility(true)
             UIControllerInstance.hideControlMission()
+            EditorInstance.cursor._makeGrid()
         }
 
     }

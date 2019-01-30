@@ -251,14 +251,14 @@ class QuantumAutomata {
         this._resetAllBlocksPolarity()
         this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
-        //this._outputs.forEach(output => this._startProcessFrom(output))
+        this._outputs.forEach(output => this._startProcessFrom(output))
         this._qubitMap.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
     }
 
 
     _startProcessFrom(qubit) {
-        qubit._visited = false
+        //qubit._visited = false
         qubit.processNeighboorsInfluences(this)
     }
 
@@ -279,7 +279,7 @@ class QuantumAutomata {
         const hash = QuantumAutomata._positionHash(block.position)
         if (this._qubitMap.has(hash)) {
             let exist = this.getQubit(block.position)
-            if (!exist.fixed && exist.type == "input" && block.type == "input") {
+            if (!exist.fixed && exist.type == "input" && (block.type == "input" || block.type == "output")) {
                 // History.add("change", block.type, block.position, block.polarity)
                 let value = exist.polarity
                 let position = exist.position

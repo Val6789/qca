@@ -1,3 +1,9 @@
+/*
+    global
+    Editor
+    Grid
+*/
+
 class Cursor {
 
     /**
@@ -55,7 +61,7 @@ class Cursor {
                 } else {
                     AppControllerInstance.view
                         .renderer.domElement.style.cursor = "crosshair"
-                    this._selectionBox.material = this._lineMaterial(this.COLOR);
+                    this._selectionBox.material = this._lineMaterial(this.COLOR)
                 }
             } else {
                 this._selectionBox.visible = false
@@ -102,7 +108,7 @@ class Cursor {
         if (x && y)
             pointer = new THREE.Vector2(
                 (x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1
-            );
+            )
         else
             pointer = new THREE.Vector2(0, 0)
 
@@ -138,9 +144,23 @@ class Cursor {
     }
 
     // grid constructor
-    _makeGrid() {
-        this.grid = new Grid(AssetManager.Get().fonts.optimer, -this.HEIGHT / 2)
+    _changeGrid(size, division) {
+        if (this.grid) {
+            Utils.doDispose(this.grid.object)
+            AppControllerInstance.view.removeObjectFromScene(this.grid.object)
+        }
+        this.grid = new Grid(-this.HEIGHT / 2, size, division)
         AppControllerInstance.view.addObjectToScene(this.grid.object)
+        this.update()
+    }
+
+    _makeGrid() {
+        if (this.grid) {
+            AppControllerInstance.view.removeObjectFromScene(this.grid.object)
+        }
+        this.grid = new Grid(-this.HEIGHT / 2)
+        AppControllerInstance.view.addObjectToScene(this.grid.object)
+        this.update()
     }
 
     // depth column constructor

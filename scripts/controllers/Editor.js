@@ -1,6 +1,6 @@
 /*
     global
-    Grid
+    Cursor
 */
 /*
     exported
@@ -15,28 +15,29 @@
 class Editor {
 
     /**
-     * @brief calls action mapped to the Editor's current mode
+     * @brief calls action mapped to the Editor"s current mode
      * spits out any thrown error in console
      */
     edit() {
+        if (!this.cursor.position) return
         try {
             switch (this.canEdit) {
                 case Editor.modes.QUBIT:
                     AchievementManager.Get()
                         .obtained("firstStep")
-                    UxSaverInstance.add('addQubit', this.cursor.position)
+                    UxSaverInstance.add("addQubit", this.cursor.position)
                     return AppControllerInstance.automata.addQubit(this.cursor.position)
                 case Editor.modes.INPUT:
-                    UxSaverInstance.add('addNegativeInput', this.cursor.position)
+                    UxSaverInstance.add("addNegativeInput", this.cursor.position)
                     return AppControllerInstance.automata.addInput(this.cursor.position, false)
                 case Editor.modes.OUTPUT:
-                    UxSaverInstance.add('addOutput', this.cursor.position)
+                    UxSaverInstance.add("addOutput", this.cursor.position)
                     return AppControllerInstance.automata.addOutput(this.cursor.position)
                 case Editor.modes.REMOVE:
-                    UxSaverInstance.add('remove', this.cursor.position)
+                    UxSaverInstance.add("remove", this.cursor.position)
                     return AppControllerInstance.automata.removeBlock(this.cursor.position)
                 case Editor.modes.BRIDGE:
-                    UxSaverInstance.add('setBridge', this.cursor.position)
+                    UxSaverInstance.add("setBridge", this.cursor.position)
                     return AppControllerInstance.automata.makeBridge(this.cursor.position)
             }
         } catch (exception) {
@@ -50,10 +51,10 @@ class Editor {
      */
     quickErase() {
         if (this.canEdit == Editor.modes.BRIDGE) {
-            //UxSaverInstance.add('abortBridge',this.cursor.position)
+            //UxSaverInstance.add("abortBridge",this.cursor.position)
             AppControllerInstance.automata.abortBridge(this.cursor.position)
         } else if (this.canEdit != Editor.modes.NOTHING) {
-            UxSaverInstance.add('remove', this.cursor.position)
+            UxSaverInstance.add("remove", this.cursor.position)
             AppControllerInstance.automata.removeBlock(this.cursor.position)
         }
     }
@@ -63,7 +64,8 @@ class Editor {
      * Meant ot be called for dragging movements or on secondary clicks in default build mode
      */
     quickEdit() {
-        UxSaverInstance.add('addQubit', this.cursor.position)
+        if (!this.cursor.position) return
+        UxSaverInstance.add("addQubit", this.cursor.position)
         AppControllerInstance.automata
             .addQubit(this.cursor.position)
     }
@@ -125,7 +127,7 @@ class Editor {
 
         if (this._mouseState.left && this.canEdit == Editor.modes.REMOVE)
             this.quickErase()
-        
+
         if (this._mouseState.left && this.canEdit == Editor.modes.QUBIT)
             this.quickEdit()
     }
@@ -154,6 +156,7 @@ class Editor {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 const EditorInstance = new Editor()
 
 Editor.modes = {
