@@ -260,10 +260,12 @@ class QuantumAutomata {
         qubit.processNeighboorsInfluences(this)
 
         // when the process array is empty the recursion will end
-        for (let pendingQubitProcessing of this.pendingProcesses) {
-            if (pendingQubitProcessing.clockId === this.clockTime)
+        this.pendingProcesses.forEach((pendingQubitProcessing, index) => {
+            if (pendingQubitProcessing.clockId === this.clockTime) {
+                this.pendingProcesses.splice(index, 1)
                 this._startProcessFrom(pendingQubitProcessing)
-        }
+            }
+        })
     }
 
 
@@ -277,13 +279,13 @@ class QuantumAutomata {
 
     /**
      * @private @method
-     * @param {Block} block 
+     * @param {Block} block
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
         if (this._qubitMap.has(hash)) {
             let exist = this.getQubit(block.position)
-            if (!exist.fixed && exist.type == "input" && (block.type == "input" || block.type == "output")) {
+            if (!exist.fixed && exist.type == "input" && (block.type == "input" || block.type == "output")) {
                 // History.add("change", block.type, block.position, block.polarity)
                 let value = exist.polarity
                 let position = exist.position
