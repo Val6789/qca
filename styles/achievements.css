@@ -33,10 +33,11 @@
 }
 
 .mission {
-    width: 42%;
+    width: 40%;
     cursor: pointer;
     box-sizing: inherit;
     transition: all 200ms ease;
+    margin:10px;
 }
 
 .mission:hover {
