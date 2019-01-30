@@ -23,19 +23,41 @@
         "fullname": "Negative influence",
         "fullfilled": false,
         "description": "Since electrons repel each other, it is possible to invert the polarity of qubits by putting one qubit in diagonal of another.",
-        "message": "Test2",
+        "message": "Congratulation, one more mission done ! Let's try something harder.",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
-        "preset": "Mission2"
+        "preset": "Mission2",
+        "tools": {
+            "input-tool": false,
+            "qubit-tool": true,
+            "output-tool": false,
+            "bridge-tool": false,
+            "remove-tool": true
+        },
+        "grid": {
+            "size": 10,
+            "division": 10
+        }
     },
     "three": {
-        "fullname": "One output, many inputs",
+        "fullname": "Majority GATE",
         "fullfilled": false,
-        "description": "Let's build a more complex logic gate. By having many inputs joined into one output, a majority gate can be built. The output corresponds to the value of the major input.",
-        "message": "Test3",
+        "description": "Majority GATE. You'll need a little creativity for this one.",
+        "message": "Congratulation. You just discovered the majority GATE !",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
-        "preset": "Mission3"
+        "preset": "Mission3",
+        "tools": {
+            "input-tool": false,
+            "qubit-tool": true,
+            "output-tool": false,
+            "bridge-tool": false,
+            "remove-tool": true
+        },
+        "grid": {
+            "size": 4,
+            "division": 4
+        }
     },
     "four": {
         "fullname": "More complex logic gates: AND gate",
@@ -44,6 +66,17 @@
         "message": "Test4",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
-        "preset": "Mission4"
+        "preset": "Mission4",
+        "tools": {
+            "input-tool": false,
+            "qubit-tool": true,
+            "output-tool": false,
+            "bridge-tool": false,
+            "remove-tool": true
+        },
+        "grid": {
+            "size": 10,
+            "division": 10
+        }
     }
 }
