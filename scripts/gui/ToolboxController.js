@@ -115,7 +115,7 @@ class ToolboxController {
                 break
 
             case "output-tool":
-                UxSaverInstance.add("setOutbutToolClick")
+                UxSaverInstance.add("setOutputToolClick")
                 EditorInstance.canEdit = Editor.modes.OUTPUT
                 break
 

@@ -257,6 +257,7 @@ class UIController {
 
     _setDustbinButton() {
         document.getElementById("dustbin-button").onclick = function () {
+            UxSaverInstance.add("dustbin")
             AppControllerInstance.automata.reset()
         }
     }

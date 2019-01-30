@@ -2,7 +2,8 @@ class OverlaySelector {
     // Checkboxes //
 
     toggleFamilyLayer(boolean) {
-        console.log(boolean)
+    	UxSaverInstance.add("familyLayerClick")
+        // console.log(boolean)
         this.familiesCheckbox.checked = boolean
         this.familiesCheckbox.parentElement.classList.toggle("active", boolean)
         Qubit.areFamilyColorsVisible = boolean
@@ -18,6 +19,7 @@ class OverlaySelector {
         this._setFamilyLayerSelector()
         this.qubitLayerCheckbox = document.getElementById(OverlaySelector.QUBIT_SELECTOR_ID)
         var toggleQubits = () => {
+    	    UxSaverInstance.add("qubitLayerClick")
             Block.areVisible = this.qubitLayerCheckbox.checked
             Bridge.areVisible = this.qubitLayerCheckbox.checked
             if (this.qubitLayerCheckbox.checked == false)
@@ -35,6 +37,7 @@ class OverlaySelector {
         var checkbox = document.getElementById(OverlaySelector.ELECTRON_SELECTOR_ID)
 
         function toggleElectrons() {
+    	    UxSaverInstance.add("electronLayerClick")
             Electron.particles.layers[Electron.TEXTURE_LAYER].visible = checkbox.checked
             Dot.particles.layers[0].visible = checkbox.checked
             // forces active css
@@ -50,6 +53,7 @@ class OverlaySelector {
         var checkbox = document.getElementById(OverlaySelector.INFLUENCE_SELECTOR_ID)
 
         function toggleInfluences() {
+    	    UxSaverInstance.add("inlfuenceLayerClick")
             Electron.particles.layers[Electron.INFLUENCE_LAYER].visible = checkbox.checked
 
             // forces active css
@@ -65,6 +69,7 @@ class OverlaySelector {
         var checkbox = document.getElementById(OverlaySelector.KITTEN_SELECTOR_ID)
 
         function toggleLKittens() {
+    	    UxSaverInstance.add("kittenLayerClick")
             OutputBlock.areKittensVisible = checkbox.checked
 
             // forces active css
