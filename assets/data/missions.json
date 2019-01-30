@@ -3,7 +3,7 @@
         "fullname": "One simple line",
         "fullfilled": false,
         "description": "Familiarize yourself with Qubit placement in this mission",
-        "message": "Congratulation, you completed the first mission ! On the road to being a great Quantumist",
+        "message": "Congratulation, you completed the first mission! On the road to being a great Quantumist.",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
         "tools": {
@@ -16,27 +16,27 @@
         "preset": "Mission1"
     },
     "two": {
-        "fullname": "Two simple line",
+        "fullname": "Negative influence",
         "fullfilled": false,
-        "description": "Test2",
+        "description": "Since electrons repel each other, it is possible to invert the polarity of qubits by putting one qubit in diagonal of another.",
         "message": "Test2",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
         "preset": "Mission2"
     },
     "three": {
-        "fullname": "Three simple line",
+        "fullname": "One output, many inputs",
         "fullfilled": false,
-        "description": "Test3",
+        "description": "Let's build a more complex logic gate. By having many inputs joined into one output, a majority gate can be built. The output corresponds to the value of the major input.",
         "message": "Test3",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
         "preset": "Mission3"
     },
     "four": {
-        "fullname": "Four simple line",
+        "fullname": "More complex logic gates: AND gate",
         "fullfilled": false,
-        "description": "Test4",
+        "description": "Let's now build another logic gate: the AND gate. The output Z's value is 1 when both of the input A and B's values are 1. Otherwise, the output Z's value is 0.",
         "message": "Test4",
         "image": "plasma-ball",
         "imageExtension": ".jpg",
