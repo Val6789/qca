@@ -120,7 +120,7 @@ class Qubit extends Block {
 
         // if the block wasn't visited, and it's not its turn, then add it to pending list
         if (automata.atLeastOneUseClock && automata.clockTime != this.clockId) {
-            automata.pendingProcesses.push(this)
+            automata.pendingProcesses.add(this)
             return this.balance
         }
 
