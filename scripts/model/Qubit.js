@@ -129,14 +129,14 @@ class Qubit extends Block {
         entangled.forEach(block => block._visited = true)
 
         // Equation constants
-        const EKIJ = 1 // Kink energy between cells
+        const IJ_KINK_ENERGY = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
         const ADJACENT_KINK = 1
         const DIAGONAL_KINK = -0.2
 
 
         // Equation variable
-        var sigmaPj = 0 // Sum of neighbors influences
+        var neighborPolaritySum = 0 // Sum of neighbors influences
 
         for (const currentBlock of entangled) {
             // fetch neighbors around each block
@@ -152,13 +152,13 @@ class Qubit extends Block {
 
                 // recursive call
                 neighbor.processNeighboorsInfluences(automata)
-                sigmaPj += neighbor.balance * neighbor.charge * kink
+                neighborPolaritySum += neighbor.balance * neighbor.charge * kink
             }
         }
 
         // final equation
-        const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        const balance = numerator / Math.hypot(numerator, 1)
+        const numerator = neighborPolaritySum * IJ_KINK_ENERGY / (2 * GAMMA)
+        const balance = Math.sign(numerator / Math.hypot(numerator, 1))
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)
