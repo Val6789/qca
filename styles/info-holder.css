@@ -134,7 +134,13 @@ span#info-holder-skip {
     font-weight: bold;
     margin: 5px;
 }
-
+#intro_kitten {
+    position:fixed;
+    z-index:-1;
+    width:20vw;
+    bottom:0px;
+    left:40vw;
+}
 @keyframes enter {
     from {
         opacity: 0;

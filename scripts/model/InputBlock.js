@@ -56,6 +56,8 @@ class InputBlock extends Block {
         this.DEFAULT_COLOR = "#333"
         this._showFamilyColor(false)
 
+        this.bufferBalance = polarity
+
         this.setSublabel("in")
 
         this.object.scale.copy(InputBlock.BLOCK_SCALING)

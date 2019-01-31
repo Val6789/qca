@@ -202,15 +202,6 @@ class QuantumAutomata {
         this._updateInfos()
     }
 
-    _resetAllBlocksPolarity() {
-        if(this.shouldResetTrigger) {
-            this.shouldResetTrigger = false
-            this._qubitMap.forEach(qubit => {
-                qubit.resetPolarity()
-            })
-        }
-    }
-
     /**
      * @public @method
      * @param {THREE.Vector3} position
@@ -252,14 +243,30 @@ class QuantumAutomata {
         this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
         this._outputs.forEach(output => this._startProcessFrom(output))
-        this._qubitMap.forEach(output => this._startProcessFrom(output))
         this._applyProcessing()
     }
 
+    _resetAllBlocksPolarity() {
+        if(this.shouldResetTrigger) {
+            this.clockTime = 0
+            this.shouldResetTrigger = false
+            this._qubitMap.forEach(qubit => {
+                qubit.resetPolarity()
+            })
+        }
+    }
 
     _startProcessFrom(qubit) {
         //qubit._visited = false
         qubit.processNeighboorsInfluences(this)
+
+        // when the process array is empty the recursion will end
+        this.pendingProcesses.forEach((pendingQubitProcessing) => {
+            if (pendingQubitProcessing.clockId === this.clockTime) {
+                this.pendingProcesses.delete(pendingQubitProcessing)
+                this._startProcessFrom(pendingQubitProcessing)
+            }
+        })
     }
 
 
@@ -273,13 +280,13 @@ class QuantumAutomata {
 
     /**
      * @private @method
-     * @param {Block} block 
+     * @param {Block} block
      */
     _addBlock(block) {
         const hash = QuantumAutomata._positionHash(block.position)
         if (this._qubitMap.has(hash)) {
             let exist = this.getQubit(block.position)
-            if (!exist.fixed && exist.type == "input" && (block.type == "input" || block.type == "output")) {
+            if (!exist.fixed && exist.type == "input" && (block.type == "input" || block.type == "output")) {
                 // History.add("change", block.type, block.position, block.polarity)
                 let value = exist.polarity
                 let position = exist.position
@@ -314,6 +321,7 @@ class QuantumAutomata {
         this._qubitMap = new Map()
         this._outputs = new Set()
         this._bridges = new Set()
+        this.pendingProcesses = new Set() // contains the list of not-visited blocks waiting for their clock
 
         this.clockTime = 0
         this.atLeastOneUseClock = false
@@ -341,10 +349,10 @@ QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(1, 0, 0), // right
     new THREE.Vector3(0, 0, -1), // down
     new THREE.Vector3(-1, 0, 0), // left
+    new THREE.Vector3(-1, 0, -1), // down left
+    new THREE.Vector3(-1, 0, 1), // up left
     new THREE.Vector3(1, 0, 1), // up right
     new THREE.Vector3(1, 0, -1), // down right
-    new THREE.Vector3(-1, 0, 1), // up left
-    new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0) // left
 ]

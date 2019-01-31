@@ -72,9 +72,9 @@ class IntroScene {
                     this._deleteScene()
                     this.callbackDone()
                 })
-            await this._electronScene()
-            await this._dotScene()
-            await this._qubitScene()
+            //await this._electronScene()
+            //await this._dotScene()
+            //await this._qubitScene()
             await this._outputScene()
             await this._inputScene()
         }
@@ -88,8 +88,8 @@ class IntroScene {
         UIControllerInstance.hideUI()
 
         // Create the electron
-        let pos = new THREE.Vector3(0, 0, 0)
-        this._electrons.addAt(pos)
+        //let pos = new THREE.Vector3(0, 0, 0)
+        //this._electrons.addAt(pos)
     }
 
     _welcomeScene() {
@@ -171,6 +171,8 @@ class IntroScene {
 
     _electronScene() {
         return new Promise(async (resolve) => {
+            let pos = new THREE.Vector3(0, 0, 0)
+            this._electrons.addAt(pos)
 
             // UI
             UIControllerInstance.revealInfoHolder()
@@ -373,6 +375,7 @@ class IntroScene {
             let inputPositive = new InputBlock(pos, 1)
             let inputNegative = new InputBlock(pos, -1)
             inputNegative.object.visible = false
+            inputPositive.object.visible = true
 
             this.toRemove.push(inputNegative)
             this.toRemove.push(inputPositive)

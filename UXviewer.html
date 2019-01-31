@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>UX viewer - QCA Simulator</title>
+	</head>
+	<body>
+		<div id="download">
+			<p>Download an UX file : </p>
+			<input type="file" name="UX File" id="file"/>
+		</div>
+		<div id="result"></div>
+		<script>
+			var file = document.getElementById('file')
+			var result = document.getElementById('result')
+
+			file.onchange = function() {
+				result.innerHTML = ''
+				var reader = new FileReader()
+				reader.readAsText(file.files[0],"utf-8")
+				reader.onload = function(e) {
+					displayUX(JSON.parse(e.target.result))
+				}
+			}
+			function displayUX(ux) {
+				for(var save of ux) {
+					Widget(save)
+				}
+			}
+			function Widget(save) {
+				var str = '<div class="widget"><strong>'+save.n+'</strong>'
+				var logo = []
+				info = '<span class="info">'
+				switch(save.n) {
+					case 'dustbin':
+						logo.push('dustbeen')
+						break
+					case 'chooseSandbox':
+						logo.push('sandbox-icon')
+						break
+					case 'chooseTutorial':
+						logo.push('tuto-icon')
+						break
+					case 'setCameraToolClick':
+						logo.push('Camera')
+						logo.push('mouse')
+						break
+					case 'setQbitToolClick':
+						logo.push('Qubit')
+						logo.push('mouse')
+						break
+					case 'setInputToolClick':
+						logo.push('Input')
+						logo.push('mouse')
+						break
+					case 'setOutputToolClick':
+						logo.push('Output')
+						logo.push('mouse')
+						break
+					case 'setEraserToolClick':
+						logo.push('Delete')
+						logo.push('mouse')
+						break
+					case 'setBridgeToolClick':
+						logo.push('Bridge')
+						logo.push('mouse')
+						break
+					case 'undo':
+						logo.push('undo')
+						break
+					case 'redo':
+						logo.push('redo')
+						break
+					case 'addQubit':
+						logo.push('Qubit')
+						info += save.p.x+', '+save.p.y+', '+save.p.z
+						break
+					case 'addOutput':
+						logo.push('Output')
+						info += save.p.x+', '+save.p.y+', '+save.p.z
+						break
+					case 'addPositiveInput':
+						logo.push('Input')
+						info += save.p.x+', '+save.p.y+', '+save.p.z
+						break
+					case 'addNegativeInput':
+						logo.push('Input')
+						info += save.p.x+', '+save.p.y+', '+save.p.z
+						break
+					case 'remove':
+						logo.push('Delete')
+						info += save.p.x+', '+save.p.y+', '+save.p.z
+						break
+					case 'setBridge':
+						logo.push('Bridge')
+						info += save.p.x+', '+save.p.y+', '+save.p.z
+						break
+					default:
+						if(save.p) str += JSON.stringify(save.p)
+				}
+				if(save.n.match(/key/ig)) logo.push('keyboard')
+				for(let l of logo) str += '<img src="./assets/buttons/'+l+'.png" class="widget_logo"/>';
+				info += '</span>'
+				str += info+'</div>';
+				result.innerHTML += str
+			}
+		</script>
+		<style>
+body, html {
+	background-color:#222;
+	color:white;
+	font-family:arial;
+}
+#download {
+	background-color:#111;
+	border-radius:4px;
+	margin:1vh;
+	padding:10px;
+}
+.widget {
+	margin:5px;
+	display:inline-block;
+	background-color:#111;
+	border-radius:5px;
+	padding:10px;
+	vertical-align:top;
+	cursor:pointer;
+}
+.widget_logo {
+	max-height:20px;
+	max-width:20px;
+	background-color:black;
+	margin:4px;
+	padding:4px;
+	border-radius:4px;
+	vertical-align:middle;
+}
+.widget .info {
+	display:none;
+}
+.widget:hover .info {
+	display:block;
+}
+		</style>
+	</body>
+</html>

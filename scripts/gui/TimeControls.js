@@ -30,6 +30,7 @@ class TimeControls {
 
         switch(button.id) {
             case "play-button":
+            	UxSaverInstance.add("playClick")
                 this.automataIsPaused = !this.automataIsPaused
                 if (this.automataIsPaused) {
                     AppControllerInstance.refreshRate = AppController.PAUSED
@@ -39,11 +40,13 @@ class TimeControls {
                 break
 
             case "slow-button":
+            	UxSaverInstance.add("slowClick")
                 AppControllerInstance.refreshRate = AppController.SPEED_SLOW
                 this.automataIsPaused = false
                 break
 
             case "fast-button":
+            	UxSaverInstance.add("fastClick")
                 AppControllerInstance.refreshRate = AppController.SPEED_FAST
                 this.automataIsPaused = false
                 break

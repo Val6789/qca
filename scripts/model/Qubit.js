@@ -93,6 +93,7 @@ class Qubit extends Block {
      */
     applyPolarityBuffer() {
         //if (!this._visited) this.balance = 0
+        //this.balance = Math.sign(this.balance)
         this._visited = false
         this.polarity = Math.sign(this.balance)
 
@@ -117,21 +118,26 @@ class Qubit extends Block {
     processNeighboorsInfluences(automata) {
         // recursive end conditions
         if (this._visited) return this.balance
-        if (automata.atLeastOneUseClock && automata.clockTime != this.clockId && this.type != "output") return this.balance
+
+        // if the block wasn't visited, and it's not its turn, then add it to pending list
+        if (automata.atLeastOneUseClock && automata.clockTime != this.clockId) {
+            automata.pendingProcesses.add(this)
+            return this.balance
+        }
 
         // Get this block and all its entangled counterparts in an array
         const entangled = [this].concat(automata.getEntangledBlocks(this))
         entangled.forEach(block => block._visited = true)
 
         // Equation constants
-        const EKIJ = 1 // Kink energy between cells
+        const IJ_KINK_ENERGY = 1 // Kink energy between cells
         const GAMMA = 1 // electron tunneling potential
         const ADJACENT_KINK = 1
         const DIAGONAL_KINK = -0.2
 
 
         // Equation variable
-        var sigmaPj = 0 // Sum of neighbors influences
+        var neighborPolaritySum = 0 // Sum of neighbors influences
 
         for (const currentBlock of entangled) {
             // fetch neighbors around each block
@@ -147,17 +153,17 @@ class Qubit extends Block {
 
                 // recursive call
                 neighbor.processNeighboorsInfluences(automata)
-                sigmaPj += neighbor.balance * neighbor.charge * kink
+                neighborPolaritySum += neighbor.balance * neighbor.charge * kink
             }
         }
 
         // final equation
-        const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        const balance = Math.sign(numerator / Math.hypot(numerator, 1))
+        const numerator = neighborPolaritySum * IJ_KINK_ENERGY / (2 * GAMMA)
+        const balance = numerator / Math.hypot(numerator, 1)
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)
-        
+
         //this.balance = Math.sign(this.balance)
         // return result
         return this.balance
@@ -181,25 +187,25 @@ class Qubit extends Block {
     }
 
 
-    _setPolarity(newValue) {
+    _setPolarity(newValue) {
             // if newValue is already set no need do the following expensive steps
             if (newValue === this.polarity) return false
 
             var label // will save the text displayed on the qubit
-    
+
             switch (newValue) {
                 case 1:
                     // move electrons to the right dots
                     this.electrons[0].dot = this.dots[0]
                     this.electrons[1].dot = this.dots[3]
-    
+
                     // is not in superposition
                     this.isDetermined = true
-    
+
                     // define text label
                     label = "1"
                     break
-    
+
                     // more of the same
                 case -1:
                     this.electrons[0].dot = this.dots[1]
@@ -207,30 +213,29 @@ class Qubit extends Block {
                     this.isDetermined = true
                     label = "0"
                     break
-    
-                case 0:
+
+                    case 0:
                     // is determined false. The electrons will switch places freneticly
                     this.isDetermined = false
                     label = "?"
                     break
-    
-                default:
+
+                    default:
                     throw console.error("Unexpected polarity value :", newValue)
             }
-    
+
             if (newValue != this.polarity)
                 console.error("Failed to set the polarity")
-    
-            // updates the text floating on the box
+
+                // updates the text floating on the box
             this.setLabel(label)
 
             return true
     }
-    
+
     resetPolarity() {
         this.balance = 0
-        this._setPolarity(0)
-        this.applyPolarityBuffer()
+        this.polarity = 0
         return true
     }
 
@@ -248,8 +253,6 @@ class Qubit extends Block {
     constructor(position = new THREE.Vector3(0, 0, 0), polarity = 0, enableParticles = true) {
         // Creates the box with a label
         super(position) // haha
-
-        // TODO OUTPUTS EXTENDS QUBIT, QUBIT CAN HIDE ELECTRONS
 
         // create dots
         var self = this
