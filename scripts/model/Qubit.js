@@ -93,7 +93,7 @@ class Qubit extends Block {
      */
     applyPolarityBuffer() {
         //if (!this._visited) this.balance = 0
-        this.balance = Math.sign(this.balance)
+        //this.balance = Math.sign(this.balance)
         this._visited = false
         this.polarity = Math.sign(this.balance)
 
