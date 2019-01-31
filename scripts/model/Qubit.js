@@ -158,7 +158,7 @@ class Qubit extends Block {
 
         // final equation
         const numerator = sigmaPj * EKIJ / (2 * GAMMA)
-        const balance = Math.sign(numerator / Math.hypot(numerator, 1))
+        const balance = numerator / Math.hypot(numerator, 1)
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)
@@ -234,8 +234,7 @@ class Qubit extends Block {
 
     resetPolarity() {
         this.balance = 0
-        this._setPolarity(0)
-        this.applyPolarityBuffer()
+        this.polarity = 0
         return true
     }
 

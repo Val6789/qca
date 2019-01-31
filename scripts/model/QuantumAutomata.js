@@ -348,13 +348,13 @@ class QuantumAutomata {
  */
 QuantumAutomata._NEIGHBOR_MAP = [
     new THREE.Vector3(0, 0, 1), // up
-    new THREE.Vector3(1, 0, 1), // up right
     new THREE.Vector3(1, 0, 0), // right
-    new THREE.Vector3(1, 0, -1), // down right
     new THREE.Vector3(0, 0, -1), // down
-    new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(-1, 0, 0), // left
+    new THREE.Vector3(-1, 0, -1), // down left
     new THREE.Vector3(-1, 0, 1), // up left
+    new THREE.Vector3(1, 0, 1), // up right
+    new THREE.Vector3(1, 0, -1), // down right
     new THREE.Vector3(0, 1, 0), // top
     new THREE.Vector3(0, -1, 0) // left
 ]
