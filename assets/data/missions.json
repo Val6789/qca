@@ -4,8 +4,8 @@
         "fullfilled": false,
         "description": "Familiarize yourself with Qubit placement in this mission",
         "message": "Congratulation, you completed the first mission! On the road to being a great Quantumist.",
-        "image": "plasma-ball",
-        "imageExtension": ".jpg",
+        "image": "Mission1",
+        "imageExtension": ".png",
         "tools": {
             "input-tool": false,
             "qubit-tool": true,
@@ -24,8 +24,8 @@
         "fullfilled": false,
         "description": "Since electrons repel each other, it is possible to invert the polarity of qubits by putting one qubit in diagonal of another.",
         "message": "Congratulation, one more mission done ! Let's try something harder.",
-        "image": "plasma-ball",
-        "imageExtension": ".jpg",
+        "image": "Mission2",
+        "imageExtension": ".png",
         "preset": "Mission2",
         "tools": {
             "input-tool": false,
@@ -44,8 +44,8 @@
         "fullfilled": false,
         "description": "Majority GATE. You'll need a little creativity for this one.",
         "message": "Congratulation. You just discovered the majority GATE !",
-        "image": "plasma-ball",
-        "imageExtension": ".jpg",
+        "image": "Mission3",
+        "imageExtension": ".png",
         "preset": "Mission3",
         "tools": {
             "input-tool": false,
@@ -64,8 +64,8 @@
         "fullfilled": false,
         "description": "Let's now build another logic gate: the AND gate. The output Z's value is 1 when both of the input A and B's values are 1. Otherwise, the output Z's value is 0.",
         "message": "Test4",
-        "image": "plasma-ball",
-        "imageExtension": ".jpg",
+        "image": "Mission4",
+        "imageExtension": ".png",
         "preset": "Mission4",
         "tools": {
             "input-tool": true,
