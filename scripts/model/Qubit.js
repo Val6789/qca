@@ -93,6 +93,7 @@ class Qubit extends Block {
      */
     applyPolarityBuffer() {
         //if (!this._visited) this.balance = 0
+        this.balance = Math.sign(this.balance)
         this._visited = false
         this.polarity = Math.sign(this.balance)
 
@@ -158,7 +159,7 @@ class Qubit extends Block {
 
         // final equation
         const numerator = neighborPolaritySum * IJ_KINK_ENERGY / (2 * GAMMA)
-        const balance = Math.sign(numerator / Math.hypot(numerator, 1))
+        const balance = numerator / Math.hypot(numerator, 1)
 
         // Apply results to all entangled blocks
         entangled.forEach(block => block.balance = balance)

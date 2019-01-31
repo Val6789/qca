@@ -17,6 +17,10 @@ class AppController {
         clearInterval(this.interval)
         if (this._refreshRate > 0) {
             this.interval = setInterval(() => {
+                if(!this.automata) {
+                    clearInterval(this.interval)
+                    return
+                }
                 this.automata.process()
                 Qubit.updateAllQubitDetermination()
             }, this._refreshRate)
@@ -45,7 +49,7 @@ class AppController {
                 this.currentView._destructor()
 
                 // Create the new
-                this.automata = new QuantumAutomata()
+                this.automata.reset()
                 this.refreshRate = AppController.SPEED
                 this.startUpdateLoop()
                 this.currentView = new ThreeViewController()
