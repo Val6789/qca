@@ -72,9 +72,9 @@ class IntroScene {
                     this._deleteScene()
                     this.callbackDone()
                 })
-            await this._electronScene()
-            await this._dotScene()
-            await this._qubitScene()
+            //await this._electronScene()
+            //await this._dotScene()
+            //await this._qubitScene()
             await this._outputScene()
             await this._inputScene()
         }
@@ -375,6 +375,7 @@ class IntroScene {
             let inputPositive = new InputBlock(pos, 1)
             let inputNegative = new InputBlock(pos, -1)
             inputNegative.object.visible = false
+            inputPositive.object.visible = true
 
             this.toRemove.push(inputNegative)
             this.toRemove.push(inputPositive)
