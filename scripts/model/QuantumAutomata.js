@@ -242,7 +242,7 @@ class QuantumAutomata {
         this._resetAllBlocksPolarity()
         this.clockTime = (this.clockTime + 1) % Qubit.FAMILY_COLORS.length
         if (this._outputs.size === 0) return
-        this._outputs.forEach(output => this._startProcessFrom(output))
+        this._outputs.forEach(output => this.q(output))
         this._applyProcessing()
     }
 
@@ -261,9 +261,9 @@ class QuantumAutomata {
         qubit.processNeighboorsInfluences(this)
 
         // when the process array is empty the recursion will end
-        this.pendingProcesses.forEach((pendingQubitProcessing, index) => {
+        this.pendingProcesses.forEach((pendingQubitProcessing) => {
             if (pendingQubitProcessing.clockId === this.clockTime) {
-                this.pendingProcesses.splice(index, 1)
+                this.pendingProcesses.delete(pendingQubitProcessing)
                 this._startProcessFrom(pendingQubitProcessing)
             }
         })
@@ -321,12 +321,10 @@ class QuantumAutomata {
         this._qubitMap = new Map()
         this._outputs = new Set()
         this._bridges = new Set()
+        this.pendingProcesses = new Set() // contains the list of not-visited blocks waiting for their clock
 
         this.clockTime = 0
         this.atLeastOneUseClock = false
-
-        // contains the list of not-visited blocks waiting for their clock
-        this.pendingProcesses = new Array()
 
         this.shouldResetTrigger = false
     }
