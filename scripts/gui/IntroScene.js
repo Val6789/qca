@@ -72,9 +72,9 @@ class IntroScene {
                     this._deleteScene()
                     this.callbackDone()
                 })
-            //await this._electronScene()
-            //await this._dotScene()
-            //await this._qubitScene()
+            await this._electronScene()
+            await this._dotScene()
+            await this._qubitScene()
             await this._outputScene()
             await this._inputScene()
         }
