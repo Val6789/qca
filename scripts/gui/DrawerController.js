@@ -43,10 +43,24 @@ class DrawerController {
             })
         }
     }
+    _initLoadDemoFromFile() {
+        var file = document.getElementById('file_demo')
+        file.onchange = function() {
+            var reader = new FileReader()
+            reader.readAsText(file.files[0],"utf-8")
+            reader.onload = function(e) {
+                UxSaverInstance.add("loadOutPreset", "")
+                let constructedPreset = new Preset("out", JSON.parse(e.target.result))
+                constructedPreset.addToAutomata(new AppController().automata, true)
+                document.getElementById("no-drawer-check").checked = true
+            }
+        }
+    }
 
     init() {
         this._initPresetLoading()
         this._initDrawerEvents()
+        this._initLoadDemoFromFile()
     }
 
     constructor() {
