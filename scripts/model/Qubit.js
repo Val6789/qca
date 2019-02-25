@@ -173,7 +173,7 @@ class Qubit extends Block {
 
     static _applyNeighbborPolarityResponseFunction(neighborPolarity) {
         // defines the responsivity
-        const sigmoidSlopeStrength = 13
+        const sigmoidSlopeStrength = 6.5
         return 1 / (Math.exp(-sigmoidSlopeStrength * neighborPolarity) + 1) * 2 - 1
     }
 
