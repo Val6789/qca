@@ -172,9 +172,7 @@ class Qubit extends Block {
 
 
     static _applyNeighbborPolarityResponseFunction(neighborPolarity) {
-        // defines the responsivity
-        const sigmoidSlopeStrength = 6.5
-        return 1 / (Math.exp(-sigmoidSlopeStrength * neighborPolarity) + 1) * 2 - 1
+        return 1 / (Math.exp(-Qubit.POLARITY_RESPONSE_SIGMOID_SLOPE * neighborPolarity) + 1) * 2 - 1
     }
 
 
@@ -324,6 +322,14 @@ class Qubit extends Block {
  * @brief defines superposition electron movmement frequency
  * */
 Qubit.UNDETERMINED_REFRESH_RATE = 100 // seconds
+
+
+/**
+ * @static @private @constant
+ * @brief defines the response of a qubit to is neighbor influences
+ */
+Qubit.POLARITY_RESPONSE_SIGMOID_SLOPE
+
 /**
  * @static @private @constant
  * @brief distance of the electron from the center of qubit
