@@ -1,3 +1,7 @@
+/* 
+    Exported DragAndDropControls
+*/
+
 /**
  * @class Drag and Drop Controls
  * @brief Creates drag and drop interactions for touch and mouse
@@ -108,7 +112,7 @@ class DragAndDropControls {
             }
             document.body.removeChild(this._currentDragPlayload.domElement)
         }
-        this._currentDragPlayload = null;
+        this._currentDragPlayload = null
     }
 
 

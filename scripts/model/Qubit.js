@@ -153,7 +153,8 @@ class Qubit extends Block {
 
                 // recursive call
                 neighbor.processNeighboorsInfluences(automata)
-                neighborPolaritySum += neighbor.balance * neighbor.charge * kink
+                const neighborPolarity = neighbor.balance * neighbor.charge * kink 
+                neighborPolaritySum += Qubit._applyNeighbborPolarityResponseFunction(neighborPolarity)
             }
         }
 
@@ -167,6 +168,11 @@ class Qubit extends Block {
         //this.balance = Math.sign(this.balance)
         // return result
         return this.balance
+    }
+
+
+    static _applyNeighbborPolarityResponseFunction(neighborPolarity) {
+        return 1 / (Math.exp(-Qubit.POLARITY_RESPONSE_SIGMOID_SLOPE * neighborPolarity) + 1) * 2 - 1
     }
 
 
@@ -188,49 +194,49 @@ class Qubit extends Block {
 
 
     _setPolarity(newValue) {
-            // if newValue is already set no need do the following expensive steps
-            if (newValue === this.polarity) return false
+        // if newValue is already set no need do the following expensive steps
+        if (newValue === this.polarity) return false
 
-            var label // will save the text displayed on the qubit
+        var label // will save the text displayed on the qubit
 
-            switch (newValue) {
-                case 1:
-                    // move electrons to the right dots
-                    this.electrons[0].dot = this.dots[0]
-                    this.electrons[1].dot = this.dots[3]
+        switch (newValue) {
+            case 1:
+                // move electrons to the right dots
+                this.electrons[0].dot = this.dots[0]
+                this.electrons[1].dot = this.dots[3]
 
-                    // is not in superposition
-                    this.isDetermined = true
+                // is not in superposition
+                this.isDetermined = true
 
-                    // define text label
-                    label = "1"
-                    break
+                // define text label
+                label = "1"
+                break
 
-                    // more of the same
-                case -1:
-                    this.electrons[0].dot = this.dots[1]
-                    this.electrons[1].dot = this.dots[2]
-                    this.isDetermined = true
-                    label = "0"
-                    break
+                // more of the same
+            case -1:
+                this.electrons[0].dot = this.dots[1]
+                this.electrons[1].dot = this.dots[2]
+                this.isDetermined = true
+                label = "0"
+                break
 
-                    case 0:
-                    // is determined false. The electrons will switch places freneticly
-                    this.isDetermined = false
-                    label = "?"
-                    break
+            case 0:
+                // is determined false. The electrons will switch places freneticly
+                this.isDetermined = false
+                label = "?"
+                break
 
-                    default:
-                    throw console.error("Unexpected polarity value :", newValue)
-            }
+            default:
+                throw console.error("Unexpected polarity value :", newValue)
+        }
 
-            if (newValue != this.polarity)
-                console.error("Failed to set the polarity")
+        if (newValue != this.polarity)
+            console.error("Failed to set the polarity")
 
-                // updates the text floating on the box
-            this.setLabel(label)
+        // updates the text floating on the box
+        this.setLabel(label)
 
-            return true
+        return true
     }
 
     resetPolarity() {
@@ -316,6 +322,14 @@ class Qubit extends Block {
  * @brief defines superposition electron movmement frequency
  * */
 Qubit.UNDETERMINED_REFRESH_RATE = 100 // seconds
+
+
+/**
+ * @static @private @constant
+ * @brief defines the response of a qubit to is neighbor influences
+ */
+Qubit.POLARITY_RESPONSE_SIGMOID_SLOPE
+
 /**
  * @static @private @constant
  * @brief distance of the electron from the center of qubit

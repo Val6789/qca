@@ -204,3 +204,8 @@ button:hover {
     font-weight: lighter;
     padding: 0.2rem;
 }
+#main_logo {
+    height:300px;
+    display:block;
+    margin:auto;
+}
