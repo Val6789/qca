@@ -328,7 +328,7 @@ Qubit.UNDETERMINED_REFRESH_RATE = 100 // seconds
  * @static @private @constant
  * @brief defines the response of a qubit to is neighbor influences
  */
-Qubit.POLARITY_RESPONSE_SIGMOID_SLOPE
+Qubit.POLARITY_RESPONSE_SIGMOID_SLOPE = 6.5
 
 /**
  * @static @private @constant
